@@ -1,14 +1,14 @@
 {
-  "name": "@gamepark/board-game-template-app",
+  "name": "@gamepark/nidavellir-app",
   "version": "0.0.0",
   "private": true,
-  "description": "React application",
+  "description": "Nidavellir game for game park",
   "author": "Romain Fromi <romain@game-park.com> (https://game-park.com/)",
   "license": "ISC",
   "dependencies": {
     "@emotion/react": "^11.4.1",
-    "@gamepark/react-client": "~5.10.0",
-    "@gamepark/react-components": "~5.9.0",
+    "@gamepark/react-client": "~5.20.0",
+    "@gamepark/react-components": "~5.12.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -60,7 +60,7 @@
   },
   "jest": {
     "moduleNameMapper": {
-      "^@gamepark/board-game-template/(.*)$": "<rootDir>/../rules/src/$1"
+      "^@gamepark/nidavellir/(.*)$": "<rootDir>/../rules/src/$1"
     }
   }
 }

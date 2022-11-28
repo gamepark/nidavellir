@@ -1,9 +1,30 @@
-import DrawCard from './DrawCard'
-import SpendGold from './SpendGold'
+import { FillTaverns } from './FillTaverns';
+import { PlaceCoin } from './PlaceCoin';
+import { ChooseTavernCard } from './ChooseTavernCard';
+import { RecruitHero } from './RecruitHero';
+import { Pass } from './Pass';
+import { NextPhase } from './NextPhase';
+import { EvaluateTroops } from './EvaluateTroop';
+import { RevealCoins } from './RevealCoins';
+import { DiscardTavern } from './DiscardTavern';
+import { RevealPouch } from './RevealPouch';
+import { TookCoinFromTreasure } from './TookCoinFromTreasure';
+import { DiscardCoin } from './DiscardCoin';
+import { TradeGem } from './TradeGem';
 
-/**
- * A "Move" is the combination of all the types of moves that exists in you game
- */
-type Move = SpendGold | DrawCard // | DoOtherStuff | ChooseCard | MovePawn...
+type Move =
+  | FillTaverns
+  | PlaceCoin
+  | ChooseTavernCard
+  | RecruitHero
+  | Pass
+  | NextPhase
+  | EvaluateTroops
+  | RevealCoins
+  | DiscardTavern
+  | RevealPouch
+  | TookCoinFromTreasure
+  | DiscardCoin
+  | TradeGem;
 
-export default Move
+export default Move;

@@ -1,21 +1,11 @@
-import GameView from '@gamepark/board-game-template/GameView'
-import {drawCardInPlayerView, drawCardInView, isDrawCardView} from '@gamepark/board-game-template/moves/DrawCard'
-import MoveType from '@gamepark/board-game-template/moves/MoveType'
-import MoveView from '@gamepark/board-game-template/moves/MoveView'
-import {spendGold} from '@gamepark/board-game-template/moves/SpendGold'
-import {Game} from '@gamepark/rules-api'
+import MoveView, { isMoveView } from '@gamepark/nidavellir/moves/MoveView';
+import Nidavellir from '@gamepark/nidavellir/Nidavellir';
 
 /**
  * This class is useful when the game has "IncompleteInformation" (or "SecretInformation").
  * It allows to handle, in a different way than the backend side, the moves that involve hidden information.
  */
-export default class MyBoardGameView implements Game<GameView, MoveView> {
-  state: GameView
-
-  constructor(state: GameView) {
-    this.state = state
-  }
-
+export default class NidavellirView extends Nidavellir {
   /**
    * In this method, inside the view, we must return any move that the frontend can fully anticipate.
    * The reason why it should be anticipated instead of waiting for the backend to provide with all the automatic consequences is latency.
@@ -23,8 +13,8 @@ export default class MyBoardGameView implements Game<GameView, MoveView> {
    *
    * @return A MoveView which can be completely anticipated by the player or the spectator
    */
-  getAutomaticMove(): void | MoveView {
-    return
+  getAutomaticMove(): MoveView[] {
+    return super.getAutomaticMoves().filter(isMoveView);
   }
 
   /**
@@ -35,15 +25,6 @@ export default class MyBoardGameView implements Game<GameView, MoveView> {
    */
   play(move: MoveView): void {
     switch (move.type) {
-      case MoveType.SpendGold:
-        return spendGold(this.state, move)
-      case MoveType.DrawCard:
-        if (isDrawCardView(move)) {
-          return drawCardInPlayerView(this.state, move)
-        } else {
-          return drawCardInView(this.state, move)
-        }
     }
   }
-
 }

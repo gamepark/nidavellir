@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import {css, keyframes} from '@emotion/react'
-import GameView from '@gamepark/board-game-template/GameView'
+import GameView from '@gamepark/nidavellir/state/view/GameView'
 import {Letterbox, Picture} from '@gamepark/react-components'
 import Images from './images/Images'
 
@@ -12,7 +12,7 @@ export default function GameDisplay({game}: Props) {
   return (
     <Letterbox css={letterBoxStyle} top={0}>
       <div css={sampleCss}>
-        {JSON.stringify(game)}
+          <pre style={{ width: '100%', fontSize: '.5em', height: '100%%'}}>{JSON.stringify(game, null, 4)}</pre>
       </div>
       <Picture src={Images.sampleImage} css={sampleImageCss}/>
     </Letterbox>
@@ -41,6 +41,9 @@ const sampleCss = css`
   background-color: black;
   padding: 0.5em;
   border-radius: 1em;
+  height: 80%;
+  width: 80%;
+  overflow: scroll;
 `
 
 const sampleImageCss = css`
