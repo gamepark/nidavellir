@@ -1,6 +1,5 @@
 import GameState from '../state/GameState';
 import GameView from '../state/view/GameView';
-import max from 'lodash/max';
 import orderBy from 'lodash/orderBy';
 import { isOnPlayerBoard } from './location.utils';
 import { Coins } from '../coins/Coins';
@@ -10,32 +9,43 @@ import { SecretCoin } from '../state/view/SecretCoin';
 import { PlayerId } from '../state/Player';
 import { SecretCard } from '../state/view/SecretCard';
 import { LocatedCard } from '../state/LocatedCard';
+import { getCurrentTavern } from './tavern.utils';
+import { getTavernCoins } from './coin.utils';
+import { DwarfType } from '../cards/Card';
+import { Cards } from '../cards/Cards';
+import { Heroes } from '../cards/Heroes';
 
 export const getEvalandTurnOrder = (state: GameState | GameView): PlayerId[] => {
-  // Take revealed coins on the maximum position (the last returned)
-  const revealedCoins: [LocatedCoin | SecretCoin, OnPlayerBoard][] = state.coins
-    .filter((coin) => isOnPlayerBoard(coin.location) && !coin.hidden)
-    .map((coin) => [coin, coin.location as OnPlayerBoard]);
+  const tavern = getCurrentTavern(state);
+  const coins = getTavernCoins(state, tavern);
 
-  const maxPosition = max(revealedCoins.map(([, location]) => location.index));
-
-  if (maxPosition === undefined) {
-    console.error('There is something that does not work well here. There must be revealed coins');
-    return [];
+  if (coins.some((c) => c.hidden)) {
+    throw new Error(`There is some coin for the current tavern ${tavern} that are hidden !`);
   }
 
-  return orderBy(
-    revealedCoins.filter(([, location]) => location.index === maxPosition),
-    ([coin]) => Coins[coin.id!].value,
+  const orderedCoins = orderBy(
+    coins,
+    (c) => {
+      const playerGem = state.gems.find(
+        (g) => isOnPlayerBoard(g.location) && g.location.player === (c.location as OnPlayerBoard).player
+      )!;
+      return [Coins[c.id!].value, playerGem];
+    },
     'desc'
-  ).map(([, location]) => location.player);
+  );
+
+  return orderedCoins.map((c) => (c.location as OnPlayerBoard).player);
 };
 
 export const getActivePlayer = (state: GameState | GameView) => state.players.find((p) => state.activePlayer === p.id)!;
 
-export const getArmy = (state: GameState | GameView, playerId: PlayerId) => ({
-  cards: state.cards.filter((c) => isOnPlayerBoard(c.location) && c.location.player === playerId),
-  heroes: state.heroes.filter((c) => isOnPlayerBoard(c.location) && c.location.player === playerId),
+export const getArmy = (state: GameState | GameView, playerId: PlayerId, type?: DwarfType) => ({
+  cards: state.cards.filter(
+    (c) => isOnPlayerBoard(c.location) && c.location.player === playerId && (!type || type === Cards[c.id!].type)
+  ),
+  heroes: state.heroes.filter(
+    (c) => isOnPlayerBoard(c.location) && c.location.player === playerId && (!type || type === Heroes[c.id!].type)
+  ),
 });
 
 export const isLocatedCard = (c: SecretCard | LocatedCard): c is LocatedCard => c.id !== undefined;

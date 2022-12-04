@@ -52,7 +52,6 @@ class GameInitializer {
       (c) => c[1].value
     );
 
-    // FIXME: In theory the shuffle must be done in view to prevent predictability
     return [
       ...this.options.players.flatMap((p, index) => {
         return [
@@ -112,6 +111,7 @@ class GameInitializer {
     return this.options.players.map((p) => ({
       score: 0,
       id: p.id,
+      effects: [],
     }));
   };
 

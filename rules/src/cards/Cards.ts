@@ -1,4 +1,5 @@
 import { Card, CardOrigin, DwarfType, RoyalOffering } from './Card';
+import { EffectType } from '../effects/EffectType';
 
 export const WarriorDwarf1Age1: Card = {
   origin: CardOrigin.Age1,
@@ -518,33 +519,58 @@ export const ExplorerDwarf8Age2: Card = {
 export const RoyalOffering1Age1: Card = {
   origin: CardOrigin.Age1,
   type: RoyalOffering.RoyalOffering,
-  //TODO: effect
+  effects: [
+    {
+      type: EffectType.TRANSFORM_COIN,
+      additionalValue: 3,
+    },
+  ],
 };
 
 export const RoyalOffering2Age1: Card = {
   origin: CardOrigin.Age1,
   type: RoyalOffering.RoyalOffering,
   minPlayers: 5,
-  //TODO: effect
+  effects: [
+    {
+      type: EffectType.TRANSFORM_COIN,
+      additionalValue: 3,
+    },
+  ],
 };
 
 export const RoyalOffering1Age2: Card = {
   origin: CardOrigin.Age2,
   type: RoyalOffering.RoyalOffering,
-  //TODO: effect
+  effects: [
+    {
+      type: EffectType.TRANSFORM_COIN,
+      additionalValue: 5,
+    },
+  ],
 };
 
 export const RoyalOffering2Age2: Card = {
   origin: CardOrigin.Age2,
   type: RoyalOffering.RoyalOffering,
-  //TODO: effect
+  effects: [
+    {
+      type: EffectType.TRANSFORM_COIN,
+      additionalValue: 5,
+    },
+  ],
 };
 
 export const RoyalOffering3ge2: Card = {
   origin: CardOrigin.Age2,
   type: RoyalOffering.RoyalOffering,
-  //TODO: effect
   minPlayers: 5,
+  effects: [
+    {
+      type: EffectType.TRANSFORM_COIN,
+      additionalValue: 5,
+    },
+  ],
 };
 
 export const Cards: Card[] = [

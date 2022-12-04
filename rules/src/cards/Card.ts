@@ -1,3 +1,5 @@
+import { Effect } from '../effects/Effect';
+
 export enum DwarfType {
   Warrior = 1,
   Hunter,
@@ -23,4 +25,5 @@ export type Card = {
   copies?: number;
   bravery?: number[];
   minPlayers?: number;
+  effects?: Effect[];
 };

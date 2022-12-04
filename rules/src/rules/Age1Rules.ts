@@ -6,6 +6,7 @@ import MoveType from '../moves/MoveType';
 import { Phase, Step } from '../state/GameState';
 import { LocationType } from '../state/Location';
 import { TroopEvaluationRules } from './TroopEvaluationRules';
+import MoveView from '../moves/MoveView';
 
 class Age1Rules extends NidavellirRules {
   delegate(): NidavellirRules {
@@ -16,7 +17,7 @@ class Age1Rules extends NidavellirRules {
     return getPhaseRules(this.state);
   }
 
-  getAutomaticMoves(): Move[] {
+  getAutomaticMoves(): (Move | MoveView)[] {
     if (this.state.players.every((p) => p.ready) && this.state.phase === Phase.TurnPreparation) {
       // si fini, prendre une carte distinction
       // return [distributeDistinctionMove]
@@ -26,7 +27,7 @@ class Age1Rules extends NidavellirRules {
     return super.getAutomaticMoves();
   }
 
-  play(move: Move) {
+  play(move: Move | MoveView) {
     switch (move.type) {
       case MoveType.NextPhase:
         this.state.phase = Phase.TavernResolution;

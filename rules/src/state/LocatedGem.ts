@@ -1,6 +1,6 @@
-import { OnPlayerBoard } from './CommonLocations';
+import { InDiscard, OnPlayerBoard } from './CommonLocations';
 
-export type GemLocation = OnPlayerBoard;
+export type GemLocation = OnPlayerBoard | InDiscard;
 
 export type LocatedGem = {
   id: number;

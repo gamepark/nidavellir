@@ -44,3 +44,11 @@ export const getTreasureCoinFromValue = (state: GameState | GameView, value: num
  */
 export const getNextCoinIndexInDiscard = (state: GameState | GameView) =>
   state.coins.filter((c) => isInDiscard(c.location)).length;
+
+/**
+ * Get coins for current tavern
+ * @param state The game state
+ * @param tavern The tavern number
+ */
+export const getTavernCoins = (state: GameState | GameView, tavern: number) =>
+  state.coins.filter((c) => isOnPlayerBoard(c.location) && c.location.index === tavern);

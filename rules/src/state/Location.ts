@@ -8,4 +8,5 @@ export enum LocationType {
   Treasure,
   PlayerHand,
   Discard,
+  CommandZone,
 }

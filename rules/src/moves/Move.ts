@@ -1,30 +1,12 @@
-import { FillTaverns } from './FillTaverns';
-import { PlaceCoin } from './PlaceCoin';
-import { ChooseTavernCard } from './ChooseTavernCard';
-import { RecruitHero } from './RecruitHero';
-import { Pass } from './Pass';
+import { MoveCard } from './MoveCard';
+import { MoveDistinction } from './MoveDistinction';
+import { MoveHero } from './MoveHero';
 import { NextPhase } from './NextPhase';
-import { EvaluateTroops } from './EvaluateTroop';
-import { RevealCoins } from './RevealCoins';
-import { DiscardTavern } from './DiscardTavern';
-import { RevealPouch } from './RevealPouch';
-import { TookCoinFromTreasure } from './TookCoinFromTreasure';
-import { DiscardCoin } from './DiscardCoin';
-import { TradeGem } from './TradeGem';
+import { Pass } from './Pass';
+import { MoveCoin } from './MoveCoin';
+import { RevealCoin } from './RevealCoin';
+import { MoveGem } from './MoveGem';
 
-type Move =
-  | FillTaverns
-  | PlaceCoin
-  | ChooseTavernCard
-  | RecruitHero
-  | Pass
-  | NextPhase
-  | EvaluateTroops
-  | RevealCoins
-  | DiscardTavern
-  | RevealPouch
-  | TookCoinFromTreasure
-  | DiscardCoin
-  | TradeGem;
+type Move = MoveCard | MoveDistinction | MoveHero | MoveCoin | MoveGem | RevealCoin | NextPhase | Pass;
 
 export default Move;

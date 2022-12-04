@@ -17,7 +17,7 @@ export const canRecruitHero = (state: GameState | GameView, playerId: PlayerId) 
   }
 
   const army = getArmy(state, playerId);
-  const tavernCardIndex = army.cards.find((c) => c.id === player.lastCard)!.location.index;
+  const tavernCardIndex = army.cards.find((c) => c.id === player.card)!.location.index;
   const dwarfTypes = [DwarfType.Blacksmith, DwarfType.Hunter, DwarfType.Warrior, DwarfType.Explorer, DwarfType.Miner];
   return dwarfTypes.every((type) => {
     const condition = (c: LocatedCard | SecretCard) =>

@@ -1,5 +1,6 @@
 import { LocationType } from './Location';
 import { InDiscard, OnPlayerBoard } from './CommonLocations';
+import { PlayerId } from './Player';
 
 export type InAgeDeck = {
   type: LocationType.Age1Deck | LocationType.Age2Deck;
@@ -19,11 +20,23 @@ export type InDistinctionDeck = {
 export type InTavern = {
   type: LocationType.Tavern;
   index: number;
-  //TODO: enum ?
   tavern: number;
 };
 
-export type CardLocation = InAgeDeck | InHeroesDeck | OnPlayerBoard | InDistinctionDeck | InTavern | InDiscard;
+export type InCommandZone = {
+  type: LocationType.CommandZone;
+  player: PlayerId;
+  index: number;
+};
+
+export type CardLocation =
+  | InAgeDeck
+  | InHeroesDeck
+  | OnPlayerBoard
+  | InDistinctionDeck
+  | InTavern
+  | InDiscard
+  | InCommandZone;
 
 export type LocatedCard = {
   id: number;

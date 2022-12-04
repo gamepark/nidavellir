@@ -2,24 +2,16 @@ import { NidavellirRules } from './NidavellirRules';
 import { PlayerId } from '../state/Player';
 import Move from '../moves/Move';
 import { getActivePlayer, isLocatedCoin } from '../utils/player.utils';
-import { revealPouchMove } from '../moves/RevealPouch';
 import { getCurrentTavern } from '../utils/tavern.utils';
-import {
-  getNextCoinIndexInDiscard,
-  getPlayerCoinForTavern,
-  getPlayerPouch,
-  getTreasureCoinFromValue,
-  isCoinHidden,
-} from '../utils/coin.utils';
+import { getPlayerCoinForTavern, getPlayerPouch, getTreasureCoinFromValue, isCoinHidden } from '../utils/coin.utils';
 import { LocatedCoin } from '../state/LocatedCoin';
 import MoveType from '../moves/MoveType';
 import { Coins } from '../coins/Coins';
-import { DiscardCoin, discardCoin } from '../moves/DiscardCoin';
 import { LocationType } from '../state/Location';
-import { CoinColor } from '../coins/Coin';
-import { TookCoinFromTreasure, tookCoinFromTreasureMove } from '../moves/TookCoinFromTreasure';
-import { isInTreasure, isOnPlayerBoard } from '../utils/location.utils';
-import { OnPlayerBoard } from '../state/CommonLocations';
+import { isInDiscard } from '../utils/location.utils';
+import { revealCoinMove } from '../moves/RevealCoin';
+import { MoveCoin, moveCoinMove } from '../moves/MoveCoin';
+import { TAVERN_COUNT } from '../utils/constants';
 
 class CoinTradeRules extends NidavellirRules {
   getLegalMoves(playerId: PlayerId): Move[] {
@@ -37,7 +29,17 @@ class CoinTradeRules extends NidavellirRules {
       isLocatedCoin(revealedCoin) &&
       !Coins[revealedCoin.id].value
     ) {
-      return pouch.filter((c) => !!Coins[(c as LocatedCoin).id].value).map((c) => discardCoin((c as LocatedCoin).id));
+      return pouch
+        .filter((c) => !!Coins[(c as LocatedCoin).id].value)
+        .map((c) =>
+          moveCoinMove(
+            {
+              type: LocationType.Discard,
+              index: this.state.coins.filter((c) => isInDiscard(c.location)).length,
+            },
+            (c as LocatedCoin).id
+          )
+        );
     }
 
     return [];
@@ -57,7 +59,7 @@ class CoinTradeRules extends NidavellirRules {
       if (!Coins[revealedCoin.id].value) {
         const pouch = getPlayerPouch(this.state, activePlayer.id);
         if (pouch.some(isCoinHidden)) {
-          return [revealPouchMove];
+          return pouch.map((c) => revealCoinMove(c.id!));
         }
       }
     }
@@ -67,21 +69,15 @@ class CoinTradeRules extends NidavellirRules {
 
   play(move: Move) {
     switch (move.type) {
-      case MoveType.DiscardCoin:
-        this.onDiscardCoin(move);
-        break;
-      case MoveType.TookCoinFromTreasure:
-        this.onTookCoinFromTreasure(move);
-        break;
-      case MoveType.RevealPouch:
-        this.onRevealPouch();
+      case MoveType.MoveCoin:
+        this.onMoveCoin(move);
         break;
     }
 
     super.play(move);
   }
 
-  onDiscardCoin(move: DiscardCoin) {
+  onMoveCoin(move: MoveCoin) {
     const activePlayer = getActivePlayer(this.state);
 
     if (!activePlayer) {
@@ -104,65 +100,21 @@ class CoinTradeRules extends NidavellirRules {
     }
 
     const discardedCoinIndex = move.id === pouch[0].id ? 0 : 1;
-    const discardedPouchCoin = Coins[pouch[discardedCoinIndex].id];
-    if (discardedPouchCoin.color === CoinColor.Bronze) {
-      pouch[discardedCoinIndex].location = {
-        type: LocationType.Discard,
-        index: getNextCoinIndexInDiscard(this.state),
-      };
-    } else {
-      pouch[discardedCoinIndex].location = {
-        type: LocationType.Treasure,
-      };
-    }
-
-    this.state.nextMoves.push(tookCoinFromTreasureMove(treasureCoin.id));
-  }
-
-  onTookCoinFromTreasure(move: TookCoinFromTreasure) {
-    const activePlayer = getActivePlayer(this.state);
-
-    if (!activePlayer) {
-      throw new Error('There is an error in took coin from treasure move. There is no active player');
-    }
-
-    const treasureCoin = this.state.coins.find((c) => isLocatedCoin(c) && isInTreasure(c.location) && c.id === move.id);
-    if (!treasureCoin) {
-      throw new Error(`It is impossible for the player to took treasure coin since there is no treasure con available`);
-    }
-
-    const pouch = getPlayerPouch(this.state, activePlayer.id).map((c) => c as LocatedCoin);
-    if (pouch.length !== 1) {
-      throw new Error(
-        `There is an error when taking a coin from treasure, the pouch size is incorrect ${pouch.length} instead of 1`
-      );
-    }
-
-    const remainingCoin = (pouch[0].location as OnPlayerBoard).index;
-
-    treasureCoin.location = {
-      type: LocationType.PlayerBoard,
-      player: activePlayer.id,
-      index: remainingCoin === 3 ? 4 : 3,
+    pouch[discardedCoinIndex].location = move.target;
+    activePlayer.discarded = {
+      coin: pouch[discardedCoinIndex].id,
     };
 
-    this.state.steps.shift();
-  }
-
-  onRevealPouch() {
-    const activePlayer = getActivePlayer(this.state);
-
-    if (!activePlayer) {
-      throw new Error('There is an error in reveal pouch move. There is no active player');
-    }
-
-    this.state.coins
-      .filter(
-        (c) => isOnPlayerBoard(c.location) && c.location.player === activePlayer.id && (c.location.index ?? 0) > 2
+    this.state.nextMoves.push(
+      moveCoinMove(
+        {
+          type: LocationType.PlayerBoard,
+          player: activePlayer.id,
+          index: TAVERN_COUNT + discardedCoinIndex,
+        },
+        treasureCoin.id
       )
-      .forEach((c) => {
-        c.hidden = false;
-      });
+    );
   }
 }
 
