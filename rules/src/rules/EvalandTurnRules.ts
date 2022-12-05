@@ -2,9 +2,7 @@ import { NidavellirRules } from './NidavellirRules';
 import { PlayerId } from '../state/Player';
 import Move from '../moves/Move';
 import { ChooseCardRules } from './ChooseCardRules';
-import { RecruitHeroRules } from './RecruitHeroRules';
 import { getActivePlayer, getEvalandTurnOrder, getNextPlayer } from '../utils/player.utils';
-import { CoinTradeRules } from './CoinTradeRules';
 import MoveType from '../moves/MoveType';
 import { passMove } from '../moves/Pass';
 import { Step } from '../state/GameState';
@@ -22,13 +20,8 @@ class EvalandTurnRules extends NidavellirRules {
       return new EffectsRules[activePlayer.effects[0].type](this.state, activePlayer!);
     }
 
-    switch (this.state.steps[0]) {
-      case Step.ChooseCard:
-        return new ChooseCardRules(this.state);
-      case Step.RecruitHero:
-        return new RecruitHeroRules(this.state);
-      case Step.TradeCoin:
-        return new CoinTradeRules(this.state);
+    if (this.state.steps[0] === Step.ChooseCard) {
+      return new ChooseCardRules(this.state, activePlayer);
     }
 
     return;

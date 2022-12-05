@@ -5,14 +5,25 @@ export type MoveCoin = {
   type: MoveType.MoveCoin;
   id?: number;
   source?: CoinLocation;
-  target: CoinLocation;
+  target?: CoinLocation;
+  reveal?: boolean;
 };
 
-export const moveCoinMove = (target: CoinLocation, id?: number, source?: CoinLocation): MoveCoin => ({
+export const revealCoinMove = (id: number): MoveCoin => ({
+  type: MoveType.MoveCoin,
+  id,
+  reveal: true,
+});
+
+export const moveCoinMove = (
+  id?: number,
+  target?: CoinLocation,
+  source?: CoinLocation,
+  reveal?: boolean
+): MoveCoin => ({
   type: MoveType.MoveCoin,
   id,
   source,
   target,
+  reveal,
 });
-
-export type MoveCoinInView = Omit<MoveCoin, 'id'>;

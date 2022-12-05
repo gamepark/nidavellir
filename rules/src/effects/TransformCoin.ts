@@ -3,14 +3,14 @@ import { EffectType } from './EffectType';
 import Move from '../moves/Move';
 import MoveView from '../moves/MoveView';
 import MoveType from '../moves/MoveType';
-import { PlayerId } from '../state/Player';
 import { LocationType } from '../state/Location';
-import { isInDiscard, isInTreasure, isOnPlayerBoard } from '../utils/location.utils';
+import { isInDiscard, isInTreasure, isOnPlayerBoard, isSameCoinLocation } from '../utils/location.utils';
 import { getActivePlayer } from '../utils/player.utils';
 import { Coins } from '../coins/Coins';
 import { CoinColor } from '../coins/Coin';
-import { moveCoinMove } from '../moves/MoveCoin';
+import { MoveCoin, moveCoinMove } from '../moves/MoveCoin';
 import { OnPlayerBoard } from '../state/CommonLocations';
+import GameState from '../state/GameState';
 
 export type TransformCoin = {
   type: EffectType.TRANSFORM_COIN;
@@ -22,66 +22,75 @@ export class TransformCoinRules extends EffectRules {
     return this.player.effects[0] as TransformCoin;
   }
 
-  getLegalMoves(playerId: PlayerId): (Move | MoveView)[] {
+  getPlayerMoves(): (Move | MoveView)[] {
     const activePlayer = getActivePlayer(this.state);
-    if (activePlayer.id !== playerId) {
+    if (activePlayer.id !== this.player.id) {
       return [];
     }
 
     const nextDiscardIndex = this.state.coins.filter((c) => isInDiscard(c.location)).length;
     return this.state.coins
-      .filter((c) => isOnPlayerBoard(c.location) && c.location.player === playerId && Coins[c.id!].value)
+      .filter((c) => isOnPlayerBoard(c.location) && c.location.player === this.player.id && Coins[c.id!].value)
       .flatMap((c) => {
         const coin = Coins[c.id!];
         if (coin.color === CoinColor.Bronze) {
-          return moveCoinMove(
-            {
-              type: LocationType.Discard,
-              index: nextDiscardIndex,
-            },
-            c.id!
-          );
+          return moveCoinMove(c.id!, {
+            type: LocationType.Discard,
+            index: nextDiscardIndex,
+          });
         } else {
-          return moveCoinMove(
-            {
-              type: LocationType.Treasure,
-            },
-            c.id!
-          );
+          return moveCoinMove(c.id!, {
+            type: LocationType.Treasure,
+          });
         }
       });
   }
 
   play(move: Move | MoveView) {
-    if (move.type === MoveType.MoveCoin) {
-      const coin = Coins[move.id!];
-      // TODO: take superior or inferior coin if there is no equal value available (MOVE IT TO A FUNCTION
-      const treasureCoin = this.state.coins.find(
-        (c) => isInTreasure(c.location) && Coins[c.id!].value === coin.value + this.effect.additionalValue
-      )!;
-
-      if (!treasureCoin) {
-        throw new Error(`There is no coins available for ${coin.value + this.effect.additionalValue} value`);
-      }
-
-      const actualCoinLocation = this.state.coins.find((c) => isOnPlayerBoard(c.location) && c.id === move.id)!
-        ?.location as OnPlayerBoard;
-      if (!actualCoinLocation) {
-        throw new Error(`Impossible to find the discarded coins`);
-      }
-
-      this.state.nextMoves.push(
-        moveCoinMove(
-          {
-            type: LocationType.PlayerBoard,
-            player: actualCoinLocation.player,
-            index: actualCoinLocation.index,
-          },
-          treasureCoin.id!
-        )
-      );
-
-      this.player.effects.shift();
+    if (move.type !== MoveType.MoveCoin) {
+      return;
     }
+
+    this.onDiscardCoin(move);
   }
+
+  onDiscardCoin = (move: MoveCoin) => {
+    if (move.id === undefined) {
+      throw new Error(`There is an issue while transforming a coin, the coin id is missing in move in view.`);
+    }
+
+    const game = this.state as GameState;
+    const discardedCoin = game.coins.find((c) =>
+      move.id !== undefined
+        ? isOnPlayerBoard(c.location) && c.id === move.id
+        : isSameCoinLocation(c.location, move.source!)
+    );
+
+    if (!discardedCoin) {
+      throw new Error(`Impossible to find the discarded coins`);
+    }
+
+    discardedCoin.hidden = false;
+
+    const actualCoinLocation = discardedCoin.location as OnPlayerBoard;
+    const coin = Coins[move.id];
+    // TODO: take superior or inferior coin if there is no equal value available (MOVE IT TO A FUNCTION
+    const treasureCoin = this.state.coins.find(
+      (c) => isInTreasure(c.location) && Coins[c.id!].value === coin.value + this.effect.additionalValue
+    )!;
+
+    if (!treasureCoin) {
+      throw new Error(`There is no coins available for ${coin.value + this.effect.additionalValue} value`);
+    }
+
+    this.state.nextMoves.push(
+      moveCoinMove(treasureCoin.id!, {
+        type: LocationType.PlayerBoard,
+        player: actualCoinLocation.player,
+        index: actualCoinLocation.index,
+      })
+    );
+
+    this.player.effects.shift();
+  };
 }

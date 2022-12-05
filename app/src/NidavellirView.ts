@@ -1,4 +1,4 @@
-import MoveView, { isMoveView } from '@gamepark/nidavellir/moves/MoveView';
+import MoveView, { isPredictable } from '@gamepark/nidavellir/moves/MoveView';
 import Nidavellir from '@gamepark/nidavellir/Nidavellir';
 
 /**
@@ -13,8 +13,8 @@ export default class NidavellirView extends Nidavellir {
    *
    * @return A MoveView which can be completely anticipated by the player or the spectator
    */
-  getAutomaticMove(): MoveView[] {
-    return super.getAutomaticMoves().filter(isMoveView);
+  getAutomaticMoves(): MoveView[] {
+    return super.getAutomaticMoves().filter(isPredictable);
   }
 
   /**

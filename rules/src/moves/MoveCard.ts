@@ -14,7 +14,3 @@ export const moveCardMove = (target: CardLocation, id?: number, source?: CardLoc
   source,
   target,
 });
-
-export type MoveCardInView = MoveCard & {
-  id: number;
-};

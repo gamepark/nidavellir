@@ -4,9 +4,8 @@ import { MoveHero } from './MoveHero';
 import { NextPhase } from './NextPhase';
 import { Pass } from './Pass';
 import { MoveCoin } from './MoveCoin';
-import { RevealCoin } from './RevealCoin';
 import { MoveGem } from './MoveGem';
 
-type Move = MoveCard | MoveDistinction | MoveHero | MoveCoin | MoveGem | RevealCoin | NextPhase | Pass;
+type Move = MoveCard | MoveDistinction | MoveHero | MoveCoin | MoveGem | NextPhase | Pass;
 
 export default Move;

@@ -1,22 +1,25 @@
-import { NidavellirRules } from './NidavellirRules';
-import { PlayerId } from '../state/Player';
+import EffectRules from './EffectRules';
+import { EffectType } from './EffectType';
 import Move from '../moves/Move';
+import MoveType from '../moves/MoveType';
+import { LocationType } from '../state/Location';
+import { isInDiscard } from '../utils/location.utils';
 import { getActivePlayer, isLocatedCoin } from '../utils/player.utils';
+import { Coins } from '../coins/Coins';
+import { MoveCoin, moveCoinMove, revealCoinMove } from '../moves/MoveCoin';
 import { getCurrentTavern } from '../utils/tavern.utils';
 import { getPlayerCoinForTavern, getPlayerPouch, getTreasureCoinFromValue, isCoinHidden } from '../utils/coin.utils';
 import { LocatedCoin } from '../state/LocatedCoin';
-import MoveType from '../moves/MoveType';
-import { Coins } from '../coins/Coins';
-import { LocationType } from '../state/Location';
-import { isInDiscard } from '../utils/location.utils';
-import { revealCoinMove } from '../moves/RevealCoin';
-import { MoveCoin, moveCoinMove } from '../moves/MoveCoin';
 import { TAVERN_COUNT } from '../utils/constants';
 
-class CoinTradeRules extends NidavellirRules {
-  getLegalMoves(playerId: PlayerId): Move[] {
+export type TradeCoin = {
+  type: EffectType.TRADE_COIN;
+};
+
+export class TradeCoinRules extends EffectRules {
+  getPlayerMoves(): Move[] {
     const activePlayer = getActivePlayer(this.state);
-    if (playerId !== activePlayer.id) {
+    if (this.player.id !== activePlayer.id) {
       return [];
     }
 
@@ -32,13 +35,10 @@ class CoinTradeRules extends NidavellirRules {
       return pouch
         .filter((c) => !!Coins[(c as LocatedCoin).id].value)
         .map((c) =>
-          moveCoinMove(
-            {
-              type: LocationType.Discard,
-              index: this.state.coins.filter((c) => isInDiscard(c.location)).length,
-            },
-            (c as LocatedCoin).id
-          )
+          moveCoinMove((c as LocatedCoin).id, {
+            type: LocationType.Discard,
+            index: this.state.coins.filter((c) => isInDiscard(c.location)).length,
+          })
         );
     }
 
@@ -78,14 +78,14 @@ class CoinTradeRules extends NidavellirRules {
   }
 
   onMoveCoin(move: MoveCoin) {
-    const activePlayer = getActivePlayer(this.state);
-
-    if (!activePlayer) {
-      throw new Error('There is an error on discard coin move. There is no active player');
+    if (move.target === undefined || move.id === undefined) {
+      throw new Error(
+        `There is an error on coin trade. Moved coin id or target must be set. Id: ${move.id}, Target: ${move.target?.type} `
+      );
     }
 
     // Here we are sure that the pouch is revealed
-    const pouch = getPlayerPouch(this.state, activePlayer.id).map((c) => c as LocatedCoin);
+    const pouch = getPlayerPouch(this.state, this.player.id).map((c) => c as LocatedCoin);
     if (pouch.length !== 2) {
       throw new Error(`The pouch size is wrong, it must have 2 coins, but have ${pouch.length} coin(s)`);
     }
@@ -101,21 +101,18 @@ class CoinTradeRules extends NidavellirRules {
 
     const discardedCoinIndex = move.id === pouch[0].id ? 0 : 1;
     pouch[discardedCoinIndex].location = move.target;
-    activePlayer.discarded = {
+    this.player.discarded = {
       coin: pouch[discardedCoinIndex].id,
     };
 
     this.state.nextMoves.push(
-      moveCoinMove(
-        {
-          type: LocationType.PlayerBoard,
-          player: activePlayer.id,
-          index: TAVERN_COUNT + discardedCoinIndex,
-        },
-        treasureCoin.id
-      )
+      moveCoinMove(treasureCoin.id, {
+        type: LocationType.PlayerBoard,
+        player: this.player.id,
+        index: TAVERN_COUNT + discardedCoinIndex,
+      })
     );
+
+    this.player.effects.shift();
   }
 }
-
-export { CoinTradeRules };

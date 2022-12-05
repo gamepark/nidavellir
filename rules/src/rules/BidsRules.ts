@@ -20,14 +20,11 @@ class BidsRules extends NidavellirRules {
     }
 
     return bidCombinations.flatMap(({ coin, area }) =>
-      moveCoinMove(
-        {
-          type: LocationType.PlayerBoard,
-          player: playerId,
-          index: area,
-        },
-        coin!
-      )
+      moveCoinMove(coin!, {
+        type: LocationType.PlayerBoard,
+        player: playerId,
+        index: area,
+      })
     );
   }
 }

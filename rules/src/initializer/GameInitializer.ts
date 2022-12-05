@@ -78,7 +78,9 @@ class GameInitializer {
   };
 
   private initializeGems = (): LocatedGem[] => {
-    const baseGems = Array.from(Gems.entries()).filter(([, gem]) => gem.value !== 6);
+    const baseGems = Array.from(Gems.entries())
+      .filter(([, gem]) => gem.value !== 6)
+      .slice(-this.options.players.length);
     const shuffledGems = shuffle(baseGems);
 
     return this.options.players.map((p, index): LocatedGem => {

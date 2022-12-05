@@ -18,6 +18,7 @@ import orderBy from 'lodash/orderBy';
 import values from 'lodash/values';
 import { Gems } from '../gems/Gems';
 import MoveView from '../moves/MoveView';
+import { omitBy } from 'lodash';
 
 class GemTradeRules extends NidavellirRules {
   getAutomaticMoves(): (Move | MoveView)[] {
@@ -28,7 +29,7 @@ class GemTradeRules extends NidavellirRules {
 
     const trading = this.getTrades();
 
-    // for each tie, order coins by value (to reverse it)
+    // for each tie, order coins by value (to exchange it)
     const orderedCoinsByGemValues = mapValues(trading, (values) =>
       orderBy(values, (v) => Gems[gems[(v.location as OnPlayerBoard).player].id].value)
     );
@@ -57,17 +58,11 @@ class GemTradeRules extends NidavellirRules {
 
     // For each item in reversed item we get the same index in the non-reversed array to switch gems
     return reversed.flatMap((coin, index) => {
-      // In case on non pair tied players, ignore the central player (in terms of gem value)
-      const mustBeExchanged = reversed.length % 2 === 0 || index !== Math.floor(reversed.length / 2);
-      if (mustBeExchanged) {
-        const newPlayer = (coin.location as OnPlayerBoard).player;
-        return moveGemMove(gemByPlayer[players[index]].id, {
-          type: LocationType.PlayerBoard,
-          player: newPlayer,
-        });
-      }
-
-      return [];
+      const newPlayer = (coin.location as OnPlayerBoard).player;
+      return moveGemMove(gemByPlayer[players[index]].id, {
+        type: LocationType.PlayerBoard,
+        player: newPlayer,
+      });
     });
   }
 
@@ -77,12 +72,15 @@ class GemTradeRules extends NidavellirRules {
     const tavernCoins = getTavernCoins(this.state, tavern - 1);
 
     // Group coins by values (to see tie)
-    return groupBy(tavernCoins, (c) => {
+    const coinsByValue = groupBy(tavernCoins, (c) => {
       const player = this.state.players.find((p) => p.id === (c.location as OnPlayerBoard).player)!;
       const discardedCoin = player?.discarded;
       // It is possible that the coins for the tavern was the transformed value
       return Coins[discardedCoin?.tavern === tavern ? discardedCoin.coin : c.id!].value;
     });
+
+    // Omit coin value with only one coin
+    return omitBy(coinsByValue, (c) => c.length > 1);
   };
 
   play(move: Move | MoveView): void {
@@ -109,10 +107,14 @@ class GemTradeRules extends NidavellirRules {
 
     // Group coins by values (to see tie)
     const trades = values(this.getTrades());
-    // Maybe not so good in perf, but not good solution yet
+    // Maybe not so good in perf, but no good solution yet
     if (
       trades.every(
-        (trade) => trade.length === 1 || trade.every((c) => playersById[(c.location as OnPlayerBoard).player].traded)
+        (trade) =>
+          // There is only one player with the coin value
+          trade.length === 1 ||
+          // Or all trades that must be done were done
+          trade.every((c) => playersById[(c.location as OnPlayerBoard).player].traded)
       )
     ) {
       this.state.players.forEach((p) => {

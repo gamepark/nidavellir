@@ -14,11 +14,12 @@ import MoveRandomized from './moves/MoveRandomized';
 import MoveType from './moves/MoveType';
 import { getActivePlayer } from './utils/player.utils';
 import { PlayerId } from './state/Player';
-import { MoveCard, MoveCardInView } from './moves/MoveCard';
+import { MoveCard } from './moves/MoveCard';
 import { MoveHero } from './moves/MoveHero';
 import { MoveDistinction } from './moves/MoveDistinction';
-import { isInAgeDeck, isInPlayerHand } from './utils/location.utils';
+import { isInAgeDeck, isInPlayerHand, isOnPlayerBoard, isSameCoinLocation } from './utils/location.utils';
 import { MoveGem } from './moves/MoveGem';
+import { MoveCoin } from './moves/MoveCoin';
 
 export default class Nidavellir
   extends Rules<GameState | GameView, Move | MoveView, PlayerId>
@@ -82,6 +83,9 @@ export default class Nidavellir
       case MoveType.MoveDistinction:
         this.onMoveDistinction(move);
         break;
+      case MoveType.MoveCoin:
+        this.onMoveCoin(move);
+        break;
       case MoveType.MoveGem:
         this.onMoveGem(move);
         break;
@@ -99,7 +103,33 @@ export default class Nidavellir
       throw new Error(`Trying to move a card that does not exists: ${move.id}`);
     }
 
+    if (move.id !== undefined) {
+      card.id = move.id;
+    }
+
     card.location = move.target;
+  }
+
+  private onMoveCoin(move: MoveCoin) {
+    if (!move.source && move.id === undefined) {
+      throw new Error(`Trying to move a coin but neither source or id are set`);
+    }
+
+    const coin = this.state.coins.find((c) =>
+      move.id !== undefined ? move.id === c.id : isSameCoinLocation(move.source!, c.location)
+    );
+
+    if (!coin) {
+      throw new Error(`Trying to move a card that does not exists: ${move.id}`);
+    }
+
+    if (move.id !== undefined) {
+      coin.id = move.id;
+    }
+
+    if (move.target) {
+      coin.location = move.target;
+    }
   }
 
   private onMoveGem(move: MoveGem) {
@@ -182,13 +212,13 @@ export default class Nidavellir
    */
   getMoveView(move: Move, _playerId?: PlayerId): MoveView {
     switch (move.type) {
-      case MoveType.MoveCard:
-        return move as MoveCardInView;
       case MoveType.MoveCoin:
         const coin = this.state.coins.find((c) => c.id === move.id)!;
-        return isInPlayerHand(coin.location) && coin.location.player === _playerId ? move : omit(move, 'id');
-      case MoveType.RevealCoin:
-        return { ...move, ...this.state.coins.find((c) => c.id === move.id)! };
+        if ((isInPlayerHand(coin.location) || isOnPlayerBoard(coin.location)) && coin.location.player === _playerId) {
+          return move;
+        }
+        const completedMove = { ...move, source: coin.location };
+        return move.reveal ? completedMove : omit(completedMove, 'id');
       default:
         return move;
     }
