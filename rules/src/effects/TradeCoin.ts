@@ -8,7 +8,13 @@ import { getActivePlayer, isLocatedCoin } from '../utils/player.utils';
 import { Coins } from '../coins/Coins';
 import { MoveCoin, moveCoinMove, revealCoinMove } from '../moves/MoveCoin';
 import { getCurrentTavern } from '../utils/tavern.utils';
-import { getPlayerCoinForTavern, getPlayerPouch, getTreasureCoinFromValue, isCoinHidden } from '../utils/coin.utils';
+import {
+  getPlayerCoinForTavern,
+  getPlayerPouch,
+  getTreasureCoinForValue,
+  getTreasureCoins,
+  isCoinHidden,
+} from '../utils/coin.utils';
 import { LocatedCoin } from '../state/LocatedCoin';
 import { TAVERN_COUNT } from '../utils/constants';
 
@@ -91,7 +97,7 @@ export class TradeCoinRules extends EffectRules {
     }
 
     const value = Coins[pouch[0].id].value + Coins[pouch[1].id].value;
-    const treasureCoin = getTreasureCoinFromValue(this.state, value);
+    const treasureCoin = getTreasureCoinForValue(getTreasureCoins(this.state), value);
 
     if (!treasureCoin) {
       throw new Error(

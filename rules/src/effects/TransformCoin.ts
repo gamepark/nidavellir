@@ -4,13 +4,14 @@ import Move from '../moves/Move';
 import MoveView from '../moves/MoveView';
 import MoveType from '../moves/MoveType';
 import { LocationType } from '../state/Location';
-import { isInDiscard, isInTreasure, isOnPlayerBoard, isSameCoinLocation } from '../utils/location.utils';
+import { isInDiscard, isOnPlayerBoard, isSameCoinLocation } from '../utils/location.utils';
 import { getActivePlayer } from '../utils/player.utils';
 import { Coins } from '../coins/Coins';
 import { CoinColor } from '../coins/Coin';
 import { MoveCoin, moveCoinMove } from '../moves/MoveCoin';
 import { OnPlayerBoard } from '../state/CommonLocations';
 import GameState from '../state/GameState';
+import { getTreasureCoinForValue, getTreasureCoins } from '../utils/coin.utils';
 
 export type TransformCoin = {
   type: EffectType.TRANSFORM_COIN;
@@ -74,10 +75,10 @@ export class TransformCoinRules extends EffectRules {
 
     const actualCoinLocation = discardedCoin.location as OnPlayerBoard;
     const coin = Coins[move.id];
-    // TODO: take superior or inferior coin if there is no equal value available (MOVE IT TO A FUNCTION
-    const treasureCoin = this.state.coins.find(
-      (c) => isInTreasure(c.location) && Coins[c.id!].value === coin.value + this.effect.additionalValue
-    )!;
+    const treasureCoin = getTreasureCoinForValue(
+      getTreasureCoins(this.state),
+      coin.value + this.effect.additionalValue
+    );
 
     if (!treasureCoin) {
       throw new Error(`There is no coins available for ${coin.value + this.effect.additionalValue} value`);

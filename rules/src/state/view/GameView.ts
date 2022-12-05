@@ -12,6 +12,3 @@ type GameView = Omit<GameState, 'cards' | 'coins'> & {
 };
 
 export default GameView;
-
-// FIXME: not really good in term of performance
-export const isGameView = (state: GameState | GameView) => state.cards.some((c) => c.id === undefined);
