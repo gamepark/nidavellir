@@ -8,6 +8,7 @@ import { Taverns } from './material/tavern/Taverns';
 import { CoinTokens } from './material/coin/CoinTokens';
 import { AgeCards } from './material/card/AgeCards';
 import { HeroCards } from './material/card/HeroCards';
+import { GemTokens } from './material/gem/GemTokens';
 
 type Props = {
   game: GameView;
@@ -22,6 +23,7 @@ export default function GameDisplay({ game }: Props) {
         {game.players.map((p, index) => (
           <PlayerBoard key={p.id} player={p.id} index={index} game={game} />
         ))}
+        <GemTokens game={game} />
         <Taverns />
         <AgeCards game={game} />
         <HeroCards game={game} />

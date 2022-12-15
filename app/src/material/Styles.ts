@@ -302,3 +302,19 @@ export const viewProjection = (monitor: DragLayerMonitor, view: View) => {
 
   return { x, y };
 };
+
+export const gemRatio = 300 / 453;
+export const gemTokenHeight = 27;
+export const gemTokenWidth = gemTokenHeight * gemRatio;
+
+export const getGemTokenOnPlayerBoardX = (position: any) => {
+  return position.rotateZ === 180 ? position.left + 13.5 : position.left + 6;
+};
+
+export const getGemTokenOnPlayerBoardY = (position: any) => {
+  return position.rotateZ === 180 ? position.top + playerBoardHeight - 2.5 : position.top - gemTokenHeight + 2.5;
+};
+
+export const getGemTokenOnPlayerBoardRotate = (position: any) => {
+  return position.rotateZ === 180 ? 0 : 180;
+};

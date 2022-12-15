@@ -150,6 +150,13 @@ import Uline from './cards/heroes/Uline.jpg';
 import Ylud from './cards/heroes/Ylud.jpg';
 import Zoral from './cards/heroes/Zoral.jpg';
 
+import Gem1 from './gems/gem-1.png';
+import Gem2 from './gems/gem-2.png';
+import Gem3 from './gems/gem-3.png';
+import Gem4 from './gems/gem-4.png';
+import Gem5 from './gems/gem-5.png';
+import Gem6 from './gems/gem-6.png';
+
 const Images = {
   Bronze0,
   Bronze2,
@@ -296,6 +303,12 @@ const Images = {
   Uline,
   Ylud,
   Zoral,
+  Gem1,
+  Gem2,
+  Gem3,
+  Gem4,
+  Gem5,
+  Gem6,
 };
 
 export default Images;
