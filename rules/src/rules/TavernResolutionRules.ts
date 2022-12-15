@@ -9,9 +9,7 @@ class TavernResolutionRules extends NidavellirRules {
     switch (this.state.steps[0]) {
       case Step.BidRevelation:
         return new BidRevelationRules(this.state);
-      case Step.ChooseCard:
-      case Step.RecruitHero:
-      case Step.TradeCoin:
+      case Step.EvalandTurn:
         return new EvalandTurnRules(this.state);
       case Step.GemTrade:
         return new GemTradeRules(this.state);

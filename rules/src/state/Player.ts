@@ -6,11 +6,14 @@ export type Player = {
   id: PlayerId;
   score: number;
   ready?: boolean;
-  card?: number;
+  drawn?: {
+    card: number;
+    deck: 'age' | 'heroes'
+  };
   effects: Effect[];
   traded?: boolean;
   discarded?: {
     coin: number;
-    tavern?: number;
+    index?: number;
   };
 };

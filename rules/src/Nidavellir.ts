@@ -1,4 +1,4 @@
-import { RandomMove, Rules, SecretInformation } from '@gamepark/rules-api';
+import { RandomMove, Rules, SecretInformation, Undo } from '@gamepark/rules-api';
 import GameState from './state/GameState';
 import GameView from './state/view/GameView';
 import { isGameOptions, NidavellirOptions } from './NidavellirOptions';
@@ -12,18 +12,31 @@ import { SecretCoin } from './state/view/SecretCoin';
 import { getRules } from './utils/rule.utils';
 import MoveRandomized from './moves/MoveRandomized';
 import MoveType from './moves/MoveType';
-import { getActivePlayer } from './utils/player.utils';
 import { PlayerId } from './state/Player';
 import { MoveCard } from './moves/MoveCard';
 import { MoveHero } from './moves/MoveHero';
 import { MoveDistinction } from './moves/MoveDistinction';
-import { isInAgeDeck, isInPlayerHand, isOnPlayerBoard, isSameCoinLocation } from './utils/location.utils';
+import {
+  isInAgeDeck,
+  isInDiscard,
+  isInPlayerHand,
+  isInTavern,
+  isInTreasure,
+  isOnPlayerBoard,
+  isSameCardLocation,
+  isSameCoinLocation,
+} from './utils/location.utils';
 import { MoveGem } from './moves/MoveGem';
 import { MoveCoin } from './moves/MoveCoin';
+import { Pass } from './moves/Pass';
+import { OnPlayerBoard } from './state/CommonLocations';
 
 export default class Nidavellir
   extends Rules<GameState | GameView, Move | MoveView, PlayerId>
-  implements SecretInformation<GameView, Move, MoveView, PlayerId>, RandomMove<Move, MoveRandomized>
+  implements
+    SecretInformation<GameView, Move, MoveView, PlayerId>,
+    RandomMove<Move, MoveRandomized>,
+    Undo<GameView, Move, PlayerId>
 {
   /**
    * This constructor is called when the game "restarts" from a previously saved state.
@@ -47,8 +60,16 @@ export default class Nidavellir
     }
   }
 
+  canUndo(): boolean {
+    return true;
+  }
+
   randomize(move: Move): Move & MoveRandomized {
     return move;
+  }
+
+  isOver(_playerIds: PlayerId[]): boolean {
+    return false;
   }
 
   delegate(): Rules<GameState | GameView, Move | MoveView, number> | undefined {
@@ -68,7 +89,7 @@ export default class Nidavellir
    *
    * @param move The move that should be applied to current state.
    */
-  play(move: Move | MoveView): void {
+  play(move: Move | MoveView) {
     if (this.state.nextMoves.length && this.state.nextMoves[0].type === move.type) {
       this.state.nextMoves.shift();
     }
@@ -90,15 +111,21 @@ export default class Nidavellir
         this.onMoveGem(move);
         break;
       case MoveType.Pass:
-        this.onPass();
+        this.onPass(move);
         break;
     }
 
-    super.play(move);
+    return super.play(move);
   }
 
   private onMoveCard(move: MoveCard) {
-    const card = this.state.cards.find((c) => move.id === c.id);
+    if (move.id === undefined && move.source === undefined) {
+      throw new Error(`It is impossible to move a card that is not known (no id or source set)`);
+    }
+
+    const card = this.state.cards.find((c) =>
+      c.id !== undefined && move.id !== undefined ? move.id === c.id : isSameCardLocation(move.source!, c.location)
+    );
     if (!card) {
       throw new Error(`Trying to move a card that does not exists: ${move.id}`);
     }
@@ -116,18 +143,29 @@ export default class Nidavellir
     }
 
     const coin = this.state.coins.find((c) =>
-      move.id !== undefined ? move.id === c.id : isSameCoinLocation(move.source!, c.location)
+      c.id !== undefined && move.id !== undefined ? move.id === c.id : isSameCoinLocation(move.source!, c.location)
     );
 
     if (!coin) {
-      throw new Error(`Trying to move a card that does not exists: ${move.id}`);
+      throw new Error(`Trying to move a coin that does not exists: ${move.id}`);
     }
 
     if (move.id !== undefined) {
       coin.id = move.id;
     }
 
+    if (move.reveal) {
+      coin.hidden = false;
+    }
+
     if (move.target) {
+      if ((isInTreasure(move.target) || isInDiscard(move.target)) && isOnPlayerBoard(coin.location)) {
+        const player = this.state.players.find((p) => p.id === (coin.location as OnPlayerBoard).player)!;
+        player.discarded = {
+          coin: coin.id!,
+          index: coin.location.index,
+        };
+      }
       coin.location = move.target;
     }
   }
@@ -159,11 +197,9 @@ export default class Nidavellir
     card.location = move.target;
   }
 
-  private onPass() {
-    const activePlayer = getActivePlayer(this.state);
-    if (activePlayer) {
-      activePlayer.ready = true;
-    }
+  private onPass(move: Pass) {
+    const player = this.state.players.find((p) => p.id === move.player)!;
+    player.ready = true;
   }
 
   /**
@@ -189,6 +225,8 @@ export default class Nidavellir
       ...this.state,
       cards: ageCardWithoutSecret,
       coins: coinWithoutSecret,
+      view: true,
+      playerId,
     };
   }
 
@@ -212,11 +250,23 @@ export default class Nidavellir
    */
   getMoveView(move: Move, _playerId?: PlayerId): MoveView {
     switch (move.type) {
+      case MoveType.MoveCard:
+        const card = this.state.cards.find((c) => c.id === move.id)!;
+        if (isInTavern(move.target)) {
+          return { ...move, source: card.location };
+        }
+
+        return move;
       case MoveType.MoveCoin:
         const coin = this.state.coins.find((c) => c.id === move.id)!;
-        if ((isInPlayerHand(coin.location) || isOnPlayerBoard(coin.location)) && coin.location.player === _playerId) {
+
+        if (
+          !coin.hidden ||
+          ((isInPlayerHand(coin.location) || isOnPlayerBoard(coin.location)) && coin.location.player === _playerId)
+        ) {
           return move;
         }
+
         const completedMove = { ...move, source: coin.location };
         return move.reveal ? completedMove : omit(completedMove, 'id');
       default:

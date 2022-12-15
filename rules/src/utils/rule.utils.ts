@@ -15,7 +15,7 @@ export const getRules = (state: GameState | GameView): NidavellirRules => {
   return new Age2Rules(state);
 };
 
-export const getPhaseRules = (state: GameState | GameView): NidavellirRules => {
+export const getPhaseRules = (state: GameState | GameView): NidavellirRules | undefined => {
   switch (state.phase) {
     case Phase.TurnPreparation:
       return new TurnPreparationRules(state);

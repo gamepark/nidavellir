@@ -1,15 +1,14 @@
 import Move from '../moves/Move';
 import MoveType from '../moves/MoveType';
-import { getArmy, isLocatedCard } from '../utils/player.utils';
+import { getNextIndexByType } from '../utils/player.utils';
 import { Heroes } from '../cards/Heroes';
-import { Cards } from '../cards/Cards';
-import { maxBy } from 'lodash';
 import { LocationType } from '../state/Location';
 import { MoveHero, moveHeroMove } from '../moves/MoveHero';
 import MoveView from '../moves/MoveView';
 import { EffectType } from './EffectType';
 import EffectRules from './EffectRules';
 import { computeRecruitHeroCount } from '../utils/hero.utils';
+import { isInHeroDeck } from '../utils/location.utils';
 
 export type RecruitHero = {
   type: EffectType.RECRUIT_HERO;
@@ -22,17 +21,19 @@ class RecruitHeroRules extends EffectRules {
   }
 
   getPlayerMoves(): (Move | MoveView)[] {
-    const army = getArmy(this.state, this.player.id);
-    return this.state.heroes.map((h) => {
-      const heroType = Heroes[h.id].type;
-      const cardOfSameType = army.cards.filter((c) => isLocatedCard(c) && Cards[c.id].type === heroType);
-      const heroesOfSameType = army.heroes.filter((c) => Heroes[c.id].type === heroType);
-      const maximumIndex =
-        maxBy([...cardOfSameType, ...heroesOfSameType], (c) => c.location.index)?.location.index || 0;
+    // This computing is here to reduce complexity and prevent computing the next index for each heroes (while there is only 5 types of dwarves vs 20+ hero card)
+
+    const nextIndexesByType = getNextIndexByType(this.state, this.player.id);
+    console.log('Next indexes', nextIndexesByType);
+    return this.state.heroes.flatMap((h) => {
+      if (!isInHeroDeck(h.location)) {
+        return [];
+      }
+      const nextIndex = nextIndexesByType[Heroes[h.id!].type].nextIndex;
       return moveHeroMove(h.id, {
         type: LocationType.PlayerBoard,
         player: this.player.id,
-        index: !maximumIndex ? 0 : maximumIndex + 1,
+        index: nextIndex,
       });
     });
   }
@@ -42,21 +43,26 @@ class RecruitHeroRules extends EffectRules {
       case MoveType.MoveHero:
         this.onRecruitHero(move);
     }
+
+    return super.play(move);
   }
 
   onRecruitHero(move: MoveHero) {
     const hero = Heroes[move.id];
+    this.player.drawn = {
+      card: move.id,
+      deck: 'heroes',
+    };
+
     if (hero.effects?.length) {
       this.player.effects.unshift(...hero.effects);
     }
 
     const recruitHeroCount = computeRecruitHeroCount(this.state, this.player.id);
-    if (recruitHeroCount > 0) {
-      if (!this.effect.count) {
-        this.effect.count = recruitHeroCount;
-      } else {
-        this.effect.count += recruitHeroCount - 1;
-      }
+    if (!this.effect.count) {
+      this.effect.count = recruitHeroCount;
+    } else {
+      this.effect.count += recruitHeroCount - 1;
     }
 
     if (!this.effect.count) {

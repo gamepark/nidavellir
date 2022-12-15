@@ -1,5 +1,8 @@
-import MoveView, { isPredictable } from '@gamepark/nidavellir/moves/MoveView';
+import MoveView from '@gamepark/nidavellir/moves/MoveView';
 import Nidavellir from '@gamepark/nidavellir/Nidavellir';
+import Move from '@gamepark/nidavellir/moves/Move';
+import MoveType from '@gamepark/nidavellir/moves/MoveType';
+import { LocationType } from '@gamepark/nidavellir/state/Location';
 
 /**
  * This class is useful when the game has "IncompleteInformation" (or "SecretInformation").
@@ -14,17 +17,24 @@ export default class NidavellirView extends Nidavellir {
    * @return A MoveView which can be completely anticipated by the player or the spectator
    */
   getAutomaticMoves(): MoveView[] {
-    return super.getAutomaticMoves().filter(isPredictable);
+    return this.keepPredictableMoves(super.getAutomaticMoves());
   }
 
-  /**
-   * This is where a move is reproduced on the browser of a player. Most move will be treated the exact same way on both server and client side,
-   * however some moves, that involved hiding information or discovering hidden information, will receive a different treatment than in the main rules class.
-   *
-   * @param move The move that must be applied in the browser of the player or the spectator
-   */
-  play(move: MoveView): void {
-    switch (move.type) {
-    }
+  keepPredictableMoves(moves: Move[]): (Move | MoveView)[] {
+    return moves.slice(
+      0,
+      moves.findIndex((move) => !this.isPredictableMove(move))
+    ) as (Move & MoveView)[];
   }
+
+  play(move: Move | MoveView): (Move | MoveView)[] {
+    return this.keepPredictableMoves(super.play(move));
+  }
+
+  isPredictableMove = (move: Move | MoveView): move is MoveView => {
+    return (
+      (move.type === MoveType.MoveCard && move.target.type !== LocationType.Tavern) ||
+      (move.type === MoveType.MoveCoin && !move.reveal && move.target!.type !== LocationType.PlayerHand)
+    );
+  };
 }

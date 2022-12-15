@@ -1,22 +1,34 @@
 /** @jsxImportSource @emotion/react */
-import {css, keyframes} from '@emotion/react'
-import GameView from '@gamepark/nidavellir/state/view/GameView'
-import {Letterbox, Picture} from '@gamepark/react-components'
-import Images from './images/Images'
+import { css, keyframes } from '@emotion/react';
+import GameView from '@gamepark/nidavellir/state/view/GameView';
+import { Letterbox } from '@gamepark/react-components';
+import { PlayerBoard } from './material/player/PlayerBoard';
+import { TableProvider, useDisplayedPlayers } from './table/TableContext';
+import { Taverns } from './material/tavern/Taverns';
+import { CoinTokens } from './material/coin/CoinTokens';
+import { AgeCards } from './material/card/AgeCards';
+import { HeroCards } from './material/card/HeroCards';
 
 type Props = {
-  game: GameView
-}
+  game: GameView;
+};
 
-export default function GameDisplay({game}: Props) {
+export default function GameDisplay({ game }: Props) {
+  const displayedPlayers = useDisplayedPlayers(game.players);
+
   return (
     <Letterbox css={letterBoxStyle} top={0}>
-      <div css={sampleCss}>
-          <pre style={{ width: '100%', fontSize: '.5em', height: '100%%'}}>{JSON.stringify(game, null, 4)}</pre>
-      </div>
-      <Picture src={Images.sampleImage} css={sampleImageCss}/>
+      <TableProvider players={displayedPlayers}>
+        {game.players.map((p, index) => (
+          <PlayerBoard key={p.id} player={p.id} index={index} game={game} />
+        ))}
+        <Taverns />
+        <AgeCards game={game} />
+        <HeroCards game={game} />
+        <CoinTokens game={game} />
+      </TableProvider>
     </Letterbox>
-  )
+  );
 }
 
 const fadeIn = keyframes`
@@ -26,30 +38,12 @@ const fadeIn = keyframes`
   to {
     opacity: 1;
   }
-`
+`;
 
 const letterBoxStyle = css`
+  > div {
+    top: 7em;
+  }
+
   animation: ${fadeIn} 3s ease-in forwards;
-`
-
-const sampleCss = css`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 3rem;
-  background-color: black;
-  padding: 0.5em;
-  border-radius: 1em;
-  height: 80%;
-  width: 80%;
-  overflow: scroll;
-`
-
-const sampleImageCss = css`
-  position: absolute;
-  bottom: 5%;
-  left: calc(50% - 6.5em);
-  width: 13em;
-  height: 20em;
-`
+`;

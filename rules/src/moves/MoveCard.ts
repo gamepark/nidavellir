@@ -8,9 +8,14 @@ export type MoveCard = {
   target: CardLocation;
 };
 
-export const moveCardMove = (target: CardLocation, id?: number, source?: CardLocation): MoveCard => ({
+export const moveKnownCardMove = (id: number, target: CardLocation): MoveCard => ({
   type: MoveType.MoveCard,
   id,
+  target,
+});
+
+export const moveUnknownCardMove = (source: CardLocation, target: CardLocation): MoveCard => ({
+  type: MoveType.MoveCard,
   source,
   target,
 });

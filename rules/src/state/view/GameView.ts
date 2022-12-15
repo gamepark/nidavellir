@@ -9,6 +9,8 @@ import { SecretCoin } from './SecretCoin';
 type GameView = Omit<GameState, 'cards' | 'coins'> & {
   cards: SecretCard[];
   coins: SecretCoin[];
+  view: boolean;
+  playerId?: number;
 };
 
 export default GameView;

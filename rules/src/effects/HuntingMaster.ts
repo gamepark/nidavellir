@@ -10,6 +10,7 @@ export type HuntingMaster = {
 class HuntingMasterRules extends EffectRules {
   play(_move: Move | MoveView) {
     this.player.effects.shift();
+    return super.play(_move);
   }
 }
 

@@ -12,8 +12,9 @@ import { Distinctions } from '../cards/Distinctions';
 import { Coins } from '../coins/Coins';
 import { CoinColor } from '../coins/Coin';
 import { Gems } from '../gems/Gems';
-import { CardOrigin } from '../cards/Card';
 import { Heroes } from '../cards/Heroes';
+import { getCardByTavern } from '../utils/tavern.utils';
+import { TAVERN_COUNT } from '../utils/constants';
 
 class GameInitializer {
   private options: NidavellirOptions;
@@ -23,19 +24,33 @@ class GameInitializer {
   }
 
   private initializeAgeCards = (): LocatedCard[] => {
-    const cards = Array.from(Cards.entries())
-      .filter(([, card]) => card.origin !== CardOrigin.Heroes)
-      .filter(([, card]) => !card.minPlayers || this.options.players.length >= card.minPlayers);
-    const [age1Cards, age2Cards] = partition(shuffle(cards), '[1].origin');
+    const cards = Array.from(Cards.entries()).filter(
+      ([, card]) => !card.minPlayers || this.options.players.length >= card.minPlayers
+    );
 
+    const [age1, age2] = partition(shuffle(cards), (c) => c[1].age === 1);
+
+    const cardsByTavern = getCardByTavern(this.options.players.map((p) => p.id));
+    const numberOfCard = cardsByTavern * TAVERN_COUNT;
+    const drawnTavernCard = age1.splice(0, numberOfCard);
     return [
-      ...age1Cards.map(
+      ...drawnTavernCard.map(
+        ([id], index): LocatedCard => ({
+          id,
+          location: {
+            type: LocationType.Tavern,
+            tavern: Math.floor(index / cardsByTavern),
+            index: index % cardsByTavern,
+          },
+        })
+      ),
+      ...age1.map(
         ([id], index): LocatedCard => ({
           id,
           location: { type: LocationType.Age1Deck, index },
         })
       ),
-      ...age2Cards.map(
+      ...age2.map(
         ([id], index): LocatedCard => ({
           id,
           location: { type: LocationType.Age2Deck, index },
@@ -60,10 +75,10 @@ class GameInitializer {
           baseCoinsByValue[3][index],
           baseCoinsByValue[4][index],
           baseCoinsByValue[5][index],
-        ].map(([id]): LocatedCoin => {
+        ].map(([id], index): LocatedCoin => {
           return {
             id,
-            location: { type: LocationType.PlayerBoard, player: p.id },
+            location: { type: LocationType.PlayerHand, player: p.id, index },
             hidden: true,
           };
         });
@@ -124,8 +139,8 @@ class GameInitializer {
     cards: this.initializeAgeCards(),
     distinctions: this.initializeDistinctions(),
     heroes: this.initializeHeroes(),
-    phase: Phase.TavernResolution,
-    steps: [Step.EnterDwarves],
+    phase: Phase.TurnPreparation,
+    steps: [Step.Bids],
     nextMoves: [],
   });
 }

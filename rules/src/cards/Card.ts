@@ -1,26 +1,19 @@
 import { Effect } from '../effects/Effect';
 
 export enum DwarfType {
-  Warrior = 1,
+  Blacksmith = 1,
   Hunter,
-  Miner,
-  Blacksmith,
   Explorer,
-  Neutral,
+  Miner,
+  Warrior,
 }
 
 export enum RoyalOffering {
-  RoyalOffering,
-}
-
-export enum CardOrigin {
-  Age1 = 1,
-  Age2,
-  Heroes,
+  RoyalOffering = 6,
 }
 
 export type Card = {
-  origin: CardOrigin;
+  age: number;
   type: DwarfType | RoyalOffering;
   copies?: number;
   bravery?: number[];

@@ -13,11 +13,10 @@ export enum Step {
   EnterDwarves = 1,
   Bids,
   BidRevelation,
-  ChooseCard,
-  RecruitHero,
-  TradeCoin,
+  EvalandTurn,
   TroopEvaluation,
   GemTrade,
+  FillTaverns,
 }
 
 type GameState = {

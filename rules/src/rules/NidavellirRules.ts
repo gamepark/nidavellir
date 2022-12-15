@@ -11,14 +11,16 @@ abstract class NidavellirRules extends Rules<GameState | GameView, Move | MoveVi
   }
 
   getLegalMoves(_playerId: PlayerId): (Move | MoveView)[] {
-    return [];
+    return super.getLegalMoves(_playerId);
   }
 
   getAutomaticMoves(): (Move | MoveView)[] {
-    return [];
+    return super.getAutomaticMoves();
   }
 
-  play(_move: Move | MoveView) {}
+  play(move: Move | MoveView): (Move | MoveView)[] {
+    return super.play(move);
+  }
 }
 
 export { NidavellirRules };

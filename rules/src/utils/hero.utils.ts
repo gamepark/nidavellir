@@ -1,5 +1,5 @@
 import { PlayerId } from '../state/Player';
-import GameState, { Step } from '../state/GameState';
+import GameState from '../state/GameState';
 import GameView from '../state/view/GameView';
 import { getArmy } from './player.utils';
 import { Cards } from '../cards/Cards';
@@ -31,12 +31,13 @@ export const computeRecruitHeroCount = (state: GameState | GameView, playerId: P
   const player = state.players.find((p) => p.id === playerId)!;
   const heroes = state.heroes.filter((h) => isInHeroDeck(h.location));
 
-  if (!player.card || !heroes.length || state.steps.includes(Step.RecruitHero)) {
+  if (!player.drawn || !heroes.length) {
     return 0;
   }
 
   const army = getArmy(state, playerId);
-  const card = Cards[player.card!];
+  const drawnCard = player.drawn;
+  const card = (drawnCard.deck === 'heroes' ? Heroes : Cards)[player.drawn.card];
   const cardBravery = card.bravery?.length ?? 0;
   const braveryByTypes = {
     [DwarfType.Blacksmith]: sumBravery(army, DwarfType.Blacksmith),

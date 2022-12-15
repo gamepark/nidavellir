@@ -1,15 +1,16 @@
-import {css, Global} from '@emotion/react'
-import {NidavellirOptionsSpec} from '@gamepark/nidavellir/NidavellirOptions'
-import Nidavellir from '@gamepark/nidavellir/Nidavellir'
-import {GameProvider, setupTranslation} from '@gamepark/react-client'
-import normalize from 'emotion-normalize'
-import {StrictMode} from 'react'
-import ReactDOM from 'react-dom'
-import App from './App'
-import NidavellirView from './NidavellirView'
-import translations from './translations.json'
+import { css, Global } from '@emotion/react';
+import { NidavellirOptionsSpec } from '@gamepark/nidavellir/NidavellirOptions';
+import Nidavellir from '@gamepark/nidavellir/Nidavellir';
+import { GameProvider, setupTranslation } from '@gamepark/react-client';
+import normalize from 'emotion-normalize';
+import { StrictMode } from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import NidavellirView from './NidavellirView';
+import translations from './translations.json';
+import NidavellirAnimations from './animation/NidavellirAnimations';
 
-setupTranslation(translations)
+setupTranslation(translations);
 
 const style = css`
   html {
@@ -18,7 +19,9 @@ const style = css`
     box-sizing: border-box;
   }
 
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     -webkit-box-sizing: inherit;
     -moz-box-sizing: inherit;
     box-sizing: inherit;
@@ -26,7 +29,7 @@ const style = css`
 
   body {
     margin: 0;
-    font-family: 'Oswald', "Roboto Light", serif;
+    font-family: 'Oswald', 'Roboto Light', serif;
     font-size: 1vh;
     @media (max-aspect-ratio: 16/9) {
       font-size: calc(9vw / 16);
@@ -53,17 +56,23 @@ const style = css`
       top: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.8);
+      background-color: rgba(0, 0, 0, 0.7);
     }
   }
-`
+`;
 
 ReactDOM.render(
   <StrictMode>
-    <GameProvider game="nidavellir" Rules={Nidavellir} RulesView={NidavellirView} optionsSpec={NidavellirOptionsSpec}>
-      <App/>
+    <GameProvider
+      game="nidavellir"
+      Rules={Nidavellir}
+      RulesView={NidavellirView}
+      optionsSpec={NidavellirOptionsSpec}
+      animations={new NidavellirAnimations()}
+    >
+      <App />
     </GameProvider>
-    <Global styles={[normalize, style]}/>
+    <Global styles={[normalize, style]} />
   </StrictMode>,
   document.getElementById('root')
-)
+);

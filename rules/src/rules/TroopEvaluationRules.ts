@@ -45,6 +45,8 @@ class TroopEvaluationRules extends NidavellirRules {
         this.onMoveDistinction(move);
         break;
     }
+
+    return [];
   }
 
   private onMoveDistinction(move: MoveDistinction) {

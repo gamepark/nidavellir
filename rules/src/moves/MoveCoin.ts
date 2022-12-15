@@ -15,6 +15,25 @@ export const revealCoinMove = (id: number): MoveCoin => ({
   reveal: true,
 });
 
+export const moveCoinAndRevealMove = (id: number, target: CoinLocation): MoveCoin => ({
+  type: MoveType.MoveCoin,
+  id,
+  target,
+  reveal: true,
+});
+
+export const moveKnownCoinMove = (id: number, target: CoinLocation): MoveCoin => ({
+  type: MoveType.MoveCoin,
+  id,
+  target,
+});
+
+export const moveUnknownCoinMove = (source: CoinLocation, target: CoinLocation): MoveCoin => ({
+  type: MoveType.MoveCoin,
+  source,
+  target,
+});
+
 export const moveCoinMove = (
   id?: number,
   target?: CoinLocation,

@@ -9,12 +9,14 @@ import { GemLocation } from '../state/LocatedGem';
 import isEqual from 'lodash/isEqual';
 
 export const isInTavern = (location: CardLocation): location is InTavern => location.type === LocationType.Tavern;
+export const isInAge1Deck = (location: CardLocation): location is InAgeDeck => location.type === LocationType.Age1Deck;
+export const isInAge2Deck = (location: CardLocation): location is InAgeDeck => location.type === LocationType.Age2Deck;
 export const isInAgeDeck = (location: CardLocation): location is InAgeDeck =>
-  location.type === LocationType.Age1Deck || location.type === LocationType.Age2Deck;
+  isInAge1Deck(location) || isInAge2Deck(location);
 export const isInPlayerHand = (location: CoinLocation | CardLocation): location is InPlayerHand =>
   location.type === LocationType.PlayerHand;
 export const isOnPlayerBoard = (location: CoinLocation | CardLocation | GemLocation): location is OnPlayerBoard =>
-  location.type === LocationType.PlayerHand && location.player !== undefined;
+  location.type === LocationType.PlayerBoard && location.player !== undefined;
 export const isInTreasure = (location: CoinLocation): location is InTreasure => location.type === LocationType.Treasure;
 export const isInDiscard = (location: CardLocation | CoinLocation): location is InDiscard =>
   location.type === LocationType.Discard;
@@ -28,6 +30,8 @@ export const getCardsInAgeDeck = (state: GameState | GameView) => state.cards.fi
 
 export const getCoinsInPlayerHand = (state: GameState | GameView, playerId: PlayerId) =>
   state.coins.filter((c) => isInPlayerHand(c.location) && c.location.player === playerId);
+export const getCoinOnPlayerBoard = (state: GameState | GameView, playerId: PlayerId) =>
+  state.coins.filter((c) => isOnPlayerBoard(c.location) && c.location.player === playerId);
 
 export const isSameCardLocation = (card1: CardLocation, card2: CardLocation): boolean => isEqual(card1, card2);
 
