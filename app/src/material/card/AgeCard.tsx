@@ -105,9 +105,9 @@ import {
   getCardPositionInAgeDeckY,
   getCardPositionInTavernX,
   getCardPositionInTavernY,
+  getCardPositionOnPlayerBoardTransform,
   getCardPositionOnPlayerBoardX,
   getCardPositionOnPlayerBoardY,
-  getCardPositionOnPlayerBoardTransform,
   playerBoardPositions,
   shineEffect,
 } from '../Styles';
@@ -124,6 +124,9 @@ import { Animation, useAnimation, useAnimations, usePlay } from '@gamepark/react
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
 import { MoveCard } from '@gamepark/nidavellir/moves/MoveCard';
 import { usePlayerPositions } from '../../table/TableContext';
+import { Draggable } from '@gamepark/react-components';
+import { draggableCard, DraggableMaterial } from '../../draggable/DraggableMaterial';
+import { useProjection } from '../View';
 
 type AgeCardProps = {
   card: SecretCard;
@@ -160,10 +163,11 @@ const AgeCard: FC<AgeCardProps> = (props) => {
   const detail = card.id !== undefined ? Cards[card.id] : undefined;
   const age = getCardAge(card);
   const playerPositions = usePlayerPositions();
+  const item = card.id !== undefined ? draggableCard(card.id) : undefined;
+  const projection = useProjection();
   const animation = useAnimation(({ move }) => move.type === MoveType.MoveCard && isThisCard(card, move));
   const animations = useAnimations();
 
-  const isSelectable = !animation && !animations.length && moves.length;
   const chooseCard = () => {
     if (!isSelectable) {
       return;
@@ -174,20 +178,26 @@ const AgeCard: FC<AgeCardProps> = (props) => {
     }
   };
 
+  const isSelectable = !animations?.length && !animation && !!moves?.length;
   return (
-    <div
+    <Draggable
+      canDrag={isSelectable}
+      type={DraggableMaterial.Card}
+      item={item}
+      projection={projection}
+      preTransform={cardPosition(card, age, playerPositions, !detail ? `rotateY(180deg)` : '')}
       css={[
         ageCard,
+        cardZIndex(card),
         isSelectable && selectable,
         !!detail && cardOnTop,
-        cardPosition(card, age, playerPositions, `${!detail ? `rotateY(180deg)` : ''}`),
         animation && transitionFor(animation),
       ]}
       onClick={chooseCard}
     >
       {!!detail && <div css={ageCardFace(detail)} />}
       <div css={ageCardBack(age)} />
-    </div>
+    </Draggable>
   );
 };
 
@@ -209,7 +219,6 @@ const ageCard = css`
   width: ${cardWidth}em;
   border-radius: 2em;
   transform-style: preserve-3d;
-  transform: translateZ(0);
 `;
 
 const cardOnTop = css`
@@ -228,7 +237,6 @@ const ageCardFace = (card: Card) => css`
   background-image: url(${AgeCardFront.get(card)!});
   background-size: cover;
   backface-visibility: hidden;
-  box-shadow: 0 0 0.3em black;
 `;
 
 const ageCardBack = (age: number = 1) => css`
@@ -242,53 +250,48 @@ const ageCardBack = (age: number = 1) => css`
   background-image: url(${AgeCardBacks.get(age)!});
   transform: rotateY(180deg);
   backface-visibility: hidden;
-  box-shadow: 0 0 0.3em black;
 `;
 
-const cardPosition = (
-  card: SecretCard,
-  age: number = 1,
-  playerPositions: any,
-  preTransform: string = '',
-  _r1: number = Math.random(),
-  _r2: number = Math.random()
-) => {
+const cardPosition = (card: SecretCard, age: number = 1, playerPositions: any, preTransform: string = '') => {
   if (isInAgeDeck(card.location)) {
-    return css`
-      transform: translate(${getCardPositionInAgeDeckX(card)}em, ${getCardPositionInAgeDeckY(card, age)}em)
-        ${preTransform};
-
-      > div {
-        box-shadow: unset;
-      }
+    return `translate(${getCardPositionInAgeDeckX(card)}em, ${getCardPositionInAgeDeckY(card, age)}em)
+        ${preTransform}
     `;
   }
 
   if (isInTavern(card.location)) {
-    return css`
-      transform: translate(
+    return `translate(
         ${getCardPositionInTavernX(card.location.index)}em,
         ${getCardPositionInTavernY(card.location.tavern)}em
-      );
+      )
     `;
   }
 
   if (isOnPlayerBoard(card.location)) {
     const position = playerBoardPositions[playerPositions[card.location.player]];
-    return css`
-      transform: ${preTransform}
+    return `${preTransform}
         translate(
           ${getCardPositionOnPlayerBoardX(position, Cards[card.id!].type)}em,
           ${getCardPositionOnPlayerBoardY(position, card.location.index!)}em
         )
-        ${getCardPositionOnPlayerBoardTransform(position)};
+        ${getCardPositionOnPlayerBoardTransform(position)}
+    `;
+  }
+
+  return `
+    ${preTransform}
+      translate(${cardPositionInDiscardX(card.location.index)}em, ${cardPositionInDiscardY(card.location.index)}em)
+  `;
+};
+
+const cardZIndex = (card: SecretCard) => {
+  if (isOnPlayerBoard(card.location)) {
+    return css`
       z-index: ${card.location.index};
     `;
   }
 
   return css`
-    transform: ${preTransform}
-      translate(${cardPositionInDiscardX(card.location.index)}em, ${cardPositionInDiscardY(card.location.index)}em);
     z-index: ${card.location.index};
   `;
 };

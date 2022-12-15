@@ -1,4 +1,11 @@
-import { CardLocation, InAgeDeck, InCommandZone, InHeroesDeck, InTavern } from '../state/LocatedCard';
+import {
+  CardLocation,
+  InAgeDeck,
+  InCommandZone,
+  InDistinctionDeck,
+  InHeroesDeck,
+  InTavern,
+} from '../state/LocatedCard';
 import { LocationType } from '../state/Location';
 import GameState from '../state/GameState';
 import GameView from '../state/view/GameView';
@@ -24,6 +31,8 @@ export const isInHeroDeck = (location: CardLocation): location is InHeroesDeck =
   location.type === LocationType.HeroesDeck;
 export const isInCommandZone = (location: CardLocation): location is InCommandZone =>
   location.type === LocationType.CommandZone;
+export const isInDistinctionDeck = (location: CardLocation): location is InDistinctionDeck =>
+  location.type === LocationType.DistinctionsDeck;
 
 export const getCardsInTavern = (state: GameState | GameView) => state.cards.filter((c) => isInTavern(c.location));
 export const getCardsInAgeDeck = (state: GameState | GameView) => state.cards.filter((c) => isInAgeDeck(c.location));

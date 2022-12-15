@@ -17,7 +17,7 @@ import {
 } from '../utils/coin.utils';
 import { LocatedCoin } from '../state/LocatedCoin';
 import { CoinColor } from '../coins/Coin';
-import { minBy } from 'lodash';
+import { maxBy } from 'lodash';
 import { OnPlayerBoard } from '../state/CommonLocations';
 
 export type TradeCoin = {
@@ -39,8 +39,8 @@ export class TradeCoinRules extends EffectRules {
       if (!Coins[revealedCoin.id].value) {
         const pouch = getPlayerPouch(this.state, activePlayer.id);
         if (pouch.some(isCoinHidden)) {
-          const minimumCoin = minBy(pouch, (p) => Coins[p.id!].value)!;
-          const coin = Coins[minimumCoin.id!];
+          const maximumCoin = maxBy(pouch, (p) => Coins[p.id!].value)!;
+          const coin = Coins[maximumCoin.id!];
 
           const moves = pouch.map((c) => {
             // Reveal the pouch
@@ -50,7 +50,7 @@ export class TradeCoinRules extends EffectRules {
           if (coin.color === CoinColor.Bronze) {
             // Discard bronze coin
             moves.push(
-              moveKnownCoinMove((minimumCoin as LocatedCoin).id, {
+              moveKnownCoinMove((maximumCoin as LocatedCoin).id, {
                 type: LocationType.Discard,
                 index: this.state.coins.filter((c) => isInDiscard(c.location)).length,
               })
@@ -58,13 +58,13 @@ export class TradeCoinRules extends EffectRules {
           } else {
             // Set treasure coin to treasure
             moves.push(
-              moveKnownCoinMove((minimumCoin as LocatedCoin).id!, {
+              moveKnownCoinMove((maximumCoin as LocatedCoin).id!, {
                 type: LocationType.Treasure,
               })
             );
           }
 
-          const value = coin.value + Coins[pouch.find((c) => c.id !== minimumCoin.id)!.id!].value;
+          const value = coin.value + Coins[pouch.find((c) => c.id !== maximumCoin.id)!.id!].value;
           const treasureCoin = getTreasureCoinForValue(getTreasureCoins(this.state), value);
 
           // Get the treasure coin,
@@ -72,7 +72,7 @@ export class TradeCoinRules extends EffectRules {
             moveKnownCoinMove(treasureCoin.id!, {
               type: LocationType.PlayerBoard,
               player: this.player.id,
-              index: (minimumCoin.location as OnPlayerBoard).index,
+              index: (maximumCoin.location as OnPlayerBoard).index,
             })
           );
 

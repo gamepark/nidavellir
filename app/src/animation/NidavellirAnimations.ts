@@ -22,6 +22,8 @@ export default class NidavellirAnimations extends Animations<GameState | GameVie
         return 1;
       case MoveType.MoveHero:
         return 1;
+      case MoveType.MoveGem:
+        return 1;
       default:
         return 0;
     }

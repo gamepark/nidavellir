@@ -63,6 +63,11 @@ const gemToken = css`
   width: ${gemTokenWidth}em;
   border-radius: 50%;
   transform-style: preserve-3d;
+  cursor: pointer;
+
+  &:hover {
+    z-index: 10000;
+  }
 `;
 
 const gemFace = (gem: Gem) => css`
@@ -75,7 +80,7 @@ const gemFace = (gem: Gem) => css`
   background-image: url(${GemTokensImages.get(gem)!});
   background-size: cover;
   backface-visibility: hidden;
-  box-shadow: 0.5em 0.5em 0.7em -0.2em black;
+  filter: drop-shadow(0.3em 0.3em 0.6em black);
 `;
 
 const gemBack = css`

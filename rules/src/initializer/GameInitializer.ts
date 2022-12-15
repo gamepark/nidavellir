@@ -29,6 +29,7 @@ class GameInitializer {
     );
 
     const [age1, age2] = partition(shuffle(cards), (c) => c[1].age === 1);
+    const rounds = this.options.players.length < 4 ? 4 : 3;
 
     const cardsByTavern = getCardByTavern(this.options.players.map((p) => p.id));
     const numberOfCard = cardsByTavern * TAVERN_COUNT;
@@ -44,13 +45,13 @@ class GameInitializer {
           },
         })
       ),
-      ...age1.map(
+      ...age1.slice(0, (rounds - 1) * numberOfCard).map(
         ([id], index): LocatedCard => ({
           id,
           location: { type: LocationType.Age1Deck, index },
         })
       ),
-      ...age2.map(
+      ...age2.slice(0, (rounds - 1) * numberOfCard).map(
         ([id], index): LocatedCard => ({
           id,
           location: { type: LocationType.Age2Deck, index },

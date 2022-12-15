@@ -103,6 +103,9 @@ const CoinToken: FC<CoinTokenProps> = (props) => {
     if (moves?.length === 1) {
       play(moves[0]);
     }
+
+    if (hidden && coin.id !== undefined) {
+    }
   };
 
   const hidden =
@@ -151,7 +154,9 @@ const coinPosition = (coin: SecretCoin, playerPositions: any) => {
     }em) ${getCoinPositionOnPlayerBoardRotation(position)}`;
   }
 
-  return `translate(${coinPositionInDiscardX}em, ${coinPositionInDiscardY(coin.location.index)}em)`;
+  return `translate(${coinPositionInDiscardX(coin.location.index)}em, ${coinPositionInDiscardY(
+    coin.location.index
+  )}em)`;
 };
 
 const coinZIndex = (coin: SecretCoin) => {
@@ -162,6 +167,10 @@ const coinZIndex = (coin: SecretCoin) => {
   } else if (isOnPlayerBoard(coin.location)) {
     return css`
       z-index: ${coin.location.index! + 1};
+    `;
+  } else if (isInPlayerHand(coin.location)) {
+    return css`
+      z-index: 50;
     `;
   }
 

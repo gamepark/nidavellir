@@ -3,7 +3,15 @@ import { css } from '@emotion/react';
 import { PlayerId } from '@gamepark/nidavellir/state/Player';
 import GameView from '@gamepark/nidavellir/state/view/GameView';
 import { FC } from 'react';
-import { cardWidth, playerBoardHeight, playerBoardPositions, playerBoardWidth } from '../Styles';
+import {
+  cardWidth,
+  playerBoardColumnHeight,
+  playerBoardColumnLeft,
+  playerBoardColumnTop,
+  playerBoardHeight,
+  playerBoardPositions,
+  playerBoardWidth,
+} from '../Styles';
 import Images from '../../images/Images';
 import { usePlayerPositions } from '../../table/TableContext';
 import { DwarfType } from '@gamepark/nidavellir/cards/Card';
@@ -50,34 +58,28 @@ const commandZone = (playerIndex: number) => {
   const isRotated = position.rotateZ === 180;
   return css`
     position: absolute;
-    height: ${playerBoardHeight - 3}em;
+    height: ${playerBoardColumnHeight}em;
     width: ${columnWidth}em;
     background-color: rgba(128, 128, 128, 0.8);
     border: 0.3em solid black;
     border-radius: 2em;
     ${position.left && `left: ${position.left + (isRotated ? playerBoardWidth : -columnWidth)}em;`}
-    ${position.top && `top: ${isRotated ? position.top + 3 : position.top}em;`}
+    ${position.top && `top: ${playerBoardColumnTop(position)}em;`}
     transform: rotateZ(${position.rotateZ}deg);
   `;
 };
 
 const cardColumn = (playerIndex: number, type: DwarfType, color: string, background: string) => {
   const position = playerBoardPositions[playerIndex];
-  const isRotated = position.rotateZ === 180;
   return css`
     position: absolute;
-    height: ${playerBoardHeight - 3}em;
+    height: ${playerBoardColumnHeight}em;
     width: ${columnWidth}em;
     background-color: ${background};
     border: 0.3em solid ${color};
     border-radius: 2em;
-    ${position.left &&
-    `left: ${
-      position.left +
-      (isRotated ? -(columnWidth * type) : playerBoardWidth + columnWidth * (type - 1)) +
-      (isRotated ? -0.3 : 0.3) * (type + 1)
-    }em;`}
-    ${position.top && `top: ${isRotated ? position.top + 3 : position.top}em;`}
+    ${position.left && `left: ${playerBoardColumnLeft(position, type)}em;`}
+    ${position.top && `top: ${playerBoardColumnTop(position)}em;`}
     transform: rotateZ(${position.rotateZ}deg);
   `;
 };

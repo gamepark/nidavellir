@@ -129,7 +129,7 @@ const heroesView = (scale: number) => css`
 `;
 
 const treasureView = (scale: number) => css`
-  transform: translate(-60em, -${treasureTop - 5}em) scale(${scale});
+  transform: translate(-50em, -${treasureTop - 40}em) scale(${scale});
 `;
 
 const globalView = (scale: number) => css`

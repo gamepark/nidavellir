@@ -150,6 +150,12 @@ import Uline from './cards/heroes/Uline.jpg';
 import Ylud from './cards/heroes/Ylud.jpg';
 import Zoral from './cards/heroes/Zoral.jpg';
 
+import CrownJeweler from './cards/distinction/CrownJeweler.jpg';
+import HuntingMaster from './cards/distinction/HuntingMaster.jpg';
+import KingsGreatArmorer from './cards/distinction/KingsGreatArmorer.jpg';
+import KingsHand from './cards/distinction/KingsHand.jpg';
+import PioneerOfTheKingdom from './cards/distinction/PioneerOfTheKingdom.jpg';
+
 import Gem1 from './gems/gem-1.png';
 import Gem2 from './gems/gem-2.png';
 import Gem3 from './gems/gem-3.png';
@@ -309,6 +315,11 @@ const Images = {
   Gem4,
   Gem5,
   Gem6,
+  CrownJeweler,
+  HuntingMaster,
+  KingsGreatArmorer,
+  KingsHand,
+  PioneerOfTheKingdom,
 };
 
 export default Images;

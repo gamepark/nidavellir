@@ -9,6 +9,7 @@ import { CoinTokens } from './material/coin/CoinTokens';
 import { AgeCards } from './material/card/AgeCards';
 import { HeroCards } from './material/card/HeroCards';
 import { GemTokens } from './material/gem/GemTokens';
+import { DistinctionCards } from './material/card/DistinctionCards';
 
 type Props = {
   game: GameView;
@@ -27,6 +28,7 @@ export default function GameDisplay({ game }: Props) {
         <Taverns />
         <AgeCards game={game} />
         <HeroCards game={game} />
+        <DistinctionCards game={game} />
         <CoinTokens game={game} />
       </TableProvider>
     </Letterbox>
