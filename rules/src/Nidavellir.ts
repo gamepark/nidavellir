@@ -30,6 +30,9 @@ import { MoveGem } from './moves/MoveGem';
 import { MoveCoin } from './moves/MoveCoin';
 import { Pass } from './moves/Pass';
 import { OnPlayerBoard } from './state/CommonLocations';
+import { EffectsRules } from './effects/EffectsRules';
+import { NidavellirRules } from './rules/NidavellirRules';
+import shuffle from 'lodash/shuffle';
 
 export default class Nidavellir
   extends Rules<GameState | GameView, Move | MoveView, PlayerId>
@@ -72,7 +75,14 @@ export default class Nidavellir
     return false;
   }
 
-  delegate(): Rules<GameState | GameView, Move | MoveView, number> | undefined {
+  delegates(): NidavellirRules[] {
+    const delegates = this.state.players
+      .filter((p) => p.effects.length)
+      .map((p) => new EffectsRules[p.effects[0].type](this.state, p));
+    if (delegates.length) {
+      return delegates;
+    }
+
     return getRules(this.state);
   }
 
@@ -224,7 +234,7 @@ export default class Nidavellir
     return {
       ...this.state,
       cards: ageCardWithoutSecret,
-      coins: coinWithoutSecret,
+      coins: shuffle(coinWithoutSecret),
       view: true,
       playerId,
     };

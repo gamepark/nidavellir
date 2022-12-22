@@ -3,7 +3,6 @@ import { Player, PlayerId } from '../state/Player';
 import Move from '../moves/Move';
 import { getCardsInTavern, isInDiscard, isOnPlayerBoard } from '../utils/location.utils';
 import MoveType from '../moves/MoveType';
-import { getCurrentTavern } from '../utils/tavern.utils';
 import { getNextIndexByType, isLocatedCoin } from '../utils/player.utils';
 import { Coins } from '../coins/Coins';
 import { InTavern } from '../state/LocatedCard';
@@ -29,7 +28,7 @@ class ChooseCardRules extends NidavellirRules {
       return [];
     }
 
-    const currentTavern = getCurrentTavern(this.state);
+    const currentTavern = this.state.tavern;
     const tavernCards = getCardsInTavern(this.state).filter((c) => (c.location as InTavern).tavern === currentTavern);
     const nextIndexesByType = getNextIndexByType(this.state, this.player.id);
 
@@ -45,6 +44,7 @@ class ChooseCardRules extends NidavellirRules {
         type: LocationType.PlayerBoard,
         player: playerId,
         index: nextIndexesByType[card.type].nextIndex,
+        column: card.type,
       });
     });
   }
@@ -64,24 +64,24 @@ class ChooseCardRules extends NidavellirRules {
       deck: 'age',
     };
 
-    const tavern = getCurrentTavern(this.state);
+    const tavern = this.state.tavern;
     const playerCoin = this.state.coins.find(
       (coin) =>
         isOnPlayerBoard(coin.location) && coin.location.index === tavern && coin.location.player === this.player.id
     );
-
-    // Trade is only triggered if the player has played a 0-value coin
-    if (playerCoin && isLocatedCoin(playerCoin) && Coins[playerCoin.id].value === 0) {
-      this.player.effects.push({
-        type: EffectType.TRADE_COIN,
-      });
-    }
 
     const recruitHeroCount = computeRecruitHeroCount(this.state, this.player.id);
     if (recruitHeroCount > 0) {
       this.player.effects.push({
         type: EffectType.RECRUIT_HERO,
         count: recruitHeroCount,
+      });
+    }
+
+    // Trade is only triggered if the player has played a 0-value coin
+    if (playerCoin && isLocatedCoin(playerCoin) && Coins[playerCoin.id].value === 0) {
+      this.player.effects.push({
+        type: EffectType.TRADE_COIN,
       });
     }
 

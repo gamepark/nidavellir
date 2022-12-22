@@ -1,27 +1,17 @@
 import GameState, { Phase, Step } from '../state/GameState';
 import GameView from '../state/view/GameView';
 import { MIN_DWARVES_PER_TAVERN, TAVERN_COUNT } from './constants';
-import { getCardsInTavern } from './location.utils';
-import { InTavern, LocatedCard } from '../state/LocatedCard';
+import { getCardsInAgeDeck, getCardsInTavern, isInHeroDeck } from './location.utils';
+import { InTavern, LocatedCard, OnPlayerBoardCard } from '../state/LocatedCard';
 import { isLocatedCard } from './player.utils';
 import { Player, PlayerId } from '../state/Player';
-import { getTavernCoins } from './coin.utils';
+import { Heroes, Ylud } from '../cards/Heroes';
+import { EffectType } from '../effects/EffectType';
 
 export const getCardByTavern = (players: (Player | PlayerId)[]) => Math.max(MIN_DWARVES_PER_TAVERN, players.length);
 
-export const getCurrentTavern = (state: GameState | GameView, coinsMustBeVisible: boolean = true): number => {
-  const cardInTaverns = getCardsInTavern(state);
-  const tavern = Math.min(2, 3 - Math.ceil(cardInTaverns.length / getCardByTavern(state.players)));
-
-  if (!coinsMustBeVisible || getTavernCoins(state, tavern)?.every((c) => !c.hidden)) {
-    return tavern;
-  }
-
-  return tavern - 1;
-};
-
 export const getCurrentTavernCards = (state: GameState | GameView): LocatedCard[] => {
-  const tavern = getCurrentTavern(state, true);
+  const tavern = state.tavern;
   return getCardsInTavern(state).filter(
     (c) => isLocatedCard(c) && (c.location as InTavern).tavern === tavern
   ) as LocatedCard[];
@@ -35,10 +25,25 @@ export const nextTavern = (state: GameState | GameView) => {
     delete p.traded;
   });
 
-  if (getCurrentTavern(state) < TAVERN_COUNT - 1) {
+  if (state.tavern < TAVERN_COUNT - 1) {
+    state.tavern++;
     state.steps = [Step.BidRevelation];
   } else {
+    state.round++;
     state.phase = Phase.TurnPreparation;
     state.steps = [Step.EnterDwarves];
+
+    // TODO: compute end of game (all cards are not necessary drawn...)
+    if (!getCardsInAgeDeck(state).length) {
+      endGameActions(state);
+    }
+  }
+};
+
+export const endGameActions = (game: GameState | GameView) => {
+  const ylud = game.heroes.find((c) => Heroes[c.id] === Ylud)!;
+  if (!isInHeroDeck(ylud.location)) {
+    const player = game.players.find((p) => p.id === (ylud.location as OnPlayerBoardCard).player)!;
+    player.effects.push({ type: EffectType.YLUD });
   }
 };

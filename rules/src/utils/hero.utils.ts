@@ -4,25 +4,26 @@ import GameView from '../state/view/GameView';
 import { getArmy } from './player.utils';
 import { Cards } from '../cards/Cards';
 import { DwarfType } from '../cards/Card';
-import { LocatedCard } from '../state/LocatedCard';
+import { LocatedCard, OnPlayerBoardCard } from '../state/LocatedCard';
 import { SecretCard } from '../state/view/SecretCard';
-import { isInHeroDeck } from './location.utils';
+import { isInHeroDeck, isOnPlayerBoardCard } from './location.utils';
 import sum from 'lodash/sum';
 import { Heroes } from '../cards/Heroes';
+import { HeroType } from '../cards/Hero';
 
-export const sumBravery = (army: { cards: SecretCard[]; heroes: LocatedCard[] }, type: DwarfType) => {
+export const countGrades = (army: { cards: SecretCard[]; heroes: LocatedCard[] }, type: DwarfType) => {
   return (
     sum(
       army.cards
+        .filter((c) => (c.location as OnPlayerBoardCard).column === type)
         .map((c) => Cards[c.id!])
-        .filter((c) => c.type === type)
-        .map((c) => c.bravery?.length ?? 0)
+        .map((c) => c.grades?.[type]?.length ?? 0)
     ) +
     sum(
       army.heroes
+        .filter((c) => (c.location as OnPlayerBoardCard).column === type)
         .map((c) => Heroes[c.id!])
-        .filter((c) => c.type === type)
-        .map((c) => c.bravery?.length ?? 0)
+        .map((c) => c.grades?.[type]?.length ?? 0)
     )
   );
 };
@@ -34,34 +35,40 @@ export const computeRecruitHeroCount = (state: GameState | GameView, playerId: P
   if (!player.drawn || !heroes.length) {
     return 0;
   }
+  const drawnCard = player.drawn;
+  const locatedCard = (drawnCard.deck === 'heroes' ? state.heroes : state.cards).find((c) => c.id === drawnCard.card)!;
+
+  // If the hero is in command zone, no more recruitment
+  if (isOnPlayerBoardCard(locatedCard.location) && locatedCard.location.column === HeroType.Neutral) {
+    return 0;
+  }
 
   const army = getArmy(state, playerId);
-  const drawnCard = player.drawn;
   const card = (drawnCard.deck === 'heroes' ? Heroes : Cards)[player.drawn.card];
-  const cardBravery = card.bravery?.length ?? 0;
-  const braveryByTypes = {
-    [DwarfType.Blacksmith]: sumBravery(army, DwarfType.Blacksmith),
-    [DwarfType.Hunter]: sumBravery(army, DwarfType.Hunter),
-    [DwarfType.Warrior]: sumBravery(army, DwarfType.Warrior),
-    [DwarfType.Explorer]: sumBravery(army, DwarfType.Explorer),
-    [DwarfType.Miner]: sumBravery(army, DwarfType.Miner),
+  const gradesByTypes = {
+    [DwarfType.Blacksmith]: countGrades(army, DwarfType.Blacksmith),
+    [DwarfType.Hunter]: countGrades(army, DwarfType.Hunter),
+    [DwarfType.Warrior]: countGrades(army, DwarfType.Warrior),
+    [DwarfType.Explorer]: countGrades(army, DwarfType.Explorer),
+    [DwarfType.Miner]: countGrades(army, DwarfType.Miner),
   };
 
-  const minBraveryBeforeCard = Math.min(
-    braveryByTypes[DwarfType.Blacksmith] - (card.type === DwarfType.Blacksmith ? cardBravery : 0),
-    braveryByTypes[DwarfType.Hunter] - (card.type === DwarfType.Hunter ? cardBravery : 0),
-    braveryByTypes[DwarfType.Warrior] - (card.type === DwarfType.Warrior ? cardBravery : 0),
-    braveryByTypes[DwarfType.Explorer] - (card.type === DwarfType.Explorer ? cardBravery : 0),
-    braveryByTypes[DwarfType.Miner] - (card.type === DwarfType.Miner ? cardBravery : 0)
+  // TODO: will not work if the hero is places explicitely in this column (hero with multiple types)
+  const minGradesBeforeCard = Math.min(
+    gradesByTypes[DwarfType.Blacksmith] - (card.grades?.[DwarfType.Blacksmith]?.length ?? 0),
+    gradesByTypes[DwarfType.Hunter] - (card.grades?.[DwarfType.Hunter]?.length ?? 0),
+    gradesByTypes[DwarfType.Warrior] - (card.grades?.[DwarfType.Warrior]?.length ?? 0),
+    gradesByTypes[DwarfType.Explorer] - (card.grades?.[DwarfType.Explorer]?.length ?? 0),
+    gradesByTypes[DwarfType.Miner] - (card.grades?.[DwarfType.Miner]?.length ?? 0)
   );
 
-  const minBraveryAfterCard = Math.min(
-    braveryByTypes[DwarfType.Blacksmith],
-    braveryByTypes[DwarfType.Hunter],
-    braveryByTypes[DwarfType.Warrior],
-    braveryByTypes[DwarfType.Explorer],
-    braveryByTypes[DwarfType.Miner]
+  const minGradesAfterCard = Math.min(
+    gradesByTypes[DwarfType.Blacksmith],
+    gradesByTypes[DwarfType.Hunter],
+    gradesByTypes[DwarfType.Warrior],
+    gradesByTypes[DwarfType.Explorer],
+    gradesByTypes[DwarfType.Miner]
   );
 
-  return minBraveryAfterCard - minBraveryBeforeCard;
+  return minGradesAfterCard - minGradesBeforeCard;
 };

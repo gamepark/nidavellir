@@ -4,515 +4,687 @@ import { EffectType } from '../effects/EffectType';
 export const WarriorDwarf1Age1: Card = {
   age: 1,
   type: DwarfType.Warrior,
-  bravery: [3],
+  grades: {
+    [DwarfType.Warrior]: [6],
+  },
 };
 export const WarriorDwarf2Age1: Card = {
   age: 1,
   type: DwarfType.Warrior,
-  bravery: [4],
+  grades: {
+    [DwarfType.Warrior]: [4],
+  },
 };
 export const WarriorDwarf3Age1: Card = {
   age: 1,
   type: DwarfType.Warrior,
-  bravery: [5],
+  grades: {
+    [DwarfType.Warrior]: [5],
+  },
 };
 export const WarriorDwarf4Age1: Card = {
   age: 1,
   type: DwarfType.Warrior,
-  bravery: [6],
+  grades: {
+    [DwarfType.Warrior]: [6],
+  },
 };
 export const WarriorDwarf5Age1: Card = {
   age: 1,
   type: DwarfType.Warrior,
-  bravery: [6],
+  grades: {
+    [DwarfType.Warrior]: [6],
+  },
 };
 export const WarriorDwarf6Age1: Card = {
   age: 1,
   type: DwarfType.Warrior,
-  bravery: [7],
+  grades: {
+    [DwarfType.Warrior]: [7],
+  },
 };
 export const WarriorDwarf7Age1: Card = {
   age: 1,
   type: DwarfType.Warrior,
-  bravery: [8],
+  grades: {
+    [DwarfType.Warrior]: [8],
+  },
 };
 export const WarriorDwarf8Age1: Card = {
   age: 1,
   type: DwarfType.Warrior,
-  bravery: [9],
+  grades: {
+    [DwarfType.Warrior]: [9],
+  },
 };
 export const WarriorDwarf9Age1: Card = {
   age: 1,
   type: DwarfType.Warrior,
-  bravery: [10],
+  grades: {
+    [DwarfType.Warrior]: [10],
+  },
   minPlayers: 5,
 };
 
 export const WarriorDwarf1Age2: Card = {
   age: 2,
   type: DwarfType.Warrior,
-  bravery: [3],
+  grades: {
+    [DwarfType.Warrior]: [3],
+  },
 };
 export const WarriorDwarf2Age2: Card = {
   age: 2,
   type: DwarfType.Warrior,
-  bravery: [4],
+  grades: {
+    [DwarfType.Warrior]: [4],
+  },
 };
 export const WarriorDwarf3Age2: Card = {
   age: 2,
   type: DwarfType.Warrior,
-  bravery: [5],
+  grades: {
+    [DwarfType.Warrior]: [5],
+  },
 };
 export const WarriorDwarf4Age2: Card = {
   age: 2,
   type: DwarfType.Warrior,
-  bravery: [6],
+  grades: {
+    [DwarfType.Warrior]: [6],
+  },
 };
 export const WarriorDwarf5Age2: Card = {
   age: 2,
   type: DwarfType.Warrior,
-  bravery: [6],
+  grades: {
+    [DwarfType.Warrior]: [6],
+  },
 };
 export const WarriorDwarf6Age2: Card = {
   age: 2,
   type: DwarfType.Warrior,
-  bravery: [7],
+  grades: {
+    [DwarfType.Warrior]: [7],
+  },
 };
 export const WarriorDwarf7Age2: Card = {
   age: 2,
   type: DwarfType.Warrior,
-  bravery: [8],
+  grades: {
+    [DwarfType.Warrior]: [8],
+  },
 };
 export const WarriorDwarf8Age2: Card = {
   age: 2,
   type: DwarfType.Warrior,
-  bravery: [9],
+  grades: {
+    [DwarfType.Warrior]: [9],
+  },
 };
 export const WarriorDwarf9Age2: Card = {
   age: 2,
   type: DwarfType.Warrior,
-  bravery: [10],
+  grades: {
+    [DwarfType.Warrior]: [10],
+  },
 };
 
 export const HunterDwarf1Age1: Card = {
   age: 1,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
 };
 
 export const HunterDwarf2Age1: Card = {
   age: 1,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
 };
 
 export const HunterDwarf3Age1: Card = {
   age: 1,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
 };
 
 export const HunterDwarf4Age1: Card = {
   age: 1,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
 };
 
 export const HunterDwarf5Age1: Card = {
   age: 1,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
 };
 
 export const HunterDwarf6Age1: Card = {
   age: 1,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
 };
 
 export const HunterDwarf7Age1: Card = {
   age: 1,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
   minPlayers: 5,
 };
 
 export const HunterDwarf8Age1: Card = {
   age: 1,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
   minPlayers: 5,
 };
 
 export const HunterDwarf1Age2: Card = {
   age: 2,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
 };
 
 export const HunterDwarf2Age2: Card = {
   age: 2,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
 };
 
 export const HunterDwarf3Age2: Card = {
   age: 2,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
 };
 
 export const HunterDwarf4Age2: Card = {
   age: 2,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
 };
 
 export const HunterDwarf5Age2: Card = {
   age: 2,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
 };
 
 export const HunterDwarf6Age2: Card = {
   age: 2,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
 };
 
 export const HunterDwarf7Age2: Card = {
   age: 2,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
   minPlayers: 5,
 };
 
 export const HunterDwarf8Age2: Card = {
   age: 2,
   type: DwarfType.Hunter,
-  bravery: [0],
+  grades: {
+    [DwarfType.Hunter]: [0],
+  },
   minPlayers: 5,
 };
 
 export const MinerDwarf1Age1: Card = {
   age: 1,
   type: DwarfType.Miner,
-  bravery: [0],
+  grades: {
+    [DwarfType.Miner]: [0],
+  },
 };
 
 export const MinerDwarf2Age1: Card = {
   age: 1,
   type: DwarfType.Miner,
-  bravery: [0],
+  grades: {
+    [DwarfType.Miner]: [0],
+  },
 };
 
 export const MinerDwarf3Age1: Card = {
   age: 1,
   type: DwarfType.Miner,
-  bravery: [0],
+  grades: {
+    [DwarfType.Miner]: [0],
+  },
   minPlayers: 5,
 };
 
 export const MinerDwarf4Age1: Card = {
   age: 1,
   type: DwarfType.Miner,
-  bravery: [1],
+  grades: {
+    [DwarfType.Miner]: [1],
+  },
 };
 
 export const MinerDwarf5Age1: Card = {
   age: 1,
   type: DwarfType.Miner,
-  bravery: [1],
+  grades: {
+    [DwarfType.Miner]: [1],
+  },
 };
 
 export const MinerDwarf6Age1: Card = {
   age: 1,
   type: DwarfType.Miner,
-  bravery: [1],
+  grades: {
+    [DwarfType.Miner]: [1],
+  },
   minPlayers: 5,
 };
 
 export const MinerDwarf7Age1: Card = {
   age: 1,
   type: DwarfType.Miner,
-  bravery: [2],
+  grades: {
+    [DwarfType.Miner]: [2],
+  },
 };
 
 export const MinerDwarf8Age1: Card = {
   age: 1,
   type: DwarfType.Miner,
-  bravery: [2],
+  grades: {
+    [DwarfType.Miner]: [2],
+  },
 };
 
 export const MinerDwarf1Age2: Card = {
   age: 2,
   type: DwarfType.Miner,
-  bravery: [0],
+  grades: {
+    [DwarfType.Miner]: [0],
+  },
 };
 
 export const MinerDwarf2Age2: Card = {
   age: 2,
   type: DwarfType.Miner,
-  bravery: [0],
+  grades: {
+    [DwarfType.Miner]: [0],
+  },
 };
 
 export const MinerDwarf3Age2: Card = {
   age: 2,
   type: DwarfType.Miner,
-  bravery: [0],
+  grades: {
+    [DwarfType.Miner]: [0],
+  },
   minPlayers: 5,
 };
 
 export const MinerDwarf4Age2: Card = {
   age: 2,
   type: DwarfType.Miner,
-  bravery: [1],
+  grades: {
+    [DwarfType.Miner]: [1],
+  },
 };
 
 export const MinerDwarf5Age2: Card = {
   age: 2,
   type: DwarfType.Miner,
-  bravery: [1],
+  grades: {
+    [DwarfType.Miner]: [1],
+  },
 };
 
 export const MinerDwarf6Age2: Card = {
   age: 2,
   type: DwarfType.Miner,
-  bravery: [1],
+  grades: {
+    [DwarfType.Miner]: [1],
+  },
   minPlayers: 5,
 };
 
 export const MinerDwarf7Age2: Card = {
   age: 2,
   type: DwarfType.Miner,
-  bravery: [2],
+  grades: {
+    [DwarfType.Miner]: [2],
+  },
 };
 
 export const MinerDwarf8Age2: Card = {
   age: 2,
   type: DwarfType.Miner,
-  bravery: [2],
+  grades: {
+    [DwarfType.Miner]: [2],
+  },
 };
 
 export const BlacksmithDwarf1Age1: Card = {
   age: 1,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf2Age1: Card = {
   age: 1,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf3Age1: Card = {
   age: 1,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf4Age1: Card = {
   age: 1,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf5Age1: Card = {
   age: 1,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf6Age1: Card = {
   age: 1,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf7Age1: Card = {
   age: 1,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf8Age1: Card = {
   age: 1,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf9Age1: Card = {
   age: 1,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
   minPlayers: 5,
 };
 
 export const BlacksmithDwarf10Age1: Card = {
   age: 1,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
   minPlayers: 5,
 };
 
 export const BlacksmithDwarf1Age2: Card = {
   age: 2,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf2Age2: Card = {
   age: 2,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf3Age2: Card = {
   age: 2,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf4Age2: Card = {
   age: 2,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf5Age2: Card = {
   age: 2,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf6Age2: Card = {
   age: 2,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf7Age2: Card = {
   age: 2,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf8Age2: Card = {
   age: 2,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
 };
 
 export const BlacksmithDwarf9Age2: Card = {
   age: 2,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
   minPlayers: 5,
 };
 
 export const BlacksmithDwarf10Age2: Card = {
   age: 2,
   type: DwarfType.Blacksmith,
-  bravery: [0],
+  grades: {
+    [DwarfType.Blacksmith]: [0],
+  },
   minPlayers: 5,
 };
 
 export const ExplorerDwarf1Age1: Card = {
   age: 1,
   type: DwarfType.Explorer,
-  bravery: [5],
+  grades: {
+    [DwarfType.Explorer]: [5],
+  },
 };
 
 export const ExplorerDwarf2Age1: Card = {
   age: 1,
   type: DwarfType.Explorer,
-  bravery: [6],
+  grades: {
+    [DwarfType.Explorer]: [6],
+  },
 };
 
 export const ExplorerDwarf3Age1: Card = {
   age: 1,
   type: DwarfType.Explorer,
-  bravery: [7],
+  grades: {
+    [DwarfType.Explorer]: [7],
+  },
 };
 
 export const ExplorerDwarf4Age1: Card = {
   age: 1,
   type: DwarfType.Explorer,
-  bravery: [8],
+  grades: {
+    [DwarfType.Explorer]: [8],
+  },
 };
 
 export const ExplorerDwarf5Age1: Card = {
   age: 1,
   type: DwarfType.Explorer,
-  bravery: [9],
+  grades: {
+    [DwarfType.Explorer]: [9],
+  },
 };
 
 export const ExplorerDwarf6Age1: Card = {
   age: 1,
   type: DwarfType.Explorer,
-  bravery: [10],
+  grades: {
+    [DwarfType.Explorer]: [10],
+  },
 };
 
 export const ExplorerDwarf7Age1: Card = {
   age: 1,
   type: DwarfType.Explorer,
-  bravery: [11],
+  grades: {
+    [DwarfType.Explorer]: [11],
+  },
 };
 
 export const ExplorerDwarf8Age1: Card = {
   age: 1,
   type: DwarfType.Explorer,
-  bravery: [12],
+  grades: {
+    [DwarfType.Explorer]: [12],
+  },
   minPlayers: 5,
 };
 
 export const ExplorerDwarf1Age2: Card = {
   age: 2,
   type: DwarfType.Explorer,
-  bravery: [5],
+  grades: {
+    [DwarfType.Explorer]: [5],
+  },
 };
 
 export const ExplorerDwarf2Age2: Card = {
   age: 2,
   type: DwarfType.Explorer,
-  bravery: [6],
+  grades: {
+    [DwarfType.Explorer]: [6],
+  },
 };
 
 export const ExplorerDwarf3Age2: Card = {
   age: 2,
   type: DwarfType.Explorer,
-  bravery: [7],
+  grades: {
+    [DwarfType.Explorer]: [7],
+  },
 };
 
 export const ExplorerDwarf4Age2: Card = {
   age: 2,
   type: DwarfType.Explorer,
-  bravery: [8],
+  grades: {
+    [DwarfType.Explorer]: [8],
+  },
 };
 
 export const ExplorerDwarf5Age2: Card = {
   age: 2,
   type: DwarfType.Explorer,
-  bravery: [9],
+  grades: {
+    [DwarfType.Explorer]: [9],
+  },
 };
 
 export const ExplorerDwarf6Age2: Card = {
   age: 2,
   type: DwarfType.Explorer,
-  bravery: [10],
+  grades: {
+    [DwarfType.Explorer]: [10],
+  },
 };
 
 export const ExplorerDwarf7Age2: Card = {
   age: 2,
   type: DwarfType.Explorer,
-  bravery: [11],
+  grades: {
+    [DwarfType.Explorer]: [11],
+  },
 };
 
 export const ExplorerDwarf8Age2: Card = {
   age: 2,
   type: DwarfType.Explorer,
-  bravery: [12],
+  grades: {
+    [DwarfType.Explorer]: [12],
+  },
   minPlayers: 5,
 };
 

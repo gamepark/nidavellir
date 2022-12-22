@@ -16,7 +16,6 @@ export enum Step {
   EvalandTurn,
   TroopEvaluation,
   GemTrade,
-  FillTaverns,
 }
 
 type GameState = {
@@ -30,6 +29,8 @@ type GameState = {
   phase: Phase;
   steps: Step[];
   nextMoves: Move[];
+  tavern: number;
+  round: number;
 };
 
 export default GameState;

@@ -9,13 +9,13 @@ import {
   getCardPositionInHeroDeckTop,
   getCardPositionInTavernX,
   getCardPositionInTavernY,
+  getCardPositionOnPlayerBoardTransform,
   getCardPositionOnPlayerBoardX,
   getCardPositionOnPlayerBoardY,
-  getCardPositionOnPlayerBoardTransform,
   playerBoardPositions,
   shineEffect,
 } from '../Styles';
-import { isInHeroDeck, isInTavern, isOnPlayerBoard } from '@gamepark/nidavellir/utils/location.utils';
+import { isInHeroDeck, isInTavern, isOnPlayerBoardCard } from '@gamepark/nidavellir/utils/location.utils';
 import Images from '../../images/Images';
 import {
   Aegur,
@@ -46,9 +46,14 @@ import { Animation, useAnimation, useAnimations, usePlay } from '@gamepark/react
 import { usePlayerPositions } from '../../table/TableContext';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
 import { MoveHero } from '@gamepark/nidavellir/moves/MoveHero';
+import Move from '@gamepark/nidavellir/moves/Move';
+import { draggableHero, DraggableMaterial } from '../../draggable/DraggableMaterial';
+import { Draggable } from '@gamepark/react-components';
+import { LocatedCard } from '@gamepark/nidavellir/state/LocatedCard';
+import { useProjection } from '../View';
 
 type HeroCardProps = {
-  card: SecretCard;
+  card: LocatedCard;
   moves: MoveHero[];
 };
 
@@ -58,8 +63,15 @@ const HeroCard: FC<HeroCardProps> = (props) => {
   const playerPositions = usePlayerPositions();
   const animation = useAnimation(({ move }) => move.type === MoveType.MoveHero && move.id === card.id);
   const animations = useAnimations();
+  const item = draggableHero(card.id);
+  const projection = useProjection();
 
-  const isSelectable = !animation && !animations.length && moves.length;
+  const onDrop = (move: Move) => {
+    if (move) {
+      play(move);
+    }
+  };
+
   const chooseHero = () => {
     if (!isSelectable) {
       return;
@@ -72,27 +84,28 @@ const HeroCard: FC<HeroCardProps> = (props) => {
 
   const detail = Heroes[card.id!];
 
+  const isSelectable = !animation && !animations.length && !!moves.length;
+  console.warn(isSelectable, item);
   return (
-    <div
-      css={[
-        heroCard,
-        isSelectable && selectable,
-        cardPosition(card, playerPositions),
-        animation && transitionFor(animation),
-      ]}
+    <Draggable
+      canDrag={isSelectable}
+      type={DraggableMaterial.Hero}
+      item={item}
+      projection={projection}
+      drop={onDrop}
+      preTransform={cardPosition(card, playerPositions)}
+      css={[heroCard, cardZIndex(card), isSelectable && selectable, animation && transitionFor(animation)]}
       onClick={chooseHero}
     >
       {<div css={heroCardFace(detail)} />}
       <div css={heroCardBack} />
-    </div>
+    </Draggable>
   );
 };
 
 const transitionFor = (animation: Animation) => css`
   z-index: 100;
-  //transition: transform ${animation.duration}s;
-  // FIXME: change top / left to transform
-  transition: ${animation.duration}s transform, ${animation.duration}s top, ${animation.duration}s left;
+  transition: ${animation.duration}s transform;
 `;
 
 const selectable = css`
@@ -105,7 +118,6 @@ const heroCard = css`
   height: ${cardHeight}em;
   width: ${cardWidth}em;
   border-radius: 2em;
-  transform: translateZ(0);
 
   &:hover {
     z-index: 50;
@@ -141,39 +153,40 @@ const heroCardBack = css`
 
 const cardPosition = (card: SecretCard, playerPositions: any) => {
   if (isInHeroDeck(card.location)) {
-    return css`
-      transform: translate(
-        ${getCardPositionInHeroDeckLeft(card.location.index)}em,
-        ${getCardPositionInHeroDeckTop(card.location.index)}em
-      );
+    return `translate(${getCardPositionInHeroDeckLeft(card.location.index)}em, ${getCardPositionInHeroDeckTop(
+      card.location.index
+    )}em)
     `;
   }
 
   if (isInTavern(card.location)) {
-    return css`
-      transform: translate(
-        ${getCardPositionInTavernX(card.location.index)}em,
-        ${getCardPositionInTavernY(card.location.tavern)}em
-      );
+    return `translate(${getCardPositionInTavernX(card.location.index)}em, ${getCardPositionInTavernY(
+      card.location.tavern
+    )}em)`;
+  }
+
+  if (isOnPlayerBoardCard(card.location)) {
+    const position = playerBoardPositions[playerPositions[card.location.player]];
+    return `translate(${getCardPositionOnPlayerBoardX(
+      position,
+      Heroes[card.id!].type
+    )}em, ${getCardPositionOnPlayerBoardY(position, card.location.index!)}em) ${getCardPositionOnPlayerBoardTransform(
+      position
+    )}
     `;
   }
 
-  if (isOnPlayerBoard(card.location)) {
-    console.log('Hero', card.location, card.id);
-    const position = playerBoardPositions[playerPositions[card.location.player]];
+  return '';
+};
+
+const cardZIndex = (card: LocatedCard) => {
+  if (isOnPlayerBoardCard(card.location)) {
     return css`
-      transform: translate(
-          ${getCardPositionOnPlayerBoardX(position, Heroes[card.id!].type)}em,
-          ${getCardPositionOnPlayerBoardY(position, card.location.index!)}em
-        )
-        ${getCardPositionOnPlayerBoardTransform(position)};
       z-index: ${card.location.index};
     `;
   }
 
-  return css`
-    display: none;
-  `;
+  return undefined;
 };
 
 const HeroCardFront = new Map<Hero, any>();

@@ -1,4 +1,5 @@
 import { Effect } from '../effects/Effect';
+import { Grades } from './Grades';
 
 export enum DwarfType {
   Blacksmith = 1,
@@ -16,7 +17,7 @@ export type Card = {
   age: number;
   type: DwarfType | RoyalOffering;
   copies?: number;
-  bravery?: number[];
+  grades?: Grades;
   minPlayers?: number;
   effects?: Effect[];
 };

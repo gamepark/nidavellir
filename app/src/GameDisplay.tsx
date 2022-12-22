@@ -1,53 +1,115 @@
 /** @jsxImportSource @emotion/react */
-import { css, keyframes } from '@emotion/react';
+import { css } from '@emotion/react';
 import GameView from '@gamepark/nidavellir/state/view/GameView';
-import { Letterbox } from '@gamepark/react-components';
 import { PlayerBoard } from './material/player/PlayerBoard';
-import { TableProvider, useDisplayedPlayers } from './table/TableContext';
+import { TableProvider } from './table/TableContext';
 import { Taverns } from './material/tavern/Taverns';
 import { CoinTokens } from './material/coin/CoinTokens';
 import { AgeCards } from './material/card/AgeCards';
 import { HeroCards } from './material/card/HeroCards';
 import { GemTokens } from './material/gem/GemTokens';
 import { DistinctionCards } from './material/card/DistinctionCards';
+import { gameWidth, navigationWidth, playerPanelsWidth } from './material/Styles';
+import { passMove } from '@gamepark/nidavellir/moves/Pass';
+import { useState } from 'react';
+import { usePlacements, VIEWS, ViewType } from './material/View';
+import { usePlay, usePlayerId } from '@gamepark/react-client';
 
 type Props = {
   game: GameView;
 };
 
 export default function GameDisplay({ game }: Props) {
-  const displayedPlayers = useDisplayedPlayers(game.players);
+  const [view, setView] = useState<ViewType>(ViewType.GLOBAL);
+  const placements = usePlacements(game.players);
+
+  // TODO: REMOVE IT FROM THIS COMPONENT
+  const play = usePlay();
+  const playerId = usePlayerId();
+  const views = [
+    { type: ViewType.GLOBAL, label: 'Global' },
+    { type: ViewType.TAVERNS, label: 'Taverns' },
+    { type: ViewType.HEROES, label: 'Heroes' },
+    { type: ViewType.TREASURE, label: 'Treasure' },
+  ];
 
   return (
-    <Letterbox css={letterBoxStyle} top={0}>
-      <TableProvider players={displayedPlayers}>
-        {game.players.map((p, index) => (
-          <PlayerBoard key={p.id} player={p.id} index={index} game={game} />
-        ))}
-        <GemTokens game={game} />
-        <Taverns />
-        <AgeCards game={game} />
-        <HeroCards game={game} />
-        <DistinctionCards game={game} />
-        <CoinTokens game={game} />
-      </TableProvider>
-    </Letterbox>
+    <>
+      <div css={gameArea}>
+        <TableProvider view={view} placements={placements} views={VIEWS}>
+          {game.players.map((p, index) => (
+            <PlayerBoard key={p.id} player={p.id} index={index} game={game} />
+          ))}
+          <GemTokens game={game} />
+          <Taverns />
+          <AgeCards game={game} />
+          <HeroCards game={game} />
+          <DistinctionCards game={game} />
+          <CoinTokens game={game} />
+        </TableProvider>
+      </div>
+      <div css={navigationArea}>
+        {views.map((v, index) => {
+          return (
+            <button
+              key={index}
+              css={css`
+                position: absolute;
+                top: ${index * 9 + 5}em;
+                left: 0;
+                width: 7em;
+                height: 7em;
+                border-radius: 0 50% 50% 0;
+              `}
+              onClick={() => setView(v.type)}
+            >
+              {v.label}
+            </button>
+          );
+        })}
+        <button
+          key="pass"
+          css={css`
+            position: absolute;
+            top: ${views.length * 9 + 5}em;
+            left: 0;
+            width: 7em;
+            height: 7em;
+            border-radius: 0 50% 50% 0;
+          `}
+          onClick={() => play(passMove(playerId))}
+        >
+          Pass
+        </button>
+      </div>
+      <div css={playersArea} />
+    </>
   );
 }
 
-const fadeIn = keyframes`
-  from, 50% {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+const navigationArea = css`
+  position: absolute;
+  top: 7em;
+  height: 93em;
+  width: ${navigationWidth}em;
+  left: 0;
+`;
+const gameAreaWidth = gameWidth - playerPanelsWidth - navigationWidth;
+const gameArea = css`
+  position: absolute;
+  height: 93em;
+  width: ${gameAreaWidth}em;
+  left: ${gameAreaWidth / 2 + navigationWidth}em;
+  transform: translate(-50%, -50%);
+  top: 50%;
 `;
 
-const letterBoxStyle = css`
-  > div {
-    top: 7em;
-  }
-
-  animation: ${fadeIn} 3s ease-in forwards;
+const playersArea = css`
+  position: absolute;
+  right: 0;
+  height: 93em;
+  width: ${playerPanelsWidth}em;
+  background-color: goldenrod;
+  transform: translateY(-50%);
+  top: 50%;
 `;

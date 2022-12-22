@@ -5,6 +5,7 @@ import { HuntingMaster } from './HuntingMaster';
 import { CrownJeweler } from './CrownJeweler';
 import { PioneerOfTheKingdom } from './PioneerOfTheKingdom';
 import { KingsGreatArmorer } from './KingsGreatArmorer';
+import { YludEffect } from './YludEffect';
 
 export type Effect =
   | TransformCoin
@@ -13,4 +14,5 @@ export type Effect =
   | HuntingMaster
   | CrownJeweler
   | PioneerOfTheKingdom
-  | KingsGreatArmorer;
+  | KingsGreatArmorer
+  | YludEffect;

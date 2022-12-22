@@ -8,6 +8,12 @@ import { View } from './View';
 import { DwarfType, RoyalOffering } from '@gamepark/nidavellir/cards/Card';
 import { HeroType } from '@gamepark/nidavellir/cards/Hero';
 
+export const gameWidth = 185;
+export const gameHeight = 100;
+export const navigationWidth = 7;
+export const playerPanelsWidth = 38;
+export const BASE_SCALE = 0.24;
+
 export const coinTokenRatio = 1;
 export const coinTokenHeight = 14.4;
 export const coinTokenWidth = coinTokenHeight / coinTokenRatio;
@@ -36,76 +42,76 @@ export const playerBoardColumnHeight = playerBoardHeight + 20;
 
 export const playerBoardPositions: Positions[] = [
   {
-    left: 50,
-    top: 240,
+    left: 29,
+    top: 295,
     rotateZ: 0,
     viewPosition: {
-      left: -33.5,
-      top: -224.5,
-      transform: 'scale(0.95)',
+      left: -91.7,
+      top: -267,
+      transform: 'scale(0.74)',
     },
   },
   {
-    left: 50,
+    left: 29,
     top: 12,
     rotateZ: 0,
     viewPosition: {
-      left: -33.5,
-      top: -8,
-      transform: 'scale(0.95)',
+      left: -91.5,
+      top: -42,
+      transform: 'scale(0.74)',
     },
   },
   {
-    left: 247,
+    left: 226,
     top: 12,
     rotateZ: 0,
     viewPosition: {
-      left: -220.5,
-      top: -8,
-      transform: 'scale(0.95)',
+      left: -237.3,
+      top: -42,
+      transform: 'scale(0.74)',
     },
   },
   {
-    left: 445,
+    left: 424,
     top: 12,
     rotateZ: 0,
     viewPosition: {
-      left: -408.8,
-      top: -8,
-      transform: 'scale(0.95)',
+      left: -384,
+      top: -42,
+      transform: 'scale(0.74)',
     },
   },
   {
-    left: 445,
-    top: 240,
+    left: 424,
+    top: 295,
     rotateZ: 0,
     viewPosition: {
-      left: -408.8,
-      top: -225,
-      transform: 'scale(0.95)',
+      left: -384,
+      top: -267,
+      transform: 'scale(0.74)',
     },
   },
 ];
 
-export const treasureLeft = 35;
-export const treasureTop = 158;
+export const treasureLeft = 14;
+export const treasureTop = 200;
 
-export const age1DeckTop = 130;
+export const age1DeckTop = 160;
 export const age2DeckTop = age1DeckTop + cardHeight + 10;
-export const ageDeckLeft = 197;
+export const ageDeckLeft = 176;
 
 export const tavernRatio = 1;
 export const tavernWidth = 38;
 export const tavernHeight = tavernWidth / tavernRatio;
 
-export const tavernLeft = 225;
-export const tavernTop = (tavern: number) => 107 + tavern * (tavernHeight + 1) + (tavern === 2 ? 1 : 0);
+export const tavernLeft = 209;
+export const tavernTop = (tavern: number) => 140 + tavern * (tavernHeight + 1) + (tavern === 2 ? 1 : 0);
 
-export const getCardPositionInTavernY = (tavern: number) => 110 + tavern * (tavernHeight + 1);
-export const getCardPositionInTavernX = (index: number) => tavernLeft + tavernWidth + 5 + index * 27;
+export const getCardPositionInTavernY = (tavern: number) => 143 + tavern * (tavernHeight + 1);
+export const getCardPositionInTavernX = (index: number) => tavernLeft + tavernWidth + 5 + index * (cardWidth + 3);
 
-export const coinPositionInDiscardX = (index: number) => 168 + index * 0.1;
-export const coinPositionInDiscardY = (index: number) => 193 + index * 0.1;
+export const coinPositionInDiscardX = (index: number) => 147 + index * 0.1;
+export const coinPositionInDiscardY = (index: number) => 235 + index * 0.1;
 export const getCoinPositionInHandY = (position: any) => {
   return position.rotateZ === 180 ? (position.top ?? 0) - coinTokenHeight : (position.top ?? 0) + playerBoardHeight;
 };
@@ -120,12 +126,12 @@ export const getCoinPositionInHandRotate = (position: any) => {
   return `${position.rotateZ === 180 ? 'rotateZ(180deg)' : ''}`;
 };
 
-export const getCoinPositionInTreasureY = (token: Coin) => {
+export const getCoinPositionInTreasureY = (token: Coin, _z: number) => {
   return treasureTop + Math.floor((token.value - 5) / 7) * (coinTokenHeight + 3);
 };
 
-export const getCoinPositionInTreasureX = (token: Coin, index?: number) => {
-  return treasureLeft + ((token.value - 5) % 7) * (coinTokenWidth + 3) + (index ?? 0);
+export const getCoinPositionInTreasureX = (token: Coin, z: number, index?: number) => {
+  return treasureLeft + ((token.value - 5) % 7) * (coinTokenWidth + 3) + (index ?? 0) + z * 1.5;
 };
 
 export const getCoinPositionOnPlayerBoardX = (position: any, index: number) => {
@@ -192,8 +198,8 @@ export const getCoinPositionOnPlayerBoardRotation = (position: any) => {
   return position.rotateZ === 180 ? `rotateZ(180deg)` : '';
 };
 
-export const cardPositionInDiscardX = (index: number) => 164 + index * 0.1;
-export const cardPositionInDiscardY = (index: number) => 158 + index * 0.15;
+export const cardPositionInDiscardX = (index: number) => 143 + index * 0.1;
+export const cardPositionInDiscardY = (index: number) => 196 + index * 0.15;
 
 export const getCardPositionInAgeDeckY = (_card: SecretCard, age: number = 1) => {
   const location = _card.location as InAgeDeck;
@@ -206,18 +212,18 @@ export const getCardPositionInAgeDeckX = (card: SecretCard) => {
 };
 
 export const cardInDistinctionDeckX = (index: number) => {
-  return 35.5 + (index ?? 0) * (cardWidth + 3);
+  return 29 + (index ?? 0) * (cardWidth + 3);
 };
 
-export const cardInDistinctionDeckY = 115;
+export const cardInDistinctionDeckY = 155;
 
-export const heroDeckTop = 110;
-export const heroDeckLeft = 422;
+export const heroDeckTop = 143;
+export const heroDeckLeft = 404;
 const heroCardPerLine = 7;
 export const getCardPositionInHeroDeckTop = (index: number) =>
   heroDeckTop + Math.floor(index / heroCardPerLine) * (cardHeight + 8);
 export const getCardPositionInHeroDeckLeft = (index: number) =>
-  heroDeckLeft + (index % heroCardPerLine) * (cardWidth + 5);
+  heroDeckLeft + (index % heroCardPerLine) * (cardWidth + 4);
 
 export const slideKeyframes = keyframes`
   0%, 60% {

@@ -46,6 +46,7 @@ class TurnPreparationRules extends NidavellirRules {
       case MoveType.NextPhase:
         this.state.phase = Phase.TavernResolution;
         this.state.steps = [Step.BidRevelation];
+        this.state.tavern = 0;
         break;
       case MoveType.MoveCoin:
         this.onGetCoinInHand(move);
@@ -59,7 +60,6 @@ class TurnPreparationRules extends NidavellirRules {
     );
 
     if (!coin) {
-      console.log(move);
       throw new Error(`There is an error, the coin to get in hand was not found ${JSON.stringify(move)}`);
     }
 

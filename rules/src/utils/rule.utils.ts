@@ -7,12 +7,12 @@ import { TavernResolutionRules } from '../rules/TavernResolutionRules';
 import { TurnPreparationRules } from '../rules/TurnPreparationRules';
 import { NidavellirRules } from '../rules/NidavellirRules';
 
-export const getRules = (state: GameState | GameView): NidavellirRules => {
+export const getRules = (state: GameState | GameView): NidavellirRules[] => {
   if (isAge1(state)) {
-    return new Age1Rules(state);
+    return [new Age1Rules(state)];
   }
 
-  return new Age2Rules(state);
+  return [new Age2Rules(state)];
 };
 
 export const getPhaseRules = (state: GameState | GameView): NidavellirRules | undefined => {

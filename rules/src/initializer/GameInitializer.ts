@@ -7,7 +7,6 @@ import { LocatedGem } from '../state/LocatedGem';
 import { Cards } from '../cards/Cards';
 import { LocationType } from '../state/Location';
 import shuffle from 'lodash/shuffle';
-import { groupBy, partition } from 'lodash';
 import { Distinctions } from '../cards/Distinctions';
 import { Coins } from '../coins/Coins';
 import { CoinColor } from '../coins/Coin';
@@ -15,6 +14,9 @@ import { Gems } from '../gems/Gems';
 import { Heroes } from '../cards/Heroes';
 import { getCardByTavern } from '../utils/tavern.utils';
 import { TAVERN_COUNT } from '../utils/constants';
+import values from 'lodash/values';
+import groupBy from 'lodash/groupBy';
+import partition from 'lodash/partition';
 
 class GameInitializer {
   private options: NidavellirOptions;
@@ -29,7 +31,6 @@ class GameInitializer {
     );
 
     const [age1, age2] = partition(shuffle(cards), (c) => c[1].age === 1);
-    const rounds = this.options.players.length < 4 ? 4 : 3;
 
     const cardsByTavern = getCardByTavern(this.options.players.map((p) => p.id));
     const numberOfCard = cardsByTavern * TAVERN_COUNT;
@@ -45,13 +46,13 @@ class GameInitializer {
           },
         })
       ),
-      ...age1.slice(0, (rounds - 1) * numberOfCard).map(
+      ...age1.map(
         ([id], index): LocatedCard => ({
           id,
           location: { type: LocationType.Age1Deck, index },
         })
       ),
-      ...age2.slice(0, (rounds - 1) * numberOfCard).map(
+      ...age2.map(
         ([id], index): LocatedCard => ({
           id,
           location: { type: LocationType.Age2Deck, index },
@@ -62,7 +63,10 @@ class GameInitializer {
 
   private initializeCoins = (): LocatedCoin[] => {
     const coins = Array.from(Coins.entries());
-    const goldCoins = coins.filter((c) => c[1].color === CoinColor.Gold);
+    const goldCoins = groupBy(
+      coins.filter((c) => c[1].color === CoinColor.Gold),
+      (c) => c[1].value
+    );
     const baseCoinsByValue: Record<number, any> = groupBy(
       coins.filter((c) => c[1].color === CoinColor.Bronze),
       (c) => c[1].value
@@ -84,11 +88,11 @@ class GameInitializer {
           };
         });
       }),
-      ...goldCoins.map(
-        ([id]): LocatedCoin => ({
+      ...values(goldCoins).flatMap((c): LocatedCoin[] =>
+        c.map(([id], index) => ({
           id,
-          location: { type: LocationType.Treasure },
-        })
+          location: { type: LocationType.Treasure, z: index },
+        }))
       ),
     ];
   };
@@ -143,6 +147,8 @@ class GameInitializer {
     phase: Phase.TurnPreparation,
     steps: [Step.Bids],
     nextMoves: [],
+    tavern: 0,
+    round: 1,
   });
 }
 

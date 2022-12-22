@@ -9,7 +9,6 @@ import { Step } from '../state/GameState';
 import { getCurrentTavernCards, nextTavern } from '../utils/tavern.utils';
 import { LocationType } from '../state/Location';
 import { isInDiscard } from '../utils/location.utils';
-import { EffectsRules } from '../effects/EffectsRules';
 import MoveView from '../moves/MoveView';
 import { moveKnownCardMove } from '../moves/MoveCard';
 import isEmpty from 'lodash/isEmpty';
@@ -20,10 +19,6 @@ class EvalandTurnRules extends NidavellirRules {
     const activePlayer = getActivePlayer(this.state);
     if (!activePlayer) {
       return;
-    }
-
-    if (activePlayer?.effects?.length) {
-      return new EffectsRules[activePlayer.effects[0].type](this.state, activePlayer!);
     }
 
     if (activePlayer.drawn === undefined) {
@@ -69,7 +64,6 @@ class EvalandTurnRules extends NidavellirRules {
       } else {
         nextTavern(this.state);
       }
-      console.log(discardMoves);
       return discardMoves;
     }
 

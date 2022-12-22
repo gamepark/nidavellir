@@ -1,7 +1,6 @@
 import { NidavellirRules } from './NidavellirRules';
 import Move from '../moves/Move';
 import { isOnPlayerBoard } from '../utils/location.utils';
-import { getCurrentTavern } from '../utils/tavern.utils';
 import MoveView from '../moves/MoveView';
 import { revealCoinMove } from '../moves/MoveCoin';
 import MoveType from '../moves/MoveType';
@@ -10,7 +9,7 @@ import { getNextPlayer } from '../utils/player.utils';
 
 class BidRevelationRules extends NidavellirRules {
   getAutomaticMoves(): (Move | MoveView)[] {
-    const tavern = getCurrentTavern(this.state, false);
+    const tavern = this.state.tavern;
     const tavernCoins = this.state.coins.filter((c) => isOnPlayerBoard(c.location) && c.location.index === tavern);
 
     if (tavernCoins.some((c) => c.hidden)) {
@@ -23,7 +22,6 @@ class BidRevelationRules extends NidavellirRules {
   play(move: Move | MoveView) {
     switch (move.type) {
       case MoveType.MoveCoin:
-        console.log('Moving coin');
         this.onMoveCoin();
     }
 
@@ -31,7 +29,7 @@ class BidRevelationRules extends NidavellirRules {
   }
 
   onMoveCoin = () => {
-    const tavern = getCurrentTavern(this.state, false);
+    const tavern = this.state.tavern;
     const remainingCoinToReveal = this.state.coins.find(
       (c) => isOnPlayerBoard(c.location) && c.location.index === tavern && c.hidden
     );

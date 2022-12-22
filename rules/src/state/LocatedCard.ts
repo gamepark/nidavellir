@@ -1,6 +1,8 @@
 import { LocationType } from './Location';
 import { InDiscard, OnPlayerBoard } from './CommonLocations';
 import { PlayerId } from './Player';
+import { DwarfType } from '../cards/Card';
+import { HeroType } from '../cards/Hero';
 
 export type InAgeDeck = {
   type: LocationType.Age1Deck | LocationType.Age2Deck;
@@ -29,10 +31,14 @@ export type InCommandZone = {
   index: number;
 };
 
+export type OnPlayerBoardCard = OnPlayerBoard & {
+  column: DwarfType | HeroType;
+};
+
 export type CardLocation =
   | InAgeDeck
   | InHeroesDeck
-  | OnPlayerBoard
+  | OnPlayerBoardCard
   | InDistinctionDeck
   | InTavern
   | InDiscard

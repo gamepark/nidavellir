@@ -1,7 +1,7 @@
 import GameState from '../state/GameState';
 import { LocationType } from '../state/Location';
 import GameView from '../state/view/GameView';
-import { getCardByTavern, getCurrentTavern } from './tavern.utils';
+import { getCardByTavern } from './tavern.utils';
 import { TAVERN_COUNT } from './constants';
 import { isInAgeDeck } from './location.utils';
 import { getTavernCoins } from './coin.utils';
@@ -23,11 +23,8 @@ export const drawTavernCards = (state: GameState) => {
 
 export const getTrades = (state: GameState | GameView) => {
   // Here, the tavern for the gem trade must be the previous one (to get right coins)
-  const tavern = getCurrentTavern(state);
+  const tavern = state.tavern;
   const tavernCoins = getTavernCoins(state, tavern);
-
-  console.log('Tavern', tavern);
-  console.log('Tavern coins', tavernCoins);
 
   // Group coins by values (to see tie)
   const coinsByValue = groupBy(tavernCoins, (c) => {

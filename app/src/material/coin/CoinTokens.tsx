@@ -15,8 +15,7 @@ type CoinTokensProps = {
 const CoinTokens: FC<CoinTokensProps> = (props) => {
   const { game } = props;
   const playerId = usePlayerId();
-  const moves = useLegalMoves<MoveCoin>(game, playerId, MoveType.MoveCoin);
-  console.log(moves);
+  const moves = useLegalMoves<MoveCoin>(game, playerId, [MoveType.MoveCoin]);
   const getCoinTokenMoves = useCallback(
     (c: SecretCoin) =>
       moves.filter((m) => (c.id !== undefined ? m.id === c.id : isSameCoinLocation(m.source!, c.location))),

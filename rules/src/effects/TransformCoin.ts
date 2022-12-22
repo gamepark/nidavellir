@@ -11,7 +11,6 @@ import { CoinColor } from '../coins/Coin';
 import { MoveCoin, moveCoinAndRevealMove, moveKnownCoinMove } from '../moves/MoveCoin';
 import GameState from '../state/GameState';
 import { getTreasureCoinForValue, getTreasureCoins } from '../utils/coin.utils';
-import { getCurrentTavern } from '../utils/tavern.utils';
 import GameView from '../state/view/GameView';
 import { PlayerId } from '../state/Player';
 
@@ -43,8 +42,12 @@ export class TransformCoinRules extends EffectRules {
             index: nextDiscardIndex,
           });
         } else {
+          const numberOfCoinOfThisValues = this.state.coins.filter(
+            (c) => isInTreasure(c.location) && Coins[c.id!].value === coin.value
+          ).length;
           return coinMove(c.id!, {
             type: LocationType.Treasure,
+            z: numberOfCoinOfThisValues,
           });
         }
       });
@@ -75,10 +78,8 @@ export class TransformCoinRules extends EffectRules {
   onDiscardCoin = (move: MoveCoin) => {
     if (move.target && isOnPlayerBoard(move.target) && this.player.discarded?.coin !== undefined) {
       const coin = this.state.coins.find((c) => c.id === move.id)!;
-      const tavern = getCurrentTavern(this.state, false);
+      const tavern = this.state.tavern;
 
-      console.log('Current tavern', tavern);
-      console.log('Coin tavern', move.target.index);
       if (
         move.target.index !== undefined &&
         move.target.index > tavern &&

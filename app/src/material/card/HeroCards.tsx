@@ -14,7 +14,7 @@ type AgeCardsProps = {
 const HeroCards: FC<AgeCardsProps> = (props) => {
   const { game } = props;
   const playerId = usePlayerId();
-  const moves = useLegalMoves<MoveHero>(game, playerId, MoveType.MoveHero);
+  const moves = useLegalMoves<MoveHero>(game, playerId, [MoveType.MoveHero]);
   const getCardMoves = useCallback((c: SecretCard) => moves.filter((m) => m.id === c.id), [moves]);
 
   return (

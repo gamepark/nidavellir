@@ -24,18 +24,22 @@ class RecruitHeroRules extends EffectRules {
     // This computing is here to reduce complexity and prevent computing the next index for each heroes (while there is only 5 types of dwarves vs 20+ hero card)
 
     const nextIndexesByType = getNextIndexByType(this.state, this.player.id);
-    console.log('Next indexes', nextIndexesByType);
-    return this.state.heroes.flatMap((h) => {
-      if (!isInHeroDeck(h.location)) {
-        return [];
-      }
-      const nextIndex = nextIndexesByType[Heroes[h.id!].type].nextIndex;
-      return moveHeroMove(h.id, {
-        type: LocationType.PlayerBoard,
-        player: this.player.id,
-        index: nextIndex,
+    return this.state.heroes
+      .filter((h) => {
+        const hero = Heroes[h.id];
+        return isInHeroDeck(h.location) && (!hero.condition || hero.condition.isActive(this.state, this.player.id));
+      })
+      .flatMap((h) => {
+        const hero = Heroes[h.id];
+        const nextIndex = nextIndexesByType[Heroes[h.id!].type].nextIndex;
+        // TODO: there is a case where the hero can be placed à several places
+        return moveHeroMove(h.id, {
+          type: LocationType.PlayerBoard,
+          player: this.player.id,
+          index: nextIndex,
+          column: hero.type,
+        });
       });
-    });
   }
 
   play(move: Move | MoveView) {

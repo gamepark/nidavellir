@@ -10,8 +10,9 @@ import MoveView from '../moves/MoveView';
 class Age1Rules extends NidavellirRules {
   delegate(): NidavellirRules | undefined {
     switch (this.state.steps[0]) {
-      case Step.TroopEvaluation:
+      case Step.TroopEvaluation: {
         return new TroopEvaluationRules(this.state);
+      }
     }
     return getPhaseRules(this.state);
   }
@@ -33,6 +34,7 @@ class Age1Rules extends NidavellirRules {
 
     const remainingAge1Cards = this.state.cards.filter((c) => c.location.type === LocationType.Age1Deck).length;
     if (!remainingAge1Cards) {
+      // TODO: Here compute the Ylud and company effects
       this.state.steps = [Step.TroopEvaluation];
     }
   }

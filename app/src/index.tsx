@@ -9,6 +9,7 @@ import App from './App';
 import NidavellirView from './NidavellirView';
 import translations from './translations.json';
 import NidavellirAnimations from './animation/NidavellirAnimations';
+import { gameHeight, gameWidth } from './material/Styles';
 
 setupTranslation(translations);
 
@@ -31,8 +32,8 @@ const style = css`
     margin: 0;
     font-family: 'Oswald', 'Roboto Light', serif;
     font-size: 1vh;
-    @media (max-aspect-ratio: 16/9) {
-      font-size: calc(9vw / 16);
+    @media (max-aspect-ratio: ${gameWidth}/${gameHeight}) {
+      font-size: ${gameHeight / gameWidth}vw;
     }
   }
 

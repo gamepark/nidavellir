@@ -6,4 +6,5 @@ export enum EffectType {
   CROWN_JEWELER,
   KINGS_GREAT_ARMORER,
   PIONEER_OF_THE_KINGDOM,
+  YLUD,
 }

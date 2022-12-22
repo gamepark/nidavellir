@@ -5,6 +5,7 @@ import {
   InDistinctionDeck,
   InHeroesDeck,
   InTavern,
+  OnPlayerBoardCard,
 } from '../state/LocatedCard';
 import { LocationType } from '../state/Location';
 import GameState from '../state/GameState';
@@ -22,7 +23,9 @@ export const isInAgeDeck = (location: CardLocation): location is InAgeDeck =>
   isInAge1Deck(location) || isInAge2Deck(location);
 export const isInPlayerHand = (location: CoinLocation | CardLocation): location is InPlayerHand =>
   location.type === LocationType.PlayerHand;
-export const isOnPlayerBoard = (location: CoinLocation | CardLocation | GemLocation): location is OnPlayerBoard =>
+export const isOnPlayerBoard = (location: CoinLocation | GemLocation): location is OnPlayerBoard =>
+  location.type === LocationType.PlayerBoard && location.player !== undefined;
+export const isOnPlayerBoardCard = (location: CardLocation): location is OnPlayerBoardCard =>
   location.type === LocationType.PlayerBoard && location.player !== undefined;
 export const isInTreasure = (location: CoinLocation): location is InTreasure => location.type === LocationType.Treasure;
 export const isInDiscard = (location: CardLocation | CoinLocation): location is InDiscard =>

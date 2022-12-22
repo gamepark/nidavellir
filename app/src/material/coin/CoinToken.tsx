@@ -141,9 +141,10 @@ const coinPosition = (coin: SecretCoin, playerPositions: any) => {
     )}em, ${coinTokenWidth / 2}em) ${getCoinPositionInHandRotate(position)}`;
   } else if (isInTreasure(coin.location)) {
     const token = Coins[coin.id!];
-    return `translate3d(${getCoinPositionInTreasureX(token)}em, ${getCoinPositionInTreasureY(token)}em, ${
-      coinTokenWidth / 2
-    }em)`;
+    return `translate3d(${getCoinPositionInTreasureX(token, coin.location.z)}em, ${getCoinPositionInTreasureY(
+      token,
+      coin.location.z
+    )}em, ${coinTokenWidth / 2}em)`;
   } else if (isOnPlayerBoard(coin.location)) {
     const position = playerBoardPositions[playerPositions[coin.location.player]];
     return `translate3d(${getCoinPositionOnPlayerBoardX(
@@ -171,6 +172,10 @@ const coinZIndex = (coin: SecretCoin) => {
   } else if (isInPlayerHand(coin.location)) {
     return css`
       z-index: 50;
+    `;
+  } else if (isInTreasure(coin.location)) {
+    return css`
+      z-index: ${coin.location.z};
     `;
   }
 

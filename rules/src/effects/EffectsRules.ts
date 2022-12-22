@@ -10,6 +10,7 @@ import { HuntingMasterRules } from './HuntingMaster';
 import { PioneerOfTheKingdomRules } from './PioneerOfTheKingdom';
 import { CrownJewelerRules } from './CrownJeweler';
 import { TradeCoinRules } from './TradeCoin';
+import { YludRules } from './YludEffect';
 
 export const EffectsRules: Record<EffectType, new (game: GameState | GameView, player: Player) => EffectRules> = {
   [EffectType.TRANSFORM_COIN]: TransformCoinRules,
@@ -19,4 +20,5 @@ export const EffectsRules: Record<EffectType, new (game: GameState | GameView, p
   [EffectType.HUNTING_MASTER]: HuntingMasterRules,
   [EffectType.PIONEER_OF_THE_KINGDOM]: PioneerOfTheKingdomRules,
   [EffectType.CROWN_JEWELER]: CrownJewelerRules,
+  [EffectType.YLUD]: YludRules,
 };

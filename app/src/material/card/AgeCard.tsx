@@ -116,7 +116,7 @@ import {
   isInAge1Deck,
   isInAgeDeck,
   isInTavern,
-  isOnPlayerBoard,
+  isOnPlayerBoardCard,
   isSameCardLocation,
 } from '@gamepark/nidavellir/utils/location.utils';
 import Images from '../../images/Images';
@@ -127,6 +127,7 @@ import { usePlayerPositions } from '../../table/TableContext';
 import { Draggable } from '@gamepark/react-components';
 import { draggableCard, DraggableMaterial } from '../../draggable/DraggableMaterial';
 import { useProjection } from '../View';
+import Move from '@gamepark/nidavellir/moves/Move';
 
 type AgeCardProps = {
   card: SecretCard;
@@ -168,6 +169,12 @@ const AgeCard: FC<AgeCardProps> = (props) => {
   const animation = useAnimation(({ move }) => move.type === MoveType.MoveCard && isThisCard(card, move));
   const animations = useAnimations();
 
+  const onDrop = (move: Move) => {
+    if (move) {
+      play(move);
+    }
+  };
+
   const chooseCard = () => {
     if (!isSelectable) {
       return;
@@ -185,6 +192,7 @@ const AgeCard: FC<AgeCardProps> = (props) => {
       type={DraggableMaterial.Card}
       item={item}
       projection={projection}
+      drop={onDrop}
       preTransform={cardPosition(card, age, playerPositions, !detail ? `rotateY(180deg)` : '')}
       css={[
         ageCard,
@@ -205,7 +213,7 @@ const transitionFor = (animation: Animation) => css`
   z-index: 100;
 
   // FIXME: change top / left to transform
-  transition: ${animation.duration}s transform, ${animation.duration}s top, ${animation.duration}s left;
+  transition: ${animation.duration}s transform;
 `;
 
 const selectable = css`
@@ -267,11 +275,11 @@ const cardPosition = (card: SecretCard, age: number = 1, playerPositions: any, p
     `;
   }
 
-  if (isOnPlayerBoard(card.location)) {
+  if (isOnPlayerBoardCard(card.location)) {
     const position = playerBoardPositions[playerPositions[card.location.player]];
     return `${preTransform}
         translate(
-          ${getCardPositionOnPlayerBoardX(position, Cards[card.id!].type)}em,
+          ${getCardPositionOnPlayerBoardX(position, card.location.column)}em,
           ${getCardPositionOnPlayerBoardY(position, card.location.index!)}em
         )
         ${getCardPositionOnPlayerBoardTransform(position)}
@@ -285,7 +293,7 @@ const cardPosition = (card: SecretCard, age: number = 1, playerPositions: any, p
 };
 
 const cardZIndex = (card: SecretCard) => {
-  if (isOnPlayerBoard(card.location)) {
+  if (isOnPlayerBoardCard(card.location)) {
     return css`
       z-index: ${card.location.index};
     `;

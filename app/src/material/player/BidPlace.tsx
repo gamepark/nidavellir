@@ -20,10 +20,7 @@ const BidPlace: FC<BidPlaceProps> = (props) => {
   const canDrop = (item: DraggableCoin) => !!moves.find((m) => m.id === item.id);
   const [{ isOver, isDragging }, ref] = useDrop({
     accept: DraggableMaterial.Coin,
-    canDrop: (item: DraggableCoin) => {
-      //console.log(moves, item);
-      return !!moves.find((m) => m.id === item.id);
-    },
+    canDrop,
     drop: (item: DraggableCoin) =>
       moveKnownCoinMove(item.id, {
         type: LocationType.PlayerBoard,

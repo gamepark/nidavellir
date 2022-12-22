@@ -8,6 +8,10 @@ import Move from '@gamepark/nidavellir/moves/Move';
 import { isInPlayerHand, isInTavern } from '@gamepark/nidavellir/utils/location.utils';
 
 export default class NidavellirAnimations extends Animations<GameState | GameView, Move | MoveView, PlayerId> {
+  getUndoPostDuration(move: Move | MoveView): number {
+    return this.getPostDuration(move);
+  }
+
   getPostDuration(move: MoveView): number {
     switch (move.type) {
       case MoveType.MoveCoin:

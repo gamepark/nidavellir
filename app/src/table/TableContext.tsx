@@ -1,145 +1,93 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { createContext, FC, useContext, useMemo, useState } from 'react';
-import { Player } from '@gamepark/nidavellir/state/Player';
-import { usePlay, usePlayerId } from '@gamepark/react-client';
+import { createContext, FC, useContext, useMemo } from 'react';
+import { Player, PlayerId } from '@gamepark/nidavellir/state/Player';
+import { usePlayerId } from '@gamepark/react-client';
 import partition from 'lodash/partition';
 import flatten from 'lodash/flatten';
-import { GRID_SIZE, playerBoardPositions, treasureTop } from '../material/Styles';
-import { View, ViewType } from '../material/View';
-import { passMove } from '@gamepark/nidavellir/moves/Pass';
+import { BASE_SCALE } from '../material/Styles';
+import { View, Views, ViewType } from '../material/View';
 
 type TableContextValue = {
-  playerPlacement: Record<number, number>;
+  placements: Record<number, number>;
   view: View;
 };
 
 export const TableContext = createContext<TableContextValue>({
-  playerPlacement: [],
-  view: { type: ViewType.GLOBAL, scale: 1 / GRID_SIZE },
+  placements: [],
+  view: { type: ViewType.GLOBAL, scale: BASE_SCALE },
 });
-export const usePlayerPositions = () => useContext(TableContext).playerPlacement;
+export const usePlayerPositions = () => useContext(TableContext).placements;
 export const useCameraView = () => useContext(TableContext).view;
-export const useDisplayedPlayers = (players: Player[]): Player[] => {
+export const useDisplayedPlayers = (players: Player[]): PlayerId[] => {
   const playerId = usePlayerId();
   return useMemo(() => {
     if (playerId === undefined) {
-      return players;
+      return players.map((p) => p.id);
     }
 
-    return flatten(partition(players, (p) => p.id === playerId));
-  }, [players, playerId]);
+    return flatten(partition(players, (p) => p.id === playerId)).map((p) => p.id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // Needed because only id matters
+  }, [playerId]);
 };
 
 type TableContextProps = {
-  players: Player[];
+  placements: Record<number, number>;
+  view: ViewType;
+  views: Views;
 };
 
-const TableProvider: FC<TableContextProps> = ({ players, children }) => {
-  const playerPlacement = useMemo(() => {
-    switch (players.length) {
-      case 2:
-        return { [players[0].id]: 0, [players[1].id]: 3 };
-      case 3:
-        return { [players[0].id]: 0, [players[1].id]: 1, [players[2].id]: 3 };
-      case 4:
-        return { [players[0].id]: 0, [players[1].id]: 1, [players[2].id]: 3, [players[3].id]: 4 };
-      default:
-        return { [players[0].id]: 0, [players[1].id]: 1, [players[2].id]: 2, [players[3].id]: 3, [players[4].id]: 4 };
-    }
-  }, [players]);
-  const [view, setView] = useState<View>({ type: ViewType.GLOBAL, scale: 1 / GRID_SIZE });
+const TableProvider: FC<TableContextProps> = (props) => {
+  const { views, view, placements, children } = props;
+  const currentView = views[view];
 
-  // TODO: REMOVE IT FROM THIS COMPONENT
-  const play = usePlay();
-  const playerId = usePlayerId();
-
-  const playerKeys = Object.keys(playerPlacement);
-  const views = [
-    { type: ViewType.GLOBAL, label: 'Global', scale: 1 / GRID_SIZE },
-    ...playerKeys.map((k) => ({ type: ViewType.PLAYER, player: k, label: `Player #${k}`, scale: 1 })),
-    { type: ViewType.TAVERNS, label: 'Taverns', scale: 0.8 },
-    { type: ViewType.HEROES, label: 'Heroes', scale: 0.8 },
-    { type: ViewType.TREASURE, label: 'Treasure', scale: 0.8 },
-  ];
   return (
-    <TableContext.Provider value={{ playerPlacement, view }}>
+    <TableContext.Provider value={{ placements, view: currentView }}>
       <div
         css={[
           playingArea,
-          view.type === ViewType.GLOBAL && globalView(view.scale),
-          view.type === ViewType.TREASURE && treasureView(view.scale),
-          view.type === ViewType.TAVERNS && tavernView(view.scale),
-          view.type === ViewType.HEROES && heroesView(view.scale),
-          view.type === ViewType.PLAYER &&
-            playerViewStyle(playerBoardPositions[playerPlacement[view.player]], view.scale),
+          view === ViewType.GLOBAL && globalView(currentView.scale),
+          view === ViewType.TREASURE && treasureView(currentView.scale),
+          view === ViewType.TAVERNS && tavernView(currentView.scale),
+          view === ViewType.HEROES && heroesView(currentView.scale),
+          /**currentView.type === ViewType.PLAYER &&
+           playerViewStyle(playerBoardPositions[playerPlacement[currentView.player]], currentView.scale)*/
         ]}
       >
         {children}
       </div>
-      {views.map((v, index) => {
-        return (
-          <button
-            key={index}
-            css={css`
-              position: absolute;
-              top: ${index * 9 + 5}em;
-              left: 0;
-              width: 7em;
-              height: 7em;
-              border-radius: 0 50% 50% 0;
-            `}
-            onClick={() => setView(v)}
-          >
-            {v.label}
-          </button>
-        );
-      })}
-      <button
-        key="pass"
-        css={css`
-          position: absolute;
-          top: ${views.length * 9 + 5}em;
-          left: 0;
-          width: 7em;
-          height: 7em;
-          border-radius: 0 50% 50% 0;
-        `}
-        onClick={() => play(passMove(playerId))}
-      >
-        Pass
-      </button>
     </TableContext.Provider>
   );
 };
 
-const playerViewStyle = (playerPlacement: any, scale: number) => {
-  return css`
-    transform: translate(${playerPlacement.viewPosition.left}em, ${playerPlacement.viewPosition.top}em)
-      ${playerPlacement.viewPosition.transform} scale(${scale});
-  `;
-};
+// const playerViewStyle = (playerPlacement: any, scale: number) => {
+//   return css`
+//     transform: translate(${playerPlacement.viewPosition.left}em, ${playerPlacement.viewPosition.top}em)
+//       ${playerPlacement.viewPosition.transform} scale(${scale});
+//   `;
+// };
 
 const tavernView = (scale: number) => css`
-  transform: translate(-210em, -116em) scale(${scale});
+  transform: translate(-221em, -151em) scale(${scale});
 `;
 
 const heroesView = (scale: number) => css`
-  transform: translate(-382em, -116em) scale(${scale});
+  transform: translate(-380em, -150em) scale(${scale});
 `;
 
 const treasureView = (scale: number) => css`
-  transform: translate(-50em, -${treasureTop - 40}em) scale(${scale});
+  transform: translate(-60em, -154em) scale(${scale});
 `;
 
 const globalView = (scale: number) => css`
-  transform: scale(${scale}) translate(-${((GRID_SIZE - 1) * 100) / 2}%, -${((GRID_SIZE - 1) * 100) / 2}%);
+  transform: scale(${scale}) translate(-${((1 / BASE_SCALE - 1) * 100) / 2}%, -${((1 / BASE_SCALE - 1) * 100) / 2}%);
 `;
 
 const playingArea = css`
   position: absolute;
-  width: ${GRID_SIZE * 100}%;
-  height: ${GRID_SIZE * 100}%;
+  width: ${(1 / BASE_SCALE) * 100}%;
+  height: ${(1 / BASE_SCALE) * 100}%;
   transition: transform 1.5s, top 1.5s, left 1.5s, bottom 1.5s, right 1.5s;
   //transform-origin: top left;
 `;

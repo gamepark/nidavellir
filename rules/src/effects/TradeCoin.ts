@@ -3,11 +3,10 @@ import { EffectType } from './EffectType';
 import Move from '../moves/Move';
 import MoveType from '../moves/MoveType';
 import { LocationType } from '../state/Location';
-import { isInDiscard, isOnPlayerBoard } from '../utils/location.utils';
+import { isInDiscard, isInTreasure, isOnPlayerBoard } from '../utils/location.utils';
 import { getActivePlayer, isLocatedCoin } from '../utils/player.utils';
 import { Coins } from '../coins/Coins';
 import { MoveCoin, moveKnownCoinMove, revealCoinMove } from '../moves/MoveCoin';
-import { getCurrentTavern } from '../utils/tavern.utils';
 import {
   getPlayerCoinForTavern,
   getPlayerPouch,
@@ -29,7 +28,7 @@ export class TradeCoinRules extends EffectRules {
     const activePlayer = getActivePlayer(this.state);
 
     if (activePlayer) {
-      const tavern = getCurrentTavern(this.state);
+      const tavern = this.state.tavern;
       const revealedCoin = getPlayerCoinForTavern(this.state, activePlayer.id, tavern);
 
       if (!isLocatedCoin(revealedCoin)) {
@@ -57,9 +56,13 @@ export class TradeCoinRules extends EffectRules {
             );
           } else {
             // Set treasure coin to treasure
+            const numberOfCoinOfThisValues = this.state.coins.filter(
+              (c) => isInTreasure(c.location) && Coins[c.id!].value === coin.value
+            ).length;
             moves.push(
               moveKnownCoinMove((maximumCoin as LocatedCoin).id!, {
                 type: LocationType.Treasure,
+                z: numberOfCoinOfThisValues,
               })
             );
           }
@@ -85,7 +88,6 @@ export class TradeCoinRules extends EffectRules {
   }
 
   play(move: Move) {
-    console.log(move);
     switch (move.type) {
       case MoveType.MoveCoin:
         return this.onMoveCoin(move);
@@ -95,7 +97,6 @@ export class TradeCoinRules extends EffectRules {
   }
 
   onMoveCoin(move: MoveCoin) {
-    console.log(this.player.discarded);
     if (move.target && isOnPlayerBoard(move.target) && this.player.discarded?.coin !== undefined) {
       delete this.player.discarded;
       this.player.effects.shift();

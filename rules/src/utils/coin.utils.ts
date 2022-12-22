@@ -2,7 +2,7 @@ import { PlayerId } from '../state/Player';
 import GameState from '../state/GameState';
 import GameView from '../state/view/GameView';
 import { isInDiscard, isInTreasure, isOnPlayerBoard } from './location.utils';
-import { LocatedCoin } from '../state/LocatedCoin';
+import { InTreasure, LocatedCoin } from '../state/LocatedCoin';
 import { SecretCoin } from '../state/view/SecretCoin';
 import { Coins } from '../coins/Coins';
 import orderBy from 'lodash/orderBy';
@@ -57,7 +57,11 @@ export const getTreasureCoinForValue = (
   treasure: (LocatedCoin | SecretCoin)[],
   value: number
 ): LocatedCoin | SecretCoin => {
-  const orderedCoins = orderBy(treasure, (c) => Coins[c.id!].value);
+  const orderedCoins = orderBy(
+    treasure,
+    [(c) => Coins[c.id!].value, (c) => (c.location as InTreasure).z],
+    ['asc', 'desc']
+  );
   const [lowerCoins, higherCoins] = partition(orderedCoins, (c) => Coins[c.id!].value < value);
 
   if (higherCoins.length) {
