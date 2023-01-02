@@ -85,7 +85,6 @@ const HeroCard: FC<HeroCardProps> = (props) => {
   const detail = Heroes[card.id!];
 
   const isSelectable = !animation && !animations.length && !!moves.length;
-  console.warn(isSelectable, item);
   return (
     <Draggable
       canDrag={isSelectable}
@@ -134,7 +133,7 @@ const heroCardFace = (hero: Hero) => css`
   background-image: url(${HeroCardFront.get(hero)!});
   background-size: cover;
   backface-visibility: hidden;
-  box-shadow: 0 0 0.3em black;
+  box-shadow: 0 0 0.7em -0.2em black;
 `;
 
 const heroCardBack = css`
@@ -147,8 +146,6 @@ const heroCardBack = css`
   background-size: cover;
   //background-image: url(); // TODO: hero back
   transform: rotateY(180deg);
-  backface-visibility: hidden;
-  box-shadow: 0 0 0.3em black;
 `;
 
 const cardPosition = (card: SecretCard, playerPositions: any) => {

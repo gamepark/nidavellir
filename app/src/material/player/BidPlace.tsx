@@ -1,12 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { FC } from 'react';
-import { coinTokenHeight, coinTokenWidth, getCoinBidPosition } from '../Styles';
+import { coinTokenHeight, coinTokenWidth, getCoinBidPosition, shineEffect } from '../Styles';
 import { useDrop } from 'react-dnd';
 import { DraggableCoin, DraggableMaterial } from '../../draggable/DraggableMaterial';
 import { MoveCoin, moveKnownCoinMove } from '@gamepark/nidavellir/moves/MoveCoin';
 import { LocationType } from '@gamepark/nidavellir/state/Location';
-import { usePlayerId } from '@gamepark/react-client';
+import { usePlay, usePlayerId } from '@gamepark/react-client';
+import { selectCoinMove } from '@gamepark/nidavellir/moves/SelectCoin';
 
 type BidPlaceProps = {
   index: number;
@@ -15,6 +16,7 @@ type BidPlaceProps = {
 
 const BidPlace: FC<BidPlaceProps> = (props) => {
   const { index, moves } = props;
+  const play = usePlay();
   const playerId = usePlayerId();
 
   const canDrop = (item: DraggableCoin) => !!moves.find((m) => m.id === item.id);
@@ -33,15 +35,43 @@ const BidPlace: FC<BidPlaceProps> = (props) => {
     }),
   });
 
-  return <div ref={ref} css={[bidPlace(index), isDragging && highlightPlace, isOver && overPlace]} />;
-};
+  const isSelectable = moves.length === 1;
+  const selectPlace = () => {
+    if (isSelectable) {
+      play(
+        moveKnownCoinMove(moves[0].id!, {
+          type: LocationType.PlayerBoard,
+          player: playerId,
+          index,
+        })
+      );
+      play(selectCoinMove(), { local: true });
+    }
+  };
 
-const highlightPlace = css`
-  background-color: rgba(255, 255, 255, 0.8);
-`;
+  return (
+    <div
+      ref={ref}
+      onClick={selectPlace}
+      css={[bidPlace(index), (isDragging || isSelectable) && highlightPlace, isOver && overPlace]}
+    />
+  );
+};
 
 const overPlace = css`
   background-color: rgba(255, 255, 255, 1);
+`;
+
+const highlightPlace = css`
+  &:not(:hover) {
+    ${shineEffect};
+  }
+
+  cursor: pointer;
+
+  &:hover {
+    ${overPlace};
+  }
 `;
 
 const bidPlace = (index: number) => {

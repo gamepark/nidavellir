@@ -193,7 +193,7 @@ const AgeCard: FC<AgeCardProps> = (props) => {
       item={item}
       projection={projection}
       drop={onDrop}
-      preTransform={cardPosition(card, age, playerPositions, !detail ? `rotateY(180deg)` : '')}
+      preTransform={`${cardPosition(card, age, playerPositions)} ${!detail ? `rotateY(180deg)` : ''}`}
       css={[
         ageCard,
         cardZIndex(card),
@@ -211,8 +211,6 @@ const AgeCard: FC<AgeCardProps> = (props) => {
 
 const transitionFor = (animation: Animation) => css`
   z-index: 100;
-
-  // FIXME: change top / left to transform
   transition: ${animation.duration}s transform;
 `;
 
@@ -245,6 +243,7 @@ const ageCardFace = (card: Card) => css`
   background-image: url(${AgeCardFront.get(card)!});
   background-size: cover;
   backface-visibility: hidden;
+  box-shadow: 0 0 0.7em -0.2em black;
 `;
 
 const ageCardBack = (age: number = 1) => css`
@@ -258,13 +257,13 @@ const ageCardBack = (age: number = 1) => css`
   background-image: url(${AgeCardBacks.get(age)!});
   transform: rotateY(180deg);
   backface-visibility: hidden;
+  box-shadow: 0 0 0.7em -0.2em black;
 `;
 
-const cardPosition = (card: SecretCard, age: number = 1, playerPositions: any, preTransform: string = '') => {
+// TODO: pass position function to props
+const cardPosition = (card: SecretCard, age: number = 1, playerPositions: any) => {
   if (isInAgeDeck(card.location)) {
-    return `translate(${getCardPositionInAgeDeckX(card)}em, ${getCardPositionInAgeDeckY(card, age)}em)
-        ${preTransform}
-    `;
+    return `translate(${getCardPositionInAgeDeckX(card)}em, ${getCardPositionInAgeDeckY(card, age)}em)`;
   }
 
   if (isInTavern(card.location)) {
@@ -277,8 +276,7 @@ const cardPosition = (card: SecretCard, age: number = 1, playerPositions: any, p
 
   if (isOnPlayerBoardCard(card.location)) {
     const position = playerBoardPositions[playerPositions[card.location.player]];
-    return `${preTransform}
-        translate(
+    return `translate(
           ${getCardPositionOnPlayerBoardX(position, card.location.column)}em,
           ${getCardPositionOnPlayerBoardY(position, card.location.index!)}em
         )
@@ -286,10 +284,9 @@ const cardPosition = (card: SecretCard, age: number = 1, playerPositions: any, p
     `;
   }
 
-  return `
-    ${preTransform}
-      translate(${cardPositionInDiscardX(card.location.index)}em, ${cardPositionInDiscardY(card.location.index)}em)
-  `;
+  return `translate(${cardPositionInDiscardX(card.location.index)}em, ${cardPositionInDiscardY(
+    card.location.index
+  )}em)`;
 };
 
 const cardZIndex = (card: SecretCard) => {

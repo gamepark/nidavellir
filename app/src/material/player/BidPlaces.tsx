@@ -14,13 +14,20 @@ type BidPlacesProps = {
 const BidPlaces: FC<BidPlacesProps> = (props) => {
   const { game } = props;
   const playerId = usePlayerId();
+  const { selectedCoin } = game;
   const moves = useLegalMoves<MoveCoin>(game, playerId, [MoveType.MoveCoin]);
 
   const getBidPlaceMoves = (index: number) =>
-    moves.filter((m) => m.target && isOnPlayerBoard(m.target) && m.target.index === index);
+    moves.filter(
+      (m) =>
+        m.target &&
+        isOnPlayerBoard(m.target) &&
+        m.target.index === index &&
+        (selectedCoin === undefined || selectedCoin === m.id)
+    );
+  console.log(getBidPlaceMoves(0));
   return (
     <>
-      {}
       <BidPlace key={0} index={0} moves={getBidPlaceMoves(0)} />
       <BidPlace key={1} index={1} moves={getBidPlaceMoves(1)} />
       <BidPlace key={2} index={2} moves={getBidPlaceMoves(2)} />

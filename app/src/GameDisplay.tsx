@@ -101,7 +101,7 @@ const gameArea = css`
   width: ${gameAreaWidth}em;
   left: ${gameAreaWidth / 2 + navigationWidth}em;
   transform: translate(-50%, -50%);
-  top: 50%;
+  top: calc(7em + 46.5%);
 `;
 
 const playersArea = css`
@@ -111,5 +111,5 @@ const playersArea = css`
   width: ${playerPanelsWidth}em;
   background-color: goldenrod;
   transform: translateY(-50%);
-  top: 50%;
+  top: calc(7em + 46.5%);
 `;

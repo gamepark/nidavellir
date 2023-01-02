@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { SecretCoin } from '@gamepark/nidavellir/state/view/SecretCoin';
-import { FC } from 'react';
+import { FC, HTMLAttributes } from 'react';
 import { Coin } from '@gamepark/nidavellir/coins/Coin';
 import {
   Coin0,
@@ -33,29 +33,8 @@ import {
   GoldCoin9,
 } from '@gamepark/nidavellir/coins/Coins';
 import Images from '../../images/Images';
-import {
-  coinPositionInDiscardX,
-  coinPositionInDiscardY,
-  coinTokenHeight,
-  coinTokenWidth,
-  getCoinPositionInHandRotate,
-  getCoinPositionInHandX,
-  getCoinPositionInHandY,
-  getCoinPositionInTreasureX,
-  getCoinPositionInTreasureY,
-  getCoinPositionOnPlayerBoardRotation,
-  getCoinPositionOnPlayerBoardX,
-  getCoinPositionOnPlayerBoardY,
-  playerBoardPositions,
-  shineEffect,
-} from '../Styles';
-import {
-  isInDiscard,
-  isInPlayerHand,
-  isInTreasure,
-  isOnPlayerBoard,
-  isSameCoinLocation,
-} from '@gamepark/nidavellir/utils/location.utils';
+import { coinTokenHeight, coinTokenWidth, shineEffect } from '../Styles';
+import { isOnPlayerBoard, isSameCoinLocation } from '@gamepark/nidavellir/utils/location.utils';
 import { usePlayerPositions } from '../../table/TableContext';
 import Move from '@gamepark/nidavellir/moves/Move';
 import { Draggable } from '@gamepark/react-components';
@@ -68,7 +47,10 @@ import { MoveCoin } from '@gamepark/nidavellir/moves/MoveCoin';
 type CoinTokenProps = {
   coin: SecretCoin;
   moves?: MoveCoin[];
-};
+  disabled?: boolean;
+  transform: (coin: SecretCoin, playerPositions: any) => string;
+  additionalCss?: (coin: SecretCoin) => any;
+} & HTMLAttributes<HTMLDivElement>;
 
 const isThisCoin = (coin: SecretCoin, move: MoveCoin) => {
   if (coin.id !== undefined) {
@@ -83,7 +65,7 @@ const isThisCoin = (coin: SecretCoin, move: MoveCoin) => {
 };
 
 const CoinToken: FC<CoinTokenProps> = (props) => {
-  const { coin, moves } = props;
+  const { coin, moves, transform, additionalCss, onClick, disabled } = props;
   const play = usePlay();
   const playerId = usePlayerId();
   const detail = coin.id !== undefined ? Coins[coin.id] : undefined;
@@ -99,18 +81,17 @@ const CoinToken: FC<CoinTokenProps> = (props) => {
     }
   };
 
-  const onClick = () => {
-    if (moves?.length === 1) {
+  const onTokenClick = (e: any) => {
+    if (moves?.length === 1 && !disabled) {
       play(moves[0]);
     }
 
-    if (hidden && coin.id !== undefined) {
-    }
+    onClick?.(e);
   };
 
   const hidden =
     (!moves?.length || animation || animations?.length) && (!detail || (isOnPlayerBoard(coin.location) && coin.hidden));
-  const isSelectable = !animations?.length && !animation && !!moves?.length;
+  const isSelectable = !disabled && !animations?.length && !animation && !!moves?.length;
   return (
     <Draggable
       canDrag={isSelectable}
@@ -118,9 +99,15 @@ const CoinToken: FC<CoinTokenProps> = (props) => {
       item={item}
       projection={projection}
       drop={onDrop}
-      onClick={onClick}
-      preTransform={`${coinPosition(coin, playerPositions)} ${hidden ? `rotateY(180deg)` : ''}`}
-      css={[coinToken, coinZIndex(coin), isSelectable && selectable, animation && transitionFor(animation)]}
+      onClick={onTokenClick}
+      preTransform={`${transform(coin, playerPositions)} ${hidden ? `rotateY(180deg)` : ''}`}
+      css={[
+        coinToken,
+        additionalCss?.(coin),
+        isSelectable && selectable,
+        disabled && disabledStyle,
+        animation && transitionFor(animation),
+      ]}
     >
       {!!detail && <div css={coinFace(detail)} />}
       <div css={coinBack} />
@@ -133,54 +120,9 @@ const transitionFor = (animation: Animation) => css`
   transition: transform ${animation.duration}s;
 `;
 
-const coinPosition = (coin: SecretCoin, playerPositions: any) => {
-  if (isInPlayerHand(coin.location)) {
-    const position = playerBoardPositions[playerPositions[coin.location.player]];
-    return `translate3d(${getCoinPositionInHandX(coin.location.index!, position)}em, ${getCoinPositionInHandY(
-      position
-    )}em, ${coinTokenWidth / 2}em) ${getCoinPositionInHandRotate(position)}`;
-  } else if (isInTreasure(coin.location)) {
-    const token = Coins[coin.id!];
-    return `translate3d(${getCoinPositionInTreasureX(token, coin.location.z)}em, ${getCoinPositionInTreasureY(
-      token,
-      coin.location.z
-    )}em, ${coinTokenWidth / 2}em)`;
-  } else if (isOnPlayerBoard(coin.location)) {
-    const position = playerBoardPositions[playerPositions[coin.location.player]];
-    return `translate3d(${getCoinPositionOnPlayerBoardX(
-      position,
-      coin.location.index!
-    )}em, ${getCoinPositionOnPlayerBoardY(position, coin.location.index!)}em, ${
-      coinTokenWidth / 2
-    }em) ${getCoinPositionOnPlayerBoardRotation(position)}`;
-  }
-
-  return `translate(${coinPositionInDiscardX(coin.location.index)}em, ${coinPositionInDiscardY(
-    coin.location.index
-  )}em)`;
-};
-
-const coinZIndex = (coin: SecretCoin) => {
-  if (isInDiscard(coin.location)) {
-    return css`
-      z-index: ${coin.location.index};
-    `;
-  } else if (isOnPlayerBoard(coin.location)) {
-    return css`
-      z-index: ${coin.location.index! + 1};
-    `;
-  } else if (isInPlayerHand(coin.location)) {
-    return css`
-      z-index: 50;
-    `;
-  } else if (isInTreasure(coin.location)) {
-    return css`
-      z-index: ${coin.location.z};
-    `;
-  }
-
-  return;
-};
+const disabledStyle = css`
+  filter: brightness(50%);
+`;
 
 const coinToken = css`
   position: absolute;

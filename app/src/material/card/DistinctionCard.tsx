@@ -74,10 +74,9 @@ const distinctionCardBack = css`
   width: 100%;
   border-radius: 2em;
   background-size: cover;
-  //background-image: url(); // TODO: distinction back
   transform: rotateY(180deg);
   backface-visibility: hidden;
-  box-shadow: 0 0 0.3em black;
+  box-shadow: 0 0 0.7em -0.2em black;
 `;
 
 const cardPosition = (card: SecretCard) => {

@@ -11,6 +11,7 @@ type GameView = Omit<GameState, 'cards' | 'coins'> & {
   coins: SecretCoin[];
   view: boolean;
   playerId?: number;
+  selectedCoin?: number;
 };
 
 export default GameView;
