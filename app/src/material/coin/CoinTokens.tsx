@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { FC, useCallback } from 'react';
 import { CoinToken } from './CoinToken';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
@@ -7,6 +9,7 @@ import { usePlay, usePlayerId } from '@gamepark/react-client';
 import { useLegalMoves } from '../../hook/legal-move.hook';
 import { SecretCoin } from '@gamepark/nidavellir/state/view/SecretCoin';
 import {
+  isInDiscard,
   isInPlayerHand,
   isInTreasure,
   isOnPlayerBoard,
@@ -62,6 +65,7 @@ const CoinTokens: FC<CoinTokensProps> = (props) => {
           moves={getCoinTokenMoves(coin)}
           onClick={() => selectCoin(coin.id)}
           transform={coinTransform}
+          additionalCss={coinAdditionalStyle}
           disabled={isInPlayerHand(coin.location) && selectedCoin !== undefined && selectedCoin !== coin.id}
         />
       ))}
@@ -94,6 +98,28 @@ const coinTransform = (coin: SecretCoin, playerPositions: any) => {
   return `translate(${coinPositionInDiscardX(coin.location.index)}em, ${coinPositionInDiscardY(
     coin.location.index
   )}em)`;
+};
+
+const coinAdditionalStyle = (coin: SecretCoin) => {
+  if (isInDiscard(coin.location)) {
+    return css`
+      z-index: ${coin.location.index};
+    `;
+  } else if (isOnPlayerBoard(coin.location)) {
+    return css`
+      z-index: ${coin.location.index! + 1};
+    `;
+  } else if (isInPlayerHand(coin.location)) {
+    return css`
+      z-index: 50;
+    `;
+  } else if (isInTreasure(coin.location)) {
+    return css`
+      z-index: ${coin.location.z};
+    `;
+  }
+
+  return;
 };
 
 export { CoinTokens };
