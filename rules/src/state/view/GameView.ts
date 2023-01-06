@@ -1,6 +1,7 @@
 import GameState from '../GameState';
 import { SecretCard } from './SecretCard';
 import { SecretCoin } from './SecretCoin';
+import { RulesDialog } from '../../moves/RulesDialog/RulesDialog';
 
 /**
  * In here, you describe what a GameView will look like at any time during a game.
@@ -12,6 +13,7 @@ type GameView = Omit<GameState, 'cards' | 'coins'> & {
   view: boolean;
   playerId?: number;
   selectedCoin?: number;
+  rulesDialog?: RulesDialog;
 };
 
 export default GameView;

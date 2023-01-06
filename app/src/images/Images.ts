@@ -25,6 +25,7 @@ import Gold22 from './coins/22-gold.jpg';
 import Gold23 from './coins/23-gold.jpg';
 import Gold24 from './coins/24-gold.jpg';
 import Gold25 from './coins/25-gold.jpg';
+import TokenBack from './coins/back.jpg';
 
 import PlayerBoard from './board/player-board.png';
 
@@ -163,6 +164,18 @@ import Gem4 from './gems/gem-4.png';
 import Gem5 from './gems/gem-5.png';
 import Gem6 from './gems/gem-6.png';
 
+import BlacksmithIcon from './icons/blacksmith-icon.png';
+import HunterIcon from './icons/hunter-icon.png';
+import MinerIcon from './icons/miner-icon.png';
+import ExplorerIcon from './icons/explorer-icon.png';
+import WarriorIcon from './icons/warrior-icon.png';
+import RoyalOfferingIcon from './icons/royal-offering-icon.png';
+import LaughingGoblinIcon from './icons/launghing-goblin-icon.png';
+import DancingDragonIcon from './icons/dancing-dragon-icon.png';
+import ShiningHorseIcon from './icons/shining-horse-icon.png';
+import PouchIcon from './icons/pouch-icon.png';
+import CommandIcon from './icons/command-icon.png';
+
 const Images = {
   Bronze0,
   Bronze2,
@@ -190,6 +203,7 @@ const Images = {
   Gold23,
   Gold24,
   Gold25,
+  TokenBack,
   PlayerBoard,
   Age1Back,
   Age2Back,
@@ -320,6 +334,17 @@ const Images = {
   KingsGreatArmorer,
   KingsHand,
   PioneerOfTheKingdom,
+  BlacksmithIcon,
+  HunterIcon,
+  MinerIcon,
+  ExplorerIcon,
+  WarriorIcon,
+  RoyalOfferingIcon,
+  LaughingGoblinIcon,
+  DancingDragonIcon,
+  ShiningHorseIcon,
+  PouchIcon,
+  CommandIcon,
 };
 
 export default Images;

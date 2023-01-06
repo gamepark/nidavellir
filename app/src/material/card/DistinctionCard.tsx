@@ -1,12 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { SecretCard } from '@gamepark/nidavellir/state/view/SecretCard';
-import { FC } from 'react';
-import { cardHeight, cardInDistinctionDeckX, cardInDistinctionDeckY, cardWidth } from '../Styles';
-import { isInDistinctionDeck } from '@gamepark/nidavellir/utils/location.utils';
+import { FC, HTMLAttributes } from 'react';
+import { cardHeight, cardWidth } from '../Styles';
 import Images from '../../images/Images';
 import { Distinction } from '@gamepark/nidavellir/cards/Distinction';
-import { Animation, useAnimation } from '@gamepark/react-client';
+import { Animation, useAnimation, usePlay } from '@gamepark/react-client';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
 import {
   CrownJeweler,
@@ -16,18 +14,30 @@ import {
   KingsHand,
   PioneerOfTheKingdom,
 } from '@gamepark/nidavellir/cards/Distinctions';
+import { distinctionRulesDialog, setRulesDialog } from '@gamepark/nidavellir/moves/RulesDialog/RulesDialog';
+import { LocatedCard } from '@gamepark/nidavellir/state/LocatedCard';
 
 type DistinctionCardProps = {
-  card: SecretCard;
-};
+  card: LocatedCard;
+  scale?: number;
+} & HTMLAttributes<HTMLDivElement>;
 
 const DistinctionCard: FC<DistinctionCardProps> = (props) => {
-  const { card } = props;
+  const { card, scale, ...rest } = props;
+  const play = usePlay();
   const animation = useAnimation(({ move }) => move.type === MoveType.MoveDistinction && move.id === card.id);
   const detail = Distinctions[card.id!];
 
+  const onDistinctionClick = () => {
+    if (!detail) {
+      return;
+    }
+
+    play(setRulesDialog(distinctionRulesDialog(card)), { local: true });
+  };
+
   return (
-    <div css={[distinctionCard, cardPosition(card), animation && transitionFor(animation)]}>
+    <div css={[distinctionCard(scale), animation && transitionFor(animation)]} onClick={onDistinctionClick} {...rest}>
       {<div css={distinctionCardFace(detail)} />}
       <div css={distinctionCardBack} />
     </div>
@@ -41,12 +51,13 @@ const transitionFor = (animation: Animation) => css`
   transition: ${animation.duration}s transform, ${animation.duration}s top, ${animation.duration}s left;
 `;
 
-const distinctionCard = css`
+const distinctionCard = (scale: number = 1) => css`
   position: absolute;
-  height: ${cardHeight}em;
-  width: ${cardWidth}em;
+  height: ${cardHeight * scale}em;
+  width: ${cardWidth * scale}em;
   border-radius: 2em;
   transform: translateZ(0);
+  cursor: pointer;
 
   &:hover {
     z-index: 50;
@@ -78,18 +89,6 @@ const distinctionCardBack = css`
   backface-visibility: hidden;
   box-shadow: 0 0 0.7em -0.2em black;
 `;
-
-const cardPosition = (card: SecretCard) => {
-  if (isInDistinctionDeck(card.location)) {
-    return css`
-      transform: translate(${cardInDistinctionDeckX(card.location.index)}em, ${cardInDistinctionDeckY}em);
-    `;
-  }
-
-  return css`
-    display: none;
-  `;
-};
 
 const DistinctionCardFront = new Map<Distinction, any>();
 DistinctionCardFront.set(KingsHand, Images.KingsHand);

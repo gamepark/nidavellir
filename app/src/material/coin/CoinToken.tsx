@@ -43,12 +43,14 @@ import { useProjection } from '../View';
 import { Animation, useAnimation, useAnimations, usePlay, usePlayerId } from '@gamepark/react-client';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
 import { MoveCoin } from '@gamepark/nidavellir/moves/MoveCoin';
+import { coinRulesDialog, setRulesDialog } from '@gamepark/nidavellir/moves/RulesDialog/RulesDialog';
 
 type CoinTokenProps = {
   coin: SecretCoin;
   moves?: MoveCoin[];
+  scale?: number;
   disabled?: boolean;
-  transform: (coin: SecretCoin, playerPositions: any) => string;
+  transform?: (coin: SecretCoin, playerPositions: any) => string;
   additionalCss?: (coin: SecretCoin) => any;
 } & HTMLAttributes<HTMLDivElement>;
 
@@ -65,7 +67,7 @@ const isThisCoin = (coin: SecretCoin, move: MoveCoin) => {
 };
 
 const CoinToken: FC<CoinTokenProps> = (props) => {
-  const { coin, moves, transform, additionalCss, onClick, disabled } = props;
+  const { coin, moves, transform, additionalCss, disabled, scale, ...rest } = props;
   const play = usePlay();
   const playerId = usePlayerId();
   const detail = coin.id !== undefined ? Coins[coin.id] : undefined;
@@ -81,12 +83,12 @@ const CoinToken: FC<CoinTokenProps> = (props) => {
     }
   };
 
-  const onTokenClick = (e: any) => {
-    if (moves?.length === 1 && !disabled) {
-      play(moves[0]);
+  const onTokenClick = () => {
+    if (!detail || disabled) {
+      return;
     }
 
-    onClick?.(e);
+    play(setRulesDialog(coinRulesDialog(coin)), { local: true });
   };
 
   const hidden =
@@ -100,14 +102,15 @@ const CoinToken: FC<CoinTokenProps> = (props) => {
       projection={projection}
       drop={onDrop}
       onClick={onTokenClick}
-      preTransform={`${transform(coin, playerPositions)} ${hidden ? `rotateY(180deg)` : ''}`}
+      preTransform={`${transform?.(coin, playerPositions) ?? ''} ${hidden ? `rotateY(180deg)` : ''}`}
       css={[
-        coinToken,
+        coinToken(scale),
         additionalCss?.(coin),
         isSelectable && selectable,
-        disabled && disabledStyle,
+        disabled && !hidden && disabledStyle,
         animation && transitionFor(animation),
       ]}
+      {...rest}
     >
       {!!detail && <div css={coinFace(detail)} />}
       <div css={coinBack} />
@@ -124,12 +127,13 @@ const disabledStyle = css`
   filter: brightness(50%);
 `;
 
-const coinToken = css`
+const coinToken = (scale: number = 1) => css`
   position: absolute;
-  height: ${coinTokenHeight}em;
-  width: ${coinTokenWidth}em;
+  height: ${coinTokenHeight * scale}em;
+  width: ${coinTokenWidth * scale}em;
   border-radius: 50%;
   transform-style: preserve-3d;
+  cursor: pointer;
 `;
 
 const coinFace = (coin: Coin) => css`
@@ -157,7 +161,8 @@ const coinBack = css`
   height: 100%;
   width: 100%;
   border-radius: 50%;
-  background-color: goldenrod;
+  background-image: url(${Images.TokenBack});
+  background-size: cover;
   transform: rotateY(180deg);
   backface-visibility: hidden;
   box-shadow: 0.5em 0.5em 0.7em -0.2em black;

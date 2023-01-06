@@ -3,14 +3,15 @@ import Nidavellir from '@gamepark/nidavellir/Nidavellir';
 import Move from '@gamepark/nidavellir/moves/Move';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
 import { LocationType } from '@gamepark/nidavellir/state/Location';
-import { SelectCoin, selectCoin } from '@gamepark/nidavellir/moves/SelectCoin';
+import { SelectCoin, selectCoin, SET_SELECT_COIN } from '@gamepark/nidavellir/moves/SelectCoin';
 import GameView from '@gamepark/nidavellir/state/view/GameView';
+import { SET_RULES_DIALOG, SetRulesDialog } from '@gamepark/nidavellir/moves/RulesDialog/RulesDialog';
 
 /**
  * This class is useful when the game has "IncompleteInformation" (or "SecretInformation").
  * It allows to handle, in a different way than the backend side, the moves that involve hidden information.
  */
-type LocalMove = Move | MoveView | SelectCoin;
+type LocalMove = Move | MoveView | SelectCoin | SetRulesDialog;
 export default class NidavellirView extends Nidavellir {
   /**
    * In this method, inside the view, we must return any move that the frontend can fully anticipate.
@@ -33,8 +34,11 @@ export default class NidavellirView extends Nidavellir {
   play(_move: Move | MoveView): (Move | MoveView)[] {
     const move = _move as Move | LocalMove;
     switch (move.type) {
-      case 'SelectCoin':
+      case SET_SELECT_COIN:
         return selectCoin(this.state as GameView, move);
+      case SET_RULES_DIALOG:
+        (this.game as GameView).rulesDialog = move.rulesDialog;
+        return [];
       default:
         return this.keepPredictableMoves(super.play(move));
     }

@@ -5,8 +5,8 @@ import { CoinToken } from './CoinToken';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
 import { MoveCoin } from '@gamepark/nidavellir/moves/MoveCoin';
 import GameView from '@gamepark/nidavellir/state/view/GameView';
-import { usePlay, usePlayerId } from '@gamepark/react-client';
-import { useLegalMoves } from '../../hook/legal-move.hook';
+import { usePlayerId } from '@gamepark/react-client';
+import { useLegalMoves } from '../../hook/rules.hook';
 import { SecretCoin } from '@gamepark/nidavellir/state/view/SecretCoin';
 import {
   isInDiscard,
@@ -30,7 +30,6 @@ import {
   playerBoardPositions,
 } from '../Styles';
 import { Coins } from '@gamepark/nidavellir/coins/Coins';
-import { selectCoinMove } from '@gamepark/nidavellir/moves/SelectCoin';
 
 type CoinTokensProps = {
   game: GameView;
@@ -38,7 +37,6 @@ type CoinTokensProps = {
 
 const CoinTokens: FC<CoinTokensProps> = (props) => {
   const { game } = props;
-  const play = usePlay();
   const playerId = usePlayerId();
   const moves = useLegalMoves<MoveCoin>(game, playerId, [MoveType.MoveCoin]);
   const getCoinTokenMoves = useCallback(
@@ -46,14 +44,6 @@ const CoinTokens: FC<CoinTokensProps> = (props) => {
       moves.filter((m) => (c.id !== undefined ? m.id === c.id : isSameCoinLocation(m.source!, c.location))),
     [moves]
   );
-
-  const selectCoin = (coinId?: number) => {
-    if (coinId === undefined) {
-      return;
-    }
-
-    play(selectCoinMove(coinId), { local: true });
-  };
 
   const selectedCoin = game.selectedCoin;
   return (
@@ -63,7 +53,6 @@ const CoinTokens: FC<CoinTokensProps> = (props) => {
           coin={coin}
           key={coin.id ? `coin-${coin.id}` : index}
           moves={getCoinTokenMoves(coin)}
-          onClick={() => selectCoin(coin.id)}
           transform={coinTransform}
           additionalCss={coinAdditionalStyle}
           disabled={isInPlayerHand(coin.location) && selectedCoin !== undefined && selectedCoin !== coin.id}

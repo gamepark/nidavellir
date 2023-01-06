@@ -12,31 +12,32 @@ import { DistinctionCards } from './material/card/DistinctionCards';
 import { gameWidth, navigationWidth, playerPanelsWidth } from './material/Styles';
 import { passMove } from '@gamepark/nidavellir/moves/Pass';
 import { useState } from 'react';
-import { usePlacements, VIEWS, ViewType } from './material/View';
+import { usePlacements, useViews, View, ViewType } from './material/View';
 import { usePlay, usePlayerId } from '@gamepark/react-client';
+import { PlayerPanels } from './player/PlayerPanels';
+import RulesDialog from './dialog/RulesDialog';
 
 type Props = {
   game: GameView;
 };
 
 export default function GameDisplay({ game }: Props) {
-  const [view, setView] = useState<ViewType>(ViewType.GLOBAL);
+  const views = useViews(game.players);
+  const [view, setView] = useState<View>(views.find((v) => v.type === ViewType.GLOBAL)!);
   const placements = usePlacements(game.players);
 
   // TODO: REMOVE IT FROM THIS COMPONENT
   const play = usePlay();
   const playerId = usePlayerId();
-  const views = [
-    { type: ViewType.GLOBAL, label: 'Global' },
-    { type: ViewType.TAVERNS, label: 'Taverns' },
-    { type: ViewType.HEROES, label: 'Heroes' },
-    { type: ViewType.TREASURE, label: 'Treasure' },
-  ];
+
+  const setPlayerView = (playerId: number) => {
+    setView(views.find((v) => v.player === playerId)!);
+  };
 
   return (
     <>
       <div css={gameArea}>
-        <TableProvider view={view} placements={placements} views={VIEWS}>
+        <TableProvider view={view} placements={placements} views={views}>
           {game.players.map((p, index) => (
             <PlayerBoard key={p.id} player={p.id} index={index} game={game} />
           ))}
@@ -49,29 +50,31 @@ export default function GameDisplay({ game }: Props) {
         </TableProvider>
       </div>
       <div css={navigationArea}>
-        {views.map((v, index) => {
-          return (
-            <button
-              key={index}
-              css={css`
-                position: absolute;
-                top: ${index * 9 + 5}em;
-                left: 0;
-                width: 7em;
-                height: 7em;
-                border-radius: 0 50% 50% 0;
-              `}
-              onClick={() => setView(v.type)}
-            >
-              {v.label}
-            </button>
-          );
-        })}
+        {views
+          .filter((v: View) => v.player === undefined)
+          .map((v, index) => {
+            return (
+              <button
+                key={index}
+                css={css`
+                  position: absolute;
+                  top: ${index * 9 + 5}em;
+                  left: 0;
+                  width: 7em;
+                  height: 7em;
+                  border-radius: 0 50% 50% 0;
+                `}
+                onClick={() => setView(v)}
+              >
+                {v.label}
+              </button>
+            );
+          })}
         <button
           key="pass"
           css={css`
             position: absolute;
-            top: ${views.length * 9 + 5}em;
+            top: ${(views.length - game.players.length) * 9 + 5}em;
             left: 0;
             width: 7em;
             height: 7em;
@@ -82,7 +85,8 @@ export default function GameDisplay({ game }: Props) {
           Pass
         </button>
       </div>
-      <div css={playersArea} />
+      <PlayerPanels game={game} view={view} onPanelClick={(p) => setPlayerView(p)} />
+      <RulesDialog game={game} />
     </>
   );
 }
@@ -101,15 +105,5 @@ const gameArea = css`
   width: ${gameAreaWidth}em;
   left: ${gameAreaWidth / 2 + navigationWidth}em;
   transform: translate(-50%, -50%);
-  top: calc(7em + 46.5%);
-`;
-
-const playersArea = css`
-  position: absolute;
-  right: 0;
-  height: 93em;
-  width: ${playerPanelsWidth}em;
-  background-color: goldenrod;
-  transform: translateY(-50%);
   top: calc(7em + 46.5%);
 `;

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { SecretCard } from '@gamepark/nidavellir/state/view/SecretCard';
-import { FC } from 'react';
+import { FC, HTMLAttributes } from 'react';
 import {
   BlacksmithDwarf10Age1,
   BlacksmithDwarf10Age2,
@@ -96,26 +96,11 @@ import {
   WarriorDwarf9Age1,
   WarriorDwarf9Age2,
 } from '@gamepark/nidavellir/cards/Cards';
-import {
-  cardHeight,
-  cardPositionInDiscardX,
-  cardPositionInDiscardY,
-  cardWidth,
-  getCardPositionInAgeDeckX,
-  getCardPositionInAgeDeckY,
-  getCardPositionInTavernX,
-  getCardPositionInTavernY,
-  getCardPositionOnPlayerBoardTransform,
-  getCardPositionOnPlayerBoardX,
-  getCardPositionOnPlayerBoardY,
-  playerBoardPositions,
-  shineEffect,
-} from '../Styles';
+import { cardHeight, cardWidth, shineEffect } from '../Styles';
 import { Card } from '@gamepark/nidavellir/cards/Card';
 import {
   isInAge1Deck,
   isInAgeDeck,
-  isInTavern,
   isOnPlayerBoardCard,
   isSameCardLocation,
 } from '@gamepark/nidavellir/utils/location.utils';
@@ -123,16 +108,18 @@ import Images from '../../images/Images';
 import { Animation, useAnimation, useAnimations, usePlay } from '@gamepark/react-client';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
 import { MoveCard } from '@gamepark/nidavellir/moves/MoveCard';
-import { usePlayerPositions } from '../../table/TableContext';
 import { Draggable } from '@gamepark/react-components';
 import { draggableCard, DraggableMaterial } from '../../draggable/DraggableMaterial';
 import { useProjection } from '../View';
 import Move from '@gamepark/nidavellir/moves/Move';
+import { ageCardRulesDialog, setRulesDialog } from '@gamepark/nidavellir/moves/RulesDialog/RulesDialog';
 
 type AgeCardProps = {
   card: SecretCard;
-  moves: MoveCard[];
-};
+  moves?: MoveCard[];
+  transform?: (card: SecretCard, age?: number) => string;
+  scale?: number;
+} & HTMLAttributes<HTMLDivElement>;
 
 const getCardAge = (card: SecretCard) => {
   if (card.id !== undefined) {
@@ -159,11 +146,10 @@ const isThisCard = (card: SecretCard, move: MoveCard) => {
 };
 
 const AgeCard: FC<AgeCardProps> = (props) => {
-  const { card, moves } = props;
+  const { card, moves = [], transform, scale, ...rest } = props;
   const play = usePlay();
   const detail = card.id !== undefined ? Cards[card.id] : undefined;
   const age = getCardAge(card);
-  const playerPositions = usePlayerPositions();
   const item = card.id !== undefined ? draggableCard(card.id) : undefined;
   const projection = useProjection();
   const animation = useAnimation(({ move }) => move.type === MoveType.MoveCard && isThisCard(card, move));
@@ -175,14 +161,12 @@ const AgeCard: FC<AgeCardProps> = (props) => {
     }
   };
 
-  const chooseCard = () => {
-    if (!isSelectable) {
+  const onCardClick = () => {
+    if (!detail) {
       return;
     }
 
-    if (moves?.length === 1) {
-      play(moves[0]);
-    }
+    play(setRulesDialog(ageCardRulesDialog(card)), { local: true });
   };
 
   const isSelectable = !animations?.length && !animation && !!moves?.length;
@@ -193,15 +177,16 @@ const AgeCard: FC<AgeCardProps> = (props) => {
       item={item}
       projection={projection}
       drop={onDrop}
-      preTransform={`${cardPosition(card, age, playerPositions)} ${!detail ? `rotateY(180deg)` : ''}`}
+      preTransform={`${transform?.(card, age) ?? ''} ${!detail ? `rotateY(180deg)` : ''}`}
       css={[
-        ageCard,
+        ageCard(scale),
         cardZIndex(card),
         isSelectable && selectable,
         !!detail && cardOnTop,
         animation && transitionFor(animation),
       ]}
-      onClick={chooseCard}
+      onClick={onCardClick}
+      {...rest}
     >
       {!!detail && <div css={ageCardFace(detail)} />}
       <div css={ageCardBack(age)} />
@@ -215,16 +200,17 @@ const transitionFor = (animation: Animation) => css`
 `;
 
 const selectable = css`
-  cursor: pointer;
+  cursor: grab;
   ${shineEffect}
 `;
 
-const ageCard = css`
+const ageCard = (scale: number = 1) => css`
   position: absolute;
-  height: ${cardHeight}em;
-  width: ${cardWidth}em;
-  border-radius: 2em;
+  height: ${cardHeight * scale}em;
+  width: ${cardWidth * scale}em;
+  border-radius: 2.5em;
   transform-style: preserve-3d;
+  cursor: pointer;
 `;
 
 const cardOnTop = css`
@@ -239,7 +225,7 @@ const ageCardFace = (card: Card) => css`
   left: 0;
   height: 100%;
   width: 100%;
-  border-radius: 2em;
+  border-radius: 2.5em;
   background-image: url(${AgeCardFront.get(card)!});
   background-size: cover;
   backface-visibility: hidden;
@@ -252,42 +238,13 @@ const ageCardBack = (age: number = 1) => css`
   left: 0;
   height: 100%;
   width: 100%;
-  border-radius: 2em;
+  border-radius: 2.5em;
   background-size: cover;
   background-image: url(${AgeCardBacks.get(age)!});
   transform: rotateY(180deg);
   backface-visibility: hidden;
   box-shadow: 0 0 0.7em -0.2em black;
 `;
-
-// TODO: pass position function to props
-const cardPosition = (card: SecretCard, age: number = 1, playerPositions: any) => {
-  if (isInAgeDeck(card.location)) {
-    return `translate(${getCardPositionInAgeDeckX(card)}em, ${getCardPositionInAgeDeckY(card, age)}em)`;
-  }
-
-  if (isInTavern(card.location)) {
-    return `translate(
-        ${getCardPositionInTavernX(card.location.index)}em,
-        ${getCardPositionInTavernY(card.location.tavern)}em
-      )
-    `;
-  }
-
-  if (isOnPlayerBoardCard(card.location)) {
-    const position = playerBoardPositions[playerPositions[card.location.player]];
-    return `translate(
-          ${getCardPositionOnPlayerBoardX(position, card.location.column)}em,
-          ${getCardPositionOnPlayerBoardY(position, card.location.index!)}em
-        )
-        ${getCardPositionOnPlayerBoardTransform(position)}
-    `;
-  }
-
-  return `translate(${cardPositionInDiscardX(card.location.index)}em, ${cardPositionInDiscardY(
-    card.location.index
-  )}em)`;
-};
 
 const cardZIndex = (card: SecretCard) => {
   if (isOnPlayerBoardCard(card.location)) {

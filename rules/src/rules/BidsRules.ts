@@ -6,6 +6,9 @@ import { LocationType } from '../state/Location';
 import { moveKnownCoinMove } from '../moves/MoveCoin';
 import MoveView from '../moves/MoveView';
 import { PlayerId } from '../state/Player';
+import MoveType from '../moves/MoveType';
+import { isSameCoinLocation } from '../utils/location.utils';
+import uniqBy from 'lodash/uniqBy';
 
 class BidsRules extends NidavellirRules {
   isTurnToPlay(playerId: PlayerId): boolean {
@@ -31,6 +34,45 @@ class BidsRules extends NidavellirRules {
         index: area,
       })
     );
+  }
+
+  play(move: Move | MoveView): (Move | MoveView)[] {
+    switch (move.type) {
+      case MoveType.MoveCoin:
+        return this.onBid();
+    }
+
+    return [];
+  }
+
+  onBid(): (Move | MoveView)[] {
+    // TODO; if player fill all tavern, autofill bids
+    const moves = this.state.players.flatMap((p) => {
+      const combinations = getPlayerBidCombination(this.state, p.id);
+      if (combinations.every((c) => c.area > 2) || uniqBy(combinations, (c) => c.area).length === 1) {
+        const uniqCombination = uniqBy(combinations, ['coin', 'area']);
+        return uniqCombination.map((c) =>
+          moveKnownCoinMove(c.coin!, {
+            type: LocationType.PlayerBoard,
+            player: p.id,
+            index: c.area,
+          })
+        );
+      }
+
+      return [];
+    });
+
+    this.state.nextMoves.push(
+      ...moves.filter(
+        (m) =>
+          !this.state.nextMoves.some(
+            (move) => move.type === m.type && m.target && move.target && isSameCoinLocation(m.target, move.target)
+          )
+      )
+    );
+
+    return [];
   }
 }
 

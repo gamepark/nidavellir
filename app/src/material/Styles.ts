@@ -12,6 +12,9 @@ export const gameWidth = 185;
 export const gameHeight = 100;
 export const navigationWidth = 7;
 export const playerPanelsWidth = 38;
+export const playerPanelsHeight = 93;
+export const playerPanelHeight = 17;
+
 export const BASE_SCALE = 0.24;
 
 export const coinTokenRatio = 1;
@@ -46,8 +49,8 @@ export const playerBoardPositions: Positions[] = [
     top: 295,
     rotateZ: 0,
     viewPosition: {
-      left: -91.7,
-      top: -267,
+      left: -76.4,
+      top: -252,
       transform: 'scale(0.74)',
     },
   },
@@ -56,7 +59,7 @@ export const playerBoardPositions: Positions[] = [
     top: 12,
     rotateZ: 0,
     viewPosition: {
-      left: -91.5,
+      left: -76.4,
       top: -42,
       transform: 'scale(0.74)',
     },
@@ -66,7 +69,7 @@ export const playerBoardPositions: Positions[] = [
     top: 12,
     rotateZ: 0,
     viewPosition: {
-      left: -237.3,
+      left: -222,
       top: -42,
       transform: 'scale(0.74)',
     },
@@ -76,7 +79,7 @@ export const playerBoardPositions: Positions[] = [
     top: 12,
     rotateZ: 0,
     viewPosition: {
-      left: -384,
+      left: -368,
       top: -42,
       transform: 'scale(0.74)',
     },
@@ -86,8 +89,8 @@ export const playerBoardPositions: Positions[] = [
     top: 295,
     rotateZ: 0,
     viewPosition: {
-      left: -384,
-      top: -267,
+      left: -368,
+      top: -252,
       transform: 'scale(0.74)',
     },
   },
@@ -320,3 +323,37 @@ export const getGemTokenOnPlayerBoardY = (position: any) => {
 export const getGemTokenOnPlayerBoardRotate = (position: any) => {
   return position.rotateZ === 180 ? 0 : 180;
 };
+
+export const greyBackground = '#E9E3D8';
+export const dialogCss = css`
+  position: relative;
+  padding: 2em;
+  color: black;
+  background-color: ${greyBackground};
+  border-radius: 2em;
+  text-align: center;
+
+  h2 {
+    margin: 0.2em 5em;
+    font-size: 4em;
+    text-align: center;
+  }
+
+  p {
+    font-size: 3.5em;
+  }
+`;
+
+export const largeDialogCss = css`
+  ${dialogCss};
+  width: 150em;
+`;
+
+export const dialogCloseIcon = css`
+  position: absolute;
+  right: 0.8em;
+  top: 0.6em;
+  font-size: 4em;
+  cursor: pointer;
+  z-index: 100;
+`;

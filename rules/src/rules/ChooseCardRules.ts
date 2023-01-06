@@ -3,7 +3,7 @@ import { Player, PlayerId } from '../state/Player';
 import Move from '../moves/Move';
 import { getCardsInTavern, isInDiscard, isOnPlayerBoard } from '../utils/location.utils';
 import MoveType from '../moves/MoveType';
-import { getNextIndexByType, isLocatedCoin } from '../utils/player.utils';
+import { getActivePlayer, getNextIndexByType, isLocatedCoin } from '../utils/player.utils';
 import { Coins } from '../coins/Coins';
 import { InTavern } from '../state/LocatedCard';
 import { MoveCard, moveKnownCardMove } from '../moves/MoveCard';
@@ -14,6 +14,7 @@ import GameState from '../state/GameState';
 import GameView from '../state/view/GameView';
 import { computeRecruitHeroCount } from '../utils/hero.utils';
 import { RoyalOffering } from '../cards/Card';
+import MoveView from '../moves/MoveView';
 
 class ChooseCardRules extends NidavellirRules {
   player: Player;
@@ -23,6 +24,15 @@ class ChooseCardRules extends NidavellirRules {
     this.player = player;
   }
 
+  getAutomaticMoves(): (Move | MoveView)[] {
+    const activePlayer = getActivePlayer(this.state);
+    const cardInTavern = getCardsInTavern(this.state)
+    if (cardInTavern.length === 1 && activePlayer.drawn === undefined) {
+      return [this.getChooseCardMove(cardInTavern[0].id!)];
+    }
+    return super.getAutomaticMoves();
+  }
+
   getLegalMoves(playerId: PlayerId): Move[] {
     if (playerId !== this.player.id || this.player.drawn !== undefined) {
       return [];
@@ -30,22 +40,24 @@ class ChooseCardRules extends NidavellirRules {
 
     const currentTavern = this.state.tavern;
     const tavernCards = getCardsInTavern(this.state).filter((c) => (c.location as InTavern).tavern === currentTavern);
-    const nextIndexesByType = getNextIndexByType(this.state, this.player.id);
 
-    return tavernCards.map((c) => {
-      const card = Cards[c.id!];
-      if (card.type === RoyalOffering.RoyalOffering) {
-        return moveKnownCardMove(c.id!, {
-          type: LocationType.Discard,
-          index: this.state.cards.filter((c) => isInDiscard(c.location)).length,
-        });
-      }
-      return moveKnownCardMove(c.id!, {
-        type: LocationType.PlayerBoard,
-        player: playerId,
-        index: nextIndexesByType[card.type].nextIndex,
-        column: card.type,
+    return tavernCards.map((c) => this.getChooseCardMove(c.id!));
+  }
+
+  getChooseCardMove = (cardId: number) => {
+    const nextIndexesByType = getNextIndexByType(this.state, this.player.id);
+    const card = Cards[cardId];
+    if (card.type === RoyalOffering.RoyalOffering) {
+      return moveKnownCardMove(cardId, {
+        type: LocationType.Discard,
+        index: this.state.cards.filter((c) => isInDiscard(c.location)).length,
       });
+    }
+    return moveKnownCardMove(cardId, {
+      type: LocationType.PlayerBoard,
+      player: this.player.id,
+      index: nextIndexesByType[card.type].nextIndex,
+      column: card.type,
     });
   }
 

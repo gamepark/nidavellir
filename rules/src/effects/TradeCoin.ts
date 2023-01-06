@@ -98,7 +98,7 @@ export class TradeCoinRules extends EffectRules {
 
   onMoveCoin(move: MoveCoin) {
     if (move.target && isOnPlayerBoard(move.target) && this.player.discarded?.coin !== undefined) {
-      delete this.player.discarded;
+      //delete this.player.discarded;
       this.player.effects.shift();
     }
 

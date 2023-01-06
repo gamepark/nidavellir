@@ -1,11 +1,27 @@
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react';
 import { FC, useCallback } from 'react';
 import GameView from '@gamepark/nidavellir/state/view/GameView';
 import { usePlayerId } from '@gamepark/react-client';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
-import { useLegalMoves } from '../../hook/legal-move.hook';
+import { useLegalMoves } from '../../hook/rules.hook';
 import { SecretCard } from '@gamepark/nidavellir/state/view/SecretCard';
 import { MoveHero } from '@gamepark/nidavellir/moves/MoveHero';
 import { HeroCard } from './HeroCard';
+import { isInHeroDeck, isInTavern, isOnPlayerBoardCard } from '@gamepark/nidavellir/utils/location.utils';
+import {
+  getCardPositionInHeroDeckLeft,
+  getCardPositionInHeroDeckTop,
+  getCardPositionInTavernX,
+  getCardPositionInTavernY,
+  getCardPositionOnPlayerBoardTransform,
+  getCardPositionOnPlayerBoardX,
+  getCardPositionOnPlayerBoardY,
+  playerBoardPositions,
+} from '../Styles';
+import { Heroes } from '@gamepark/nidavellir/cards/Heroes';
+import { LocatedCard } from '@gamepark/nidavellir/state/LocatedCard';
+import { usePlayerPositions } from '../../table/TableContext';
 
 type AgeCardsProps = {
   game: GameView;
@@ -14,16 +30,61 @@ type AgeCardsProps = {
 const HeroCards: FC<AgeCardsProps> = (props) => {
   const { game } = props;
   const playerId = usePlayerId();
+  const playerPositions = usePlayerPositions();
   const moves = useLegalMoves<MoveHero>(game, playerId, [MoveType.MoveHero]);
   const getCardMoves = useCallback((c: SecretCard) => moves.filter((m) => m.id === c.id), [moves]);
 
   return (
     <>
       {game.heroes.map((c, index) => (
-        <HeroCard card={c} key={index} moves={getCardMoves(c)} />
+        <HeroCard
+          card={c}
+          key={index}
+          moves={getCardMoves(c)}
+          transform={(card) => cardPosition(card, playerPositions)}
+          css={cardZIndex(c)}
+        />
       ))}
     </>
   );
+};
+
+const cardPosition = (card: SecretCard, playerPositions: any) => {
+  if (isInHeroDeck(card.location)) {
+    return `translate(${getCardPositionInHeroDeckLeft(card.location.index)}em, ${getCardPositionInHeroDeckTop(
+      card.location.index
+    )}em)
+    `;
+  }
+
+  if (isInTavern(card.location)) {
+    return `translate(${getCardPositionInTavernX(card.location.index)}em, ${getCardPositionInTavernY(
+      card.location.tavern
+    )}em)`;
+  }
+
+  if (isOnPlayerBoardCard(card.location)) {
+    const position = playerBoardPositions[playerPositions[card.location.player]];
+    return `translate(${getCardPositionOnPlayerBoardX(
+      position,
+      Heroes[card.id!].type
+    )}em, ${getCardPositionOnPlayerBoardY(position, card.location.index!)}em) ${getCardPositionOnPlayerBoardTransform(
+      position
+    )}
+    `;
+  }
+
+  return '';
+};
+
+const cardZIndex = (card: LocatedCard) => {
+  if (isOnPlayerBoardCard(card.location)) {
+    return css`
+      z-index: ${card.location.index};
+    `;
+  }
+
+  return undefined;
 };
 
 export { HeroCards };

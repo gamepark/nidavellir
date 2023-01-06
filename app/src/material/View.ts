@@ -3,6 +3,7 @@ import { DragLayerMonitor } from 'react-dnd';
 import { useCameraView, useDisplayedPlayers } from '../table/TableContext';
 import { BASE_SCALE } from './Styles';
 import { Player } from '@gamepark/nidavellir/state/Player';
+import { useTranslation } from 'react-i18next';
 
 export enum ViewType {
   PLAYER = 1,
@@ -14,16 +15,15 @@ export enum ViewType {
 }
 
 export type View = {
+  type: ViewType;
+  label: string;
+  player?: any;
   scale: number;
 } & Record<string, any>;
 
-export type Views = {
-  [key: number]: View;
-};
-
-export const viewProjection = (monitor: DragLayerMonitor, view: View) => {
+export const viewProjection = (monitor: DragLayerMonitor, view?: View) => {
   const offset = monitor.getDifferenceFromInitialOffset();
-  if (!offset) return null;
+  if (!offset || !view) return null;
 
   const x = offset.x / view.scale;
   const y = offset.y / view.scale;
@@ -31,12 +31,28 @@ export const viewProjection = (monitor: DragLayerMonitor, view: View) => {
   return { x, y };
 };
 
-export const VIEWS: Views = {
-  [ViewType.GLOBAL]: { scale: BASE_SCALE },
-  [ViewType.TAVERNS]: { scale: 0.8 },
-  [ViewType.HEROES]: { scale: 0.8 },
-  [ViewType.TREASURE]: { scale: 0.8 },
+export const useViews = (players: Player[]): View[] => {
+  const displayedPlayers = useDisplayedPlayers(players);
+  const { t } = useTranslation();
+  return useMemo(
+    () => [
+      { type: ViewType.GLOBAL, label: t('menu.global', 'Global'), scale: BASE_SCALE },
+      { type: ViewType.TAVERNS, label: t('menu.tavern', 'Tavern'), scale: 0.8 },
+      { type: ViewType.HEROES, label: t('menu.heroes', 'Heroes'), scale: 0.8 },
+      { type: ViewType.TREASURE, label: t('menu.treasure', 'Treasure'), scale: 0.8 },
+      ...displayedPlayers.map((k) => ({
+        type: ViewType.PLAYER,
+        player: k,
+        label: t(`player.${k}`, `Player #${k}`),
+        scale: 1,
+      })),
+    ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 };
+
+// ...playerKeys.map((k) => ({ type: ViewType.PLAYER, player: k, label: `Player #${k}`, scale: 1 })),
 
 export const usePlacements = (players: Player[]) => {
   const displayed = useDisplayedPlayers(players);

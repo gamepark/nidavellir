@@ -1,21 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { SecretCard } from '@gamepark/nidavellir/state/view/SecretCard';
-import { FC } from 'react';
-import {
-  cardHeight,
-  cardWidth,
-  getCardPositionInHeroDeckLeft,
-  getCardPositionInHeroDeckTop,
-  getCardPositionInTavernX,
-  getCardPositionInTavernY,
-  getCardPositionOnPlayerBoardTransform,
-  getCardPositionOnPlayerBoardX,
-  getCardPositionOnPlayerBoardY,
-  playerBoardPositions,
-  shineEffect,
-} from '../Styles';
-import { isInHeroDeck, isInTavern, isOnPlayerBoardCard } from '@gamepark/nidavellir/utils/location.utils';
+import { FC, HTMLAttributes } from 'react';
+import { cardHeight, cardWidth, shineEffect } from '../Styles';
 import Images from '../../images/Images';
 import {
   Aegur,
@@ -43,7 +29,6 @@ import {
 } from '@gamepark/nidavellir/cards/Heroes';
 import { Hero } from '@gamepark/nidavellir/cards/Hero';
 import { Animation, useAnimation, useAnimations, usePlay } from '@gamepark/react-client';
-import { usePlayerPositions } from '../../table/TableContext';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
 import { MoveHero } from '@gamepark/nidavellir/moves/MoveHero';
 import Move from '@gamepark/nidavellir/moves/Move';
@@ -51,16 +36,18 @@ import { draggableHero, DraggableMaterial } from '../../draggable/DraggableMater
 import { Draggable } from '@gamepark/react-components';
 import { LocatedCard } from '@gamepark/nidavellir/state/LocatedCard';
 import { useProjection } from '../View';
+import { heroRulesDialog, setRulesDialog } from '@gamepark/nidavellir/moves/RulesDialog/RulesDialog';
 
 type HeroCardProps = {
   card: LocatedCard;
-  moves: MoveHero[];
-};
+  moves?: MoveHero[];
+  transform?: (card: LocatedCard) => string;
+  scale?: number;
+} & HTMLAttributes<HTMLDivElement>;
 
 const HeroCard: FC<HeroCardProps> = (props) => {
-  const { card, moves } = props;
+  const { card, moves = [], transform, scale, ...rest } = props;
   const play = usePlay();
-  const playerPositions = usePlayerPositions();
   const animation = useAnimation(({ move }) => move.type === MoveType.MoveHero && move.id === card.id);
   const animations = useAnimations();
   const item = draggableHero(card.id);
@@ -72,14 +59,12 @@ const HeroCard: FC<HeroCardProps> = (props) => {
     }
   };
 
-  const chooseHero = () => {
-    if (!isSelectable) {
+  const onHeroClick = () => {
+    if (!detail) {
       return;
     }
 
-    if (moves?.length === 1) {
-      play(moves[0]);
-    }
+    play(setRulesDialog(heroRulesDialog(card)), { local: true });
   };
 
   const detail = Heroes[card.id!];
@@ -92,9 +77,10 @@ const HeroCard: FC<HeroCardProps> = (props) => {
       item={item}
       projection={projection}
       drop={onDrop}
-      preTransform={cardPosition(card, playerPositions)}
-      css={[heroCard, cardZIndex(card), isSelectable && selectable, animation && transitionFor(animation)]}
-      onClick={chooseHero}
+      preTransform={transform?.(card) ?? ''}
+      css={[heroCard(scale), isSelectable && selectable, animation && transitionFor(animation)]}
+      onClick={onHeroClick}
+      {...rest}
     >
       {<div css={heroCardFace(detail)} />}
       <div css={heroCardBack} />
@@ -103,20 +89,21 @@ const HeroCard: FC<HeroCardProps> = (props) => {
 };
 
 const transitionFor = (animation: Animation) => css`
-  z-index: 100;
+  z-index: 100 !important;
   transition: ${animation.duration}s transform;
 `;
 
 const selectable = css`
-  cursor: pointer;
+  cursor: grab;
   ${shineEffect}
 `;
 
-const heroCard = css`
+const heroCard = (scale: number = 1) => css`
   position: absolute;
-  height: ${cardHeight}em;
-  width: ${cardWidth}em;
+  height: ${cardHeight * scale}em;
+  width: ${cardWidth * scale}em;
   border-radius: 2em;
+  cursor: pointer;
 
   &:hover {
     z-index: 50;
@@ -147,44 +134,6 @@ const heroCardBack = css`
   //background-image: url(); // TODO: hero back
   transform: rotateY(180deg);
 `;
-
-const cardPosition = (card: SecretCard, playerPositions: any) => {
-  if (isInHeroDeck(card.location)) {
-    return `translate(${getCardPositionInHeroDeckLeft(card.location.index)}em, ${getCardPositionInHeroDeckTop(
-      card.location.index
-    )}em)
-    `;
-  }
-
-  if (isInTavern(card.location)) {
-    return `translate(${getCardPositionInTavernX(card.location.index)}em, ${getCardPositionInTavernY(
-      card.location.tavern
-    )}em)`;
-  }
-
-  if (isOnPlayerBoardCard(card.location)) {
-    const position = playerBoardPositions[playerPositions[card.location.player]];
-    return `translate(${getCardPositionOnPlayerBoardX(
-      position,
-      Heroes[card.id!].type
-    )}em, ${getCardPositionOnPlayerBoardY(position, card.location.index!)}em) ${getCardPositionOnPlayerBoardTransform(
-      position
-    )}
-    `;
-  }
-
-  return '';
-};
-
-const cardZIndex = (card: LocatedCard) => {
-  if (isOnPlayerBoardCard(card.location)) {
-    return css`
-      z-index: ${card.location.index};
-    `;
-  }
-
-  return undefined;
-};
 
 const HeroCardFront = new Map<Hero, any>();
 HeroCardFront.set(Aegur, Images.Aegur);

@@ -33,8 +33,8 @@ class YludRules extends EffectRules {
     return [];
   }
 
-  onMoveYlud = (move: MoveCard) => {
-    console.log(move);
+  onMoveYlud = (_move: MoveCard) => {
+    //TODO: move ylud
   };
 }
 

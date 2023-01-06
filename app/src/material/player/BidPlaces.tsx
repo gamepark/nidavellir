@@ -1,6 +1,6 @@
 import GameView from '@gamepark/nidavellir/state/view/GameView';
 import { FC } from 'react';
-import { useLegalMoves } from '../../hook/legal-move.hook';
+import { useLegalMoves } from '../../hook/rules.hook';
 import { MoveCoin } from '@gamepark/nidavellir/moves/MoveCoin';
 import { usePlayerId } from '@gamepark/react-client';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
@@ -25,7 +25,6 @@ const BidPlaces: FC<BidPlacesProps> = (props) => {
         m.target.index === index &&
         (selectedCoin === undefined || selectedCoin === m.id)
     );
-  console.log(getBidPlaceMoves(0));
   return (
     <>
       <BidPlace key={0} index={0} moves={getBidPlaceMoves(0)} />

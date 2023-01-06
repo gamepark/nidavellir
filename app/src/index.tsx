@@ -14,6 +14,17 @@ import { gameHeight, gameWidth } from './material/Styles';
 setupTranslation(translations);
 
 const style = css`
+  @font-face {
+    font-family: Norse;
+    src: url(${process.env.PUBLIC_URL + '/norse/Norse.otf'}) format('opentype');
+  }
+
+  @font-face {
+    font-family: Norse;
+    font-weight: bold;
+    src: url(${process.env.PUBLIC_URL + '/norse/NorseBold.otf'}) format('opentype');
+  }
+
   html {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -30,7 +41,7 @@ const style = css`
 
   body {
     margin: 0;
-    font-family: 'Oswald', 'Roboto Light', serif;
+    font-family: 'Roboto', serif;
     font-size: 1vh;
     @media (max-aspect-ratio: ${gameWidth}/${gameHeight}) {
       font-size: ${gameHeight / gameWidth}vw;

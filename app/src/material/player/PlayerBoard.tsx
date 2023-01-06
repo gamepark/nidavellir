@@ -11,7 +11,7 @@ import { usePlayerId } from '@gamepark/react-client';
 import { PlayerBoardColumn } from './PlayerBoardColumn';
 import { CommandZone } from './CommandZone';
 import { BidPlaces } from './BidPlaces';
-import { useLegalMoves } from '../../hook/legal-move.hook';
+import { useLegalMoves } from '../../hook/rules.hook';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
 import { HeroType } from '@gamepark/nidavellir/cards/Hero';
 import { MoveCard } from '@gamepark/nidavellir/moves/MoveCard';

@@ -1,16 +1,16 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { FC } from 'react';
+import { FC, HTMLAttributes } from 'react';
 import Images from '../../images/Images';
 import { tavernHeight, tavernLeft, tavernTop, tavernWidth } from '../Styles';
 
 type TavernProps = {
   tavern: number;
-};
+} & HTMLAttributes<HTMLDivElement>;
 
 const Tavern: FC<TavernProps> = (props) => {
-  const { tavern } = props;
-  return <div css={tavernStyle(tavern)} />;
+  const { tavern, ...rest } = props;
+  return <div css={tavernStyle(tavern)} {...rest} />;
 };
 
 const tavernStyle = (tavern: number) => css`
