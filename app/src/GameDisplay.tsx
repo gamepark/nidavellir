@@ -16,6 +16,8 @@ import { usePlacements, useViews, View, ViewType } from './material/View';
 import { usePlay, usePlayerId } from '@gamepark/react-client';
 import { PlayerPanels } from './player/PlayerPanels';
 import RulesDialog from './dialog/RulesDialog';
+import { useLegalMoves } from './hook/rules.hook';
+import MoveType from '@gamepark/nidavellir/moves/MoveType';
 
 type Props = {
   game: GameView;
@@ -25,10 +27,11 @@ export default function GameDisplay({ game }: Props) {
   const views = useViews(game.players);
   const [view, setView] = useState<View>(views.find((v) => v.type === ViewType.GLOBAL)!);
   const placements = usePlacements(game.players);
-
   // TODO: REMOVE IT FROM THIS COMPONENT
   const play = usePlay();
   const playerId = usePlayerId();
+  const legalMoves = useLegalMoves(game, playerId, [MoveType.Pass]);
+  const canPass = legalMoves.length === 1;
 
   const setPlayerView = (playerId: number) => {
     setView(views.find((v) => v.player === playerId)!);
@@ -70,20 +73,22 @@ export default function GameDisplay({ game }: Props) {
               </button>
             );
           })}
-        <button
-          key="pass"
-          css={css`
-            position: absolute;
-            top: ${(views.length - game.players.length) * 9 + 5}em;
-            left: 0;
-            width: 7em;
-            height: 7em;
-            border-radius: 0 50% 50% 0;
-          `}
-          onClick={() => play(passMove(playerId))}
-        >
-          Pass
-        </button>
+        {canPass && (
+          <button
+            key="pass"
+            css={css`
+              position: absolute;
+              top: ${(views.length - game.players.length) * 9 + 5}em;
+              left: 0;
+              width: 7em;
+              height: 7em;
+              border-radius: 0 50% 50% 0;
+            `}
+            onClick={() => play(passMove(playerId))}
+          >
+            Pass
+          </button>
+        )}
       </div>
       <PlayerPanels game={game} view={view} onPanelClick={(p) => setPlayerView(p)} />
       <RulesDialog game={game} />
@@ -103,7 +108,7 @@ const gameArea = css`
   position: absolute;
   height: 93em;
   width: ${gameAreaWidth}em;
-  left: ${gameAreaWidth / 2 + navigationWidth}em;
+  left: calc((100% - ${playerPanelsWidth}em) / 2 + (${navigationWidth / 2}em));
   transform: translate(-50%, -50%);
   top: calc(7em + 46.5%);
 `;

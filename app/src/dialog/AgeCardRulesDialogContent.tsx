@@ -33,33 +33,33 @@ const AgeCardRulesDialogContent: FC<AgeCardRulesDialogContentProps> = (props) =>
 const CARD_RULES = new Map<DwarfType | RoyalOffering, (card: Card) => RuleDetail>();
 CARD_RULES.set(DwarfType.Warrior, () => ({
   header: <Trans defaults="age-card.rules.header.warrior" />,
-  description: <Trans defaults="age-card.rules.desc.warrior" components={[<strong />]} />,
+  description: [<Trans defaults="age-card.rules.desc.warrior" components={[<strong />]} />],
 }));
 CARD_RULES.set(DwarfType.Hunter, () => ({
   header: <Trans defaults="age-card.rules.header.hunter" />,
-  description: <Trans defaults="age-card.rules.desc.hunter" components={[<strong />]} />,
+  description: [<Trans defaults="age-card.rules.desc.hunter" components={[<strong />]} />],
 }));
 CARD_RULES.set(DwarfType.Miner, () => ({
   header: <Trans defaults="age-card.rules.header.miner" />,
-  description: <Trans defaults="age-card.rules.desc.miner" components={[<strong />]} />,
+  description: [<Trans defaults="age-card.rules.desc.miner" components={[<strong />]} />],
 }));
 CARD_RULES.set(DwarfType.Explorer, () => ({
   header: <Trans defaults="age-card.rules.header.explorer" />,
-  description: <Trans defaults="age-card.rules.desc.explorer" components={[<strong />]} />,
+  description: [<Trans defaults="age-card.rules.desc.explorer" components={[<strong />]} />],
 }));
 CARD_RULES.set(DwarfType.Blacksmith, () => ({
   header: <Trans defaults="age-card.rules.header.blacksmith" />,
-  description: <Trans defaults="age-card.rules.desc.blacksmith" components={[<strong />]} />,
+  description: [<Trans defaults="age-card.rules.desc.blacksmith" components={[<strong />]} />],
 }));
 CARD_RULES.set(RoyalOffering.RoyalOffering, (card: Card) => ({
   header: <Trans defaults="age-card.rules.header.royal-offering" />,
-  description: (
+  description: [
     <Trans
       defaults="age-card.rules.desc.royal-offering"
       components={[<strong />]}
       values={{ additionalValue: (card.effects![0] as TransformCoin).additionalValue }}
-    />
-  ),
+    />,
+  ],
 }));
 
 const getCardRules = (id: number): RuleDetail => {

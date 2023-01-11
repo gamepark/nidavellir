@@ -80,7 +80,7 @@ const container = css`
 const coinContainer = css`
   flex: 1;
   display: flex;
-  padding: 1em;
+  padding: 2em;
 `;
 
 const descriptionContainer = css`
@@ -119,6 +119,7 @@ const ruleDescription = css`
 const movesContainer = css`
   flex: 1;
   margin-top: 3em;
+  padding-bottom: 2em;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;

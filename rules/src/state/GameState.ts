@@ -13,7 +13,7 @@ export enum Step {
   EnterDwarves = 1,
   Bids,
   BidRevelation,
-  EvalandTurn,
+  ElvalandTurn,
   TroopEvaluation,
   GemTrade,
 }

@@ -18,7 +18,7 @@ import { maxBy } from 'lodash';
 import keyBy from 'lodash/keyBy';
 import { Gems } from '../gems/Gems';
 
-export const getEvalandTurnOrder = (state: GameState | GameView): PlayerId[] => {
+export const getElvalandTurnOrder = (state: GameState | GameView): PlayerId[] => {
   let tavern = state.tavern;
   let coins = getTavernCoins(state, tavern);
 
@@ -61,7 +61,7 @@ export const isLocatedCard = (c: SecretCard | LocatedCard): c is LocatedCard => 
 export const isLocatedCoin = (c: SecretCoin | LocatedCard | undefined): c is LocatedCoin => c?.id !== undefined;
 
 export const getNextPlayer = (state: GameState | GameView) => {
-  const turnOrder = getEvalandTurnOrder(state);
+  const turnOrder = getElvalandTurnOrder(state);
 
   if (state.activePlayer === turnOrder[turnOrder.length - 1]) {
     return turnOrder[0];

@@ -39,7 +39,6 @@ const DistinctionCard: FC<DistinctionCardProps> = (props) => {
   return (
     <div css={[distinctionCard(scale), animation && transitionFor(animation)]} onClick={onDistinctionClick} {...rest}>
       {<div css={distinctionCardFace(detail)} />}
-      <div css={distinctionCardBack} />
     </div>
   );
 };
@@ -55,7 +54,7 @@ const distinctionCard = (scale: number = 1) => css`
   position: absolute;
   height: ${cardHeight * scale}em;
   width: ${cardWidth * scale}em;
-  border-radius: 2em;
+  border-radius: 2.5em;
   transform: translateZ(0);
   cursor: pointer;
 
@@ -70,24 +69,11 @@ const distinctionCardFace = (distinction: Distinction) => css`
   left: 0;
   height: 100%;
   width: 100%;
-  border-radius: 2em;
+  border-radius: 2.5em;
   background-image: url(${DistinctionCardFront.get(distinction)!});
   background-size: cover;
   backface-visibility: hidden;
   box-shadow: 0 0 0.3em black;
-`;
-
-const distinctionCardBack = css`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  border-radius: 2em;
-  background-size: cover;
-  transform: rotateY(180deg);
-  backface-visibility: hidden;
-  box-shadow: 0 0 0.7em -0.2em black;
 `;
 
 const DistinctionCardFront = new Map<Distinction, any>();

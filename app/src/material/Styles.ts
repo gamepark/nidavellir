@@ -8,12 +8,23 @@ import { View } from './View';
 import { DwarfType, RoyalOffering } from '@gamepark/nidavellir/cards/Card';
 import { HeroType } from '@gamepark/nidavellir/cards/Hero';
 
+/**
+ * Dwarf colors
+ */
+
+export const BLACKSMITH_COLOR = '#504fa1';
+export const HUNTER_COLOR = '#1b986c';
+export const EXPLORER_COLOR = '#50b7e8';
+export const WARRIOR_COLOR = '#bb4237';
+export const MINER_COLOR = '#f79447';
+
 export const gameWidth = 185;
 export const gameHeight = 100;
 export const navigationWidth = 7;
 export const playerPanelsWidth = 38;
 export const playerPanelsHeight = 93;
 export const playerPanelHeight = 17;
+export const playerPanelScoreWidth = 8.5;
 
 export const BASE_SCALE = 0.24;
 
@@ -49,9 +60,8 @@ export const playerBoardPositions: Positions[] = [
     top: 295,
     rotateZ: 0,
     viewPosition: {
-      left: -76.4,
-      top: -252,
-      transform: 'scale(0.74)',
+      left: -67.5,
+      top: -261,
     },
   },
   {
@@ -59,9 +69,8 @@ export const playerBoardPositions: Positions[] = [
     top: 12,
     rotateZ: 0,
     viewPosition: {
-      left: -76.4,
-      top: -42,
-      transform: 'scale(0.74)',
+      left: -67.5,
+      top: -40,
     },
   },
   {
@@ -69,9 +78,8 @@ export const playerBoardPositions: Positions[] = [
     top: 12,
     rotateZ: 0,
     viewPosition: {
-      left: -222,
-      top: -42,
-      transform: 'scale(0.74)',
+      left: -221.5,
+      top: -40,
     },
   },
   {
@@ -79,9 +87,8 @@ export const playerBoardPositions: Positions[] = [
     top: 12,
     rotateZ: 0,
     viewPosition: {
-      left: -368,
-      top: -42,
-      transform: 'scale(0.74)',
+      left: -376,
+      top: -40,
     },
   },
   {
@@ -89,9 +96,8 @@ export const playerBoardPositions: Positions[] = [
     top: 295,
     rotateZ: 0,
     viewPosition: {
-      left: -368,
-      top: -252,
-      transform: 'scale(0.74)',
+      left: -376,
+      top: -261,
     },
   },
 ];
@@ -134,6 +140,7 @@ export const getCoinPositionInTreasureY = (token: Coin, _z: number) => {
 };
 
 export const getCoinPositionInTreasureX = (token: Coin, z: number, index?: number) => {
+  console.log(token.value, index ?? 0, z);
   return treasureLeft + ((token.value - 5) % 7) * (coinTokenWidth + 3) + (index ?? 0) + z * 1.5;
 };
 

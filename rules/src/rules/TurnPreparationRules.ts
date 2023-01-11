@@ -5,10 +5,8 @@ import { NidavellirRules } from './NidavellirRules';
 import { nextPhaseMove } from '../moves/NextPhase';
 import MoveView, { isView } from '../moves/MoveView';
 import Move from '../moves/Move';
-import { isInPlayerHand, isInTavern, isOnPlayerBoard, isSameCoinLocation } from '../utils/location.utils';
-import { MoveCoin, moveKnownCoinMove } from '../moves/MoveCoin';
-import { LocationType } from '../state/Location';
-import shuffle from 'lodash/shuffle';
+import { isInPlayerHand, isSameCoinLocation } from '../utils/location.utils';
+import { MoveCoin } from '../moves/MoveCoin';
 import MoveType from '../moves/MoveType';
 
 class TurnPreparationRules extends NidavellirRules {
@@ -24,14 +22,6 @@ class TurnPreparationRules extends NidavellirRules {
   }
 
   getAutomaticMoves(): (Move | MoveView)[] {
-    if (
-      this.state.steps[0] === Step.EnterDwarves &&
-      this.state.cards.filter((c) => isInTavern(c.location)).length === 0 &&
-      this.state.coins.filter((c) => isOnPlayerBoard(c.location)).length === this.state.players.length * 5
-    ) {
-      return this.moveCoinInPlayerHand();
-    }
-
     if (this.state.players.every((p) => p.ready)) {
       // si fini, prendre une carte distinction
       // return [distributeDistinctionMove]
@@ -69,19 +59,6 @@ class TurnPreparationRules extends NidavellirRules {
         delete coin.id;
       }
     }
-  };
-
-  moveCoinInPlayerHand = () => {
-    return this.state.players.flatMap((p) => {
-      return shuffle(this.state.coins.filter((c) => isOnPlayerBoard(c.location) && c.location.player == p.id)).map(
-        (c, index) =>
-          moveKnownCoinMove(c.id!, {
-            type: LocationType.PlayerHand,
-            player: p.id,
-            index,
-          })
-      );
-    });
   };
 }
 

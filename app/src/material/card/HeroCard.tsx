@@ -83,7 +83,6 @@ const HeroCard: FC<HeroCardProps> = (props) => {
       {...rest}
     >
       {<div css={heroCardFace(detail)} />}
-      <div css={heroCardBack} />
     </Draggable>
   );
 };
@@ -102,7 +101,7 @@ const heroCard = (scale: number = 1) => css`
   position: absolute;
   height: ${cardHeight * scale}em;
   width: ${cardWidth * scale}em;
-  border-radius: 2em;
+  border-radius: 2.5em;
   cursor: pointer;
 
   &:hover {
@@ -116,23 +115,11 @@ const heroCardFace = (hero: Hero) => css`
   left: 0;
   height: 100%;
   width: 100%;
-  border-radius: 2em;
+  border-radius: 2.5em;
   background-image: url(${HeroCardFront.get(hero)!});
   background-size: cover;
   backface-visibility: hidden;
   box-shadow: 0 0 0.7em -0.2em black;
-`;
-
-const heroCardBack = css`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  border-radius: 2em;
-  background-size: cover;
-  //background-image: url(); // TODO: hero back
-  transform: rotateY(180deg);
 `;
 
 const HeroCardFront = new Map<Hero, any>();

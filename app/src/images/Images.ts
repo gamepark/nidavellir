@@ -176,6 +176,8 @@ import ShiningHorseIcon from './icons/shining-horse-icon.png';
 import PouchIcon from './icons/pouch-icon.png';
 import CommandIcon from './icons/command-icon.png';
 
+import DwergScoring from './rules/dwerg-scoring.jpg';
+
 const Images = {
   Bronze0,
   Bronze2,
@@ -345,6 +347,7 @@ const Images = {
   ShiningHorseIcon,
   PouchIcon,
   CommandIcon,
+  DwergScoring,
 };
 
 export default Images;

@@ -21,7 +21,7 @@ type CardRulesDialogContentProps = {
 
 export type RuleDetail = {
   header: any;
-  description: any;
+  description: any[];
 };
 
 const CardRulesDialogContent: FC<CardRulesDialogContentProps> = (props) => {
@@ -44,7 +44,9 @@ const CardRulesDialogContent: FC<CardRulesDialogContentProps> = (props) => {
         <div css={rulesContainer}>
           <span css={ruleHeader}>{cardRules.header}</span>
           <div css={ruleDescription}>
-            <div>{cardRules.description}</div>
+            {cardRules.description.map((d, index) => (
+              <div key={index}>{d}</div>
+            ))}
           </div>
           {hasActions && (
             <div css={movesContainer}>
@@ -73,6 +75,7 @@ const container = css`
 
 const cardContainer = css`
   flex: 1;
+  padding: 2em;
 `;
 
 const descriptionContainer = css`
@@ -93,23 +96,24 @@ const ruleHeader = css`
   font-size: 5em;
   text-align: center;
   font-family: 'Norse', 'Arial', serif;
-  font-weight: bold;
 `;
 
 const ruleDescription = css`
-  margin-top: 2em;
+  margin-top: 1em;
   text-align: left;
 
   > div {
-    font-size: 3em;
+    font-size: 2.4em;
     white-space: pre-wrap;
     text-align: justify;
+    padding-bottom: 1.5em;
   }
 `;
 
 const movesContainer = css`
   flex: 1;
   margin-top: 3em;
+  padding-bottom: 2em;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -137,6 +141,7 @@ const buttonContainer = css`
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-gap: 1em;
+  padding-bottom: 1.5em;
 `;
 
 export { CardRulesDialogContent };

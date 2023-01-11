@@ -44,7 +44,7 @@ export const useViews = (players: Player[]): View[] => {
         type: ViewType.PLAYER,
         player: k,
         label: t(`player.${k}`, `Player #${k}`),
-        scale: 1,
+        scale: 0.74,
       })),
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps

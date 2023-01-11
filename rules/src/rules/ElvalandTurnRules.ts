@@ -2,7 +2,7 @@ import { NidavellirRules } from './NidavellirRules';
 import { PlayerId } from '../state/Player';
 import Move from '../moves/Move';
 import { ChooseCardRules } from './ChooseCardRules';
-import { getActivePlayer, getEvalandTurnOrder, getNextPlayer } from '../utils/player.utils';
+import { getActivePlayer, getElvalandTurnOrder, getNextPlayer } from '../utils/player.utils';
 import MoveType from '../moves/MoveType';
 import { passMove } from '../moves/Pass';
 import { Step } from '../state/GameState';
@@ -14,7 +14,7 @@ import { moveKnownCardMove } from '../moves/MoveCard';
 import isEmpty from 'lodash/isEmpty';
 import { getTrades } from '../utils/age.utils';
 
-class EvalandTurnRules extends NidavellirRules {
+class ElvalandTurnRules extends NidavellirRules {
   delegate(): NidavellirRules | undefined {
     const activePlayer = getActivePlayer(this.state);
     if (!activePlayer) {
@@ -55,7 +55,7 @@ class EvalandTurnRules extends NidavellirRules {
   }
 
   onPass() {
-    const turnOrder = getEvalandTurnOrder(this.state);
+    const turnOrder = getElvalandTurnOrder(this.state);
     if (turnOrder[turnOrder.length - 1] === this.state.activePlayer) {
       delete this.state.activePlayer;
       const discardMoves = this.discardTavernMoves();
@@ -81,4 +81,4 @@ class EvalandTurnRules extends NidavellirRules {
   };
 }
 
-export { EvalandTurnRules };
+export { ElvalandTurnRules };

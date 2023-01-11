@@ -35,7 +35,7 @@ class BidRevelationRules extends NidavellirRules {
     );
 
     if (!remainingCoinToReveal) {
-      this.state.steps = [Step.EvalandTurn];
+      this.state.steps = [Step.ElvalandTurn];
       this.state.activePlayer = getNextPlayer(this.state);
       this.state.players.forEach((p) => {
         delete p.ready;
