@@ -3,21 +3,22 @@ import { getPlayerBidCombination } from '../utils/bid.utils';
 import { NidavellirRules } from './NidavellirRules';
 import { passMove } from '../moves/Pass';
 import { LocationType } from '../state/Location';
-import { moveKnownCoinMove } from '../moves/MoveCoin';
+import { MoveCoin, moveKnownCoinMove } from '../moves/MoveCoin';
 import MoveView from '../moves/MoveView';
 import { PlayerId } from '../state/Player';
 import MoveType from '../moves/MoveType';
-import { isSameCoinLocation } from '../utils/location.utils';
+import { isOnPlayerBoard } from '../utils/location.utils';
 import uniqBy from 'lodash/uniqBy';
+import { OnPlayerBoard } from '../state/CommonLocations';
 
 class BidsRules extends NidavellirRules {
   isTurnToPlay(playerId: PlayerId): boolean {
-    return !this.state.players.find((p) => playerId === p.id)!.ready;
+    return !this.game.players.find((p) => playerId === p.id)!.ready;
   }
 
   getLegalMoves(playerId: number): (Move | MoveView)[] {
-    const bidCombinations = getPlayerBidCombination(this.state, playerId);
-    const player = this.state.players.find((p) => p.id === playerId)!;
+    const bidCombinations = getPlayerBidCombination(this.game, playerId);
+    const player = this.game.players.find((p) => p.id === playerId)!;
 
     if (player.ready) {
       return [];
@@ -39,38 +40,37 @@ class BidsRules extends NidavellirRules {
   play(move: Move | MoveView): (Move | MoveView)[] {
     switch (move.type) {
       case MoveType.MoveCoin:
-        return this.onBid();
+        return this.onBid(move);
     }
 
     return [];
   }
 
-  onBid(): (Move | MoveView)[] {
-    // TODO; if player fill all tavern, autofill bids
-    const moves = this.state.players.flatMap((p) => {
-      const combinations = getPlayerBidCombination(this.state, p.id);
-      if (combinations.every((c) => c.area > 2) || uniqBy(combinations, (c) => c.area).length === 1) {
-        const uniqCombination = uniqBy(combinations, ['coin', 'area']);
-        return uniqCombination.map((c) =>
-          moveKnownCoinMove(c.coin!, {
-            type: LocationType.PlayerBoard,
-            player: p.id,
-            index: c.area,
-          })
-        );
+  onBid(move: MoveCoin): (Move | MoveView)[] {
+    if (move.target && isOnPlayerBoard(move.target)) {
+      const target: OnPlayerBoard = move.target;
+      const moves = this.game.players
+        .filter((p) => p.id === target.player)
+        .flatMap((p) => {
+          const combinations = getPlayerBidCombination(this.game, p.id);
+          if (combinations.every((c) => c.area > 2) || uniqBy(combinations, (c) => c.area).length === 1) {
+            const uniqCombination = uniqBy(combinations, ['coin', 'area']);
+            return uniqCombination.map((c) =>
+              moveKnownCoinMove(c.coin!, {
+                type: LocationType.PlayerBoard,
+                player: p.id,
+                index: c.area,
+              })
+            );
+          }
+
+          return [];
+        });
+
+      if (moves.length) {
+        return [moves[0]];
       }
-
-      return [];
-    });
-
-    this.state.nextMoves.push(
-      ...moves.filter(
-        (m) =>
-          !this.state.nextMoves.some(
-            (move) => move.type === m.type && m.target && move.target && isSameCoinLocation(m.target, move.target)
-          )
-      )
-    );
+    }
 
     return [];
   }

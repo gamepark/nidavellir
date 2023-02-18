@@ -18,6 +18,10 @@ import { PlayerPanels } from './player/PlayerPanels';
 import RulesDialog from './dialog/RulesDialog';
 import { useLegalMoves } from './hook/rules.hook';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
+import { HeroesArea } from './material/areas/HeroesArea';
+import { TreasureArea } from './material/areas/TreasureArea';
+import { DistinctionArea } from './material/areas/DistinctionArea';
+import { TavernArea } from './material/areas/TavernArea';
 
 type Props = {
   game: GameView;
@@ -44,8 +48,12 @@ export default function GameDisplay({ game }: Props) {
           {game.players.map((p, index) => (
             <PlayerBoard key={p.id} player={p.id} index={index} game={game} />
           ))}
+          <HeroesArea />
+          <TreasureArea />
+          <DistinctionArea />
+          <TavernArea playerCount={game.players.length} />
           <GemTokens game={game} />
-          <Taverns />
+          <Taverns playerCount={game.players.length} />
           <AgeCards game={game} />
           <HeroCards game={game} />
           <DistinctionCards game={game} />
@@ -63,9 +71,11 @@ export default function GameDisplay({ game }: Props) {
                   position: absolute;
                   top: ${index * 9 + 5}em;
                   left: 0;
-                  width: 7em;
+                  width: ${view === v ? 14 : 7}em;
                   height: 7em;
-                  border-radius: 0 50% 50% 0;
+                  border-radius: 0 5em 5em 0;
+                  transition: 0.5s width;
+                  cursor: pointer;
                 `}
                 onClick={() => setView(v)}
               >

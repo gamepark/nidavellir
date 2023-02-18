@@ -7,13 +7,16 @@ import {
   isInAgeDeck,
   isInDiscard,
   isInTavern,
-  isOnPlayerBoardCard,
+  isInArmy,
   isSameCardLocation,
+  isInDistinctionDeck,
 } from '@gamepark/nidavellir/utils/location.utils';
 import { MoveCard } from '@gamepark/nidavellir/moves/MoveCard';
 import { useLegalMoves } from '../../hook/rules.hook';
 import { SecretCard } from '@gamepark/nidavellir/state/view/SecretCard';
 import {
+  cardInDistinctionDeckX,
+  cardInDistinctionDeckY,
   cardPositionInDiscardX,
   cardPositionInDiscardY,
   getCardPositionInAgeDeckX,
@@ -26,6 +29,8 @@ import {
   playerBoardPositions,
 } from '../Styles';
 import { usePlayerPositions } from '../../table/TableContext';
+import size from 'lodash/size';
+import { useCardDecksSize } from '../../hook/card.hook';
 
 type AgeCardsProps = {
   game: GameView;
@@ -42,35 +47,50 @@ const AgeCards: FC<AgeCardsProps> = (props) => {
     [moves]
   );
 
+  const cardDeckSize = useCardDecksSize(game.cards);
+
   return (
     <>
-      {game.cards.map((c, index) => (
-        <AgeCard
-          card={c}
-          key={index}
-          moves={getCardMoves(c)}
-          transform={(card, age) => cardPosition(card, age, playerPositions)}
-        />
-      ))}
+      {game.cards.map((c, index) => {
+        const deckSize = cardDeckSize[c.location.type] ?? 0;
+
+        if (isInAgeDeck(c.location) && deckSize - c.location.index >= 10) {
+          return null;
+        }
+
+        return (
+          <AgeCard
+            card={c}
+            key={index}
+            moves={getCardMoves(c)}
+            transform={(card, age) => cardPosition(card, deckSize, age, playerPositions)}
+          />
+        );
+      })}
     </>
   );
 };
 
 // TODO: pass position function to props
-const cardPosition = (card: SecretCard, age: number = 1, playerPositions: any) => {
+const cardPosition = (card: SecretCard, deckSize: number, age: number = 1, playerPositions: any) => {
+  const playerCount = size(playerPositions);
   if (isInAgeDeck(card.location)) {
-    return `translate(${getCardPositionInAgeDeckX(card)}em, ${getCardPositionInAgeDeckY(card, age)}em)`;
+    return `translate(${getCardPositionInAgeDeckX(card, deckSize, playerCount)}em, ${getCardPositionInAgeDeckY(
+      card,
+      deckSize,
+      age
+    )}em)`;
   }
 
   if (isInTavern(card.location)) {
     return `translate(
-        ${getCardPositionInTavernX(card.location.index)}em,
+        ${getCardPositionInTavernX(card.location.index, playerCount)}em,
         ${getCardPositionInTavernY(card.location.tavern)}em
       )
     `;
   }
 
-  if (isOnPlayerBoardCard(card.location)) {
+  if (isInArmy(card.location)) {
     const position = playerBoardPositions[playerPositions[card.location.player]];
     return `translate(
           ${getCardPositionOnPlayerBoardX(position, card.location.column)}em,
@@ -84,6 +104,12 @@ const cardPosition = (card: SecretCard, age: number = 1, playerPositions: any) =
     return `translate(${cardPositionInDiscardX(card.location.index)}em, ${cardPositionInDiscardY(
       card.location.index
     )}em)`;
+  }
+
+  if (isInDistinctionDeck(card.location)) {
+    return `
+      translate(${cardInDistinctionDeckX(card.location.index)}em, ${cardInDistinctionDeckY}em)
+    `;
   }
 
   return '';

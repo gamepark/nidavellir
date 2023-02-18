@@ -1,19 +1,24 @@
 import { PlayerId } from '../state/Player';
 import GameState from '../state/GameState';
 import GameView from '../state/view/GameView';
-import { isInDiscard, isInTreasure, isOnPlayerBoard } from './location.utils';
+import { isInDiscard, isInTreasure, isOnPlayerBoard, isSameCoinLocation } from './location.utils';
 import { InTreasure, LocatedCoin } from '../state/LocatedCoin';
 import { SecretCoin } from '../state/view/SecretCoin';
-import { Coins } from '../coins/Coins';
+import { Coins, HuntingMasterCoin } from '../coins/Coins';
 import orderBy from 'lodash/orderBy';
 import partition from 'lodash/partition';
+import { MoveCoin } from '../moves/MoveCoin';
+import { TransformCoin } from '../moves/TransformCoin';
+import { TradeCoins } from '../moves/TradeCoins';
+import MoveType from '../moves/MoveType';
+import sumBy from 'lodash/sumBy';
 
 export const getPlayerCoinForTavern = (
-  state: GameState | GameView,
+  game: GameState | GameView,
   playerId: PlayerId,
   tavern: number
 ): LocatedCoin | SecretCoin | undefined => {
-  return state.coins.find(
+  return game.coins.find(
     (c) => isOnPlayerBoard(c.location) && c.location.player === playerId && c.location.index === tavern
   );
 };
@@ -69,4 +74,26 @@ export const getTreasureCoinForValue = (
   } else {
     return lowerCoins[0];
   }
+};
+
+export const isExchangeCoin = (coin: SecretCoin | LocatedCoin) => {
+  return Coins[coin.id!].value === 0 || Coins[coin.id!] === HuntingMasterCoin;
+};
+
+type CoinMoveTypes = MoveCoin | TransformCoin | TradeCoins;
+export const filterCoinMoves = (game: GameState | GameView, c: SecretCoin | LocatedCoin, m: CoinMoveTypes): boolean => {
+  switch (m.type) {
+    case MoveType.TransformCoin:
+    case MoveType.MoveCoin:
+      return c.id !== undefined ? m.id === c.id : isSameCoinLocation(m.source!, c.location);
+    case MoveType.TradeCoins: {
+      const newCoin = getTreasureCoinForValue(
+        getTreasureCoins(game),
+        sumBy(m.ids!, (c) => Coins[c].value)
+      );
+
+      return c.id !== undefined && (newCoin.id === c.id || m.ids?.includes(c.id));
+    }
+  }
+  return false;
 };

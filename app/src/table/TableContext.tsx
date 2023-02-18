@@ -27,8 +27,8 @@ export const useDisplayedPlayers = (players: Player[]): PlayerId[] => {
     }
 
     return flatten(partition(players, (p) => p.id === playerId)).map((p) => p.id);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     // Needed because only id matters
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [playerId]);
 };
 
@@ -75,7 +75,7 @@ const heroesView = (scale: number) => css`
 `;
 
 const treasureView = (scale: number) => css`
-  transform: translate(-60em, -154em) scale(${scale});
+  transform: translate(-65em, -151em) scale(${scale});
 `;
 
 const globalView = (scale: number) => css`

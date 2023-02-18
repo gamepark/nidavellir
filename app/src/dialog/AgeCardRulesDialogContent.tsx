@@ -7,7 +7,7 @@ import { CardRulesDialogContent, RuleDetail } from './CardRulesDialogContent';
 import { AgeCardRulesDialog } from '@gamepark/nidavellir/moves/RulesDialog/RulesDialog';
 import { AgeCard } from '../material/card/AgeCard';
 import { Trans } from 'react-i18next';
-import { TransformCoin } from '@gamepark/nidavellir/effects/TransformCoin';
+import { TransformCoinEffect } from '@gamepark/nidavellir/effects/types/TransformCoinEffect';
 
 type AgeCardRulesDialogContentProps = {
   game: GameView;
@@ -57,7 +57,7 @@ CARD_RULES.set(RoyalOffering.RoyalOffering, (card: Card) => ({
     <Trans
       defaults="age-card.rules.desc.royal-offering"
       components={[<strong />]}
-      values={{ additionalValue: (card.effects![0] as TransformCoin).additionalValue }}
+      values={{ additionalValue: (card.effects![0] as TransformCoinEffect).additionalValue }}
     />,
   ],
 }));

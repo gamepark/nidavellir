@@ -1,8 +1,7 @@
 import { LocationType } from './Location';
-import { InDiscard, OnPlayerBoard } from './CommonLocations';
+import { InDiscard, InDistinctionDeck } from './CommonLocations';
 import { PlayerId } from './Player';
 import { DwarfType } from '../cards/Card';
-import { HeroType } from '../cards/Hero';
 
 export type InAgeDeck = {
   type: LocationType.Age1Deck | LocationType.Age2Deck;
@@ -11,11 +10,6 @@ export type InAgeDeck = {
 
 export type InHeroesDeck = {
   type: LocationType.HeroesDeck;
-  index: number;
-};
-
-export type InDistinctionDeck = {
-  type: LocationType.DistinctionsDeck;
   index: number;
 };
 
@@ -31,18 +25,14 @@ export type InCommandZone = {
   index: number;
 };
 
-export type OnPlayerBoardCard = OnPlayerBoard & {
-  column: DwarfType | HeroType;
+export type InArmy = {
+  type: LocationType.Army;
+  player: PlayerId;
+  index?: number;
+  column: DwarfType;
 };
 
-export type CardLocation =
-  | InAgeDeck
-  | InHeroesDeck
-  | OnPlayerBoardCard
-  | InDistinctionDeck
-  | InTavern
-  | InDiscard
-  | InCommandZone;
+export type CardLocation = InAgeDeck | InHeroesDeck | InArmy | InDistinctionDeck | InTavern | InDiscard | InCommandZone;
 
 export type LocatedCard = {
   id: number;

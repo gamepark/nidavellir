@@ -11,6 +11,7 @@ import { PioneerOfTheKingdomRules } from './PioneerOfTheKingdom';
 import { CrownJewelerRules } from './CrownJeweler';
 import { TradeCoinRules } from './TradeCoin';
 import { YludRules } from './YludEffect';
+import { UlineRules } from './UlineEffect';
 
 export const EffectsRules: Record<EffectType, new (game: GameState | GameView, player: Player) => EffectRules> = {
   [EffectType.TRANSFORM_COIN]: TransformCoinRules,
@@ -21,4 +22,5 @@ export const EffectsRules: Record<EffectType, new (game: GameState | GameView, p
   [EffectType.PIONEER_OF_THE_KINGDOM]: PioneerOfTheKingdomRules,
   [EffectType.CROWN_JEWELER]: CrownJewelerRules,
   [EffectType.YLUD]: YludRules,
+  [EffectType.ULINE]: UlineRules,
 };

@@ -8,18 +8,16 @@ import { useLegalMoves } from '../../hook/rules.hook';
 import { SecretCard } from '@gamepark/nidavellir/state/view/SecretCard';
 import { MoveHero } from '@gamepark/nidavellir/moves/MoveHero';
 import { HeroCard } from './HeroCard';
-import { isInHeroDeck, isInTavern, isOnPlayerBoardCard } from '@gamepark/nidavellir/utils/location.utils';
+import { isInArmy, isInCommandZone, isInHeroDeck } from '@gamepark/nidavellir/utils/location.utils';
 import {
+  getCardPositionInCommandZoneX,
+  getCardPositionInCommandZoneY,
   getCardPositionInHeroDeckLeft,
   getCardPositionInHeroDeckTop,
-  getCardPositionInTavernX,
-  getCardPositionInTavernY,
-  getCardPositionOnPlayerBoardTransform,
   getCardPositionOnPlayerBoardX,
   getCardPositionOnPlayerBoardY,
   playerBoardPositions,
 } from '../Styles';
-import { Heroes } from '@gamepark/nidavellir/cards/Heroes';
 import { LocatedCard } from '@gamepark/nidavellir/state/LocatedCard';
 import { usePlayerPositions } from '../../table/TableContext';
 
@@ -57,28 +55,27 @@ const cardPosition = (card: SecretCard, playerPositions: any) => {
     `;
   }
 
-  if (isInTavern(card.location)) {
-    return `translate(${getCardPositionInTavernX(card.location.index)}em, ${getCardPositionInTavernY(
-      card.location.tavern
-    )}em)`;
-  }
-
-  if (isOnPlayerBoardCard(card.location)) {
+  if (isInArmy(card.location)) {
     const position = playerBoardPositions[playerPositions[card.location.player]];
     return `translate(${getCardPositionOnPlayerBoardX(
       position,
-      Heroes[card.id!].type
-    )}em, ${getCardPositionOnPlayerBoardY(position, card.location.index!)}em) ${getCardPositionOnPlayerBoardTransform(
-      position
-    )}
-    `;
+      card.location.column
+    )}em, ${getCardPositionOnPlayerBoardY(position, card.location.index!)}em)`;
+  }
+
+  if (isInCommandZone(card.location)) {
+    const position = playerBoardPositions[playerPositions[card.location.player]];
+    return `translate(${getCardPositionInCommandZoneX(position)}em, ${getCardPositionInCommandZoneY(
+      position,
+      card.location.index!
+    )}em)`;
   }
 
   return '';
 };
 
 const cardZIndex = (card: LocatedCard) => {
-  if (isOnPlayerBoardCard(card.location)) {
+  if (isInArmy(card.location)) {
     return css`
       z-index: ${card.location.index};
     `;

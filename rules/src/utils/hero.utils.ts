@@ -1,27 +1,28 @@
-import { PlayerId } from '../state/Player';
+import { Player, PlayerId } from '../state/Player';
 import GameState from '../state/GameState';
 import GameView from '../state/view/GameView';
 import { getArmy } from './player.utils';
 import { Cards } from '../cards/Cards';
 import { DwarfType } from '../cards/Card';
-import { LocatedCard, OnPlayerBoardCard } from '../state/LocatedCard';
+import { LocatedCard, InArmy } from '../state/LocatedCard';
 import { SecretCard } from '../state/view/SecretCard';
-import { isInHeroDeck, isOnPlayerBoardCard } from './location.utils';
+import { isInCommandZone, isInHeroDeck } from './location.utils';
 import sum from 'lodash/sum';
 import { Heroes } from '../cards/Heroes';
-import { HeroType } from '../cards/Hero';
+import { EffectType } from '../effects/EffectType';
+import { Effect } from '../effects/Effect';
 
 export const countGrades = (army: { cards: SecretCard[]; heroes: LocatedCard[] }, type: DwarfType) => {
   return (
     sum(
       army.cards
-        .filter((c) => (c.location as OnPlayerBoardCard).column === type)
+        .filter((c) => (c.location as InArmy).column === type)
         .map((c) => Cards[c.id!])
         .map((c) => c.grades?.[type]?.length ?? 0)
     ) +
     sum(
       army.heroes
-        .filter((c) => (c.location as OnPlayerBoardCard).column === type)
+        .filter((c) => (c.location as InArmy).column === type)
         .map((c) => Heroes[c.id!])
         .map((c) => c.grades?.[type]?.length ?? 0)
     )
@@ -32,19 +33,19 @@ export const computeRecruitHeroCount = (state: GameState | GameView, playerId: P
   const player = state.players.find((p) => p.id === playerId)!;
   const heroes = state.heroes.filter((h) => isInHeroDeck(h.location));
 
-  if (!player.drawn || !heroes.length) {
+  if (!player.playedCard || !heroes.length) {
     return 0;
   }
-  const drawnCard = player.drawn;
-  const locatedCard = (drawnCard.deck === 'heroes' ? state.heroes : state.cards).find((c) => c.id === drawnCard.card)!;
+  const drawnCard = player.playedCard;
+  const locatedCard = (drawnCard.deck === 'heroes' ? state.heroes : state.cards).find((c) => c.id === drawnCard.id)!;
 
   // If the hero is in command zone, no more recruitment
-  if (isOnPlayerBoardCard(locatedCard.location) && locatedCard.location.column === HeroType.Neutral) {
+  if (isInCommandZone(locatedCard.location)) {
     return 0;
   }
 
   const army = getArmy(state, playerId);
-  const card = (drawnCard.deck === 'heroes' ? Heroes : Cards)[player.drawn.card];
+  const card = (drawnCard.deck === 'heroes' ? Heroes : Cards)[player.playedCard.id];
   const gradesByTypes = {
     [DwarfType.Blacksmith]: countGrades(army, DwarfType.Blacksmith),
     [DwarfType.Hunter]: countGrades(army, DwarfType.Hunter),
@@ -71,4 +72,15 @@ export const computeRecruitHeroCount = (state: GameState | GameView, playerId: P
   );
 
   return minGradesAfterCard - minGradesBeforeCard;
+};
+
+export const mayRecruitNewHeroes = (game: GameState | GameView, player: Player, unshit?: boolean) => {
+  const recruitHeroCount = computeRecruitHeroCount(game, player.id);
+  if (recruitHeroCount > 0) {
+    const operation = (effect: Effect) => (!unshit ? player.effects.push(effect) : player.effects.unshift(effect));
+    operation({
+      type: EffectType.RECRUIT_HERO,
+      count: recruitHeroCount,
+    });
+  }
 };

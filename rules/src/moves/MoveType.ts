@@ -10,6 +10,11 @@ enum MoveType {
   MoveHero,
   MoveCoin,
   MoveGem,
+  ShuffleCoins,
+  SetStep,
+  Scoring,
+  TradeCoins,
+  TransformCoin,
 }
 
 export default MoveType;

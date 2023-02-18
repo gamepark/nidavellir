@@ -1,15 +1,13 @@
 import { RandomMove, Rules, SecretInformation, Undo } from '@gamepark/rules-api';
-import GameState from './state/GameState';
+import GameState, { Step } from './state/GameState';
 import GameView from './state/view/GameView';
 import { isGameOptions, NidavellirOptions } from './NidavellirOptions';
 import Move from './moves/Move';
-import MoveView from './moves/MoveView';
+import MoveView, { isView } from './moves/MoveView';
 import { GameInitializer } from './initializer/GameInitializer';
 import omit from 'lodash/omit';
-import { LocationType } from './state/Location';
 import { SecretCard } from './state/view/SecretCard';
 import { SecretCoin } from './state/view/SecretCoin';
-import { getRules } from './utils/rule.utils';
 import MoveRandomized from './moves/MoveRandomized';
 import MoveType from './moves/MoveType';
 import { PlayerId } from './state/Player';
@@ -33,6 +31,12 @@ import { OnPlayerBoard } from './state/CommonLocations';
 import { EffectsRules } from './effects/EffectsRules';
 import { NidavellirRules } from './rules/NidavellirRules';
 import shuffle from 'lodash/shuffle';
+import { ScoringRules } from './rules/ScoringRules';
+import { isAge1 } from './utils/age.utils';
+import { Age1Rules } from './rules/Age1Rules';
+import { Age2Rules } from './rules/Age2Rules';
+import { ShuffleCoins } from './moves/ShuffleCoins';
+import { getActivePlayer } from './utils/player.utils';
 
 export default class Nidavellir
   extends Rules<GameState | GameView, Move | MoveView, PlayerId>
@@ -71,27 +75,27 @@ export default class Nidavellir
     return move;
   }
 
-  isOver(_playerIds: PlayerId[]): boolean {
+  isOver(): boolean {
     return false;
   }
 
   delegates(): NidavellirRules[] {
-    const delegates = this.state.players
+    if (this.game.step === Step.Scoring) {
+      return [new ScoringRules(this.game)];
+    }
+    const delegates = this.game.players
       .filter((p) => p.effects.length)
-      .map((p) => new EffectsRules[p.effects[0].type](this.state, p));
+      .map((p) => new EffectsRules[p.effects[0].type](this.game, p));
+
     if (delegates.length) {
       return delegates;
     }
 
-    return getRules(this.state);
-  }
-
-  getAutomaticMoves(): (Move | MoveView)[] {
-    if (this.state.nextMoves.length) {
-      return [this.state.nextMoves[0]];
+    if (isAge1(this.game)) {
+      return [new Age1Rules(this.game)];
     }
 
-    return super.getAutomaticMoves();
+    return [new Age2Rules(this.game)];
   }
 
   /**
@@ -100,10 +104,6 @@ export default class Nidavellir
    * @param move The move that should be applied to current state.
    */
   play(move: Move | MoveView) {
-    if (this.state.nextMoves.length && this.state.nextMoves[0].type === move.type) {
-      this.state.nextMoves.shift();
-    }
-
     switch (move.type) {
       case MoveType.MoveCard:
         this.onMoveCard(move);
@@ -123,9 +123,31 @@ export default class Nidavellir
       case MoveType.Pass:
         this.onPass(move);
         break;
+      case MoveType.SetStep:
+        this.game.step = move.step;
+        break;
+      case MoveType.ShuffleCoins:
+        this.onShuffleCoins(move);
+        break;
     }
 
     return super.play(move);
+  }
+
+  private onShuffleCoins(move: ShuffleCoins) {
+    // Randomizing the new indexes for the coins since order must be hidden to the player
+    const indexes = shuffle(Array.from(Array(move.coins.length)).map((_, index) => index));
+    move.coins.forEach((c, index) => {
+      const coin = this.game.coins.find((coin) => coin.id === c)!;
+      if (isView(this.game)) {
+        if (isInPlayerHand(coin.location)) {
+          if (this.game.playerId !== coin.location.player) {
+            coin.location.index = indexes[index];
+            delete coin.id;
+          }
+        }
+      }
+    });
   }
 
   private onMoveCard(move: MoveCard) {
@@ -133,7 +155,7 @@ export default class Nidavellir
       throw new Error(`It is impossible to move a card that is not known (no id or source set)`);
     }
 
-    const card = this.state.cards.find((c) =>
+    const card = this.game.cards.find((c) =>
       c.id !== undefined && move.id !== undefined ? move.id === c.id : isSameCardLocation(move.source!, c.location)
     );
     if (!card) {
@@ -152,12 +174,11 @@ export default class Nidavellir
       throw new Error(`Trying to move a coin but neither source or id are set`);
     }
 
-    const coin = this.state.coins.find((c) =>
+    const coin = this.game.coins.find((c) =>
       c.id !== undefined && move.id !== undefined ? move.id === c.id : isSameCoinLocation(move.source!, c.location)
     );
-
     if (!coin) {
-      throw new Error(`Trying to move a coin that does not exists: ${move.id}`);
+      throw new Error(`Trying to move a coin that does not exists: ${JSON.stringify(move)}`);
     }
 
     if (move.id !== undefined) {
@@ -170,9 +191,9 @@ export default class Nidavellir
 
     if (move.target) {
       if ((isInTreasure(move.target) || isInDiscard(move.target)) && isOnPlayerBoard(coin.location)) {
-        const player = this.state.players.find((p) => p.id === (coin.location as OnPlayerBoard).player)!;
-        player.discarded = {
-          coin: coin.id!,
+        const player = this.game.players.find((p) => p.id === (coin.location as OnPlayerBoard).player)!;
+        player.discardedCoin = {
+          id: coin.id!,
           index: coin.location.index,
         };
       }
@@ -181,7 +202,7 @@ export default class Nidavellir
   }
 
   private onMoveGem(move: MoveGem) {
-    const gem = this.state.gems.find((g) => move.id === g.id);
+    const gem = this.game.gems.find((g) => move.id === g.id);
     if (!gem) {
       throw new Error(`Trying to move a gem that does not exists: ${move.id}`);
     }
@@ -190,7 +211,7 @@ export default class Nidavellir
   }
 
   private onMoveHero(move: MoveHero) {
-    const card = this.state.heroes.find((c) => move.id === c.id);
+    const card = this.game.heroes.find((c) => move.id === c.id);
     if (!card) {
       throw new Error(`Trying to move a hero that does not exists: ${move.id}`);
     }
@@ -199,7 +220,7 @@ export default class Nidavellir
   }
 
   private onMoveDistinction(move: MoveDistinction) {
-    const card = this.state.distinctions.find((c) => move.id === c.id);
+    const card = this.game.distinctions.find((c) => move.id === c.id);
     if (!card) {
       throw new Error(`Trying to move a distinction that does not exists: ${move.id}`);
     }
@@ -208,7 +229,7 @@ export default class Nidavellir
   }
 
   private onPass(move: Pass) {
-    const player = this.state.players.find((p) => p.id === move.player)!;
+    const player = this.game.players.find((p) => p.id === move.player)!;
     player.ready = true;
   }
 
@@ -218,23 +239,24 @@ export default class Nidavellir
    */
   getView(playerId?: PlayerId | undefined): GameView {
     // Cards will be hidden when in the age deck
-    const ageCardWithoutSecret: SecretCard[] = this.state.cards.map((c) => {
+    const ageCardWithoutSecret: SecretCard[] = this.game.cards.map((c) => {
       const hideSecret = isInAgeDeck(c.location);
       return hideSecret ? omit(c, 'id') : c;
     });
 
     // CoinMaterial will be hidden when chosen by the user at the auction phase
-    const coinWithoutSecret: SecretCoin[] = this.state.coins.map((c) => {
+    const coinWithoutSecret: SecretCoin[] = this.game.coins.map((c) => {
       const hideSecret =
-        ((c.location.type === LocationType.PlayerBoard && c.hidden) || c.location.type === LocationType.PlayerHand) &&
-        c.location.player !== playerId;
+        (isOnPlayerBoard(c.location) && c.hidden && c.location.player !== playerId) ||
+        (isInPlayerHand(c.location) && c.location.player !== playerId);
+
       return hideSecret ? omit(c, 'id') : c;
     });
 
     return {
-      ...this.state,
+      ...this.game,
       cards: ageCardWithoutSecret,
-      coins: shuffle(coinWithoutSecret),
+      coins: coinWithoutSecret,
       view: true,
       playerId,
     };
@@ -261,24 +283,48 @@ export default class Nidavellir
   getMoveView(move: Move, _playerId?: PlayerId): MoveView {
     switch (move.type) {
       case MoveType.MoveCard:
-        const card = this.state.cards.find((c) => c.id === move.id)!;
+        const card = this.game.cards.find((c) => c.id === move.id)!;
         if (isInTavern(move.target)) {
           return { ...move, source: card.location };
         }
 
         return move;
-      case MoveType.MoveCoin:
-        const coin = this.state.coins.find((c) => c.id === move.id)!;
-
-        if (
-          !coin.hidden ||
-          ((isInPlayerHand(coin.location) || isOnPlayerBoard(coin.location)) && coin.location.player === _playerId)
-        ) {
+      case MoveType.TradeCoins: {
+        const activePlayer = getActivePlayer(this.game);
+        if (activePlayer.id === _playerId) {
           return move;
         }
 
-        const completedMove = { ...move, source: coin.location };
-        return move.reveal ? completedMove : omit(completedMove, 'id');
+        return {
+          ...move,
+          sources: move.ids.map((i) => this.game.coins.find((c) => c.id === i)!.location),
+        };
+      }
+      case MoveType.MoveCoin:
+        const coin = this.game.coins.find((c) => c.id === move.id)!;
+        if (move.target) {
+          if (isInPlayerHand(move.target)) {
+            if (_playerId === move.target.player) {
+              return move;
+            } else {
+              return { ...move, source: coin.location };
+            }
+          }
+
+          if (isOnPlayerBoard(move.target)) {
+            if (_playerId === move.target.player || !coin.hidden) {
+              return move;
+            } else {
+              return { ...omit(move, 'id'), source: coin.location };
+            }
+          }
+        }
+
+        if (move.reveal) {
+          return { ...move, source: coin.location };
+        }
+
+        return move;
       default:
         return move;
     }

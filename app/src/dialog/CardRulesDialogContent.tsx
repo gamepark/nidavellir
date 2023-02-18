@@ -126,9 +126,9 @@ const cardInRules = css`
 const actionTitle = css`
   font-weight: bold;
   font-family: 'Norse', 'Arial', serif;
-  border-bottom: 0.2em solid rgba(0, 0, 0, 0.5);
   height: 5em;
   text-align: left;
+  border-bottom: 0.2em solid rgba(0, 0, 0, 0.5);
   color: rgba(0, 0, 0, 0.5);
   margin-bottom: 2em;
 

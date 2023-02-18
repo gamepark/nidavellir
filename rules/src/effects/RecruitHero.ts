@@ -9,6 +9,8 @@ import { EffectType } from './EffectType';
 import EffectRules from './EffectRules';
 import { computeRecruitHeroCount } from '../utils/hero.utils';
 import { isInHeroDeck } from '../utils/location.utils';
+import { HeroType } from '../cards/Hero';
+import { getCardsInCommandZone } from '../utils/card.utils';
 
 export type RecruitHero = {
   type: EffectType.RECRUIT_HERO;
@@ -23,22 +25,32 @@ class RecruitHeroRules extends EffectRules {
   getPlayerMoves(): (Move | MoveView)[] {
     // This computing is here to reduce complexity and prevent computing the next index for each heroes (while there is only 5 types of dwarves vs 20+ hero card)
 
-    const nextIndexesByType = getNextIndexByType(this.state, this.player.id);
-    return this.state.heroes
+    const nextIndexesByType = getNextIndexByType(this.game, this.player.id);
+    return this.game.heroes
       .filter((h) => {
         const hero = Heroes[h.id];
-        return isInHeroDeck(h.location) && (!hero.condition || hero.condition.isActive(this.state, this.player.id));
+        return isInHeroDeck(h.location) && (!hero.condition || hero.condition.isActive(this.game, this.player.id));
       })
       .flatMap((h) => {
         const hero = Heroes[h.id];
-        const nextIndex = nextIndexesByType[Heroes[h.id!].type].nextIndex;
-        // TODO: there is a case where the hero can be placed à several places
-        return moveHeroMove(h.id, {
-          type: LocationType.PlayerBoard,
-          player: this.player.id,
-          index: nextIndex,
-          column: hero.type,
-        });
+
+        if (hero.type === HeroType.Neutral) {
+          const cardsInCommandZone = getCardsInCommandZone(this.game, this.player.id);
+          return moveHeroMove(h.id, {
+            type: LocationType.CommandZone,
+            player: this.player.id,
+            index: cardsInCommandZone.heroes.length + cardsInCommandZone.distinctions.length,
+          });
+        } else {
+          const nextIndex = nextIndexesByType[Heroes[h.id!].type].nextIndex;
+          // TODO: there is a case where the hero can be placed à several places
+          return moveHeroMove(h.id, {
+            type: LocationType.Army,
+            player: this.player.id,
+            index: nextIndex,
+            column: hero.type,
+          });
+        }
       });
   }
 
@@ -53,16 +65,12 @@ class RecruitHeroRules extends EffectRules {
 
   onRecruitHero(move: MoveHero) {
     const hero = Heroes[move.id];
-    this.player.drawn = {
-      card: move.id,
+    this.player.playedCard = {
+      id: move.id,
       deck: 'heroes',
     };
 
-    if (hero.effects?.length) {
-      this.player.effects.unshift(...hero.effects);
-    }
-
-    const recruitHeroCount = computeRecruitHeroCount(this.state, this.player.id);
+    const recruitHeroCount = computeRecruitHeroCount(this.game, this.player.id);
     if (!this.effect.count) {
       this.effect.count = recruitHeroCount;
     } else {
@@ -71,6 +79,10 @@ class RecruitHeroRules extends EffectRules {
 
     if (!this.effect.count) {
       this.player.effects.shift();
+    }
+
+    if (hero.effects?.length) {
+      this.player.effects.unshift(...hero.effects);
     }
   }
 }

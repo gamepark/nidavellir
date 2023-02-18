@@ -1,42 +1,23 @@
 import Move from '../moves/Move';
-import { getPhaseRules } from '../utils/rule.utils';
 import { NidavellirRules } from './NidavellirRules';
-import MoveType from '../moves/MoveType';
 import { Step } from '../state/GameState';
-import { LocationType } from '../state/Location';
 import { TroopEvaluationRules } from './TroopEvaluationRules';
 import MoveView from '../moves/MoveView';
+import { AgeRules } from './AgeRules';
 
-class Age1Rules extends NidavellirRules {
+class Age1Rules extends AgeRules {
   delegate(): NidavellirRules | undefined {
-    switch (this.state.steps[0]) {
+    switch (this.game.step) {
       case Step.TroopEvaluation: {
-        return new TroopEvaluationRules(this.state);
+        return new TroopEvaluationRules(this.game);
       }
     }
-    return getPhaseRules(this.state);
+
+    return super.delegate();
   }
 
-  play(move: Move | MoveView) {
-    switch (move.type) {
-      case MoveType.Pass:
-        this.onPass();
-        break;
-    }
-
-    return super.play(move);
-  }
-
-  private onPass() {
-    if (this.state.players.some((p) => !p.ready)) {
-      return;
-    }
-
-    const remainingAge1Cards = this.state.cards.filter((c) => c.location.type === LocationType.Age1Deck).length;
-    if (!remainingAge1Cards) {
-      // TODO: Here compute the Ylud and company effects
-      this.state.steps = [Step.TroopEvaluation];
-    }
+  onPass(): (Move | MoveView)[] {
+    return [];
   }
 }
 

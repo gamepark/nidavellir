@@ -14,7 +14,7 @@ export enum RoyalOffering {
 }
 
 export type Card = {
-  age: number;
+  age?: number;
   type: DwarfType | RoyalOffering;
   copies?: number;
   grades?: Grades;

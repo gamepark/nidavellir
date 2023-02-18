@@ -7,6 +7,7 @@ export type MoveCoin = {
   source?: CoinLocation;
   target?: CoinLocation;
   reveal?: boolean;
+  hide?: boolean;
 };
 
 export const revealCoinMove = (id: number): MoveCoin => ({
@@ -20,6 +21,13 @@ export const moveCoinAndRevealMove = (id: number, target: CoinLocation): MoveCoi
   id,
   target,
   reveal: true,
+});
+
+export const moveCoinAndHideMove = (id: number, target: CoinLocation): MoveCoin => ({
+  type: MoveType.MoveCoin,
+  id,
+  target,
+  hide: true,
 });
 
 export const moveKnownCoinMove = (id: number, target: CoinLocation): MoveCoin => ({

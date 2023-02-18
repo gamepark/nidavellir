@@ -1,7 +1,7 @@
 import { NidavellirRules } from './NidavellirRules';
 import MoveType from '../moves/MoveType';
 import Move from '../moves/Move';
-import { nextTavern } from '../utils/tavern.utils';
+import { mayGoToNextTavern } from '../utils/tavern.utils';
 import { LocatedCoin } from '../state/LocatedCoin';
 import { MoveGem, moveGemMove } from '../moves/MoveGem';
 import { isOnPlayerBoard } from '../utils/location.utils';
@@ -19,16 +19,16 @@ import { getTrades } from '../utils/age.utils';
 class GemTradeRules extends NidavellirRules {
   getAutomaticMoves(): (Move | MoveView)[] {
     const gems = keyBy(
-      this.state.gems.filter((g) => isOnPlayerBoard(g.location)),
+      this.game.gems.filter((g) => isOnPlayerBoard(g.location)),
       (g) => (g.location as OnPlayerBoard).player
     );
 
-    const trading = getTrades(this.state);
+    const trading = getTrades(this.game);
 
     // for each tie, order coins by value (to exchange it)
-    const orderedCoinsByGemValues = mapValues(trading, (values) =>
-      orderBy(values, (v) => Gems[gems[(v.location as OnPlayerBoard).player].id].value)
-    );
+    const orderedCoinsByGemValues = mapValues(trading, (values) => {
+      return orderBy(values, (v) => Gems[gems[(v.location as OnPlayerBoard).player].id].value);
+    });
 
     const moves = [];
     const keys = Object.keys(orderedCoinsByGemValues);
@@ -64,27 +64,26 @@ class GemTradeRules extends NidavellirRules {
   play(move: Move | MoveView) {
     switch (move.type) {
       case MoveType.MoveGem:
-        this.onMoveGem(move);
-        break;
+        return this.onMoveGem(move);
     }
 
     return super.play(move);
   }
 
-  onMoveGem(move: MoveGem) {
-    const gem = this.state.gems.find((g) => isOnPlayerBoard(g.location) && g.id === move.id);
+  onMoveGem(move: MoveGem): (Move | MoveView)[] {
+    const gem = this.game.gems.find((g) => isOnPlayerBoard(g.location) && g.id === move.id);
 
     if (!gem) {
       throw new Error('There is an error while fetching the moved gem. This gem is not on player board');
     }
 
-    const playersById = keyBy(this.state.players, (p) => p.id);
+    const playersById = keyBy(this.game.players, (p) => p.id);
     const player = playersById[(gem.location as OnPlayerBoard).player];
     player.traded = true;
     gem.location = move.target;
 
     // Group coins by values (to see tie)
-    const trades = values(getTrades(this.state));
+    const trades = values(getTrades(this.game));
     // Maybe not so good in perf, but no good solution yet
     if (
       trades.every(
@@ -95,8 +94,10 @@ class GemTradeRules extends NidavellirRules {
           trade.every((c) => playersById[(c.location as OnPlayerBoard).player].traded)
       )
     ) {
-      nextTavern(this.state);
+      return mayGoToNextTavern(this.game);
     }
+
+    return [];
   }
 }
 

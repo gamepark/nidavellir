@@ -23,6 +23,7 @@ import {
   BlacksmithDwarf8Age2,
   BlacksmithDwarf9Age1,
   BlacksmithDwarf9Age2,
+  BlacksmithDwarfKingsGreatArmorer,
   Cards,
   ExplorerDwarf1Age1,
   ExplorerDwarf1Age2,
@@ -98,12 +99,7 @@ import {
 } from '@gamepark/nidavellir/cards/Cards';
 import { cardHeight, cardWidth, shineEffect } from '../Styles';
 import { Card } from '@gamepark/nidavellir/cards/Card';
-import {
-  isInAge1Deck,
-  isInAgeDeck,
-  isOnPlayerBoardCard,
-  isSameCardLocation,
-} from '@gamepark/nidavellir/utils/location.utils';
+import { isInAge1Deck, isInAgeDeck, isInArmy, isSameCardLocation } from '@gamepark/nidavellir/utils/location.utils';
 import Images from '../../images/Images';
 import { Animation, useAnimation, useAnimations, usePlay } from '@gamepark/react-client';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
@@ -247,7 +243,7 @@ const ageCardBack = (age: number = 1) => css`
 `;
 
 const cardZIndex = (card: SecretCard) => {
-  if (isOnPlayerBoardCard(card.location)) {
+  if (isInArmy(card.location)) {
     return css`
       z-index: ${card.location.index};
     `;
@@ -279,7 +275,7 @@ AgeCardFront.set(BlacksmithDwarf9Age1, Images.BlacksmithDwarf9Age1);
 AgeCardFront.set(BlacksmithDwarf9Age2, Images.BlacksmithDwarf9Age2);
 AgeCardFront.set(BlacksmithDwarf10Age1, Images.BlacksmithDwarf10Age1);
 AgeCardFront.set(BlacksmithDwarf10Age2, Images.BlacksmithDwarf10Age2);
-//AgeCardFront.set(BlacksmithDwarfKingsGreatArmorer, Images.BlacksmithDwarfKingsGreatArmorer);
+AgeCardFront.set(BlacksmithDwarfKingsGreatArmorer, Images.BlacksmithDwarfKingsGreatArmorer);
 AgeCardFront.set(ExplorerDwarf1Age1, Images.ExplorerDwarf1Age1);
 AgeCardFront.set(ExplorerDwarf1Age2, Images.ExplorerDwarf1Age2);
 AgeCardFront.set(ExplorerDwarf2Age1, Images.ExplorerDwarf2Age1);

@@ -9,41 +9,42 @@ import {
   shineEffect,
 } from '../Styles';
 import { FC } from 'react';
-import { MoveCard } from '@gamepark/nidavellir/moves/MoveCard';
 import { MoveHero } from '@gamepark/nidavellir/moves/MoveHero';
-import { usePlay } from '@gamepark/react-client';
-import { DraggableCard, DraggableHero, DraggableMaterial } from '../../draggable/DraggableMaterial';
+import { usePlay, usePlayerId } from '@gamepark/react-client';
+import { DraggableHero, DraggableMaterial } from '../../draggable/DraggableMaterial';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
 import { useDrop } from 'react-dnd';
+import { useLegalMoves } from '../../hook/rules.hook';
+import GameView from '@gamepark/nidavellir/state/view/GameView';
+import { LocationType } from '@gamepark/nidavellir/state/Location';
 
 type CommandZoneProps = {
   position: any;
-  moves: (MoveCard | MoveHero)[];
+  game: GameView;
 };
 
 const CommandZone: FC<CommandZoneProps> = (props) => {
-  const { position, moves } = props;
+  const { position, game } = props;
   const play = usePlay();
+  const playerId = usePlayerId();
+  const moves = useLegalMoves<MoveHero>(
+    game,
+    playerId,
+    [MoveType.MoveHero],
+    (c) => c.target.type === LocationType.CommandZone
+  );
 
-  const drop = (item: DraggableHero | DraggableCard) => {
-    if (item.type === DraggableMaterial.Hero) {
-      return moves.find((m) => m.type === MoveType.MoveHero && m.id === item.id)!;
-    } else if (item.type === DraggableMaterial.Card) {
-      return moves.find((m) => m.type === MoveType.MoveCard && m.id === item.id)!;
-    }
+  const drop = (item: DraggableHero) => moves.find((m) => m.type === MoveType.MoveHero && m.id === item.id)!;
 
-    return [];
-  };
-
-  const canDrop = (item: DraggableHero | DraggableCard) => !!drop(item);
+  const canDrop = (item: DraggableHero) => !!drop(item);
 
   const [{ isOver }, ref] = useDrop({
-    accept: [DraggableMaterial.Card, DraggableMaterial.Hero],
+    accept: [DraggableMaterial.Hero],
     canDrop,
     drop,
     collect: (monitor) => ({
       isOver: monitor.isOver(),
-      isDragging: monitor.getItemType() === DraggableMaterial.Coin && canDrop(monitor.getItem()),
+      isDragging: monitor.getItemType() === DraggableMaterial.Hero && canDrop(monitor.getItem()),
     }),
   });
 

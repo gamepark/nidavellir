@@ -25,6 +25,7 @@ import Gold22 from './coins/22-gold.jpg';
 import Gold23 from './coins/23-gold.jpg';
 import Gold24 from './coins/24-gold.jpg';
 import Gold25 from './coins/25-gold.jpg';
+import GreenCoin from './coins/green.jpg';
 import TokenBack from './coins/back.jpg';
 
 import PlayerBoard from './board/player-board.png';
@@ -348,6 +349,7 @@ const Images = {
   PouchIcon,
   CommandIcon,
   DwergScoring,
+  GreenCoin,
 };
 
 export default Images;

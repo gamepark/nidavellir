@@ -1,14 +1,14 @@
 import GameState from '../state/GameState';
 import GameView from '../state/view/GameView';
 import orderBy from 'lodash/orderBy';
-import { isOnPlayerBoard, isOnPlayerBoardCard } from './location.utils';
+import { isOnPlayerBoard, isInArmy } from './location.utils';
 import { Coins } from '../coins/Coins';
 import { OnPlayerBoard } from '../state/CommonLocations';
 import { LocatedCoin } from '../state/LocatedCoin';
 import { SecretCoin } from '../state/view/SecretCoin';
 import { PlayerId } from '../state/Player';
 import { SecretCard } from '../state/view/SecretCard';
-import { LocatedCard, OnPlayerBoardCard } from '../state/LocatedCard';
+import { LocatedCard, InArmy } from '../state/LocatedCard';
 import { getTavernCoins } from './coin.utils';
 import { Card, DwarfType, RoyalOffering } from '../cards/Card';
 import { Cards } from '../cards/Cards';
@@ -31,7 +31,7 @@ export const getElvalandTurnOrder = (state: GameState | GameView): PlayerId[] =>
     [
       (c) => {
         const player = state.players.find((p) => p.id === (c.location as OnPlayerBoard).player)!;
-        return player?.discarded?.index === tavern ? Coins[player.discarded.coin].value : Coins[c.id!].value;
+        return player?.discardedCoin?.index === tavern ? Coins[player.discardedCoin.id].value : Coins[c.id!].value;
       },
       (c) => {
         const playerGem = state.gems.find(
@@ -50,10 +50,10 @@ export const getActivePlayer = (state: GameState | GameView) => state.players.fi
 
 export const getArmy = (state: GameState | GameView, playerId: PlayerId, type?: DwarfType) => ({
   cards: state.cards.filter(
-    (c) => isOnPlayerBoardCard(c.location) && c.location.player === playerId && (!type || type === Cards[c.id!].type)
+    (c) => isInArmy(c.location) && c.location.player === playerId && (!type || c.location.column === type)
   ),
   heroes: state.heroes.filter(
-    (c) => isOnPlayerBoardCard(c.location) && c.location.player === playerId && (!type || type === Heroes[c.id!].type)
+    (c) => isInArmy(c.location) && c.location.player === playerId && (!type || c.location.column === type)
   ),
 });
 
@@ -84,12 +84,12 @@ export const getNextIndexByType = (state: GameState | GameView, playerId: Player
   ].map((type) => {
     // Get age cards of this type
     const cardOfSameType = army.cards
-      .filter((c) => (c.location as OnPlayerBoardCard).column === type)
+      .filter((c) => (c.location as InArmy).column === type)
       .map((c) => [Cards[c.id!], c] as [Card, SecretCard]);
 
     // Get heroes of this type
     const heroesOfSameType = army.heroes
-      .filter((c) => (c.location as OnPlayerBoardCard).column === type)
+      .filter((c) => (c.location as InArmy).column === type)
       .map((c) => [Heroes[c.id!], c] as [Card, SecretCard]);
 
     // Getting the card with max index
@@ -101,4 +101,30 @@ export const getNextIndexByType = (state: GameState | GameView, playerId: Player
   });
 
   return keyBy(computedNextIndexes, (c) => c.type);
+};
+
+export const getCombinations = <T>(array: T[], size: number): T[][] => {
+  let i, j, combs, head, tailcombs;
+  if (size > array.length || size <= 0) {
+    return [];
+  }
+  if (size == array.length) {
+    return [array];
+  }
+  if (size == 1) {
+    combs = [];
+    for (i = 0; i < array.length; i++) {
+      combs.push([array[i]]);
+    }
+    return combs;
+  }
+  combs = [];
+  for (i = 0; i < array.length - size + 1; i++) {
+    head = array.slice(i, i + 1);
+    tailcombs = getCombinations(array.slice(i + 1), size - 1);
+    for (j = 0; j < tailcombs.length; j++) {
+      combs.push(head.concat(tailcombs[j]));
+    }
+  }
+  return combs;
 };

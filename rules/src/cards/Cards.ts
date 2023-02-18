@@ -745,6 +745,13 @@ export const RoyalOffering3Age2: Card = {
   ],
 };
 
+export const BlacksmithDwarfKingsGreatArmorer: Card = {
+  type: DwarfType.Blacksmith,
+  grades: {
+    [DwarfType.Blacksmith]: [0, 0],
+  },
+};
+
 export const Cards: Card[] = [
   WarriorDwarf1Age1,
   WarriorDwarf2Age1,
@@ -837,4 +844,5 @@ export const Cards: Card[] = [
   RoyalOffering1Age2,
   RoyalOffering2Age2,
   RoyalOffering3Age2,
+  BlacksmithDwarfKingsGreatArmorer,
 ];

@@ -6,7 +6,6 @@ import { FC, useCallback } from 'react';
 import { useLegalMoves } from '../hook/rules.hook';
 import { usePlayerId } from '@gamepark/react-client';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
-import { isSameCoinLocation } from '@gamepark/nidavellir/utils/location.utils';
 import { MoveButton } from './moves/MoveButton';
 import { Trans, useTranslation } from 'react-i18next';
 import { CoinToken } from '../material/coin/CoinToken';
@@ -15,8 +14,14 @@ import { CoinRulesDialog } from '@gamepark/nidavellir/moves/RulesDialog/RulesDia
 import { Player } from '@gamepark/nidavellir/state/Player';
 import { Effect } from '@gamepark/nidavellir/effects/Effect';
 import { EffectType } from '@gamepark/nidavellir/effects/EffectType';
-import { Coins } from '@gamepark/nidavellir/coins/Coins';
-import { getTreasureCoinForValue, getTreasureCoins } from '@gamepark/nidavellir/utils/coin.utils';
+import { Coin0, Coins, HuntingMasterCoin } from '@gamepark/nidavellir/coins/Coins';
+import { filterCoinMoves, getTreasureCoinForValue, getTreasureCoins } from '@gamepark/nidavellir/utils/coin.utils';
+import { MoveCoin } from '@gamepark/nidavellir/moves/MoveCoin';
+import { TransformCoin } from '@gamepark/nidavellir/moves/TransformCoin';
+import { TradeCoins } from '@gamepark/nidavellir/moves/TradeCoins';
+import { RuleDetail } from './CardRulesDialogContent';
+import { hasHero } from '@gamepark/nidavellir/utils/card.utils';
+import { Ylud } from '@gamepark/nidavellir/cards/Heroes';
 
 type CoinRulesDialogContentProps = {
   game: GameView;
@@ -31,26 +36,31 @@ const CoinRulesDialogContent: FC<CoinRulesDialogContentProps> = (props) => {
   const { t } = useTranslation();
   const playerId = usePlayerId();
   const predicate = useCallback(
-    (move: any) => (move.id !== undefined ? coin.id === move.id : isSameCoinLocation(coin.location, move.source)),
-    [coin]
+    (move: MoveCoin | TransformCoin | TradeCoins) => filterCoinMoves(game, coin, move),
+    [coin, game]
   );
-  const legalMoves = useLegalMoves(game, playerId, [MoveType.MoveCoin], predicate);
-  const player = game.players.find((p) => p.id === playerId);
+  const legalMoves = useLegalMoves(
+    game,
+    playerId,
+    [MoveType.MoveCoin, MoveType.TransformCoin, MoveType.TradeCoins],
+    predicate
+  );
+  const player = game.players.find((p) => p.id === playerId)!;
   const rules = getCoinRules(game, coin, player);
 
   const hasActions = !!legalMoves.length;
-  const transform = (c: SecretCoin) => (c.id !== undefined && c.hidden ? 'rotateY(180deg)' : '');
-
   return (
     <div css={container}>
       <div css={coinContainer}>
-        <CoinToken coin={coin} css={coinInRules} scale={2} transform={transform} />
+        <CoinToken coin={coin} css={coinInRules} scale={2} />
       </div>
       <div css={descriptionContainer}>
         <div css={rulesContainer}>
-          <span css={ruleHeader}>{rules?.header ?? 'None'}</span>
+          <span css={ruleHeader}>{rules?.header}</span>
           <div css={ruleDescription}>
-            <div>{rules?.description ?? 'None'}</div>
+            {rules?.description?.map((d, index) => (
+              <div key={index}>{d}</div>
+            ))}
           </div>
           {hasActions && (
             <div css={movesContainer}>
@@ -110,9 +120,10 @@ const ruleDescription = css`
   text-align: left;
 
   > div {
-    font-size: 3em;
+    font-size: 2.4em;
     white-space: pre-wrap;
     text-align: justify;
+    padding-bottom: 1.5em;
   }
 `;
 
@@ -149,42 +160,78 @@ const buttonContainer = css`
   grid-gap: 1em;
 `;
 
-const getCoinRules = (game: GameView, coin: SecretCoin, player?: Player) => {
-  // TODO: effects ? (maybe manage it as a part like "Action"
+const getSpecialCoinDescription = (coin: SecretCoin): any[] => {
+  if (coin.id !== undefined) {
+    if (Coins[coin.id] === HuntingMasterCoin || Coins[coin.id] === Coin0) {
+      return [
+        <Trans
+          defaults="coin.rules.desc.exchange-coin"
+          components={[<strong />]}
+          values={{
+            value: Coins[coin.id].value,
+          }}
+        />,
+      ];
+    }
+  }
+  return [];
+};
+
+const getCoinRules = (game: GameView, coin: SecretCoin, player: Player): RuleDetail | undefined => {
+  if (player.effects?.length && (coin.location as any)?.player === player.id) {
+    const rule = getCoinEffectRules(game, coin, player.effects[0]);
+    if (rule) {
+      return rule;
+    }
+  }
+
+  const specialEffect = getSpecialCoinDescription(coin);
   switch (coin.location.type) {
     case LocationType.Treasure:
       return {
-        header: 'coin.rules.header.treasure',
-        description: 'coin.rules.desc.treasure',
+        header: <Trans defaults="coin.rules.header.treasure" />,
+        description: [<Trans defaults="coin.rules.desc.treasure" components={[<strong />]} />, ...specialEffect],
       };
     case LocationType.PlayerHand:
+      const ylud = hasHero(game, player, Ylud);
       return {
-        header: 'coin.rules.header.hand',
-        description: 'coin.rules.desc.hand',
+        header: <Trans defaults={'coin.rules.header.hand'} />,
+        description: [
+          <Trans defaults={ylud ? 'coin.rules.desc.hand-ylud' : 'coin.rules.desc.hand'} components={[<strong />]} />,
+          ...specialEffect,
+        ],
       };
     case LocationType.PlayerBoard:
-      if (player?.effects?.length && coin.location.player === player.id) {
-        return getCoinEffectRules(game, coin, player.effects[0]);
-      }
       return {
-        header: 'coin.rules.header.board',
-        description: 'coin.rules.desc.board',
+        header: <Trans defaults="coin.rules.header.board" />,
+        description: [<Trans defaults="coin.rules.desc.board" components={[<strong />]} />, ...specialEffect],
       };
     case LocationType.Discard:
       return {
-        header: 'coin.rules.header.discard',
-        description: 'coin.rules.desc.discard',
+        header: <Trans defaults="coin.rules.header.discard" />,
+        description: [<Trans defaults="coin.rules.desc.discard" components={[<strong />]} />, ...specialEffect],
+      };
+
+    case LocationType.DistinctionsDeck:
+      return {
+        header: <Trans defaults="coin.rules.header.distinction" />,
+        description: [<Trans defaults="coin.rules.desc.distinction" components={[<strong />]} />, ...specialEffect],
       };
   }
 };
 
-const getCoinEffectRules = (game: GameView, coin: SecretCoin, effect: Effect) => {
+const getCoinEffectRules = (game: GameView, coin: SecretCoin, effect: Effect): RuleDetail | undefined => {
   switch (effect.type) {
     case EffectType.TRADE_COIN: {
       const c = Coins[coin.id!];
       return {
-        header: 'coin.rules.header.trade-coin',
-        description: !c.value ? 'coin.rules.desc.cant-trade' : 'coin.rules.desc.trade-coin',
+        header: <Trans defaults="coin.rules.header.trade-coin" />,
+        description: [
+          <Trans
+            defaults={!c.value ? 'coin.rules.desc.cant-trade' : 'coin.rules.desc.trade-coin'}
+            components={[<strong />]}
+          />,
+        ],
       };
     }
     case EffectType.TRANSFORM_COIN: {
@@ -192,7 +239,7 @@ const getCoinEffectRules = (game: GameView, coin: SecretCoin, effect: Effect) =>
       const newCoin = getTreasureCoinForValue(getTreasureCoins(game), Coins[coin.id!].value + effect.additionalValue);
       return {
         header: <Trans defaults="coin.rules.header.transform-coin" />,
-        description: (
+        description: [
           <Trans
             defaults={!c.value ? 'coin.rules.desc.cant-transform' : 'coin.rules.desc.transform-coin'}
             components={[<strong />]}
@@ -200,13 +247,13 @@ const getCoinEffectRules = (game: GameView, coin: SecretCoin, effect: Effect) =>
               additionalValue: effect.additionalValue,
               newValue: Coins[newCoin.id!].value,
             }}
-          />
-        ),
+          />,
+        ],
       };
     }
   }
 
-  return null;
+  return undefined;
 };
 
 export { CoinRulesDialogContent };

@@ -10,10 +10,10 @@ import { useLegalMoves } from '../../hook/rules.hook';
 import { SecretCoin } from '@gamepark/nidavellir/state/view/SecretCoin';
 import {
   isInDiscard,
+  isInDistinctionDeck,
   isInPlayerHand,
   isInTreasure,
   isOnPlayerBoard,
-  isSameCoinLocation,
 } from '@gamepark/nidavellir/utils/location.utils';
 import {
   coinPositionInDiscardX,
@@ -30,6 +30,9 @@ import {
   playerBoardPositions,
 } from '../Styles';
 import { Coins } from '@gamepark/nidavellir/coins/Coins';
+import { TransformCoin } from '@gamepark/nidavellir/moves/TransformCoin';
+import { TradeCoins } from '@gamepark/nidavellir/moves/TradeCoins';
+import { filterCoinMoves } from '@gamepark/nidavellir/utils/coin.utils';
 
 type CoinTokensProps = {
   game: GameView;
@@ -38,11 +41,14 @@ type CoinTokensProps = {
 const CoinTokens: FC<CoinTokensProps> = (props) => {
   const { game } = props;
   const playerId = usePlayerId();
-  const moves = useLegalMoves<MoveCoin>(game, playerId, [MoveType.MoveCoin]);
+  const moves = useLegalMoves<MoveCoin | TransformCoin | TradeCoins>(game, playerId, [
+    MoveType.MoveCoin,
+    MoveType.TransformCoin,
+    MoveType.TradeCoins,
+  ]);
   const getCoinTokenMoves = useCallback(
-    (c: SecretCoin) =>
-      moves.filter((m) => (c.id !== undefined ? m.id === c.id : isSameCoinLocation(m.source!, c.location))),
-    [moves]
+    (c: SecretCoin) => moves.filter((m) => filterCoinMoves(game, c, m)),
+    [game, moves]
   );
 
   const selectedCoin = game.selectedCoin;
@@ -51,7 +57,7 @@ const CoinTokens: FC<CoinTokensProps> = (props) => {
       {game.coins.map((coin, index) => (
         <CoinToken
           coin={coin}
-          key={coin.id ? `coin-${coin.id}` : index}
+          key={getCoinKey(coin, index)}
           moves={getCoinTokenMoves(coin)}
           transform={coinTransform}
           additionalCss={coinAdditionalStyle}
@@ -62,19 +68,27 @@ const CoinTokens: FC<CoinTokensProps> = (props) => {
   );
 };
 
+const getCoinKey = (_coin: SecretCoin, index: number) => {
+  return _coin.id !== undefined ? `coin-${_coin?.id}` : index;
+};
+
 const coinTransform = (coin: SecretCoin, playerPositions: any) => {
   if (isInPlayerHand(coin.location)) {
     const position = playerBoardPositions[playerPositions[coin.location.player]];
     return `translate3d(${getCoinPositionInHandX(coin.location.index!, position)}em, ${getCoinPositionInHandY(
       position
     )}em, ${coinTokenWidth / 2}em) ${getCoinPositionInHandRotate(position)}`;
-  } else if (isInTreasure(coin.location)) {
+  }
+
+  if (isInTreasure(coin.location)) {
     const token = Coins[coin.id!];
     return `translate3d(${getCoinPositionInTreasureX(token, coin.location.z)}em, ${getCoinPositionInTreasureY(
       token,
       coin.location.z
     )}em, ${coinTokenWidth / 2}em)`;
-  } else if (isOnPlayerBoard(coin.location)) {
+  }
+
+  if (isOnPlayerBoard(coin.location)) {
     const position = playerBoardPositions[playerPositions[coin.location.player]];
     return `translate3d(${getCoinPositionOnPlayerBoardX(
       position,
@@ -82,6 +96,12 @@ const coinTransform = (coin: SecretCoin, playerPositions: any) => {
     )}em, ${getCoinPositionOnPlayerBoardY(position, coin.location.index!)}em, ${
       coinTokenWidth / 2
     }em) ${getCoinPositionOnPlayerBoardRotation(position)}`;
+  }
+
+  if (isInDistinctionDeck(coin.location)) {
+    return `
+      translate(42em, 160em)
+    `;
   }
 
   return `translate(${coinPositionInDiscardX(coin.location.index)}em, ${coinPositionInDiscardY(
@@ -98,13 +118,23 @@ const coinAdditionalStyle = (coin: SecretCoin) => {
     return css`
       z-index: ${coin.location.index! + 1};
     `;
-  } else if (isInPlayerHand(coin.location)) {
+  }
+
+  if (isInPlayerHand(coin.location)) {
     return css`
       z-index: 50;
     `;
-  } else if (isInTreasure(coin.location)) {
+  }
+
+  if (isInTreasure(coin.location)) {
     return css`
       z-index: ${coin.location.z};
+    `;
+  }
+
+  if (isInDistinctionDeck(coin.location)) {
+    return css`
+      z-index: 0;
     `;
   }
 

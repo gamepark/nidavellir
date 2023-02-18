@@ -6,39 +6,40 @@ import { getActivePlayer, getElvalandTurnOrder, getNextPlayer } from '../utils/p
 import MoveType from '../moves/MoveType';
 import { passMove } from '../moves/Pass';
 import { Step } from '../state/GameState';
-import { getCurrentTavernCards, nextTavern } from '../utils/tavern.utils';
+import { getCurrentTavernCards, mayGoToNextTavern } from '../utils/tavern.utils';
 import { LocationType } from '../state/Location';
 import { isInDiscard } from '../utils/location.utils';
 import MoveView from '../moves/MoveView';
 import { moveKnownCardMove } from '../moves/MoveCard';
 import isEmpty from 'lodash/isEmpty';
 import { getTrades } from '../utils/age.utils';
+import { setStepMove } from '../moves/SetStep';
 
 class ElvalandTurnRules extends NidavellirRules {
   delegate(): NidavellirRules | undefined {
-    const activePlayer = getActivePlayer(this.state);
+    const activePlayer = getActivePlayer(this.game);
     if (!activePlayer) {
       return;
     }
 
-    if (activePlayer.drawn === undefined) {
-      return new ChooseCardRules(this.state, activePlayer);
+    if (activePlayer.playedCard === undefined) {
+      return new ChooseCardRules(this.game, activePlayer);
     }
 
     return;
   }
 
   isTurnToPlay(playerId: PlayerId): boolean {
-    return this.state.activePlayer === playerId;
+    return this.game.activePlayer === playerId;
   }
 
   getLegalMoves(playerId: PlayerId): (Move | MoveView)[] {
-    const activePlayer = getActivePlayer(this.state);
+    const activePlayer = getActivePlayer(this.game);
     if (playerId !== activePlayer?.id || activePlayer.ready) {
       return [];
     }
 
-    if (activePlayer.drawn !== undefined && !activePlayer.effects.length) {
+    if (activePlayer.playedCard !== undefined && !activePlayer.effects.length) {
       return [passMove(playerId)];
     }
 
@@ -55,27 +56,29 @@ class ElvalandTurnRules extends NidavellirRules {
   }
 
   onPass() {
-    const turnOrder = getElvalandTurnOrder(this.state);
-    if (turnOrder[turnOrder.length - 1] === this.state.activePlayer) {
-      delete this.state.activePlayer;
-      const discardMoves = this.discardTavernMoves();
-      if (!isEmpty(getTrades(this.state))) {
-        this.state.steps = [Step.GemTrade];
+    const turnOrder = getElvalandTurnOrder(this.game);
+    if (turnOrder[turnOrder.length - 1] === this.game.activePlayer) {
+      delete this.game.activePlayer;
+      const consequences: (Move | MoveView)[] = this.discardTavernMoves();
+
+      if (!isEmpty(getTrades(this.game))) {
+        consequences.push(setStepMove(Step.GemTrade));
       } else {
-        nextTavern(this.state);
+        consequences.push(...mayGoToNextTavern(this.game));
       }
-      return discardMoves;
+
+      return consequences;
     }
 
-    this.state.activePlayer = getNextPlayer(this.state);
+    this.game.activePlayer = getNextPlayer(this.game);
     return [];
   }
 
   discardTavernMoves = () => {
-    return getCurrentTavernCards(this.state).map((c, index) =>
+    return getCurrentTavernCards(this.game).map((c, index) =>
       moveKnownCardMove(c.id, {
         type: LocationType.Discard,
-        index: this.state.cards.filter((c) => isInDiscard(c.location)).length + index,
+        index: this.game.cards.filter((c) => isInDiscard(c.location)).length + index,
       })
     );
   };

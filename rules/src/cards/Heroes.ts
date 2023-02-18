@@ -4,6 +4,7 @@ import GameState from '../state/GameState';
 import GameView from '../state/view/GameView';
 import { PlayerId } from '../state/Player';
 import { getArmy } from '../utils/player.utils';
+import { EffectType } from '../effects/EffectType';
 
 export const Bonfur: Hero = {
   type: DwarfType.Blacksmith,
@@ -129,6 +130,11 @@ export const Skaa: Hero = {
 
 export const Uline: Hero = {
   type: HeroType.Neutral,
+  effects: [
+    {
+      type: EffectType.ULINE,
+    },
+  ],
 };
 
 export const Grid: Hero = {

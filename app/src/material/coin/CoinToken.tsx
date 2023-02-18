@@ -31,10 +31,11 @@ import {
   GoldCoin7,
   GoldCoin8,
   GoldCoin9,
+  HuntingMasterCoin,
 } from '@gamepark/nidavellir/coins/Coins';
 import Images from '../../images/Images';
 import { coinTokenHeight, coinTokenWidth, shineEffect } from '../Styles';
-import { isOnPlayerBoard, isSameCoinLocation } from '@gamepark/nidavellir/utils/location.utils';
+import { isInPlayerHand, isOnPlayerBoard, isSameCoinLocation } from '@gamepark/nidavellir/utils/location.utils';
 import { usePlayerPositions } from '../../table/TableContext';
 import Move from '@gamepark/nidavellir/moves/Move';
 import { Draggable } from '@gamepark/react-components';
@@ -47,7 +48,7 @@ import { coinRulesDialog, setRulesDialog } from '@gamepark/nidavellir/moves/Rule
 
 type CoinTokenProps = {
   coin: SecretCoin;
-  moves?: MoveCoin[];
+  moves?: Move[];
   scale?: number;
   disabled?: boolean;
   transform?: (coin: SecretCoin, playerPositions: any) => string;
@@ -91,8 +92,10 @@ const CoinToken: FC<CoinTokenProps> = (props) => {
     play(setRulesDialog(coinRulesDialog(coin)), { local: true });
   };
 
-  const hidden =
-    (!moves?.length || animation || animations?.length) && (!detail || (isOnPlayerBoard(coin.location) && coin.hidden));
+  const isReallyHidden =
+    coin.hidden &&
+    (isOnPlayerBoard(coin.location) || (isInPlayerHand(coin.location) && coin.location.player !== playerId));
+  const hidden = (!moves?.length || animation || animations?.length) && (!detail || isReallyHidden);
   const isSelectable = !disabled && !animations?.length && !animation && !!moves?.length;
   return (
     <Draggable
@@ -196,5 +199,6 @@ CoinTokensImages.set(GoldCoin22, Images.Gold22);
 CoinTokensImages.set(GoldCoin23, Images.Gold23);
 CoinTokensImages.set(GoldCoin24, Images.Gold24);
 CoinTokensImages.set(GoldCoin25, Images.Gold25);
+CoinTokensImages.set(HuntingMasterCoin, Images.GreenCoin);
 
 export { CoinToken };

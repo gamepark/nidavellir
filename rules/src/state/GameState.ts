@@ -2,7 +2,6 @@ import { LocatedCard } from './LocatedCard';
 import { LocatedCoin } from './LocatedCoin';
 import { LocatedGem } from './LocatedGem';
 import { Player, PlayerId } from './Player';
-import Move from '../moves/Move';
 
 export enum Phase {
   TurnPreparation = 1,
@@ -16,6 +15,7 @@ export enum Step {
   ElvalandTurn,
   TroopEvaluation,
   GemTrade,
+  Scoring,
 }
 
 type GameState = {
@@ -27,8 +27,7 @@ type GameState = {
   players: Player[];
   activePlayer?: PlayerId;
   phase: Phase;
-  steps: Step[];
-  nextMoves: Move[];
+  step: Step;
   tavern: number;
   round: number;
 };

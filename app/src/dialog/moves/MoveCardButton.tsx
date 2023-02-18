@@ -8,7 +8,6 @@ import { LocationType } from '@gamepark/nidavellir/state/Location';
 import { DwarfType, RoyalOffering } from '@gamepark/nidavellir/cards/Card';
 import { useTranslation } from 'react-i18next';
 import { Cards } from '@gamepark/nidavellir/cards/Cards';
-import { HeroType } from '@gamepark/nidavellir/cards/Hero';
 import GameView from '@gamepark/nidavellir/state/view/GameView';
 
 type MoveCardButtonProps = {
@@ -49,29 +48,29 @@ const buttonStyle = css`
 
 const getDetail = (target: CardLocation, id?: number) => {
   switch (target.type) {
-    case LocationType.PlayerBoard:
+    case LocationType.Army:
       return getDwarfDetail(target.column);
     case LocationType.Discard:
       if (id !== undefined && Cards[id].type === RoyalOffering.RoyalOffering) {
-        return { icon: Images.RoyalOfferingIcon, text: 'Choose this royal offering' };
+        return { icon: Images.RoyalOfferingIcon, text: 'card.moves.choose-royal-offering' };
       }
   }
 
   return null;
 };
 
-const getDwarfDetail = (type: DwarfType | HeroType) => {
+const getDwarfDetail = (type: DwarfType) => {
   switch (type) {
     case DwarfType.Blacksmith:
-      return { icon: Images.BlacksmithIcon, text: 'Choose this blacksmith' };
+      return { icon: Images.BlacksmithIcon, text: 'card.moves.choose.blacksmith' };
     case DwarfType.Hunter:
-      return { icon: Images.HunterIcon, text: 'Choose this hunter' };
+      return { icon: Images.HunterIcon, text: 'card.moves.choose.hunter' };
     case DwarfType.Explorer:
-      return { icon: Images.ExplorerIcon, text: 'Choose this explorer' };
+      return { icon: Images.ExplorerIcon, text: 'card.moves.choose.explorer' };
     case DwarfType.Miner:
-      return { icon: Images.MinerIcon, text: 'Choose this miner' };
+      return { icon: Images.MinerIcon, text: 'card.moves.choose.miner' };
     case DwarfType.Warrior:
-      return { icon: Images.WarriorIcon, text: 'Choose this warrior' };
+      return { icon: Images.WarriorIcon, text: 'card.moves.choose.warrior' };
   }
 
   return null;

@@ -82,6 +82,7 @@ const playerPanel = (index: number) => css`
   border-radius: 1em;
   cursor: pointer;
   border: 0.2em solid black;
+  overflow: hidden;
 `;
 
 const selectedPanel = css`

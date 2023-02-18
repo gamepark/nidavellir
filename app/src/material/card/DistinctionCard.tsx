@@ -44,10 +44,8 @@ const DistinctionCard: FC<DistinctionCardProps> = (props) => {
 };
 
 const transitionFor = (animation: Animation) => css`
-  z-index: 100;
-  //transition: transform ${animation.duration}s;
-  // FIXME: change top / left to transform
-  transition: ${animation.duration}s transform, ${animation.duration}s top, ${animation.duration}s left;
+  z-index: 100 !important;
+  transition: ${animation.duration}s transform;
 `;
 
 const distinctionCard = (scale: number = 1) => css`
@@ -57,6 +55,7 @@ const distinctionCard = (scale: number = 1) => css`
   border-radius: 2.5em;
   transform: translateZ(0);
   cursor: pointer;
+  z-index: 1;
 
   &:hover {
     z-index: 50;

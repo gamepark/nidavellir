@@ -20,6 +20,8 @@ const MoveButtonTypes = {
   [MoveType.MoveCard]: MoveCardButton,
   [MoveType.MoveHero]: MoveHeroButton,
   [MoveType.MoveCoin]: MoveCoinButton,
+  [MoveType.TradeCoins]: MoveCoinButton,
+  [MoveType.TransformCoin]: MoveCoinButton,
 };
 
 const MoveButton: FC<MoveButtonProps> = (props) => {

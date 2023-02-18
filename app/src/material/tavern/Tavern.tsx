@@ -6,19 +6,20 @@ import { tavernHeight, tavernLeft, tavernTop, tavernWidth } from '../Styles';
 
 type TavernProps = {
   tavern: number;
+  playerCount?: number;
 } & HTMLAttributes<HTMLDivElement>;
 
 const Tavern: FC<TavernProps> = (props) => {
-  const { tavern, ...rest } = props;
-  return <div css={tavernStyle(tavern)} {...rest} />;
+  const { tavern, playerCount, ...rest } = props;
+  return <div css={tavernStyle(tavern, playerCount)} {...rest} />;
 };
 
-const tavernStyle = (tavern: number) => css`
+const tavernStyle = (tavern: number, playerCount?: number) => css`
   position: absolute;
   height: ${tavernHeight}em;
   width: ${tavernWidth}em;
   top: ${tavernTop(tavern)}em;
-  left: ${tavernLeft}em;
+  left: ${tavernLeft(playerCount)}em;
   background-image: url(${TavernImages.get(tavern)});
   background-size: cover;
 `;

@@ -15,7 +15,7 @@ import { useLegalMoves } from '../../hook/rules.hook';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
 import { HeroType } from '@gamepark/nidavellir/cards/Hero';
 import { MoveCard } from '@gamepark/nidavellir/moves/MoveCard';
-import { isOnPlayerBoardCard } from '@gamepark/nidavellir/utils/location.utils';
+import { isInArmy } from '@gamepark/nidavellir/utils/location.utils';
 import { MoveHero } from '@gamepark/nidavellir/moves/MoveHero';
 
 type PlayerBoardProps = {
@@ -29,50 +29,49 @@ const PlayerBoard: FC<PlayerBoardProps> = (props) => {
   const playerId = usePlayerId();
   const positions = usePlayerPositions();
   const moves = useLegalMoves<MoveCard | MoveHero>(game, playerId, [MoveType.MoveCard, MoveType.MoveHero]);
-  const getColumnMoves = (column: DwarfType | HeroType) =>
+  const getArmyMove = (column: DwarfType | HeroType) =>
     moves.filter(
-      (m: MoveCard | MoveHero) =>
-        isOnPlayerBoardCard(m.target) && m.target.column === column && m.target.player === player
+      (m: MoveCard | MoveHero) => isInArmy(m.target) && m.target.column === column && m.target.player === player
     );
 
   return (
     <>
-      <CommandZone position={positions[player]} moves={getColumnMoves(HeroType.Neutral)} />
+      <CommandZone position={positions[player]} game={game} />
       <div css={playerBoard(positions[player])}>{playerId === player && <BidPlaces game={game} />}</div>
       <PlayerBoardColumn
         type={DwarfType.Blacksmith}
         color="#4c2c9f"
         background="#a78aa380"
         position={positions[player]}
-        moves={getColumnMoves(DwarfType.Blacksmith)}
+        moves={getArmyMove(DwarfType.Blacksmith)}
       />
       <PlayerBoardColumn
         type={DwarfType.Hunter}
         color="#277d53"
         background="#99a48780"
         position={positions[player]}
-        moves={getColumnMoves(DwarfType.Hunter)}
+        moves={getArmyMove(DwarfType.Hunter)}
       />
       <PlayerBoardColumn
         type={DwarfType.Explorer}
         color="#54a9e1"
         background="#92c2d480"
         position={positions[player]}
-        moves={getColumnMoves(DwarfType.Explorer)}
+        moves={getArmyMove(DwarfType.Explorer)}
       />
       <PlayerBoardColumn
         type={DwarfType.Miner}
         color="#f0782d"
         background="#cfb08e80"
         position={positions[player]}
-        moves={getColumnMoves(DwarfType.Miner)}
+        moves={getArmyMove(DwarfType.Miner)}
       />
       <PlayerBoardColumn
         type={DwarfType.Warrior}
         color="#8f3526"
         background="#ae776980"
         position={positions[player]}
-        moves={getColumnMoves(DwarfType.Warrior)}
+        moves={getArmyMove(DwarfType.Warrior)}
       />
     </>
   );

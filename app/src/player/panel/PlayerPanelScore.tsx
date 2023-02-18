@@ -1,13 +1,18 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { FC, useMemo } from 'react';
+import { FC } from 'react';
 import GameView from '@gamepark/nidavellir/state/view/GameView';
 import { Player } from '@gamepark/nidavellir/state/Player';
-import { getArmy } from '@gamepark/nidavellir/utils/player.utils';
 import { playerPanelScoreWidth } from '../../material/Styles';
 import { DwarfType } from '@gamepark/nidavellir/cards/Card';
-import { HeroType } from '@gamepark/nidavellir/cards/Hero';
 import Images from '../../images/Images';
+import {
+  getBlacksmithScore,
+  getExplorerScore,
+  getHunterScore,
+  getMinerScore,
+  getWarriorScore,
+} from '@gamepark/nidavellir/utils/score.utils';
 
 type PlayerPanelScoreProps = {
   game: GameView;
@@ -16,40 +21,36 @@ type PlayerPanelScoreProps = {
 
 const PlayerPanelScore: FC<PlayerPanelScoreProps> = (props) => {
   const { game, player } = props;
-  const army = useMemo(() => getArmy(game, player.id), [game]);
-
-  //TODO: compute score of each type
-  console.log('Army', army);
   return (
     <div css={scoresContainer}>
       <div css={scoreEntry}>
         <div css={scoreIcon(DwarfType.Blacksmith)}></div>
         <div css={scoreValue}>
-          <span>999</span>
+          <span>{getBlacksmithScore(game, player.id)}</span>
         </div>
       </div>
       <div css={scoreEntry}>
         <div css={scoreIcon(DwarfType.Hunter)}></div>
         <div css={scoreValue}>
-          <span>999</span>
+          <span>{getHunterScore(game, player.id)}</span>
         </div>
       </div>
       <div css={scoreEntry}>
         <div css={scoreIcon(DwarfType.Explorer)}></div>
         <div css={scoreValue}>
-          <span>999</span>
+          <span>{getExplorerScore(game, player.id)}</span>
         </div>
       </div>
       <div css={scoreEntry}>
         <div css={scoreIcon(DwarfType.Miner)}></div>
         <div css={scoreValue}>
-          <span>999</span>
+          <span>{getMinerScore(game, player.id)}</span>
         </div>
       </div>
       <div css={scoreEntry}>
         <div css={scoreIcon(DwarfType.Warrior)}></div>
         <div css={scoreValue}>
-          <span>999</span>
+          <span>{getWarriorScore(game, player.id)}</span>
         </div>
       </div>
     </div>
@@ -79,7 +80,7 @@ const scoreEntry = css`
 const scoreIcon = (type: DwarfType) => css`
   flex: 2;
   background-size: contain;
-  background-image: url(${getDwardIcon(type)!.icon});
+  background-image: url(${getDwarfIcon(type)!.icon});
   background-color: gray;
 `;
 
@@ -91,13 +92,14 @@ const scoreValue = css`
   align-items: center;
   justify-content: flex-end;
   padding-right: 0.5em;
+  background-color: white;
 
   > span {
     font-size: 2.5em;
   }
 `;
 
-const getDwardIcon = (type: DwarfType | HeroType) => {
+const getDwarfIcon = (type: DwarfType) => {
   switch (type) {
     case DwarfType.Blacksmith:
       return { icon: Images.BlacksmithIcon };

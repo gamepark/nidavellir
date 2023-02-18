@@ -18,6 +18,10 @@ export default abstract class EffectRules extends NidavellirRules {
   }
 
   getLegalMoves(playerId: PlayerId): (Move | MoveView)[] {
+    if (this.delegates().length) {
+      return super.getLegalMoves(playerId);
+    }
+
     return playerId === this.player.id ? this.getPlayerMoves() : [];
   }
 

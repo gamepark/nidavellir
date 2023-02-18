@@ -48,7 +48,7 @@ const PlayerBoardColumn: FC<CardColumnProps> = (props) => {
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       isDragging: monitor.getItem() !== null,
-      droppable: canDrop(monitor.getItem()),
+      droppable: monitor.canDrop(),
     }),
   });
 
@@ -65,12 +65,17 @@ const PlayerBoardColumn: FC<CardColumnProps> = (props) => {
       css={[
         cardColumn(position, type, color, background),
         isSelectable && (!isDragging || droppable) && selectable,
+        droppable && onTop,
         isOver && droppable && overPlace,
       ]}
       onClick={onClick}
     />
   );
 };
+
+const onTop = css`
+  z-index: 20;
+`;
 
 const overPlace = css`
   background-color: rgba(255, 255, 255, 1);

@@ -4,10 +4,8 @@ import { FC } from 'react';
 import { coinTokenHeight, coinTokenWidth, getCoinBidPosition, shineEffect } from '../Styles';
 import { useDrop } from 'react-dnd';
 import { DraggableCoin, DraggableMaterial } from '../../draggable/DraggableMaterial';
-import { MoveCoin, moveKnownCoinMove } from '@gamepark/nidavellir/moves/MoveCoin';
-import { LocationType } from '@gamepark/nidavellir/state/Location';
-import { usePlay, usePlayerId } from '@gamepark/react-client';
-import { selectCoinMove } from '@gamepark/nidavellir/moves/SelectCoin';
+import { MoveCoin } from '@gamepark/nidavellir/moves/MoveCoin';
+import { usePlay } from '@gamepark/react-client';
 
 type BidPlaceProps = {
   index: number;
@@ -17,35 +15,23 @@ type BidPlaceProps = {
 const BidPlace: FC<BidPlaceProps> = (props) => {
   const { index, moves } = props;
   const play = usePlay();
-  const playerId = usePlayerId();
 
   const canDrop = (item: DraggableCoin) => !!moves.find((m) => m.id === item.id);
   const [{ isOver, isDragging }, ref] = useDrop({
     accept: DraggableMaterial.Coin,
     canDrop,
-    drop: (item: DraggableCoin) =>
-      moveKnownCoinMove(item.id, {
-        type: LocationType.PlayerBoard,
-        player: playerId,
-        index,
-      }),
+    drop: (item: DraggableCoin) => moves.find((m) => m.id === item.id)!,
     collect: (monitor) => ({
       isOver: monitor.isOver(),
-      isDragging: monitor.getItemType() === DraggableMaterial.Coin && canDrop(monitor.getItem()),
+      isDragging: monitor.getItemType() === DraggableMaterial.Coin && monitor.canDrop(),
     }),
   });
 
   const isSelectable = moves.length === 1;
+  const hasMoves = moves.length >= 1;
   const selectPlace = () => {
     if (isSelectable) {
-      play(
-        moveKnownCoinMove(moves[0].id!, {
-          type: LocationType.PlayerBoard,
-          player: playerId,
-          index,
-        })
-      );
-      play(selectCoinMove(), { local: true });
+      play(moves[0]);
     }
   };
 
@@ -53,7 +39,7 @@ const BidPlace: FC<BidPlaceProps> = (props) => {
     <div
       ref={ref}
       onClick={selectPlace}
-      css={[bidPlace(index), (isDragging || isSelectable) && highlightPlace, isOver && overPlace]}
+      css={[bidPlace(index), (isDragging || isSelectable) && highlightPlace, hasMoves && isOver && overPlace]}
     />
   );
 };

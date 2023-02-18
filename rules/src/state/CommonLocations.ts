@@ -18,3 +18,8 @@ export type InDiscard = {
   type: LocationType.Discard;
   index: number;
 };
+
+export type InDistinctionDeck = {
+  type: LocationType.DistinctionsDeck;
+  index: number;
+};

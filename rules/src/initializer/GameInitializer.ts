@@ -4,11 +4,11 @@ import { Player } from '../state/Player';
 import { LocatedCard } from '../state/LocatedCard';
 import { LocatedCoin } from '../state/LocatedCoin';
 import { LocatedGem } from '../state/LocatedGem';
-import { Cards } from '../cards/Cards';
+import { BlacksmithDwarfKingsGreatArmorer, Cards } from '../cards/Cards';
 import { LocationType } from '../state/Location';
 import shuffle from 'lodash/shuffle';
 import { Distinctions } from '../cards/Distinctions';
-import { Coins } from '../coins/Coins';
+import { Coins, HuntingMasterCoin } from '../coins/Coins';
 import { CoinColor } from '../coins/Coin';
 import { Gems } from '../gems/Gems';
 import { Heroes } from '../cards/Heroes';
@@ -26,10 +26,14 @@ class GameInitializer {
   }
 
   private initializeAgeCards = (): LocatedCard[] => {
-    const cards = Array.from(Cards.entries()).filter(
-      ([, card]) => !card.minPlayers || this.options.players.length >= card.minPlayers
+    const allCards = Array.from(Cards.entries());
+    const cards = allCards.filter(
+      ([, card]) =>
+        card !== BlacksmithDwarfKingsGreatArmorer &&
+        (!card.minPlayers || this.options.players.length >= card.minPlayers)
     );
 
+    const distinctionCard = allCards.find(([, card]) => card === BlacksmithDwarfKingsGreatArmorer)![0];
     const [age1, age2] = partition(shuffle(cards), (c) => c[1].age === 1);
 
     const cardsByTavern = getCardByTavern(this.options.players.map((p) => p.id));
@@ -49,28 +53,34 @@ class GameInitializer {
       ...age1.map(
         ([id], index): LocatedCard => ({
           id,
-          location: { type: LocationType.Age1Deck, index },
+          location: { type: LocationType.Age1Deck, index: age1.length - 1 - index },
         })
       ),
       ...age2.map(
         ([id], index): LocatedCard => ({
           id,
-          location: { type: LocationType.Age2Deck, index },
+          location: { type: LocationType.Age2Deck, index: age2.length - 1 - index },
         })
       ),
+      {
+        id: distinctionCard,
+        location: { type: LocationType.DistinctionsDeck, index: 0 },
+      },
     ];
   };
 
   private initializeCoins = (): LocatedCoin[] => {
     const coins = Array.from(Coins.entries());
     const goldCoins = groupBy(
-      coins.filter((c) => c[1].color === CoinColor.Gold),
+      coins.filter(([, coin]) => coin.color === CoinColor.Gold),
       (c) => c[1].value
     );
     const baseCoinsByValue: Record<number, any> = groupBy(
-      coins.filter((c) => c[1].color === CoinColor.Bronze),
+      coins.filter(([, coin]) => coin.color === CoinColor.Bronze),
       (c) => c[1].value
     );
+
+    const huntingMasterCoin = coins.find(([, coin]) => coin === HuntingMasterCoin)![0];
 
     return [
       ...this.options.players.flatMap((p, index) => {
@@ -94,6 +104,10 @@ class GameInitializer {
           location: { type: LocationType.Treasure, z: index },
         }))
       ),
+      {
+        id: huntingMasterCoin,
+        location: { type: LocationType.DistinctionsDeck, index: 1 },
+      },
     ];
   };
 
@@ -145,8 +159,7 @@ class GameInitializer {
     distinctions: this.initializeDistinctions(),
     heroes: this.initializeHeroes(),
     phase: Phase.TurnPreparation,
-    steps: [Step.Bids],
-    nextMoves: [],
+    step: Step.Bids,
     tavern: 0,
     round: 1,
   });
