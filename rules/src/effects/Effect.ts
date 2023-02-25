@@ -7,6 +7,7 @@ import { YludEffect } from './YludEffect';
 import { TransformCoinEffect } from './types/TransformCoinEffect';
 import { TradeCoin } from './types/TradeCoinEffect';
 import { UlineEffect } from './UlineEffect';
+import { DiscardCard } from './DiscardCard';
 
 export type Effect =
   | TransformCoinEffect
@@ -17,4 +18,5 @@ export type Effect =
   | PioneerOfTheKingdom
   | KingsGreatArmorer
   | YludEffect
-  | UlineEffect;
+  | UlineEffect
+  | DiscardCard;

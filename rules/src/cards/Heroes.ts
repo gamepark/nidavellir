@@ -11,6 +11,12 @@ export const Bonfur: Hero = {
   grades: {
     [DwarfType.Blacksmith]: [0, 0, 0],
   },
+  effects: [
+    {
+      type: EffectType.DISCARD_CARD,
+      count: 1,
+    },
+  ],
 };
 
 export const Aegur: Hero = {
@@ -25,6 +31,12 @@ export const Dagda: Hero = {
   grades: {
     [DwarfType.Hunter]: [0, 0, 0],
   },
+  effects: [
+    {
+      type: EffectType.DISCARD_CARD,
+      count: 2,
+    },
+  ],
 };
 
 export const Aral: Hero = {
@@ -139,6 +151,10 @@ export const Uline: Hero = {
 
 export const Grid: Hero = {
   type: HeroType.Neutral,
+  effects: [{
+    type: EffectType.TRANSFORM_COIN,
+    additionalValue: 7
+  }]
 };
 
 export const Heroes: Hero[] = [

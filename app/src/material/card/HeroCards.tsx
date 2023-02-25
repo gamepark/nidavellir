@@ -75,7 +75,7 @@ const cardPosition = (card: SecretCard, playerPositions: any) => {
 };
 
 const cardZIndex = (card: LocatedCard) => {
-  if (isInArmy(card.location)) {
+  if (isInArmy(card.location) || isInCommandZone(card.location)) {
     return css`
       z-index: ${card.location.index};
     `;

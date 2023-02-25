@@ -1,7 +1,7 @@
 import { PlayerId } from '../state/Player';
 import GameState from '../state/GameState';
 import GameView from '../state/view/GameView';
-import { isInDiscard, isInTreasure, isOnPlayerBoard, isSameCoinLocation } from './location.utils';
+import { isInDiscard, isInPlayerHand, isInTreasure, isOnPlayerBoard, isSameCoinLocation } from './location.utils';
 import { InTreasure, LocatedCoin } from '../state/LocatedCoin';
 import { SecretCoin } from '../state/view/SecretCoin';
 import { Coins, HuntingMasterCoin } from '../coins/Coins';
@@ -50,6 +50,17 @@ export const getTavernCoins = (state: GameState | GameView, tavern: number) =>
  * Get treasure coins
  */
 export const getTreasureCoins = (state: GameState | GameView) => state.coins.filter((c) => isInTreasure(c.location));
+
+/**
+ * Get coins of a player
+ * @param game The game state
+ * @param playerId the player of coins
+ */
+export const getPlayerCoins = (game: GameState | GameView, playerId: PlayerId): (SecretCoin | LocatedCoin)[] => {
+  return game.coins.filter(
+    (c) => (isInPlayerHand(c.location) || isOnPlayerBoard(c.location)) && c.location.player === playerId
+  );
+};
 
 /**
  * Get a treasure coin for a value.

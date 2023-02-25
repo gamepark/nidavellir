@@ -1,9 +1,9 @@
 import GameView from '@gamepark/nidavellir/state/view/GameView';
 import { PlayerId } from '@gamepark/nidavellir/state/Player';
 import { useMemo } from 'react';
-import Nidavellir from '@gamepark/nidavellir/Nidavellir';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
 import Move from '@gamepark/nidavellir/moves/Move';
+import NidavellirView from '../NidavellirView';
 
 export const useLegalMoves = <T extends Move>(
   game: GameView,
@@ -17,4 +17,4 @@ export const useLegalMoves = <T extends Move>(
     return !predicate ? moves : moves.filter(predicate);
   }, [rules, playerId, types, predicate]);
 };
-export const useRules = (game: GameView) => useMemo(() => new Nidavellir(game), [game]);
+export const useRules = (game: GameView) => useMemo(() => new NidavellirView(game), [game]);

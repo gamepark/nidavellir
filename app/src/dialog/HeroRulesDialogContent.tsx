@@ -194,7 +194,7 @@ CARD_RULES.set(Skaa, () => ({
 
 CARD_RULES.set(Grid, () => ({
   header: <Trans defaults="hero.rules.header.grid" components={[<strong />]} />,
-  description: [<Trans defaults="hero.rules.desc.grid" components={[<strong />]} />],
+  description: [<Trans defaults="hero.rules.desc.grid" components={[<strong />]} value={{ additionalValue: 7 }} />],
 }));
 
 const divider = css`

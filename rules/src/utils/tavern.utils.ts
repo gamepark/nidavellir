@@ -35,6 +35,7 @@ export const nextTavern = (game: GameState | GameView): (Move | MoveView)[] => {
   game.players.forEach((p) => {
     delete p.ready;
     delete p.discardedCoin;
+    delete p.discardedCard;
     delete p.playedCard;
     delete p.traded;
   });

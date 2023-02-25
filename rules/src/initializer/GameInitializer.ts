@@ -70,7 +70,7 @@ class GameInitializer {
   };
 
   private initializeCoins = (): LocatedCoin[] => {
-    const coins = Array.from(Coins.entries());
+    const coins = shuffle(Array.from(Coins.entries()));
     const goldCoins = groupBy(
       coins.filter(([, coin]) => coin.color === CoinColor.Gold),
       (c) => c[1].value
@@ -145,7 +145,6 @@ class GameInitializer {
 
   private initializePlayers = (): Player[] => {
     return this.options.players.map((p) => ({
-      score: 0,
       id: p.id,
       effects: [],
     }));

@@ -23,7 +23,7 @@ abstract class AgeRules extends NidavellirRules {
     switch (move.type) {
       case MoveType.Pass:
         this.onInnerPass();
-        this.onPass();
+        consequences.push(...this.onPass());
         break;
     }
 

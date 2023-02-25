@@ -6,7 +6,7 @@ import { LocationType } from '../state/Location';
 import { isInDiscard, isInTreasure, isOnPlayerBoard, isSameCoinLocation } from '../utils/location.utils';
 import { Coins } from '../coins/Coins';
 import { CoinColor } from '../coins/Coin';
-import { moveKnownCoinMove, revealCoinMove } from '../moves/MoveCoin';
+import { moveCoinAndHideMove, moveKnownCoinMove, revealCoinMove } from '../moves/MoveCoin';
 import { getTreasureCoinForValue, getTreasureCoins, isExchangeCoin } from '../utils/coin.utils';
 import { TransformCoin, transformCoinMove } from '../moves/TransformCoin';
 import { TransformCoinEffect } from './types/TransformCoinEffect';
@@ -40,8 +40,8 @@ export class TransformCoinBaseRules extends EffectRules {
     const locatedCoin = this.game.coins.find((c) =>
       c.id !== undefined && move.id !== undefined ? move.id === c.id : isSameCoinLocation(move.source!, c.location)
     )!;
-    const coin = Coins[locatedCoin.id!];
 
+    const coin = Coins[id];
     const moves = [];
     const nextDiscardIndex = this.game.coins.filter((c) => isInDiscard(c.location)).length;
 
@@ -69,7 +69,8 @@ export class TransformCoinBaseRules extends EffectRules {
     }
 
     const treasureCoin = getTreasureCoinForValue(getTreasureCoins(this.game), coin.value + this.effect.additionalValue);
-    moves.push(moveKnownCoinMove(treasureCoin.id!, locatedCoin.location));
+    const operation = locatedCoin.hidden ? moveCoinAndHideMove : moveKnownCoinMove;
+    moves.push(operation(treasureCoin.id!, locatedCoin.location));
 
     this.player.effects.shift();
     return moves;

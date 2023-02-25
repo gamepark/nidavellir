@@ -7,7 +7,8 @@ import { Coins } from '../coins/Coins';
 import { moveKnownCoinMove, revealCoinMove } from '../moves/MoveCoin';
 import { getTreasureCoinForValue, getTreasureCoins } from '../utils/coin.utils';
 import { CoinColor } from '../coins/Coin';
-import { maxBy, sumBy } from 'lodash';
+import maxBy from 'lodash/maxBy';
+import sumBy from 'lodash/sumBy';
 import { TradeCoins } from '../moves/TradeCoins';
 import MoveView from '../moves/MoveView';
 

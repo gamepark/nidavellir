@@ -30,9 +30,8 @@ import { Pass } from './moves/Pass';
 import { OnPlayerBoard } from './state/CommonLocations';
 import { EffectsRules } from './effects/EffectsRules';
 import { NidavellirRules } from './rules/NidavellirRules';
-import shuffle from 'lodash/shuffle';
 import { ScoringRules } from './rules/ScoringRules';
-import { isAge1 } from './utils/age.utils';
+import { isAge1, isEndOfGame } from './utils/age.utils';
 import { Age1Rules } from './rules/Age1Rules';
 import { Age2Rules } from './rules/Age2Rules';
 import { ShuffleCoins } from './moves/ShuffleCoins';
@@ -76,13 +75,15 @@ export default class Nidavellir
   }
 
   isOver(): boolean {
-    return false;
+    // FIXME: rules seems to not use delegate here ?
+    return isEndOfGame(this.game);
   }
 
   delegates(): NidavellirRules[] {
     if (this.game.step === Step.Scoring) {
       return [new ScoringRules(this.game)];
     }
+
     const delegates = this.game.players
       .filter((p) => p.effects.length)
       .map((p) => new EffectsRules[p.effects[0].type](this.game, p));
@@ -136,15 +137,16 @@ export default class Nidavellir
 
   private onShuffleCoins(move: ShuffleCoins) {
     // Randomizing the new indexes for the coins since order must be hidden to the player
-    const indexes = shuffle(Array.from(Array(move.coins.length)).map((_, index) => index));
+    // TODO: move to MoveRandomized
+    // TODO: here, remove the randomization and only swap coins in the list to prevent coin index switching
+    //const indexes = shuffle(Array.from(Array(move.coins.length)).map((_, index) => index));
+    const indexes = Array.from(Array(move.coins.length)).map((_, index) => index);
     move.coins.forEach((c, index) => {
       const coin = this.game.coins.find((coin) => coin.id === c)!;
-      if (isView(this.game)) {
-        if (isInPlayerHand(coin.location)) {
-          if (this.game.playerId !== coin.location.player) {
-            coin.location.index = indexes[index];
-            delete coin.id;
-          }
+      if (isView(this.game) && isInPlayerHand(coin.location)) {
+        if (this.game.playerId !== coin.location.player) {
+          coin.location.index = indexes[index];
+          delete coin.id;
         }
       }
     });
@@ -164,6 +166,14 @@ export default class Nidavellir
 
     if (move.id !== undefined) {
       card.id = move.id;
+    }
+
+    const activePlayer = getActivePlayer(this.game);
+    if (activePlayer) {
+      activePlayer.discardedCard = {
+        id: card.id!,
+        origin: card.location,
+      };
     }
 
     card.location = move.target;
@@ -187,6 +197,10 @@ export default class Nidavellir
 
     if (move.reveal) {
       coin.hidden = false;
+    }
+
+    if (move.hide) {
+      coin.hidden = true;
     }
 
     if (move.target) {
@@ -298,6 +312,17 @@ export default class Nidavellir
         return {
           ...move,
           sources: move.ids.map((i) => this.game.coins.find((c) => c.id === i)!.location),
+        };
+      }
+      case MoveType.TransformCoin: {
+        const activePlayer = getActivePlayer(this.game);
+        if (activePlayer.id === _playerId) {
+          return move;
+        }
+
+        return {
+          ...move,
+          source: this.game.coins.find((c) => c.id === move.id)!.location,
         };
       }
       case MoveType.MoveCoin:

@@ -52,7 +52,7 @@ const CoinRulesDialogContent: FC<CoinRulesDialogContentProps> = (props) => {
   return (
     <div css={container}>
       <div css={coinContainer}>
-        <CoinToken coin={coin} css={coinInRules} scale={2} />
+        <CoinToken coin={coin} css={coinInRules} scale={2} transform={(c) => (c.hidden ? 'rotateY(180deg)' : '')} />
       </div>
       <div css={descriptionContainer}>
         <div css={rulesContainer}>

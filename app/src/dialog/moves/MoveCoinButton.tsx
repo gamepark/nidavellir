@@ -63,13 +63,14 @@ const getEffectDetail = (game: GameView, move: MoveCoin | TradeCoins | Transform
       };
     }
     case MoveType.TransformCoin: {
+      console.log('TRANSFORM COIN');
       const e = effect as TransformCoinEffect;
       const newCoin = getTreasureCoinForValue(getTreasureCoins(game), Coins[move.id!].value + e.additionalValue);
       return {
         text: (
           <Trans
             defaults="coin.moves.transform-coins"
-            components={[<CoinToken css={innerCoinStyle} coin={newCoin} />]}
+            components={[<span css={buttonStyle} />, <CoinToken css={innerCoinStyle} coin={newCoin} />]}
           />
         ),
       };

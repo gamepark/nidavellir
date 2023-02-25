@@ -1,20 +1,19 @@
 import { NidavellirRules } from './NidavellirRules';
 import { Player, PlayerId } from '../state/Player';
 import Move from '../moves/Move';
-import { getCardsInTavern, isInDiscard, isOnPlayerBoard } from '../utils/location.utils';
+import { getCardsInTavern, isOnPlayerBoard } from '../utils/location.utils';
 import MoveType from '../moves/MoveType';
-import { getActivePlayer, getNextIndexByType, isLocatedCoin } from '../utils/player.utils';
+import { getActivePlayer, isLocatedCoin } from '../utils/player.utils';
 import { InTavern } from '../state/LocatedCard';
-import { MoveCard, moveKnownCardMove } from '../moves/MoveCard';
-import { LocationType } from '../state/Location';
+import { MoveCard } from '../moves/MoveCard';
 import { Cards } from '../cards/Cards';
 import { EffectType } from '../effects/EffectType';
 import GameState from '../state/GameState';
 import GameView from '../state/view/GameView';
 import { mayRecruitNewHeroes } from '../utils/hero.utils';
-import { RoyalOffering } from '../cards/Card';
 import MoveView from '../moves/MoveView';
 import { isExchangeCoin } from '../utils/coin.utils';
+import { getChooseCardMove } from '../utils/card.utils';
 
 class ChooseCardRules extends NidavellirRules {
   player: Player;
@@ -27,8 +26,10 @@ class ChooseCardRules extends NidavellirRules {
   getAutomaticMoves(): (Move | MoveView)[] {
     const activePlayer = getActivePlayer(this.game);
     const cardInTavern = getCardsInTavern(this.game);
+
+    // TODO: can't works because when the player choose a card, this rules are not called
     if (cardInTavern.length === 1 && activePlayer.playedCard === undefined) {
-      return [this.getChooseCardMove(cardInTavern[0].id!)];
+      return [getChooseCardMove(this.game, this.player, cardInTavern[0].id!)];
     }
     return super.getAutomaticMoves();
   }
@@ -41,25 +42,8 @@ class ChooseCardRules extends NidavellirRules {
     const currentTavern = this.game.tavern;
     const tavernCards = getCardsInTavern(this.game).filter((c) => (c.location as InTavern).tavern === currentTavern);
 
-    return tavernCards.map((c) => this.getChooseCardMove(c.id!));
+    return tavernCards.map((c) => getChooseCardMove(this.game, this.player, c.id!));
   }
-
-  getChooseCardMove = (cardId: number) => {
-    const nextIndexesByType = getNextIndexByType(this.game, this.player.id);
-    const card = Cards[cardId];
-    if (card.type === RoyalOffering.RoyalOffering) {
-      return moveKnownCardMove(cardId, {
-        type: LocationType.Discard,
-        index: this.game.cards.filter((c) => isInDiscard(c.location)).length,
-      });
-    }
-    return moveKnownCardMove(cardId, {
-      type: LocationType.Army,
-      player: this.player.id,
-      index: nextIndexesByType[card.type].nextIndex,
-      column: card.type,
-    });
-  };
 
   play(move: Move) {
     switch (move.type) {
@@ -93,7 +77,7 @@ class ChooseCardRules extends NidavellirRules {
 
     const card = Cards[move.id!];
     if (card.effects?.length) {
-      this.player.effects.push(...card.effects);
+      this.player.effects.push(...JSON.parse(JSON.stringify(card.effects)));
     }
 
     return [];

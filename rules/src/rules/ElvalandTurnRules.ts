@@ -14,6 +14,7 @@ import { moveKnownCardMove } from '../moves/MoveCard';
 import isEmpty from 'lodash/isEmpty';
 import { getTrades } from '../utils/age.utils';
 import { setStepMove } from '../moves/SetStep';
+import { getChooseCardMove } from '../utils/card.utils';
 
 class ElvalandTurnRules extends NidavellirRules {
   delegate(): NidavellirRules | undefined {
@@ -68,10 +69,18 @@ class ElvalandTurnRules extends NidavellirRules {
       }
 
       return consequences;
-    }
+    } else {
+      const consequences = [];
+      const nextPlayer = getNextPlayer(this.game);
+      const cardInTaverns = getCurrentTavernCards(this.state);
+      if (cardInTaverns.length === 1) {
+        const activePlayer = this.game.players.find((p) => p.id === nextPlayer)!;
+        consequences.push(getChooseCardMove(this.game, activePlayer, cardInTaverns[0].id));
+      }
 
-    this.game.activePlayer = getNextPlayer(this.game);
-    return [];
+      this.game.activePlayer = nextPlayer;
+      return consequences;
+    }
   }
 
   discardTavernMoves = () => {

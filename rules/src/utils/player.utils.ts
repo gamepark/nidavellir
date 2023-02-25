@@ -14,7 +14,7 @@ import { Card, DwarfType, RoyalOffering } from '../cards/Card';
 import { Cards } from '../cards/Cards';
 import { Heroes } from '../cards/Heroes';
 import { HeroType } from '../cards/Hero';
-import { maxBy } from 'lodash';
+import maxBy from 'lodash/maxBy';
 import keyBy from 'lodash/keyBy';
 import { Gems } from '../gems/Gems';
 

@@ -82,7 +82,7 @@ class RecruitHeroRules extends EffectRules {
     }
 
     if (hero.effects?.length) {
-      this.player.effects.unshift(...hero.effects);
+      this.player.effects.unshift(...JSON.parse(JSON.stringify(hero.effects)));
     }
   }
 }

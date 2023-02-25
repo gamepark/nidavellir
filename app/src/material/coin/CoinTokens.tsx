@@ -57,7 +57,7 @@ const CoinTokens: FC<CoinTokensProps> = (props) => {
       {game.coins.map((coin, index) => (
         <CoinToken
           coin={coin}
-          key={getCoinKey(coin, index)}
+          key={index}
           moves={getCoinTokenMoves(coin)}
           transform={coinTransform}
           additionalCss={coinAdditionalStyle}
@@ -66,10 +66,6 @@ const CoinTokens: FC<CoinTokensProps> = (props) => {
       ))}
     </>
   );
-};
-
-const getCoinKey = (_coin: SecretCoin, index: number) => {
-  return _coin.id !== undefined ? `coin-${_coin?.id}` : index;
 };
 
 const coinTransform = (coin: SecretCoin, playerPositions: any) => {

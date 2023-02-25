@@ -176,6 +176,7 @@ import DancingDragonIcon from './icons/dancing-dragon-icon.png';
 import ShiningHorseIcon from './icons/shining-horse-icon.png';
 import PouchIcon from './icons/pouch-icon.png';
 import CommandIcon from './icons/command-icon.png';
+import DiscardIcon from './icons/discard.png';
 
 import DwergScoring from './rules/dwerg-scoring.jpg';
 
@@ -348,6 +349,7 @@ const Images = {
   ShiningHorseIcon,
   PouchIcon,
   CommandIcon,
+  DiscardIcon,
   DwergScoring,
   GreenCoin,
 };

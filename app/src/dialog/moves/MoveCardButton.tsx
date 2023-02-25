@@ -54,6 +54,8 @@ const getDetail = (target: CardLocation, id?: number) => {
       if (id !== undefined && Cards[id].type === RoyalOffering.RoyalOffering) {
         return { icon: Images.RoyalOfferingIcon, text: 'card.moves.choose-royal-offering' };
       }
+
+      return { icon: Images.DiscardIcon, text: 'card.moves.discard' };
   }
 
   return null;

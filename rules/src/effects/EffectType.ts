@@ -8,4 +8,5 @@ export enum EffectType {
   PIONEER_OF_THE_KINGDOM,
   YLUD,
   ULINE,
+  DISCARD_CARD,
 }
