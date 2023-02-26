@@ -3,7 +3,7 @@ import { EffectType } from './EffectType';
 import Move from '../moves/Move';
 import MoveView from '../moves/MoveView';
 import { getArmy } from '../utils/player.utils';
-import { DWARF_COLUMNS, getCardInColumn, getNextCardIndexInDiscard } from '../utils/card.utils';
+import { DWARF_COLUMNS, getNextCardIndexInDiscard } from '../utils/card.utils';
 import maxBy from 'lodash/maxBy';
 import { OnPlayerBoard } from '../state/CommonLocations';
 import { LocationType } from '../state/Location';
@@ -13,6 +13,7 @@ import { SecretCard } from '../state/view/SecretCard';
 import { LocatedCard } from '../state/LocatedCard';
 import MoveType from '../moves/MoveType';
 import { isInArmy } from '../utils/location.utils';
+import { moveHeroMove } from '../moves/MoveHero';
 
 export type DiscardCard = {
   type: EffectType.DISCARD_CARD;
@@ -25,9 +26,6 @@ export class DiscardCardRules extends EffectRules {
   }
 
   getPlayerMoves(): (Move | MoveView)[] {
-    const army = getArmy(this.state, this.player.id);
-    const cards = [...army.cards, ...army.heroes];
-
     if (!this.player.playedCard) {
       throw new Error('There is a discard move without played card. Not supported yet');
     }
@@ -37,8 +35,18 @@ export class DiscardCardRules extends EffectRules {
 
     return DWARF_COLUMNS.filter((column) => this.isNotEffectCardColumn(card, column))
       .filter((column) => this.filterNotChosenColumn(column))
-      .flatMap((column) => this.lastCardInColumn(cards, column))
-      .map((card) => this.toPlayerMove(card));
+      .flatMap((column) => this.lastCardInColumn(column))
+      .flatMap((maxCard) => {
+        const moves = [];
+        if (!maxCard) {
+          return [];
+        }
+
+        const moveBuilder = maxCard?.type === 'age' ? this.toMoveCard : this.toMoveHero;
+        moves.push(moveBuilder(maxCard.card));
+
+        return moves;
+      });
   }
 
   play(move: Move | MoveView): (Move | MoveView)[] {
@@ -60,21 +68,49 @@ export class DiscardCardRules extends EffectRules {
         throw new Error('There is a discard card but no card was played');
       }
 
-
       this.effect.count--;
     }
   };
 
-  toPlayerMove = (c: SecretCard | LocatedCard) => {
+  toMoveCard = (c: SecretCard | LocatedCard) => {
     return moveKnownCardMove(c.id!, {
       type: LocationType.Discard,
       index: getNextCardIndexInDiscard(this.game),
     });
   };
 
-  lastCardInColumn = (cards: (SecretCard | LocatedCard)[], type: DwarfType) => {
-    const columnCards = getCardInColumn(cards, type);
-    return maxBy(columnCards, (c) => (c.location as unknown as OnPlayerBoard).index) ?? [];
+  toMoveHero = (c: SecretCard | LocatedCard) => {
+    return moveHeroMove(c.id!, {
+      type: LocationType.Discard,
+      index: getNextCardIndexInDiscard(this.game),
+    });
+  };
+
+  lastCardInColumn = (type: DwarfType) => {
+    const army = getArmy(this.game, this.player.id, type);
+    const maxCard = maxBy(army.cards, (c) => (c.location as unknown as OnPlayerBoard).index) as any;
+    const maxHero = maxBy(army.heroes, (c) => (c.location as unknown as OnPlayerBoard).index);
+
+    const max = maxBy(
+      [maxCard, maxHero].filter((c) => !!c),
+      (c) => (c.location as unknown as OnPlayerBoard).index
+    ) as any;
+
+    if (!maxCard && !maxHero) {
+      return;
+    }
+
+    if (max === maxCard) {
+      return {
+        type: 'age',
+        card: maxCard,
+      };
+    }
+
+    return {
+      type: 'hero',
+      card: maxHero,
+    };
   };
 
   filterNotChosenColumn = (type: DwarfType) =>

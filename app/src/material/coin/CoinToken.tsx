@@ -52,7 +52,6 @@ type CoinTokenProps = {
   scale?: number;
   disabled?: boolean;
   transform?: (coin: SecretCoin, playerPositions: any) => string;
-  additionalCss?: (coin: SecretCoin) => any;
 } & HTMLAttributes<HTMLDivElement>;
 
 const isThisCoin = (coin: SecretCoin, move: MoveCoin) => {
@@ -68,7 +67,7 @@ const isThisCoin = (coin: SecretCoin, move: MoveCoin) => {
 };
 
 const CoinToken: FC<CoinTokenProps> = (props) => {
-  const { coin, moves, transform, additionalCss, disabled, scale, ...rest } = props;
+  const { coin, moves, transform, disabled, scale, ...rest } = props;
   const play = usePlay();
   const playerId = usePlayerId();
   const detail = coin.id !== undefined ? Coins[coin.id] : undefined;
@@ -108,7 +107,6 @@ const CoinToken: FC<CoinTokenProps> = (props) => {
       preTransform={`${transform?.(coin, playerPositions) ?? ''} ${hidden ? `rotateY(180deg)` : ''}`}
       css={[
         coinToken(scale),
-        additionalCss?.(coin),
         isSelectable && selectable,
         disabled && !hidden && disabledStyle,
         animation && transitionFor(animation),

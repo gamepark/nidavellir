@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import { css } from '@emotion/react';
 import { FC, useCallback } from 'react';
 import { CoinToken } from './CoinToken';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
@@ -9,13 +8,13 @@ import { usePlayerId } from '@gamepark/react-client';
 import { useLegalMoves } from '../../hook/rules.hook';
 import { SecretCoin } from '@gamepark/nidavellir/state/view/SecretCoin';
 import {
-  isInDiscard,
   isInDistinctionDeck,
   isInPlayerHand,
   isInTreasure,
   isOnPlayerBoard,
 } from '@gamepark/nidavellir/utils/location.utils';
 import {
+  cardWidth,
   coinPositionInDiscardX,
   coinPositionInDiscardY,
   coinTokenWidth,
@@ -60,7 +59,6 @@ const CoinTokens: FC<CoinTokensProps> = (props) => {
           key={index}
           moves={getCoinTokenMoves(coin)}
           transform={coinTransform}
-          additionalCss={coinAdditionalStyle}
           disabled={isInPlayerHand(coin.location) && selectedCoin !== undefined && selectedCoin !== coin.id}
         />
       ))}
@@ -73,7 +71,7 @@ const coinTransform = (coin: SecretCoin, playerPositions: any) => {
     const position = playerBoardPositions[playerPositions[coin.location.player]];
     return `translate3d(${getCoinPositionInHandX(coin.location.index!, position)}em, ${getCoinPositionInHandY(
       position
-    )}em, ${coinTokenWidth / 2}em) ${getCoinPositionInHandRotate(position)}`;
+    )}em, ${((coin.location.index ?? 0) + 1) * cardWidth}em) ${getCoinPositionInHandRotate(position)}`;
   }
 
   if (isInTreasure(coin.location)) {
@@ -90,51 +88,19 @@ const coinTransform = (coin: SecretCoin, playerPositions: any) => {
       position,
       coin.location.index!
     )}em, ${getCoinPositionOnPlayerBoardY(position, coin.location.index!)}em, ${
-      coinTokenWidth / 2
+      ((coin.location.index ?? 0) + 1) * cardWidth
     }em) ${getCoinPositionOnPlayerBoardRotation(position)}`;
   }
 
   if (isInDistinctionDeck(coin.location)) {
     return `
-      translate(42em, 160em)
+      translate3d(42em, 160em, ${((coin.location.index ?? 0) + 1) * cardWidth}em)
     `;
   }
 
-  return `translate(${coinPositionInDiscardX(coin.location.index)}em, ${coinPositionInDiscardY(
+  return `translate3d(${coinPositionInDiscardX(coin.location.index)}em, ${coinPositionInDiscardY(
     coin.location.index
-  )}em)`;
-};
-
-const coinAdditionalStyle = (coin: SecretCoin) => {
-  if (isInDiscard(coin.location)) {
-    return css`
-      z-index: ${coin.location.index};
-    `;
-  } else if (isOnPlayerBoard(coin.location)) {
-    return css`
-      z-index: ${coin.location.index! + 1};
-    `;
-  }
-
-  if (isInPlayerHand(coin.location)) {
-    return css`
-      z-index: 50;
-    `;
-  }
-
-  if (isInTreasure(coin.location)) {
-    return css`
-      z-index: ${coin.location.z};
-    `;
-  }
-
-  if (isInDistinctionDeck(coin.location)) {
-    return css`
-      z-index: 0;
-    `;
-  }
-
-  return;
+  )}em, ${(coin.location.index + 1) * cardWidth}em)`;
 };
 
 export { CoinTokens };

@@ -86,7 +86,7 @@ const playingArea = css`
   position: absolute;
   width: ${(1 / BASE_SCALE) * 100}%;
   height: ${(1 / BASE_SCALE) * 100}%;
-  transition: transform 1.5s, top 1.5s, left 1.5s, bottom 1.5s, right 1.5s;
+  transition: transform 1s;
   //transform-origin: top left;
 `;
 

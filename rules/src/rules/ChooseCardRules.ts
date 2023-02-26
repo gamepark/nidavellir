@@ -10,10 +10,9 @@ import { Cards } from '../cards/Cards';
 import { EffectType } from '../effects/EffectType';
 import GameState from '../state/GameState';
 import GameView from '../state/view/GameView';
-import { mayRecruitNewHeroes } from '../utils/hero.utils';
 import MoveView from '../moves/MoveView';
 import { isExchangeCoin } from '../utils/coin.utils';
-import { getChooseCardMove } from '../utils/card.utils';
+import { getChooseCardMove, onChooseCard } from '../utils/card.utils';
 
 class ChooseCardRules extends NidavellirRules {
   player: Player;
@@ -55,18 +54,13 @@ class ChooseCardRules extends NidavellirRules {
   }
 
   chooseCard(move: MoveCard) {
-    this.player.playedCard = {
-      id: move.id!,
-      deck: 'age',
-    };
+    onChooseCard(this.game, this.player, move.id!, 'age');
 
     const tavern = this.game.tavern;
     const playerCoin = this.game.coins.find(
       (coin) =>
         isOnPlayerBoard(coin.location) && coin.location.index === tavern && coin.location.player === this.player.id
     );
-
-    mayRecruitNewHeroes(this.game, this.player);
 
     // Trade is only triggered if the player has played a 0-value coin
     if (playerCoin && isLocatedCoin(playerCoin) && isExchangeCoin(playerCoin)) {

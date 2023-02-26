@@ -26,8 +26,9 @@ export const isInHeroDeck = (location: CardLocation): location is InHeroesDeck =
   location.type === LocationType.HeroesDeck;
 export const isInCommandZone = (location: CardLocation): location is InCommandZone =>
   location.type === LocationType.CommandZone;
-export const isInDistinctionDeck = (location: CardLocation | CoinLocation): location is InDistinctionDeck =>
-  location.type === LocationType.DistinctionsDeck;
+export const isInDistinctionDeck = (
+  location: CardLocation | CoinLocation | GemLocation
+): location is InDistinctionDeck => location.type === LocationType.DistinctionsDeck;
 
 export const getCardsInTavern = (state: GameState | GameView) => state.cards.filter((c) => isInTavern(c.location));
 

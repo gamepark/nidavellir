@@ -332,10 +332,6 @@ export const getGemTokenOnPlayerBoardY = (position: any) => {
   return position.rotateZ === 180 ? position.top + playerBoardHeight - 2.5 : position.top - gemTokenHeight + 2.5;
 };
 
-export const getGemTokenOnPlayerBoardRotate = (position: any) => {
-  return position.rotateZ === 180 ? 0 : 180;
-};
-
 export const greyBackground = '#E9E3D8';
 export const dialogCss = css`
   position: relative;

@@ -138,10 +138,16 @@ export const Ylud: Hero = {
 
 export const Skaa: Hero = {
   type: HeroType.Neutral,
+  grades: {
+    [HeroType.Neutral]: [17],
+  },
 };
 
 export const Uline: Hero = {
   type: HeroType.Neutral,
+  grades: {
+    [HeroType.Neutral]: [9],
+  },
   effects: [
     {
       type: EffectType.ULINE,
@@ -151,10 +157,15 @@ export const Uline: Hero = {
 
 export const Grid: Hero = {
   type: HeroType.Neutral,
-  effects: [{
-    type: EffectType.TRANSFORM_COIN,
-    additionalValue: 7
-  }]
+  grades: {
+    [HeroType.Neutral]: [7],
+  },
+  effects: [
+    {
+      type: EffectType.TRANSFORM_COIN,
+      additionalValue: 7,
+    },
+  ],
 };
 
 export const Heroes: Hero[] = [

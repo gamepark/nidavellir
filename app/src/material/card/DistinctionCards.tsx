@@ -8,6 +8,7 @@ import { isInCommandZone, isInDistinctionDeck } from '@gamepark/nidavellir/utils
 import {
   cardInDistinctionDeckX,
   cardInDistinctionDeckY,
+  cardWidth,
   getCardPositionInCommandZoneX,
   getCardPositionInCommandZoneY,
   playerBoardPositions,
@@ -33,16 +34,21 @@ const DistinctionCards: FC<DistinctionCardsProps> = (props) => {
 const cardPosition = (card: SecretCard, playerPositions: any) => {
   if (isInDistinctionDeck(card.location)) {
     return css`
-      transform: translate(${cardInDistinctionDeckX(card.location.index)}em, ${cardInDistinctionDeckY}em);
+      transform: translate3d(
+        ${cardInDistinctionDeckX(card.location.index)}em,
+        ${cardInDistinctionDeckY}em,
+        ${(card.location.index + 1) * cardWidth}em
+      );
     `;
   }
 
   if (isInCommandZone(card.location)) {
     const position = playerBoardPositions[playerPositions[card.location.player]];
     return css`
-      transform: translate(
+      transform: translate3d(
         ${getCardPositionInCommandZoneX(position)}em,
-        ${getCardPositionInCommandZoneY(position, card.location.index!)}em
+        ${getCardPositionInCommandZoneY(position, card.location.index!)}em,
+        ${(card.location.index + 1) * cardWidth}em
       );
       z-index: ${card.location.index};
     `;

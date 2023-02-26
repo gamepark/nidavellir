@@ -193,7 +193,7 @@ const getCoinRules = (game: GameView, coin: SecretCoin, player: Player): RuleDet
         description: [<Trans defaults="coin.rules.desc.treasure" components={[<strong />]} />, ...specialEffect],
       };
     case LocationType.PlayerHand:
-      const ylud = hasHero(game, player, Ylud);
+      const ylud = hasHero(game, player.id, Ylud);
       return {
         header: <Trans defaults={'coin.rules.header.hand'} />,
         description: [

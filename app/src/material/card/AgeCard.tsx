@@ -99,7 +99,7 @@ import {
 } from '@gamepark/nidavellir/cards/Cards';
 import { cardHeight, cardWidth, shineEffect } from '../Styles';
 import { Card } from '@gamepark/nidavellir/cards/Card';
-import { isInAge1Deck, isInAgeDeck, isInArmy, isSameCardLocation } from '@gamepark/nidavellir/utils/location.utils';
+import { isInAge1Deck, isInAgeDeck, isSameCardLocation } from '@gamepark/nidavellir/utils/location.utils';
 import Images from '../../images/Images';
 import { Animation, useAnimation, useAnimations, usePlay } from '@gamepark/react-client';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
@@ -174,13 +174,7 @@ const AgeCard: FC<AgeCardProps> = (props) => {
       projection={projection}
       drop={onDrop}
       preTransform={`${transform?.(card, age) ?? ''} ${!detail ? `rotateY(180deg)` : ''}`}
-      css={[
-        ageCard(scale),
-        cardZIndex(card),
-        isSelectable && selectable,
-        !!detail && cardOnTop,
-        animation && transitionFor(animation),
-      ]}
+      css={[ageCard(scale), isSelectable && selectable, !!detail && cardOnTop, animation && transitionFor(animation)]}
       onClick={onCardClick}
       {...rest}
     >
@@ -241,18 +235,6 @@ const ageCardBack = (age: number = 1) => css`
   backface-visibility: hidden;
   box-shadow: 0 0 0.7em -0.2em black;
 `;
-
-const cardZIndex = (card: SecretCard) => {
-  if (isInArmy(card.location)) {
-    return css`
-      z-index: ${card.location.index};
-    `;
-  }
-
-  return css`
-    z-index: ${card.location.index};
-  `;
-};
 
 const AgeCardFront = new Map<Card, any>();
 AgeCardFront.set(BlacksmithDwarf1Age1, Images.BlacksmithDwarf1Age1);

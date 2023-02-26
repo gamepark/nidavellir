@@ -10,7 +10,7 @@ import shuffle from 'lodash/shuffle';
 import { Distinctions } from '../cards/Distinctions';
 import { Coins, HuntingMasterCoin } from '../coins/Coins';
 import { CoinColor } from '../coins/Coin';
-import { Gems } from '../gems/Gems';
+import { Gem6, Gems } from '../gems/Gems';
 import { Heroes } from '../cards/Heroes';
 import { getCardByTavern } from '../utils/tavern.utils';
 import { TAVERN_COUNT } from '../utils/constants';
@@ -112,17 +112,27 @@ class GameInitializer {
   };
 
   private initializeGems = (): LocatedGem[] => {
-    const baseGems = Array.from(Gems.entries())
-      .filter(([, gem]) => gem.value !== 6)
-      .slice(-this.options.players.length);
-    const shuffledGems = shuffle(baseGems);
+    const baseGems = Array.from(Gems.entries());
+    const distinctionGem = baseGems.find(([, gem]) => gem === Gem6)!;
 
-    return this.options.players.map((p, index): LocatedGem => {
-      return {
-        id: shuffledGems[index][0],
-        location: { type: LocationType.PlayerBoard, player: p.id },
-      };
-    });
+    const forPlayerGems = baseGems.filter(([, gem]) => gem.value !== 6).slice(-this.options.players.length);
+    const shuffledGems = shuffle(forPlayerGems);
+
+    return [
+      ...this.options.players.map((p, index): LocatedGem => {
+        return {
+          id: shuffledGems[index][0],
+          location: { type: LocationType.PlayerBoard, player: p.id },
+        };
+      }),
+      {
+        id: distinctionGem[0],
+        location: {
+          type: LocationType.DistinctionsDeck,
+          index: 1,
+        },
+      },
+    ];
   };
 
   private initializeHeroes = (): LocatedCard[] => {

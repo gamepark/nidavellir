@@ -19,10 +19,9 @@ export class TransformCoinBaseRules extends EffectRules {
 
   getPlayerMoves(): (Move | MoveView)[] {
     return this.game.coins
-      .filter((c) => {
-        isOnPlayerBoard(c.location) && c.location.player === this.player.id && console.log(c);
-        return isOnPlayerBoard(c.location) && c.location.player === this.player.id && !isExchangeCoin(c as LocatedCoin);
-      })
+      .filter(
+        (c) => isOnPlayerBoard(c.location) && c.location.player === this.player.id && !isExchangeCoin(c as LocatedCoin)
+      )
       .flatMap((c) => transformCoinMove(c.id!));
   }
 

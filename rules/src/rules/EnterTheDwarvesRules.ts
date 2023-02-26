@@ -3,7 +3,7 @@ import { NidavellirRules } from './NidavellirRules';
 import MoveType from '../moves/MoveType';
 import GameState, { Step } from '../state/GameState';
 import MoveView from '../moves/MoveView';
-import { getCardsInTavern, isInPlayerHand, isOnPlayerBoard, isSameCoinLocation } from '../utils/location.utils';
+import { getCardsInTavern, isSameCoinLocation } from '../utils/location.utils';
 import { LocationType } from '../state/Location';
 import { getCardByTavern } from '../utils/tavern.utils';
 import { drawTavernCards } from '../utils/age.utils';
@@ -11,6 +11,7 @@ import { moveKnownCardMove } from '../moves/MoveCard';
 import { MoveCoin, moveKnownCoinMove } from '../moves/MoveCoin';
 import { shuffleCoinMove } from '../moves/ShuffleCoins';
 import { setStepMove } from '../moves/SetStep';
+import { getPlayerCoins } from '../utils/coin.utils';
 
 class EnterTheDwarvesRules extends NidavellirRules {
   getAutomaticMoves(): (Move | MoveView)[] {
@@ -56,9 +57,7 @@ class EnterTheDwarvesRules extends NidavellirRules {
 
   moveCoinInPlayerHand = () => {
     return this.game.players.flatMap((p) => {
-      const coins = this.game.coins.filter(
-        (c) => (isOnPlayerBoard(c.location) || isInPlayerHand(c.location)) && c.location.player == p.id
-      );
+      const coins = getPlayerCoins(this.game, p.id);
       return [
         ...coins.flatMap((c, index) =>
           moveKnownCoinMove(c.id!, {

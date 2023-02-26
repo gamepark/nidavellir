@@ -7,7 +7,6 @@ import { isInDiscard, isInPlayerHand, isOnPlayerBoard } from '../utils/location.
 import { isExchangeCoin } from '../utils/coin.utils';
 import { moveKnownCoinMove, revealCoinMove } from '../moves/MoveCoin';
 import { LocationType } from '../state/Location';
-import MoveType from '../moves/MoveType';
 
 export type HuntingMaster = {
   type: EffectType.HUNTING_MASTER;
@@ -17,8 +16,16 @@ class HuntingMasterRules extends EffectRules {
   getAutomaticMoves(): (Move | MoveView)[] {
     const huntingMasterCoin = this.game.coins.find((c) => Coins[c.id!] === HuntingMasterCoin)!;
     const zeroValuedCoin = this.game.coins.find(
-      (c) => (isInPlayerHand(c.location) || isOnPlayerBoard(c.location)) && isExchangeCoin(c)
-    )!;
+      (c) =>
+        (isInPlayerHand(c.location) || isOnPlayerBoard(c.location)) &&
+        c.id !== undefined &&
+        isExchangeCoin(c) &&
+        c.location.player === this.player.id
+    );
+
+    if (!zeroValuedCoin) {
+      return [];
+    }
 
     const moves = [];
     if (zeroValuedCoin.hidden) {
@@ -33,18 +40,6 @@ class HuntingMasterRules extends EffectRules {
       moveKnownCoinMove(huntingMasterCoin.id!, zeroValuedCoin.location)
     );
     return moves;
-  }
-
-  play(move: Move | MoveView) {
-    if (move.type !== MoveType.MoveCoin) {
-      return [];
-    }
-
-    if (move.id !== undefined && Coins[move.id!] === HuntingMasterCoin) {
-      this.player.effects.shift();
-    }
-
-    return [];
   }
 }
 

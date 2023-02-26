@@ -1,37 +1,25 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { SecretCoin } from '@gamepark/nidavellir/state/view/SecretCoin';
-import { FC } from 'react';
+import { FC, HTMLAttributes } from 'react';
 import Images from '../../images/Images';
-import {
-  gemTokenHeight,
-  gemTokenWidth,
-  getGemTokenOnPlayerBoardRotate,
-  getGemTokenOnPlayerBoardX,
-  getGemTokenOnPlayerBoardY,
-  playerBoardPositions,
-} from '../Styles';
-import { isOnPlayerBoard } from '@gamepark/nidavellir/utils/location.utils';
-import { usePlayerPositions } from '../../table/TableContext';
+import { gemTokenHeight, gemTokenWidth } from '../Styles';
 import { Animation, useAnimation } from '@gamepark/react-client';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
-import { MoveCoin } from '@gamepark/nidavellir/moves/MoveCoin';
 import { Gem1, Gem2, Gem3, Gem4, Gem5, Gem6, Gems } from '@gamepark/nidavellir/gems/Gems';
 import { Gem } from '@gamepark/nidavellir/gems/Gem';
 
 type GemTokenProps = {
   gem: SecretCoin;
-  moves?: MoveCoin[];
-};
+} & HTMLAttributes<HTMLDivElement>;
 
 const GemToken: FC<GemTokenProps> = (props) => {
-  const { gem } = props;
+  const { gem, ...rest } = props;
   const detail = gem.id !== undefined ? Gems[gem.id] : undefined;
-  const playerPositions = usePlayerPositions();
   const animation = useAnimation(({ move }) => move.type === MoveType.MoveGem && move.id === gem.id);
 
   return (
-    <div css={[gemToken, gemPosition(gem, playerPositions), animation && transitionFor(animation)]}>
+    <div css={[gemToken, animation && transitionFor(animation)]} {...rest}>
       {!!detail && <div css={gemFace(detail)} />}
       <div css={gemBack} />
     </div>
@@ -42,20 +30,6 @@ const transitionFor = (animation: Animation) => css`
   z-index: 100;
   transition: transform ${animation.duration}s;
 `;
-
-const gemPosition = (gem: SecretCoin, playerPositions: any) => {
-  if (isOnPlayerBoard(gem.location)) {
-    const position = playerBoardPositions[playerPositions[gem.location.player]];
-    return css`
-      transform: translate(${getGemTokenOnPlayerBoardX(position)}em, ${getGemTokenOnPlayerBoardY(position)}em)
-        rotateZ(${getGemTokenOnPlayerBoardRotate(position)}deg);
-    `;
-  }
-
-  return css`
-    display: none;
-  `;
-};
 
 const gemToken = css`
   position: absolute;

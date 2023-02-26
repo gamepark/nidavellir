@@ -32,13 +32,13 @@ export const mayGoToNextTavern = (game: GameState | GameView): (Move | MoveView)
 };
 
 export const nextTavern = (game: GameState | GameView): (Move | MoveView)[] => {
-  game.players.forEach((p) => {
+  for (const p of game.players) {
     delete p.ready;
     delete p.discardedCoin;
     delete p.discardedCard;
     delete p.playedCard;
     delete p.traded;
-  });
+  }
 
   if (game.tavern < TAVERN_COUNT - 1) {
     game.tavern++;

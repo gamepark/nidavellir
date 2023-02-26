@@ -16,6 +16,7 @@ import { MoveHero } from './moves/MoveHero';
 import { MoveDistinction } from './moves/MoveDistinction';
 import {
   isInAgeDeck,
+  isInArmy,
   isInDiscard,
   isInPlayerHand,
   isInTavern,
@@ -36,6 +37,7 @@ import { Age1Rules } from './rules/Age1Rules';
 import { Age2Rules } from './rules/Age2Rules';
 import { ShuffleCoins } from './moves/ShuffleCoins';
 import { getActivePlayer } from './utils/player.utils';
+import { InArmy } from './state/LocatedCard';
 
 export default class Nidavellir
   extends Rules<GameState | GameView, Move | MoveView, PlayerId>
@@ -168,9 +170,11 @@ export default class Nidavellir
       card.id = move.id;
     }
 
-    const activePlayer = getActivePlayer(this.game);
-    if (activePlayer) {
-      activePlayer.discardedCard = {
+    if (isInArmy(card.location) && isInDiscard(move.target)) {
+      const location: InArmy = card.location;
+      const player = this.game.players.find((p) => p.id === location.player)!;
+
+      player.discardedCard = {
         id: card.id!,
         origin: card.location,
       };
@@ -315,8 +319,8 @@ export default class Nidavellir
         };
       }
       case MoveType.TransformCoin: {
-        const activePlayer = getActivePlayer(this.game);
-        if (activePlayer.id === _playerId) {
+        const coin = this.game.coins.find((c) => c.id === move.id)!;
+        if ((isInPlayerHand(coin.location) || isOnPlayerBoard(coin.location)) && coin.location.player === _playerId) {
           return move;
         }
 

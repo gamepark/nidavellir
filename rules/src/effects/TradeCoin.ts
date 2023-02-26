@@ -1,5 +1,4 @@
 import Move from '../moves/Move';
-import { getActivePlayer } from '../utils/player.utils';
 import { getPlayerPouch } from '../utils/coin.utils';
 import { NidavellirRules } from '../rules/NidavellirRules';
 import { hasHero } from '../utils/card.utils';
@@ -10,7 +9,7 @@ import { TradeCoinBaseRules } from './TradeCoinBase';
 
 export class TradeCoinRules extends TradeCoinBaseRules {
   delegate(): NidavellirRules | undefined {
-    if (hasHero(this.game, this.player, Uline)) {
+    if (hasHero(this.game, this.player.id, Uline)) {
       return new TradeCoinWithUlineRules(this.game, this.player);
     }
 
@@ -18,13 +17,7 @@ export class TradeCoinRules extends TradeCoinBaseRules {
   }
 
   getEffectAutomaticMoves(): Move[] {
-    const activePlayer = getActivePlayer(this.game);
-
-    if (activePlayer) {
-      const pouch = getPlayerPouch(this.game, activePlayer.id);
-      return [tradeCoinsMove(pouch.map((c) => c.id!))];
-    }
-
-    return [];
+    const pouch = getPlayerPouch(this.game, this.player.id);
+    return [tradeCoinsMove(pouch.map((c) => c.id!))];
   }
 }

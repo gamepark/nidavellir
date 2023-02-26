@@ -10,8 +10,7 @@ import { LocationType } from '../state/Location';
 import { Heroes, Ylud } from '../cards/Heroes';
 import { MoveHero, moveHeroMove } from '../moves/MoveHero';
 import { isInCommandZone } from '../utils/location.utils';
-import { mayRecruitNewHeroes } from '../utils/hero.utils';
-import { DWARF_COLUMNS } from '../utils/card.utils';
+import { DWARF_COLUMNS, onChooseCard } from '../utils/card.utils';
 
 export type YludEffect = {
   type: EffectType.YLUD;
@@ -53,12 +52,7 @@ class YludRules extends EffectRules {
   }
 
   onMoveYlud = (move: MoveHero) => {
-    this.player.playedCard = {
-      id: move.id,
-      deck: 'heroes',
-    };
-
-    mayRecruitNewHeroes(this.game, this.player, true);
+    onChooseCard(this.game, this.player, move.id, 'heroes', true);
   };
 }
 

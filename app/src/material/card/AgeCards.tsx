@@ -19,6 +19,7 @@ import {
   cardInDistinctionDeckY,
   cardPositionInDiscardX,
   cardPositionInDiscardY,
+  cardWidth,
   getCardPositionInAgeDeckX,
   getCardPositionInAgeDeckY,
   getCardPositionInTavernX,
@@ -83,32 +84,36 @@ const cardPosition = (card: SecretCard, deckSize: number, age: number = 1, playe
   }
 
   if (isInTavern(card.location)) {
-    return `translate(
+    return `translate3d(
         ${getCardPositionInTavernX(card.location.index, playerCount)}em,
-        ${getCardPositionInTavernY(card.location.tavern)}em
+        ${getCardPositionInTavernY(card.location.tavern)}em,
+        ${(card.location.index + 1) * cardWidth}em
       )
     `;
   }
 
   if (isInArmy(card.location)) {
     const position = playerBoardPositions[playerPositions[card.location.player]];
-    return `translate(
+    return `translate3d(
           ${getCardPositionOnPlayerBoardX(position, card.location.column)}em,
-          ${getCardPositionOnPlayerBoardY(position, card.location.index!)}em
+          ${getCardPositionOnPlayerBoardY(position, card.location.index!)}em,
+          ${((card.location.index ?? 0) + 1) * cardWidth}em
         )
         ${getCardPositionOnPlayerBoardTransform(position)}
     `;
   }
 
   if (isInDiscard(card.location)) {
-    return `translate(${cardPositionInDiscardX(card.location.index)}em, ${cardPositionInDiscardY(
+    return `translate3d(${cardPositionInDiscardX(card.location.index)}em, ${cardPositionInDiscardY(
       card.location.index
-    )}em)`;
+    )}em, ${(card.location.index + 1) * cardWidth}em)`;
   }
 
   if (isInDistinctionDeck(card.location)) {
     return `
-      translate(${cardInDistinctionDeckX(card.location.index)}em, ${cardInDistinctionDeckY}em)
+      translate3d(${cardInDistinctionDeckX(card.location.index)}em, ${cardInDistinctionDeckY}em, ${
+      (card.location.index + 1) * cardWidth
+    }em)
     `;
   }
 

@@ -3,15 +3,7 @@ import Move from '../moves/Move';
 import MoveView from '../moves/MoveView';
 import { scoringMove } from '../moves/Scoring';
 import MoveType from '../moves/MoveType';
-import {
-  getBlacksmithScore,
-  getExplorerScore,
-  getGoldCoinsScore,
-  getHeroesScoring,
-  getHunterScore,
-  getMinerScore,
-  getWarriorScore,
-} from '../utils/score.utils';
+import { getPlayerScore } from '../utils/score.utils';
 import { revealCoinMove } from '../moves/MoveCoin';
 
 class ScoringRules extends NidavellirRules {
@@ -33,14 +25,7 @@ class ScoringRules extends NidavellirRules {
 
   onScore(): void {
     this.game.players.forEach((p) => {
-      p.score =
-        getBlacksmithScore(this.game, p.id) +
-        getHunterScore(this.game, p.id) +
-        getExplorerScore(this.game, p.id) +
-        getMinerScore(this.game, p.id) +
-        getWarriorScore(this.game, p.id) +
-        getGoldCoinsScore(this.game, p.id) +
-        getHeroesScoring(this.game, p.id);
+      p.score = getPlayerScore(this.game, p.id);
     });
   }
 

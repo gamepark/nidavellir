@@ -24,8 +24,6 @@ class TurnPreparationRules extends NidavellirRules {
 
   getAutomaticMoves(): (Move | MoveView)[] {
     if (this.game.players.every((p) => p.ready)) {
-      // si fini, prendre une carte distinction
-      // return [distributeDistinctionMove]
       return [nextPhaseMove];
     }
 
