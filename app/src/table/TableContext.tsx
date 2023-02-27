@@ -90,7 +90,6 @@ const playingArea = css`
   transition: transform 1s;
   transform-style: preserve-3d;
   will-change: transform;
-  //transform-origin: top left;
 `;
 
 export { TableProvider };
