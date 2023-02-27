@@ -120,5 +120,7 @@ const gameArea = css`
   width: ${gameAreaWidth}em;
   left: calc((100% - ${playerPanelsWidth}em) / 2 + (${navigationWidth / 2}em));
   transform: translate3d(-50%, -50%, 0);
+  transform-style: preserve-3d;
   top: calc(7em + 46.5%);
+  will-change: transform;
 `;

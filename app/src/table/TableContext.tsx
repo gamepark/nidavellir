@@ -61,25 +61,26 @@ const TableProvider: FC<TableContextProps> = (props) => {
 
 const playerViewStyle = (playerPlacement: any, scale: number) => {
   return css`
-    transform: translate(${playerPlacement.viewPosition.left}em, ${playerPlacement.viewPosition.top}em)
+    transform: translate3d(${playerPlacement.viewPosition.left}em, ${playerPlacement.viewPosition.top}em, 0em)
       ${playerPlacement.viewPosition.transform} scale(${scale});
   `;
 };
 
 const tavernView = (scale: number) => css`
-  transform: translate(-221em, -151em) scale(${scale});
+  transform: translate3d(-221em, -151em, 0em) scale(${scale});
 `;
 
 const heroesView = (scale: number) => css`
-  transform: translate(-380em, -150em) scale(${scale});
+  transform: translate3d(-380em, -150em, 0em) scale(${scale});
 `;
 
 const treasureView = (scale: number) => css`
-  transform: translate(-65em, -151em) scale(${scale});
+  transform: translate3d(-65em, -151em, 0em) scale(${scale});
 `;
 
 const globalView = (scale: number) => css`
-  transform: scale(${scale}) translate(-${((1 / BASE_SCALE - 1) * 100) / 2}%, -${((1 / BASE_SCALE - 1) * 100) / 2}%);
+  transform: scale(${scale})
+    translate3d(-${((1 / BASE_SCALE - 1) * 100) / 2}%, -${((1 / BASE_SCALE - 1) * 100) / 2}%, 0em);
 `;
 
 const playingArea = css`
@@ -87,6 +88,8 @@ const playingArea = css`
   width: ${(1 / BASE_SCALE) * 100}%;
   height: ${(1 / BASE_SCALE) * 100}%;
   transition: transform 1s;
+  transform-style: preserve-3d;
+  will-change: transform;
   //transform-origin: top left;
 `;
 
