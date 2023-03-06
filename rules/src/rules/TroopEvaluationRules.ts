@@ -45,7 +45,6 @@ class TroopEvaluationRules extends NidavellirRules {
     const player = this.game.players.find((p) => p.id === playerId)!;
     const moveDistinctionMoves = this.getMoveDistinctionMoves();
 
-    console.log('Legal moves', player.id, moveDistinctionMoves.length, player.ready);
     if (moveDistinctionMoves.length || player.ready) {
       return [];
     }

@@ -82,7 +82,6 @@ export const computeRecruitHeroCount = (state: GameState | GameView, playerId: P
   const heroesCount = state.heroes.filter(
     (h) => (isInArmy(h.location) || isInCommandZone(h.location)) && h.location.player === playerId
   );
-  console.log('COUNT', heroesCount, minGradesAfterCard, playerId);
   if (heroesCount.length >= minGradesAfterCard) {
     return 0;
   }

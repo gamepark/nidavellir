@@ -19,7 +19,6 @@ const CardHandsArea: FC<CardHandsAreaProps> = (props) => {
   const cardDeckSize = useCardDecksSize(game.cards);
   const playerWithHand = entries(cardDeckSize[LocationType.PlayerHand] as object);
 
-  console.log(playerWithHand);
   return (
     <>
       {playerWithHand.map((e) => (
