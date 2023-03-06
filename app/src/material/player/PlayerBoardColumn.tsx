@@ -74,7 +74,7 @@ const PlayerBoardColumn: FC<CardColumnProps> = (props) => {
 };
 
 const onTop = css`
-  z-index: 20;
+  transform: translateZ(100em);
 `;
 
 const overPlace = css`
@@ -101,7 +101,6 @@ const cardColumn = (playerIndex: number, type: DwarfType, color: string, backgro
     border-radius: 2em;
     ${position.left && `left: ${playerBoardColumnLeft(position, type)}em;`}
     ${position.top && `top: ${playerBoardColumnTop(position)}em;`}
-    transform: rotateZ(${position.rotateZ}deg);
   `;
 };
 

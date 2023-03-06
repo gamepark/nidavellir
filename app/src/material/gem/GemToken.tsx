@@ -1,47 +1,54 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { SecretCoin } from '@gamepark/nidavellir/state/view/SecretCoin';
 import { FC, HTMLAttributes } from 'react';
 import Images from '../../images/Images';
 import { gemTokenHeight, gemTokenWidth } from '../Styles';
-import { Animation, useAnimation } from '@gamepark/react-client';
+import { Animation, useAnimation, usePlay } from '@gamepark/react-client';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
 import { Gem1, Gem2, Gem3, Gem4, Gem5, Gem6, Gems } from '@gamepark/nidavellir/gems/Gems';
 import { Gem } from '@gamepark/nidavellir/gems/Gem';
+import { LocatedGem } from '@gamepark/nidavellir/state/LocatedGem';
+import { gemRulesDialog, setRulesDialog } from '@gamepark/nidavellir/moves/RulesDialog/RulesDialog';
 
 type GemTokenProps = {
-  gem: SecretCoin;
+  gem: LocatedGem;
+  scale?: number;
+  getPosition?: (card: LocatedGem, animation?: Animation) => any;
 } & HTMLAttributes<HTMLDivElement>;
 
 const GemToken: FC<GemTokenProps> = (props) => {
-  const { gem, ...rest } = props;
+  const play = usePlay();
+  const { gem, getPosition, scale, ...rest } = props;
   const detail = gem.id !== undefined ? Gems[gem.id] : undefined;
   const animation = useAnimation(({ move }) => move.type === MoveType.MoveGem && move.id === gem.id);
 
+  const onTokenClick = () => {
+    play(setRulesDialog(gemRulesDialog(gem)), { local: true });
+  };
+
   return (
-    <div css={[gemToken, animation && transitionFor(animation)]} {...rest}>
+    <div
+      onClick={onTokenClick}
+      css={[gemToken(scale), animation && transitionFor(animation), getPosition?.(gem, animation)]}
+      {...rest}
+    >
       {!!detail && <div css={gemFace(detail)} />}
-      <div css={gemBack} />
     </div>
   );
 };
 
 const transitionFor = (animation: Animation) => css`
-  z-index: 100;
   transition: transform ${animation.duration}s;
 `;
 
-const gemToken = css`
+const gemToken = (scale: number = 1) => css`
   position: absolute;
-  height: ${gemTokenHeight}em;
-  width: ${gemTokenWidth}em;
+  height: ${gemTokenHeight * scale}em;
+  width: ${gemTokenWidth * scale}em;
   border-radius: 50%;
   transform-style: preserve-3d;
   cursor: pointer;
-
-  &:hover {
-    z-index: 10000;
-  }
+  will-change: transform;
 `;
 
 const gemFace = (gem: Gem) => css`
@@ -53,21 +60,9 @@ const gemFace = (gem: Gem) => css`
   border-radius: 50%;
   background-image: url(${GemTokensImages.get(gem)!});
   background-size: cover;
+  image-rendering: -webkit-optimize-contrast;
   backface-visibility: hidden;
   filter: drop-shadow(0.3em 0.3em 0.6em black);
-`;
-
-const gemBack = css`
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  border-radius: 50%;
-  background-color: goldenrod;
-  transform: rotateY(180deg);
-  backface-visibility: hidden;
-  box-shadow: 0.5em 0.5em 0.7em -0.2em black;
 `;
 
 const GemTokensImages = new Map<Gem, any>();

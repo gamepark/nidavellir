@@ -3,14 +3,21 @@ import GameState from '../state/GameState';
 import GameView from '../state/view/GameView';
 import { getArmy } from './player.utils';
 import { Cards } from '../cards/Cards';
-import { DwarfType } from '../cards/Card';
-import { LocatedCard, InArmy } from '../state/LocatedCard';
+import { Card, DwarfType } from '../cards/Card';
+import { InArmy, LocatedCard } from '../state/LocatedCard';
 import { SecretCard } from '../state/view/SecretCard';
-import { isInCommandZone, isInHeroDeck } from './location.utils';
+import { isInArmy, isInCommandZone, isInHeroDeck } from './location.utils';
 import sum from 'lodash/sum';
-import { Heroes } from '../cards/Heroes';
+import { Heroes, Thrud, Ylud } from '../cards/Heroes';
 import { EffectType } from '../effects/EffectType';
 import { Effect } from '../effects/Effect';
+import { Hero } from '../cards/Hero';
+import { MoveHero, moveHeroMove } from '../moves/MoveHero';
+import { getCardsInCommandZone } from './card.utils';
+import { LocationType } from '../state/Location';
+import MoveView from '../moves/MoveView';
+import Move from '../moves/Move';
+import { MoveCard } from '../moves/MoveCard';
 
 export const countGrades = (army: { cards: SecretCard[]; heroes: LocatedCard[] }, type: DwarfType) => {
   return (
@@ -54,13 +61,12 @@ export const computeRecruitHeroCount = (state: GameState | GameView, playerId: P
     [DwarfType.Miner]: countGrades(army, DwarfType.Miner),
   };
 
-  // TODO: will not work if the hero is places explicitely in this column (hero with multiple types)
   const minGradesBeforeCard = Math.min(
-    gradesByTypes[DwarfType.Blacksmith] - (card.grades?.[DwarfType.Blacksmith]?.length ?? 0),
-    gradesByTypes[DwarfType.Hunter] - (card.grades?.[DwarfType.Hunter]?.length ?? 0),
-    gradesByTypes[DwarfType.Warrior] - (card.grades?.[DwarfType.Warrior]?.length ?? 0),
-    gradesByTypes[DwarfType.Explorer] - (card.grades?.[DwarfType.Explorer]?.length ?? 0),
-    gradesByTypes[DwarfType.Miner] - (card.grades?.[DwarfType.Miner]?.length ?? 0)
+    gradesByTypes[DwarfType.Blacksmith] - getCardGradesCount(card, locatedCard, DwarfType.Blacksmith),
+    gradesByTypes[DwarfType.Hunter] - getCardGradesCount(card, locatedCard, DwarfType.Hunter),
+    gradesByTypes[DwarfType.Warrior] - getCardGradesCount(card, locatedCard, DwarfType.Warrior),
+    gradesByTypes[DwarfType.Explorer] - getCardGradesCount(card, locatedCard, DwarfType.Explorer),
+    gradesByTypes[DwarfType.Miner] - getCardGradesCount(card, locatedCard, DwarfType.Miner)
   );
 
   const minGradesAfterCard = Math.min(
@@ -71,7 +77,29 @@ export const computeRecruitHeroCount = (state: GameState | GameView, playerId: P
     gradesByTypes[DwarfType.Miner]
   );
 
-  return minGradesAfterCard - minGradesBeforeCard;
+  const recruitementCount = minGradesAfterCard - minGradesBeforeCard;
+  // It's not possible to recruit more hero than the number of completed row
+  const heroesCount = state.heroes.filter(
+    (h) => (isInArmy(h.location) || isInCommandZone(h.location)) && h.location.player === playerId
+  );
+  console.log('COUNT', heroesCount, minGradesAfterCard, playerId);
+  if (heroesCount.length >= minGradesAfterCard) {
+    return 0;
+  }
+
+  return recruitementCount;
+};
+
+const getCardGradesCount = (card: Hero | Card, locatedCard: SecretCard | LocatedCard, type: DwarfType) => {
+  if (!isInArmy(locatedCard.location)) {
+    return 0;
+  }
+
+  if (type === locatedCard.location.column) {
+    return card.grades?.[type].length ?? 0;
+  }
+
+  return 0;
 };
 
 export const mayRecruitNewHeroes = (game: GameState | GameView, player: Player, unshit?: boolean) => {
@@ -83,4 +111,52 @@ export const mayRecruitNewHeroes = (game: GameState | GameView, player: Player, 
       count: recruitHeroCount,
     });
   }
+};
+
+export const applyThrud = (
+  game: GameState | GameView,
+  player: Player,
+  move: MoveHero | MoveCard
+): (Move | MoveView)[] => {
+  if (move.target && isInArmy(move.target)) {
+    const thrud = getHero(game, player.id, Thrud);
+    if (thrud && isInArmy(thrud.location) && thrud.location.column === move.target.column) {
+      const cardsInCommandZone = getCardsInCommandZone(game, player.id);
+      return [
+        moveHeroMove(thrud.id, {
+          type: LocationType.CommandZone,
+          player: player.id,
+          index: cardsInCommandZone.heroes.length + cardsInCommandZone.distinctions.length,
+        }),
+        JSON.parse(JSON.stringify({ ...move, target: { ...move.target, index: move.target.index! - 1 } })),
+      ];
+    }
+  }
+
+  return [];
+};
+
+export const ensureHeroes = (game: GameState | GameView) => {
+  const playerWithYlud = getPlayerWithHero(game, Ylud);
+  if (playerWithYlud) {
+    playerWithYlud.effects.push({ type: EffectType.YLUD });
+    delete playerWithYlud.ready;
+  }
+};
+
+export const hasHero = (game: GameState | GameView, playerId: PlayerId, hero: Hero) => {
+  const commandZone = getCardsInCommandZone(game, playerId);
+  const army = getArmy(game, playerId);
+  return [...commandZone.heroes, ...army.heroes].some((h) => Heroes[h.id] === hero);
+};
+
+export const getHero = (game: GameState | GameView, playerId: PlayerId, hero: Hero) => {
+  return game.heroes.find(
+    (c) =>
+      (isInCommandZone(c.location) || isInArmy(c.location)) && Heroes[c.id] === hero && c.location.player === playerId
+  );
+};
+
+export const getPlayerWithHero = (game: GameState | GameView, hero: Hero) => {
+  return game.players.find((p) => hasHero(game, p.id, hero));
 };

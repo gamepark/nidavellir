@@ -8,11 +8,11 @@ import { Step } from '../state/GameState';
 import { getNextPlayer } from '../utils/player.utils';
 import { setStepMove } from '../moves/SetStep';
 import { PlayerId } from '../state/Player';
-import { getPlayerWithHero } from '../utils/card.utils';
 import { Uline } from '../cards/Heroes';
 import { getPlayerCoinForTavern } from '../utils/coin.utils';
 import { passMove } from '../moves/Pass';
 import { LocationType } from '../state/Location';
+import { getPlayerWithHero } from '../utils/hero.utils';
 
 class BidRevelationRules extends NidavellirRules {
   getAutomaticMoves(): (Move | MoveView)[] {

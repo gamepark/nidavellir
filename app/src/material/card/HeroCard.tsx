@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { FC, HTMLAttributes } from 'react';
+import { FC, HTMLAttributes, useState } from 'react';
 import { cardHeight, cardWidth, shineEffect } from '../Styles';
 import Images from '../../images/Images';
 import {
@@ -52,11 +52,16 @@ const HeroCard: FC<HeroCardProps> = (props) => {
   const animations = useAnimations();
   const item = draggableHero(card.id);
   const projection = useProjection();
+  const [isDragging, setDragging] = useState(false);
 
   const onDrop = (move: Move) => {
     if (move) {
       play(move);
     }
+  };
+
+  const onEnd = () => {
+    setDragging(false);
   };
 
   const onHeroClick = () => {
@@ -70,14 +75,24 @@ const HeroCard: FC<HeroCardProps> = (props) => {
   const detail = Heroes[card.id!];
 
   const isSelectable = !animation && !animations.length && !!moves.length;
+  const onDrag = () => {
+    if (isSelectable) {
+      setDragging(true);
+      return item;
+    }
+
+    return false;
+  };
+
   return (
     <Draggable
       canDrag={isSelectable}
       type={DraggableMaterial.Hero}
-      item={item}
+      item={onDrag}
       projection={projection}
       drop={onDrop}
-      preTransform={transform?.(card) ?? ''}
+      end={onEnd}
+      preTransform={`${isDragging || animation ? `translateZ(1000em)` : ''} ${transform?.(card) ?? ''}`}
       css={[heroCard(scale), isSelectable && selectable, animation && transitionFor(animation)]}
       onClick={onHeroClick}
       {...rest}
@@ -119,6 +134,7 @@ const heroCardFace = (hero: Hero) => css`
   background-image: url(${HeroCardFront.get(hero)!});
   background-size: cover;
   backface-visibility: hidden;
+  image-rendering: -webkit-optimize-contrast;
   box-shadow: 0 0 0.7em -0.2em black;
 `;
 

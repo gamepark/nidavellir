@@ -180,6 +180,11 @@ export default class Nidavellir
       };
     }
 
+    if (isInAgeDeck(move.target) && isView(this.game)) {
+      delete card.id;
+      // TODO: let the id, but add  "hidden" flag
+    }
+
     card.location = move.target;
   }
 
@@ -302,7 +307,7 @@ export default class Nidavellir
     switch (move.type) {
       case MoveType.MoveCard:
         const card = this.game.cards.find((c) => c.id === move.id)!;
-        if (isInTavern(move.target)) {
+        if (isInTavern(move.target) || isInPlayerHand(move.target)) {
           return { ...move, source: card.location };
         }
 

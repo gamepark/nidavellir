@@ -8,12 +8,12 @@ import { isInCommandZone, isInDistinctionDeck } from '@gamepark/nidavellir/utils
 import {
   cardInDistinctionDeckX,
   cardInDistinctionDeckY,
-  cardWidth,
   getCardPositionInCommandZoneX,
   getCardPositionInCommandZoneY,
   playerBoardPositions,
 } from '../Styles';
 import { usePlayerPositions } from '../../table/TableContext';
+import { Animation } from '@gamepark/react-client';
 
 type DistinctionCardsProps = {
   game: GameView;
@@ -25,20 +25,16 @@ const DistinctionCards: FC<DistinctionCardsProps> = (props) => {
   return (
     <>
       {game.distinctions.map((c, index) => (
-        <DistinctionCard card={c} key={index} css={cardPosition(c, playerPositions)} />
+        <DistinctionCard card={c} key={index} getPosition={(c, a) => cardPosition(c, playerPositions, a)} />
       ))}
     </>
   );
 };
 
-const cardPosition = (card: SecretCard, playerPositions: any) => {
+const cardPosition = (card: SecretCard, playerPositions: any, a?: Animation) => {
   if (isInDistinctionDeck(card.location)) {
     return css`
-      transform: translate3d(
-        ${cardInDistinctionDeckX(card.location.index)}em,
-        ${cardInDistinctionDeckY}em,
-        ${(card.location.index + 1) * cardWidth}em
-      );
+      transform: translate3d(${cardInDistinctionDeckX(card.location.index)}em, ${cardInDistinctionDeckY}em, 1em);
     `;
   }
 
@@ -48,9 +44,8 @@ const cardPosition = (card: SecretCard, playerPositions: any) => {
       transform: translate3d(
         ${getCardPositionInCommandZoneX(position)}em,
         ${getCardPositionInCommandZoneY(position, card.location.index!)}em,
-        ${(card.location.index + 1) * cardWidth}em
+        ${a ? 1000 : (card.location.index ?? 0) + 1}em
       );
-      z-index: ${card.location.index};
     `;
   }
 

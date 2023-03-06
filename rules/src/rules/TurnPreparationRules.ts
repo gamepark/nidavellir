@@ -7,8 +7,8 @@ import MoveView from '../moves/MoveView';
 import Move from '../moves/Move';
 import MoveType from '../moves/MoveType';
 import { SetStep, setStepMove } from '../moves/SetStep';
-import { getPlayerWithHero } from '../utils/card.utils';
 import { Uline } from '../cards/Heroes';
+import { getPlayerWithHero } from '../utils/hero.utils';
 
 class TurnPreparationRules extends NidavellirRules {
   delegate(): NidavellirRules | undefined {

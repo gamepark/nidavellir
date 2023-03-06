@@ -8,13 +8,16 @@ import { passMove } from '../moves/Pass';
 import { Step } from '../state/GameState';
 import { getCurrentTavernCards, mayGoToNextTavern } from '../utils/tavern.utils';
 import { LocationType } from '../state/Location';
-import { isInDiscard } from '../utils/location.utils';
+import { isInCommandZone, isInDiscard } from '../utils/location.utils';
 import MoveView from '../moves/MoveView';
 import { moveKnownCardMove } from '../moves/MoveCard';
 import isEmpty from 'lodash/isEmpty';
 import { getTrades } from '../utils/age.utils';
 import { setStepMove } from '../moves/SetStep';
 import { getChooseCardMove } from '../utils/card.utils';
+import { Thrud } from '../cards/Heroes';
+import { ThrudRules } from '../effects/ThrudEffect';
+import { getHero } from '../utils/hero.utils';
 
 class ElvalandTurnRules extends NidavellirRules {
   delegate(): NidavellirRules | undefined {
@@ -25,6 +28,11 @@ class ElvalandTurnRules extends NidavellirRules {
 
     if (activePlayer.playedCard === undefined) {
       return new ChooseCardRules(this.game, activePlayer);
+    }
+
+    const thrud = getHero(this.game, activePlayer.id, Thrud);
+    if (thrud && isInCommandZone(thrud.location)) {
+      return new ThrudRules(this.game, activePlayer);
     }
 
     return;
@@ -41,7 +49,10 @@ class ElvalandTurnRules extends NidavellirRules {
     }
 
     if (activePlayer.playedCard !== undefined && !activePlayer.effects.length) {
-      return [passMove(playerId)];
+      const thrud = getHero(this.game, activePlayer.id, Thrud);
+      if (!thrud || !isInCommandZone(thrud.location)) {
+        return [passMove(playerId)];
+      }
     }
 
     return super.getLegalMoves(playerId) || [];

@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { SecretCoin } from '@gamepark/nidavellir/state/view/SecretCoin';
-import { FC, HTMLAttributes } from 'react';
+import { FC, HTMLAttributes, useState } from 'react';
 import { Coin } from '@gamepark/nidavellir/coins/Coin';
 import {
   Coin0,
@@ -76,11 +76,16 @@ const CoinToken: FC<CoinTokenProps> = (props) => {
   const projection = useProjection();
   const animation = useAnimation(({ move }) => move.type === MoveType.MoveCoin && isThisCoin(coin, move));
   const animations = useAnimations((a) => a.action.playerId === playerId);
+  const [isDragging, setDragging] = useState(false);
 
   const onDrop = (move: Move) => {
     if (move) {
       play(move);
     }
+  };
+
+  const onEnd = () => {
+    setDragging(false);
   };
 
   const onTokenClick = () => {
@@ -96,15 +101,26 @@ const CoinToken: FC<CoinTokenProps> = (props) => {
     (isOnPlayerBoard(coin.location) || (isInPlayerHand(coin.location) && coin.location.player !== playerId));
   const hidden = (!moves?.length || animation || animations?.length) && (!detail || isReallyHidden);
   const isSelectable = !disabled && !animations?.length && !animation && !!moves?.length;
+  const onDrag = () => {
+    if (isSelectable) {
+      setDragging(true);
+      return item;
+    }
+
+    return false;
+  };
   return (
     <Draggable
       canDrag={isSelectable}
       type={DraggableMaterial.Coin}
-      item={item}
+      item={onDrag}
       projection={projection}
       drop={onDrop}
+      end={onEnd}
       onClick={onTokenClick}
-      preTransform={`${transform?.(coin, playerPositions) ?? ''} ${hidden ? `rotateY(180deg)` : ''}`}
+      preTransform={`${transform?.(coin, playerPositions) ?? ''} ${
+        isDragging || animation ? `translateZ(1000em)` : ''
+      } ${hidden ? `rotateY(180deg)` : ''}`}
       css={[
         coinToken(scale),
         isSelectable && selectable,
@@ -120,7 +136,6 @@ const CoinToken: FC<CoinTokenProps> = (props) => {
 };
 
 const transitionFor = (animation: Animation) => css`
-  z-index: 100;
   transition: transform ${animation.duration}s;
 `;
 
@@ -135,6 +150,7 @@ const coinToken = (scale: number = 1) => css`
   border-radius: 50%;
   transform-style: preserve-3d;
   cursor: pointer;
+  will-change: transform;
 `;
 
 const coinFace = (coin: Coin) => css`
@@ -147,6 +163,7 @@ const coinFace = (coin: Coin) => css`
   background-image: url(${CoinTokensImages.get(coin)!});
   background-size: cover;
   backface-visibility: hidden;
+  image-rendering: -webkit-optimize-contrast;
   box-shadow: 0.5em 0.5em 0.7em -0.2em black;
 `;
 
@@ -166,6 +183,7 @@ const coinBack = css`
   background-size: cover;
   transform: rotateY(180deg);
   backface-visibility: hidden;
+  image-rendering: -webkit-optimize-contrast;
   box-shadow: 0.5em 0.5em 0.7em -0.2em black;
 `;
 

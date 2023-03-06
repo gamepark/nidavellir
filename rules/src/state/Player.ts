@@ -16,7 +16,7 @@ export type Player = {
     id: number;
     origin: CardLocation;
   };
-  
+
   effects: Effect[];
   traded?: boolean;
   discardedCoin?: {

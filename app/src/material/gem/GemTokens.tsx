@@ -7,6 +7,7 @@ import { isInDistinctionDeck, isOnPlayerBoard } from '@gamepark/nidavellir/utils
 import { getGemTokenOnPlayerBoardX, getGemTokenOnPlayerBoardY, playerBoardPositions } from '../Styles';
 import { LocatedGem } from '@gamepark/nidavellir/state/LocatedGem';
 import { usePlayerPositions } from '../../table/TableContext';
+import { Animation } from '@gamepark/react-client';
 
 type GemTokensProps = {
   game: GameView;
@@ -18,24 +19,27 @@ const GemTokens: FC<GemTokensProps> = (props) => {
   return (
     <>
       {game.gems.map((gem, index) => (
-        <GemToken gem={gem} key={index} css={gemPosition(gem, playerPositions)} />
+        <GemToken gem={gem} key={index} getPosition={(gem, a) => gemPosition(gem, playerPositions, a)} />
       ))}
     </>
   );
 };
 
-const gemPosition = (gem: LocatedGem, playerPositions: any) => {
+const gemPosition = (gem: LocatedGem, playerPositions: any, animation?: Animation) => {
   if (isOnPlayerBoard(gem.location)) {
     const position = playerBoardPositions[playerPositions[gem.location.player]];
     return css`
-      transform: translate(${getGemTokenOnPlayerBoardX(position)}em, ${getGemTokenOnPlayerBoardY(position)}em)
-        rotateZ(180deg);
+      transform: translate3d(
+        ${getGemTokenOnPlayerBoardX(position)}em,
+        ${getGemTokenOnPlayerBoardY(position)}em,
+        ${animation ? 1000 : 0}em
+      );
     `;
   }
 
   if (isInDistinctionDeck(gem.location)) {
     return css`
-      transform: translate(66em, 153em) rotateZ(180deg);
+      transform: translate3d(90.5em, 153em, 0em) rotateZ(180deg);
     `;
   }
 

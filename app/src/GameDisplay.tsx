@@ -22,6 +22,7 @@ import { HeroesArea } from './material/areas/HeroesArea';
 import { TreasureArea } from './material/areas/TreasureArea';
 import { DistinctionArea } from './material/areas/DistinctionArea';
 import { TavernArea } from './material/areas/TavernArea';
+import { CardHandsArea } from './material/areas/CardHandsArea';
 
 type Props = {
   game: GameView;
@@ -51,6 +52,7 @@ export default function GameDisplay({ game }: Props) {
           <HeroesArea />
           <TreasureArea />
           <DistinctionArea />
+          <CardHandsArea game={game} />
           <TavernArea playerCount={game.players.length} />
           <GemTokens game={game} />
           <Taverns playerCount={game.players.length} />

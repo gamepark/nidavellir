@@ -93,7 +93,10 @@ const rulesContainer = css`
 `;
 
 const ruleHeader = css`
-  font-size: 5em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 4.5em;
   text-align: center;
   font-family: 'Norse', 'Arial', serif;
 `;

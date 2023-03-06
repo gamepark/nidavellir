@@ -13,6 +13,7 @@ import { RulesDialogType, setRulesDialog } from '@gamepark/nidavellir/moves/Rule
 import { HeroRulesDialogContent } from './HeroRulesDialogContent';
 import { DistinctionRulesDialogContent } from './DistinctionRulesDialogContent';
 import { CoinRulesDialogContent } from './CoinRulesDialogContent';
+import { GemRulesDialogContent } from './GemRulesDialogContent';
 
 type Props = {
   game: GameView;
@@ -23,6 +24,7 @@ const RulesDialogContents = {
   [RulesDialogType.Hero]: HeroRulesDialogContent,
   [RulesDialogType.Distinction]: DistinctionRulesDialogContent,
   [RulesDialogType.Coin]: CoinRulesDialogContent,
+  [RulesDialogType.Gem]: GemRulesDialogContent,
 };
 
 export default function RulesDialog({ game }: Props) {

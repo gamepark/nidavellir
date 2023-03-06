@@ -9,7 +9,6 @@ import { MoveHero } from '@gamepark/nidavellir/moves/MoveHero';
 import { HeroCard } from './HeroCard';
 import { isInArmy, isInCommandZone, isInHeroDeck } from '@gamepark/nidavellir/utils/location.utils';
 import {
-  cardWidth,
   getCardPositionInCommandZoneX,
   getCardPositionInCommandZoneY,
   getCardPositionInHeroDeckLeft,
@@ -49,7 +48,7 @@ const cardPosition = (card: SecretCard, playerPositions: any) => {
   if (isInHeroDeck(card.location)) {
     return `translate3d(${getCardPositionInHeroDeckLeft(card.location.index)}em, ${getCardPositionInHeroDeckTop(
       card.location.index
-    )}em, ${(card.location.index + 1) * cardWidth}em)
+    )}em, ${(card.location.index ?? 0) + 1}em)
     `;
   }
 
@@ -58,9 +57,7 @@ const cardPosition = (card: SecretCard, playerPositions: any) => {
     return `translate3d(${getCardPositionOnPlayerBoardX(
       position,
       card.location.column
-    )}em, ${getCardPositionOnPlayerBoardY(position, card.location.index!)}em, ${
-      ((card.location.index ?? 0) + 1) * cardWidth
-    }em)`;
+    )}em, ${getCardPositionOnPlayerBoardY(position, card.location.index!)}em, ${(card.location.index ?? 0) + 1}em)`;
   }
 
   if (isInCommandZone(card.location)) {
@@ -68,7 +65,7 @@ const cardPosition = (card: SecretCard, playerPositions: any) => {
     return `translate3d(${getCardPositionInCommandZoneX(position)}em, ${getCardPositionInCommandZoneY(
       position,
       card.location.index!
-    )}em, ${(card.location.index + 1) * cardWidth}em)`;
+    )}em, ${(card.location.index ?? 0) + 1}em)`;
   }
 
   return '';

@@ -42,7 +42,11 @@ export default class NidavellirView extends Nidavellir {
 
   isPredictableMove = (move: Move | MoveView): move is MoveView => {
     return (
-      (move.type === MoveType.MoveCard && move.target.type !== LocationType.Tavern) ||
+      (move.type === MoveType.MoveCard &&
+        move.target.type !== LocationType.Tavern &&
+        move.target.type !== LocationType.PlayerHand &&
+        move.target.type !== LocationType.Age2Deck &&
+        move.target.type !== LocationType.Age1Deck) ||
       (move.type === MoveType.MoveCoin && !move.reveal && move.target!.type !== LocationType.PlayerHand) ||
       move.type === MoveType.MoveDistinction
     );

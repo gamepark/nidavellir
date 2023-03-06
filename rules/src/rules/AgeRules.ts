@@ -2,11 +2,11 @@ import { NidavellirRules } from './NidavellirRules';
 import Move from '../moves/Move';
 import MoveView from '../moves/MoveView';
 import MoveType from '../moves/MoveType';
-import { ensureHeroes } from '../utils/card.utils';
 import { isEndOfAge } from '../utils/age.utils';
 import { Phase } from '../state/GameState';
 import { TurnPreparationRules } from './TurnPreparationRules';
 import { TavernResolutionRules } from './TavernResolutionRules';
+import { ensureHeroes } from '../utils/hero.utils';
 
 abstract class AgeRules extends NidavellirRules {
   delegate(): NidavellirRules | undefined {

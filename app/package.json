@@ -33,6 +33,7 @@
     "react-i18next": "^11.11.4",
     "react-redux": "^7.2.4",
     "react-scripts": "5.0.0",
+    "use-long-press": "^2.0.3",
     "web-vitals": "^2.1.0"
   },
   "scripts": {

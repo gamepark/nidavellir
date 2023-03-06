@@ -20,10 +20,11 @@ import { LocatedCard } from '@gamepark/nidavellir/state/LocatedCard';
 type DistinctionCardProps = {
   card: LocatedCard;
   scale?: number;
+  getPosition?: (card: LocatedCard, animation?: Animation) => any;
 } & HTMLAttributes<HTMLDivElement>;
 
 const DistinctionCard: FC<DistinctionCardProps> = (props) => {
-  const { card, scale, ...rest } = props;
+  const { card, scale, getPosition, ...rest } = props;
   const play = usePlay();
   const animation = useAnimation(({ move }) => move.type === MoveType.MoveDistinction && move.id === card.id);
   const detail = Distinctions[card.id!];
@@ -37,14 +38,17 @@ const DistinctionCard: FC<DistinctionCardProps> = (props) => {
   };
 
   return (
-    <div css={[distinctionCard(scale), animation && transitionFor(animation)]} onClick={onDistinctionClick} {...rest}>
+    <div
+      css={[distinctionCard(scale), animation && transitionFor(animation), getPosition?.(card, animation)]}
+      onClick={onDistinctionClick}
+      {...rest}
+    >
       {<div css={distinctionCardFace(detail)} />}
     </div>
   );
 };
 
 const transitionFor = (animation: Animation) => css`
-  z-index: 100 !important;
   transition: ${animation.duration}s transform;
 `;
 
@@ -55,11 +59,6 @@ const distinctionCard = (scale: number = 1) => css`
   border-radius: 2.5em;
   transform: translateZ(0);
   cursor: pointer;
-  z-index: 1;
-
-  &:hover {
-    z-index: 50;
-  }
 `;
 
 const distinctionCardFace = (distinction: Distinction) => css`
@@ -72,6 +71,7 @@ const distinctionCardFace = (distinction: Distinction) => css`
   background-image: url(${DistinctionCardFront.get(distinction)!});
   background-size: cover;
   backface-visibility: hidden;
+  image-rendering: -webkit-optimize-contrast;
   box-shadow: 0 0 0.3em black;
 `;
 

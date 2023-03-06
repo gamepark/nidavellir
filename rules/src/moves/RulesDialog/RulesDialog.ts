@@ -1,6 +1,7 @@
 import { SecretCard } from '../../state/view/SecretCard';
 import { LocatedCard } from '../../state/LocatedCard';
 import { SecretCoin } from '../../state/view/SecretCoin';
+import { LocatedGem } from '../../state/LocatedGem';
 
 export const SET_RULES_DIALOG = 'SET_RULES_DIALOG';
 
@@ -9,7 +10,12 @@ export type SetRulesDialog = {
   rulesDialog?: RulesDialog;
 };
 
-export type RulesDialog = AgeCardRulesDialog | HeroRulesDialog | DistinctionRulesDialog | CoinRulesDialog;
+export type RulesDialog =
+  | AgeCardRulesDialog
+  | HeroRulesDialog
+  | DistinctionRulesDialog
+  | CoinRulesDialog
+  | GemRulesDialog;
 
 export type AgeCardRulesDialog = {
   type: RulesDialogType.AgeCard;
@@ -26,6 +32,11 @@ export type DistinctionRulesDialog = {
   distinction: LocatedCard;
 };
 
+export type GemRulesDialog = {
+  type: RulesDialogType.Gem;
+  gem: LocatedGem;
+};
+
 export type CoinRulesDialog = {
   type: RulesDialogType.Coin;
   coin: SecretCoin;
@@ -36,24 +47,24 @@ export enum RulesDialogType {
   Hero,
   Distinction,
   Coin,
+
+  Gem,
 }
 
-export function setRulesDialog(rulesDialog?: RulesDialog): SetRulesDialog {
-  return { type: SET_RULES_DIALOG, rulesDialog };
-}
+export const setRulesDialog = (rulesDialog?: RulesDialog): SetRulesDialog => ({ type: SET_RULES_DIALOG, rulesDialog });
 
-export function ageCardRulesDialog(card: SecretCard): AgeCardRulesDialog {
-  return { type: RulesDialogType.AgeCard, card };
-}
+export const ageCardRulesDialog = (card: SecretCard): AgeCardRulesDialog => ({ type: RulesDialogType.AgeCard, card });
 
-export function heroRulesDialog(hero: LocatedCard): HeroRulesDialog {
-  return { type: RulesDialogType.Hero, hero };
-}
+export const heroRulesDialog = (hero: LocatedCard): HeroRulesDialog => ({ type: RulesDialogType.Hero, hero });
 
-export function distinctionRulesDialog(distinction: LocatedCard): DistinctionRulesDialog {
-  return { type: RulesDialogType.Distinction, distinction };
-}
+export const distinctionRulesDialog = (distinction: LocatedCard): DistinctionRulesDialog => ({
+  type: RulesDialogType.Distinction,
+  distinction,
+});
 
-export function coinRulesDialog(coin: SecretCoin): CoinRulesDialog {
-  return { type: RulesDialogType.Coin, coin };
-}
+export const coinRulesDialog = (coin: SecretCoin): CoinRulesDialog => ({ type: RulesDialogType.Coin, coin });
+
+export const gemRulesDialog = (gem: LocatedGem): GemRulesDialog => ({
+  type: RulesDialogType.Gem,
+  gem,
+});

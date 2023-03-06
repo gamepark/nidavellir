@@ -3,16 +3,16 @@ import { Player, PlayerId } from '../state/Player';
 import Move from '../moves/Move';
 import { getCardsInTavern, isOnPlayerBoard } from '../utils/location.utils';
 import MoveType from '../moves/MoveType';
-import { getActivePlayer, isLocatedCoin } from '../utils/player.utils';
+import { isLocatedCoin } from '../utils/player.utils';
 import { InTavern } from '../state/LocatedCard';
 import { MoveCard } from '../moves/MoveCard';
 import { Cards } from '../cards/Cards';
 import { EffectType } from '../effects/EffectType';
 import GameState from '../state/GameState';
 import GameView from '../state/view/GameView';
-import MoveView from '../moves/MoveView';
 import { isExchangeCoin } from '../utils/coin.utils';
 import { getChooseCardMove, onChooseCard } from '../utils/card.utils';
+import { applyThrud } from '../utils/hero.utils';
 
 class ChooseCardRules extends NidavellirRules {
   player: Player;
@@ -20,17 +20,6 @@ class ChooseCardRules extends NidavellirRules {
   constructor(game: GameState | GameView, player: Player) {
     super(game);
     this.player = player;
-  }
-
-  getAutomaticMoves(): (Move | MoveView)[] {
-    const activePlayer = getActivePlayer(this.game);
-    const cardInTavern = getCardsInTavern(this.game);
-
-    // TODO: can't works because when the player choose a card, this rules are not called
-    if (cardInTavern.length === 1 && activePlayer.playedCard === undefined) {
-      return [getChooseCardMove(this.game, this.player, cardInTavern[0].id!)];
-    }
-    return super.getAutomaticMoves();
   }
 
   getLegalMoves(playerId: PlayerId): Move[] {
@@ -54,6 +43,11 @@ class ChooseCardRules extends NidavellirRules {
   }
 
   chooseCard(move: MoveCard) {
+    const thrudMoves = applyThrud(this.game, this.player, move);
+    if (thrudMoves.length) {
+      return thrudMoves;
+    }
+
     onChooseCard(this.game, this.player, move.id!, 'age');
 
     const tavern = this.game.tavern;

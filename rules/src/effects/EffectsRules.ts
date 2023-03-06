@@ -13,6 +13,7 @@ import { TradeCoinRules } from './TradeCoin';
 import { YludRules } from './YludEffect';
 import { UlineRules } from './UlineEffect';
 import { DiscardCardRules } from './DiscardCard';
+import { DrawCardRules } from './DrawCard';
 
 export const EffectsRules: Record<EffectType, new (game: GameState | GameView, player: Player) => EffectRules> = {
   [EffectType.TRANSFORM_COIN]: TransformCoinRules,
@@ -25,4 +26,5 @@ export const EffectsRules: Record<EffectType, new (game: GameState | GameView, p
   [EffectType.YLUD]: YludRules,
   [EffectType.ULINE]: UlineRules,
   [EffectType.DISCARD_CARD]: DiscardCardRules,
+  [EffectType.DRAW_CARD]: DrawCardRules,
 };

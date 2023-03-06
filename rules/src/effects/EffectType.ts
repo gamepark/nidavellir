@@ -9,4 +9,5 @@ export enum EffectType {
   YLUD,
   ULINE,
   DISCARD_CARD,
+  DRAW_CARD,
 }

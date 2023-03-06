@@ -1,5 +1,5 @@
 import { LocationType } from './Location';
-import { InDiscard, InDistinctionDeck } from './CommonLocations';
+import { InDiscard, InDistinctionDeck, InPlayerHand } from './CommonLocations';
 import { PlayerId } from './Player';
 import { DwarfType } from '../cards/Card';
 
@@ -32,7 +32,15 @@ export type InArmy = {
   column: DwarfType;
 };
 
-export type CardLocation = InAgeDeck | InHeroesDeck | InArmy | InDistinctionDeck | InTavern | InDiscard | InCommandZone;
+export type CardLocation =
+  | InAgeDeck
+  | InHeroesDeck
+  | InArmy
+  | InDistinctionDeck
+  | InTavern
+  | InDiscard
+  | InCommandZone
+  | InPlayerHand;
 
 export type LocatedCard = {
   id: number;

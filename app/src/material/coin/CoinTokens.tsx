@@ -14,10 +14,8 @@ import {
   isOnPlayerBoard,
 } from '@gamepark/nidavellir/utils/location.utils';
 import {
-  cardWidth,
   coinPositionInDiscardX,
   coinPositionInDiscardY,
-  coinTokenWidth,
   getCoinPositionInHandRotate,
   getCoinPositionInHandX,
   getCoinPositionInHandY,
@@ -71,7 +69,7 @@ const coinTransform = (coin: SecretCoin, playerPositions: any) => {
     const position = playerBoardPositions[playerPositions[coin.location.player]];
     return `translate3d(${getCoinPositionInHandX(coin.location.index!, position)}em, ${getCoinPositionInHandY(
       position
-    )}em, ${((coin.location.index ?? 0) + 1) * cardWidth}em) ${getCoinPositionInHandRotate(position)}`;
+    )}em, ${(coin.location.index ?? 0) + 1}em) ${getCoinPositionInHandRotate(position)}`;
   }
 
   if (isInTreasure(coin.location)) {
@@ -79,7 +77,7 @@ const coinTransform = (coin: SecretCoin, playerPositions: any) => {
     return `translate3d(${getCoinPositionInTreasureX(token, coin.location.z)}em, ${getCoinPositionInTreasureY(
       token,
       coin.location.z
-    )}em, ${coinTokenWidth / 2}em)`;
+    )}em, ${(coin.location.z ?? 0) + 1}em)`;
   }
 
   if (isOnPlayerBoard(coin.location)) {
@@ -88,19 +86,19 @@ const coinTransform = (coin: SecretCoin, playerPositions: any) => {
       position,
       coin.location.index!
     )}em, ${getCoinPositionOnPlayerBoardY(position, coin.location.index!)}em, ${
-      ((coin.location.index ?? 0) + 1) * cardWidth
+      (coin.location.index ?? 0) + 1
     }em) ${getCoinPositionOnPlayerBoardRotation(position)}`;
   }
 
   if (isInDistinctionDeck(coin.location)) {
     return `
-      translate3d(42em, 160em, ${((coin.location.index ?? 0) + 1) * cardWidth}em)
+      translate3d(42em, 160em, 0em)
     `;
   }
 
   return `translate3d(${coinPositionInDiscardX(coin.location.index)}em, ${coinPositionInDiscardY(
     coin.location.index
-  )}em, ${(coin.location.index + 1) * cardWidth}em)`;
+  )}em, ${coin.location.index + 1}em)`;
 };
 
 export { CoinTokens };

@@ -127,9 +127,7 @@ export const getCoinPositionInHandY = (position: any) => {
 };
 
 export const getCoinPositionInHandX = (coinIndex: number, position: any) => {
-  return position.rotateZ === 180
-    ? (position.left ?? 0) - coinTokenWidth - 4 - coinIndex * (coinTokenWidth + 3)
-    : (position.left ?? 0) + playerBoardWidth + 5.5 + coinIndex * (coinTokenWidth + 8.7);
+  return (position.left ?? 0) + playerBoardWidth + 5.5 + coinIndex * (coinTokenWidth + 8.7);
 };
 
 export const getCoinPositionInHandRotate = (position: any) => {
@@ -146,71 +144,69 @@ export const getCoinPositionInTreasureX = (token: Coin, z: number, index?: numbe
 export const getCoinPositionOnPlayerBoardX = (position: any, index: number) => {
   switch (index) {
     case 0:
-      return position.rotateZ === 180 ? (position.left ?? 0) + playerBoardWidth - 21.8 : (position.left ?? 0) + 7.4;
+      return (position.left ?? 0) + 7.4;
     case 1:
-      return position.rotateZ === 180 ? (position.left ?? 0) + playerBoardWidth - 19.2 : (position.left ?? 0) + 4.9;
+      return (position.left ?? 0) + 4.9;
     case 2:
-      return position.rotateZ === 180 ? (position.left ?? 0) + playerBoardWidth - 15.2 : (position.left ?? 0) + 0.8;
+      return (position.left ?? 0) + 0.8;
     case 3:
-      return position.rotateZ === 180 ? (position.left ?? 0) + playerBoardWidth - 10.7 : (position.left ?? 0) - 3.8;
+      return (position.left ?? 0) - 3.8;
     case 4:
-      return position.rotateZ === 180 ? (position.left ?? 0) + playerBoardWidth - 25.6 : (position.left ?? 0) + 11.2;
+      return (position.left ?? 0) + 11.2;
   }
+};
+
+export const getCardPositionInCommandZoneX = (position: any) => (position.left ?? 0) - (cardWidth + 1);
+
+export const getCardPositionOnPlayerBoardX = (position: any, dwarf: DwarfType | RoyalOffering) => {
+  return (position.left ?? 0) + playerBoardWidth + (cardWidth + 2) * (dwarf - 1) + 0.3 * (dwarf + 1) + 1;
+};
+
+export const getCardPositionInHandY = (position: any) => {
+  return (position.top ?? 0) + 55;
+};
+
+export const getCardPositionInHandX = (position: any, count: number, index: number) => {
+  return (position.left ?? 0) + index * (cardWidth + 2) + 70 - (count * (cardWidth + 2)) / 2;
 };
 
 export const getCoinPositionOnPlayerBoardY = (position: any, index: number) => {
   switch (index) {
     case 0:
-      return position.rotateZ === 180 ? (position.top ?? 0) + 50.8 : (position.top ?? 0) + 5.8;
+      return (position.top ?? 0) + 5.8;
     case 1:
-      return position.rotateZ === 180 ? (position.top ?? 0) + 34 : (position.top ?? 0) + 22.4;
+      return (position.top ?? 0) + 22.4;
     case 2:
-      return position.rotateZ === 180 ? (position.top ?? 0) + 18 : (position.top ?? 0) + 38.8;
+      return (position.top ?? 0) + 38.8;
     case 3:
-      return position.rotateZ === 180 ? (position.top ?? 0) - 4.7 : (position.top ?? 0) + 61.2;
+      return (position.top ?? 0) + 61.2;
     case 4:
-      return position.rotateZ === 180 ? (position.top ?? 0) - 10.8 : (position.top ?? 0) + 67.5;
+      return (position.top ?? 0) + 67.5;
   }
-};
-
-export const getCardPositionInCommandZoneX = (position: any) =>
-  position.rotateZ === 180 ? (position.left ?? 0) + playerBoardWidth + 1.3 : (position.left ?? 0) - (cardWidth + 1);
-
-export const getCardPositionOnPlayerBoardX = (position: any, dwarf: DwarfType | RoyalOffering) => {
-  return position.rotateZ === 180
-    ? (position.left ?? 0) - (cardWidth + 2) * dwarf - 0.3 * (dwarf + 1) + 1
-    : (position.left ?? 0) + playerBoardWidth + (cardWidth + 2) * (dwarf - 1) + 0.3 * (dwarf + 1) + 1;
 };
 
 const gradeHeight = 4.7;
 export const columnWidth = cardWidth + 2;
-export const playerBoardColumnTop = (position: any) =>
-  position.rotateZ === 180 ? position.top + (playerBoardHeight - playerBoardColumnHeight) : position.top;
+export const playerBoardColumnTop = (position: any) => position.top;
 
 export const playerBoardColumnLeft = (position: any, type: DwarfType | HeroType) =>
-  position.left +
-  (position.rotateZ === 180 ? -(columnWidth * type) : playerBoardWidth + columnWidth * (type - 1)) +
-  (position.rotateZ === 180 ? -0.3 : 0.3) * (type + 1);
+  position.left + (playerBoardWidth + columnWidth * (type - 1)) + 0.3 * (type + 1);
 
 export const getCardPositionOnPlayerBoardY = (position: any, index: number) => {
-  return position.rotateZ === 180
-    ? playerBoardColumnTop(position) + playerBoardColumnHeight - cardHeight - index * gradeHeight - 1
-    : (position.top ?? 0) + index * gradeHeight + 1;
+  return (position.top ?? 0) + index * gradeHeight + 1;
 };
 
 export const getCardPositionInCommandZoneY = (position: any, index: number) => {
-  return position.rotateZ === 180
-    ? playerBoardColumnTop(position) + playerBoardColumnHeight - cardHeight - index * gradeHeight - 1
-    : (position.top ?? 0) + index * gradeHeight + 1;
+  return (position.top ?? 0) + index * gradeHeight + 1;
 };
 
-export const getCardPositionOnPlayerBoardTransform = (position: any) => {
-  return position.rotateZ === 180 ? 'rotateZ(180deg)' : '';
+export const getCardPositionOnPlayerBoardTransform = (_position: any) => {
+  return '';
 };
 
 // TODO: DELETE ALL ROTATION
-export const getCoinPositionOnPlayerBoardRotation = (position: any) => {
-  return position.rotateZ === 180 ? `rotateZ(180deg)` : '';
+export const getCoinPositionOnPlayerBoardRotation = (_position: any) => {
+  return '';
 };
 
 export const cardPositionInDiscardX = (index: number) => 143 + index * 0.1;

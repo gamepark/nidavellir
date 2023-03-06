@@ -19,11 +19,8 @@ const MoveCardButton: FC<MoveCardButtonProps> = (props) => {
   const { move /*game*/ } = props;
   const { target, id } = move;
   const { t } = useTranslation();
-  //const playerId = usePlayerId();
-  //const player = game.players.find((p) => p.id === playerId)!;
 
   const detail = getDetail(target, id);
-  //const detail = player?.effects?.length ? getEffectDetail(player?.effects[0]) : getDetail(target, id);
   return (
     <>
       {!!detail?.icon && <div css={iconStyle(detail.icon)}></div>}
@@ -52,7 +49,7 @@ const getDetail = (target: CardLocation, id?: number) => {
       return getDwarfDetail(target.column);
     case LocationType.Discard:
       if (id !== undefined && Cards[id].type === RoyalOffering.RoyalOffering) {
-        return { icon: Images.RoyalOfferingIcon, text: 'card.moves.choose-royal-offering' };
+        return { icon: Images.RoyalOfferingIcon, text: 'card.moves.choose.royal-offering' };
       }
 
       return { icon: Images.DiscardIcon, text: 'card.moves.discard' };

@@ -23,6 +23,7 @@ const PlayerPanel: FC<PlayerPanelProps> = (props) => {
   return (
     <div css={[playerPanel(index), selected && selectedPanel]} onClick={() => onPanelClick(id)}>
       <Avatar playerId={id} css={avatarStyle} />
+
       <div css={playerName}>
         <span>Player #{id}</span>
       </div>
@@ -78,7 +79,7 @@ const playerPanel = (index: number) => css`
   left: 1em;
   height: ${playerPanelHeight}em;
   width: ${playerPanelsWidth - 2}em;
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: #e9e3d8;
   border-radius: 1em;
   cursor: pointer;
   border: 0.2em solid black;
@@ -86,7 +87,7 @@ const playerPanel = (index: number) => css`
 `;
 
 const selectedPanel = css`
-  background-color: rgba(255, 255, 255, 1);
+  background-color: #c3ebf1;
 `;
 
 export { PlayerPanel };

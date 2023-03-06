@@ -26,7 +26,13 @@ export const KingsGreatArmorer: Distinction = {
 
 export const PioneerOfTheKingdom: Distinction = {
   majorityOf: DwarfType.Explorer,
-  // TODO: replace by "Draw card" effect
+  effects: [
+    {
+      type: EffectType.DRAW_CARD,
+      count: 3,
+      keep: 1,
+    },
+  ],
 };
 
 export const Distinctions: Distinction[] = [

@@ -1,11 +1,11 @@
 import Move from '../moves/Move';
 import { getPlayerPouch } from '../utils/coin.utils';
 import { NidavellirRules } from '../rules/NidavellirRules';
-import { hasHero } from '../utils/card.utils';
 import { Uline } from '../cards/Heroes';
 import { TradeCoinWithUlineRules } from './uline/TradeCoinWithUline';
 import { tradeCoinsMove } from '../moves/TradeCoins';
 import { TradeCoinBaseRules } from './TradeCoinBase';
+import { hasHero } from '../utils/hero.utils';
 
 export class TradeCoinRules extends TradeCoinBaseRules {
   delegate(): NidavellirRules | undefined {

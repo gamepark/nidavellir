@@ -4,11 +4,11 @@ import { ElvalandTurnRules } from './ElvalandTurnRules';
 import { Step } from '../state/GameState';
 import { GemTradeRules } from './GemTradeRules';
 import { SetStep } from '../moves/SetStep';
-import { getPlayerWithHero } from '../utils/card.utils';
 import { Uline } from '../cards/Heroes';
 import Move from '../moves/Move';
 import MoveView from '../moves/MoveView';
 import MoveType from '../moves/MoveType';
+import { getPlayerWithHero } from '../utils/hero.utils';
 
 class TavernResolutionRules extends NidavellirRules {
   delegate(): NidavellirRules | undefined {

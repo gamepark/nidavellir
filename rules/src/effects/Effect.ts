@@ -8,6 +8,7 @@ import { TransformCoinEffect } from './types/TransformCoinEffect';
 import { TradeCoin } from './types/TradeCoinEffect';
 import { UlineEffect } from './UlineEffect';
 import { DiscardCard } from './DiscardCard';
+import { DrawCard } from './DrawCard';
 
 export type Effect =
   | TransformCoinEffect
@@ -19,4 +20,5 @@ export type Effect =
   | KingsGreatArmorer
   | YludEffect
   | UlineEffect
-  | DiscardCard;
+  | DiscardCard
+  | DrawCard;

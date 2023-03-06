@@ -121,7 +121,11 @@ export const DwergBergelmir: Hero = {
 export const Thrud: Hero = {
   type: HeroType.Neutral,
   grades: {
-    [HeroType.Neutral]: [13],
+    [DwarfType.Blacksmith]: [13],
+    [DwarfType.Hunter]: [13],
+    [DwarfType.Explorer]: [13],
+    [DwarfType.Warrior]: [13],
+    [DwarfType.Miner]: [13],
   },
 };
 

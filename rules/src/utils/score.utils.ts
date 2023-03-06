@@ -14,7 +14,7 @@ import {
 } from '../cards/Heroes';
 import sum from 'lodash/sum';
 import { Cards } from '../cards/Cards';
-import { getCardsInCommandZone, hasHero } from './card.utils';
+import { getCardsInCommandZone } from './card.utils';
 import GameState from '../state/GameState';
 import sumBy from 'lodash/sumBy';
 import { Coins } from '../coins/Coins';
@@ -24,6 +24,7 @@ import maxBy from 'lodash/maxBy';
 import { getPlayerCoins } from './coin.utils';
 import { HeroType } from '../cards/Hero';
 import { LocatedCard } from '../state/LocatedCard';
+import { hasHero } from './hero.utils';
 
 export const getBlacksmithScore = (game: GameState | GameView, playerId: PlayerId) => {
   const numberOfRanks = numberOfGrades(game, playerId, DwarfType.Blacksmith);
@@ -66,7 +67,7 @@ export const getMaximumCoinValue = (game: GameState | GameView, playerId: Player
   if (playerCoins.some((c) => !c.id)) {
     return 0;
   }
-  
+
   const maximumCoin = maxBy(playerCoins, (c) => Coins[c.id!].value)!;
 
   return Coins[maximumCoin.id!].value;

@@ -20,8 +20,9 @@ import { MoveCoin } from '@gamepark/nidavellir/moves/MoveCoin';
 import { TransformCoin } from '@gamepark/nidavellir/moves/TransformCoin';
 import { TradeCoins } from '@gamepark/nidavellir/moves/TradeCoins';
 import { RuleDetail } from './CardRulesDialogContent';
-import { hasHero } from '@gamepark/nidavellir/utils/card.utils';
 import { Ylud } from '@gamepark/nidavellir/cards/Heroes';
+import { isInPlayerHand, isOnPlayerBoard } from '@gamepark/nidavellir/utils/location.utils';
+import { hasHero } from '@gamepark/nidavellir/utils/hero.utils';
 
 type CoinRulesDialogContentProps = {
   game: GameView;
@@ -49,10 +50,13 @@ const CoinRulesDialogContent: FC<CoinRulesDialogContentProps> = (props) => {
   const rules = getCoinRules(game, coin, player);
 
   const hasActions = !!legalMoves.length;
+  const isHidden =
+    coin.hidden &&
+    (isOnPlayerBoard(coin.location) || (isInPlayerHand(coin.location) && coin.location.player !== playerId));
   return (
     <div css={container}>
       <div css={coinContainer}>
-        <CoinToken coin={coin} css={coinInRules} scale={2} transform={(c) => (c.hidden ? 'rotateY(180deg)' : '')} />
+        <CoinToken coin={coin} css={coinInRules} scale={2} transform={() => (isHidden ? 'rotateY(180deg)' : '')} />
       </div>
       <div css={descriptionContainer}>
         <div css={rulesContainer}>

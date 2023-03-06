@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
 import { SecretCard } from '@gamepark/nidavellir/state/view/SecretCard';
-import { FC, HTMLAttributes } from 'react';
+import { FC, HTMLAttributes, useState } from 'react';
 import {
   BlacksmithDwarf10Age1,
   BlacksmithDwarf10Age2,
@@ -150,11 +150,18 @@ const AgeCard: FC<AgeCardProps> = (props) => {
   const projection = useProjection();
   const animation = useAnimation(({ move }) => move.type === MoveType.MoveCard && isThisCard(card, move));
   const animations = useAnimations();
+  const [isDragging, setDragging] = useState(false);
 
-  const onDrop = (move: Move) => {
+  //const longPress = useLongPress(() => playMove(moves[0]));
+
+  const playMove = (move: Move) => {
     if (move) {
       play(move);
     }
+  };
+
+  const onEnd = () => {
+    setDragging(false);
   };
 
   const onCardClick = () => {
@@ -166,16 +173,28 @@ const AgeCard: FC<AgeCardProps> = (props) => {
   };
 
   const isSelectable = !animations?.length && !animation && !!moves?.length;
+  const onDrag = () => {
+    if (isSelectable) {
+      setDragging(true);
+      return item;
+    }
+
+    return false;
+  };
   return (
     <Draggable
       canDrag={isSelectable}
       type={DraggableMaterial.Card}
-      item={item}
+      item={onDrag}
       projection={projection}
-      drop={onDrop}
-      preTransform={`${transform?.(card, age) ?? ''} ${!detail ? `rotateY(180deg)` : ''}`}
-      css={[ageCard(scale), isSelectable && selectable, !!detail && cardOnTop, animation && transitionFor(animation)]}
+      drop={playMove}
+      end={onEnd}
+      preTransform={`${transform?.(card, age) ?? ''} ${animation || isDragging ? `translateZ(1000em)` : ''} ${
+        !detail ? `rotateY(180deg)` : ''
+      }`}
+      css={[ageCard(scale), isSelectable && selectable, animation && transitionFor(animation)]}
       onClick={onCardClick}
+      //{...longPress()}
       {...rest}
     >
       {!!detail && <div css={ageCardFace(detail)} />}
@@ -185,7 +204,6 @@ const AgeCard: FC<AgeCardProps> = (props) => {
 };
 
 const transitionFor = (animation: Animation) => css`
-  z-index: 100;
   transition: ${animation.duration}s transform;
 `;
 
@@ -203,12 +221,6 @@ const ageCard = (scale: number = 1) => css`
   cursor: pointer;
 `;
 
-const cardOnTop = css`
-  &:hover {
-    z-index: 50;
-  }
-`;
-
 const ageCardFace = (card: Card) => css`
   position: absolute;
   top: 0;
@@ -219,6 +231,7 @@ const ageCardFace = (card: Card) => css`
   background-image: url(${AgeCardFront.get(card)!});
   background-size: cover;
   backface-visibility: hidden;
+  image-rendering: -webkit-optimize-contrast;
   box-shadow: 0 0 0.7em -0.2em black;
 `;
 
@@ -234,6 +247,7 @@ const ageCardBack = (age: number = 1) => css`
   transform: rotateY(180deg);
   backface-visibility: hidden;
   box-shadow: 0 0 0.7em -0.2em black;
+  image-rendering: -webkit-optimize-contrast;
 `;
 
 const AgeCardFront = new Map<Card, any>();
