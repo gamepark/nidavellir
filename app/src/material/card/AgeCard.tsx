@@ -95,7 +95,7 @@ import {
   WarriorDwarf8Age1,
   WarriorDwarf8Age2,
   WarriorDwarf9Age1,
-  WarriorDwarf9Age2,
+  WarriorDwarf9Age2
 } from '@gamepark/nidavellir/cards/Cards';
 import { cardHeight, cardWidth, shineEffect } from '../Styles';
 import { Card } from '@gamepark/nidavellir/cards/Card';
@@ -109,6 +109,7 @@ import { draggableCard, DraggableMaterial } from '../../draggable/DraggableMater
 import { useProjection } from '../View';
 import Move from '@gamepark/nidavellir/moves/Move';
 import { ageCardRulesDialog, setRulesDialog } from '@gamepark/nidavellir/moves/RulesDialog/RulesDialog';
+import { useLongPress } from 'use-long-press';
 
 type AgeCardProps = {
   card: SecretCard;
@@ -152,8 +153,7 @@ const AgeCard: FC<AgeCardProps> = (props) => {
   const animations = useAnimations();
   const [isDragging, setDragging] = useState(false);
 
-  //const longPress = useLongPress(() => playMove(moves[0]));
-
+  const longPress = useLongPress(() => (!isDragging ? playMove(moves[0]) : undefined));
   const playMove = (move: Move) => {
     if (move) {
       play(move);
@@ -194,7 +194,7 @@ const AgeCard: FC<AgeCardProps> = (props) => {
       }`}
       css={[ageCard(scale), isSelectable && selectable, animation && transitionFor(animation)]}
       onClick={onCardClick}
-      //{...longPress()}
+      {...longPress()}
       {...rest}
     >
       {!!detail && <div css={ageCardFace(detail)} />}

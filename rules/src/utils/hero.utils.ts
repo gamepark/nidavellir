@@ -77,7 +77,7 @@ export const computeRecruitHeroCount = (state: GameState | GameView, playerId: P
     gradesByTypes[DwarfType.Miner]
   );
 
-  const recruitementCount = minGradesAfterCard - minGradesBeforeCard;
+  const recruitmentCount = minGradesAfterCard - minGradesBeforeCard;
   // It's not possible to recruit more hero than the number of completed row
   const heroesCount = state.heroes.filter(
     (h) => (isInArmy(h.location) || isInCommandZone(h.location)) && h.location.player === playerId
@@ -86,7 +86,7 @@ export const computeRecruitHeroCount = (state: GameState | GameView, playerId: P
     return 0;
   }
 
-  return recruitementCount;
+  return recruitmentCount;
 };
 
 const getCardGradesCount = (card: Hero | Card, locatedCard: SecretCard | LocatedCard, type: DwarfType) => {

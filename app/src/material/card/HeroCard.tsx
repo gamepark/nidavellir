@@ -37,6 +37,7 @@ import { Draggable } from '@gamepark/react-components';
 import { LocatedCard } from '@gamepark/nidavellir/state/LocatedCard';
 import { useProjection } from '../View';
 import { heroRulesDialog, setRulesDialog } from '@gamepark/nidavellir/moves/RulesDialog/RulesDialog';
+import { useLongPress } from 'use-long-press';
 
 type HeroCardProps = {
   card: LocatedCard;
@@ -54,7 +55,8 @@ const HeroCard: FC<HeroCardProps> = (props) => {
   const projection = useProjection();
   const [isDragging, setDragging] = useState(false);
 
-  const onDrop = (move: Move) => {
+  const longPress = useLongPress(() => (!isDragging ? playMove(moves[0]) : undefined));
+  const playMove = (move: Move) => {
     if (move) {
       play(move);
     }
@@ -90,11 +92,12 @@ const HeroCard: FC<HeroCardProps> = (props) => {
       type={DraggableMaterial.Hero}
       item={onDrag}
       projection={projection}
-      drop={onDrop}
+      drop={playMove}
       end={onEnd}
       preTransform={`${isDragging || animation ? `translateZ(1000em)` : ''} ${transform?.(card) ?? ''}`}
       css={[heroCard(scale), isSelectable && selectable, animation && transitionFor(animation)]}
       onClick={onHeroClick}
+      {...longPress()}
       {...rest}
     >
       {<div css={heroCardFace(detail)} />}

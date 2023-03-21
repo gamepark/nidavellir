@@ -177,6 +177,9 @@ import ShiningHorseIcon from './icons/shining-horse-icon.png';
 import PouchIcon from './icons/pouch-icon.png';
 import CommandIcon from './icons/command-icon.png';
 import DiscardIcon from './icons/discard.png';
+import TavernIcon from './icons/tavern-icon.png';
+import HeroesIcon from './icons/heroes-icon.png';
+import TreasureIcon from './icons/treasure-icon.png';
 
 import DwergScoring from './rules/dwerg-scoring.jpg';
 
@@ -352,6 +355,9 @@ const Images = {
   DiscardIcon,
   DwergScoring,
   GreenCoin,
+  TavernIcon,
+  HeroesIcon,
+  TreasureIcon,
 };
 
 export default Images;
