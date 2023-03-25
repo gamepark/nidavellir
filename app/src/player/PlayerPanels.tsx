@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react';
-import { FC } from 'react';
+import { FC, Fragment } from 'react';
 import { playerPanelsHeight, playerPanelsWidth } from '../material/Styles';
 import GameView from '@gamepark/nidavellir/state/view/GameView';
 import { View } from '../material/View';
 import { PlayerPanel } from './PlayerPanel';
+import { AnimationPreviews } from '../preview/AnimationPreviews';
 
 type PlayerPanelsProps = {
   game: GameView;
@@ -17,14 +18,17 @@ const PlayerPanels: FC<PlayerPanelsProps> = (props) => {
   return (
     <div css={playersArea}>
       {game.players.map((p, index) => (
-        <PlayerPanel
-          key={p.id}
-          player={p}
-          index={index}
-          game={game}
-          selected={p.id === view?.player}
-          onPanelClick={onPanelClick}
-        />
+        <Fragment key={p.id}>
+          <AnimationPreviews game={game} player={p.id} view={view} />
+          <PlayerPanel
+            key={p.id}
+            player={p}
+            index={index}
+            game={game}
+            selected={p.id === view?.player}
+            onPanelClick={onPanelClick}
+          />
+        </Fragment>
       ))}
     </div>
   );

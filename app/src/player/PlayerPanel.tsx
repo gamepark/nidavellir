@@ -75,8 +75,7 @@ const playerName = css`
 
 const playerPanel = (index: number) => css`
   position: absolute;
-  top: ${1.5 + index * (1 + playerPanelHeight)}em;
-  left: 1em;
+  transform: translate3d(1em, ${1.5 + index * (1 + playerPanelHeight)}em, 0);
   height: ${playerPanelHeight}em;
   width: ${playerPanelsWidth - 2}em;
   background-color: #e9e3d8;

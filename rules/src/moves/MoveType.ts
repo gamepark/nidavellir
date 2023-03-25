@@ -15,6 +15,7 @@ enum MoveType {
   Scoring,
   TradeCoins,
   TransformCoin,
+  TradeGems,
 }
 
-export default MoveType;
+export default MoveType
