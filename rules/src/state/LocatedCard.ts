@@ -1,7 +1,7 @@
-import { LocationType } from './Location';
-import { InDiscard, InDistinctionDeck, InPlayerHand } from './CommonLocations';
-import { PlayerId } from './Player';
-import { DwarfType } from '../cards/Card';
+import { LocationType } from './Location'
+import { InDiscard, InDistinctionDeck, InPlayerHand } from './CommonLocations'
+import { PlayerId } from './Player'
+import { DwarfType } from '../cards/Card'
 
 export type InAgeDeck = {
   type: LocationType.Age1Deck | LocationType.Age2Deck;
@@ -45,4 +45,5 @@ export type CardLocation =
 export type LocatedCard = {
   id: number;
   location: CardLocation;
+  age?: number;
 };

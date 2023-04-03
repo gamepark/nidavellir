@@ -1,8 +1,10 @@
-import MoveType from './MoveType';
-import { CoinLocation } from '../state/LocatedCoin';
+import MoveType from './MoveType'
+import {CoinLocation} from '../state/LocatedCoin'
+import {PlayerId} from '../state/Player'
 
 export type MoveCoin = {
   type: MoveType.MoveCoin;
+  player?: PlayerId;
   id?: number;
   source?: CoinLocation;
   target?: CoinLocation;
@@ -10,47 +12,32 @@ export type MoveCoin = {
   hide?: boolean;
 };
 
-export const revealCoinMove = (id: number): MoveCoin => ({
+export const revealCoinMove = (id: number, player?: PlayerId): MoveCoin => ({
   type: MoveType.MoveCoin,
   id,
   reveal: true,
-});
+  player
+})
 
-export const moveCoinAndRevealMove = (id: number, target: CoinLocation): MoveCoin => ({
+export const moveCoinAndRevealMove = (id: number, target: CoinLocation, player: PlayerId): MoveCoin => ({
   type: MoveType.MoveCoin,
   id,
   target,
   reveal: true,
-});
+  player
+})
 
-export const moveCoinAndHideMove = (id: number, target: CoinLocation): MoveCoin => ({
+export const moveCoinAndHideMove = (id: number, target: CoinLocation, player: PlayerId): MoveCoin => ({
   type: MoveType.MoveCoin,
   id,
   target,
   hide: true,
-});
+  player
+})
 
-export const moveKnownCoinMove = (id: number, target: CoinLocation): MoveCoin => ({
+export const moveKnownCoinMove = (id: number, target: CoinLocation, player: PlayerId): MoveCoin => ({
   type: MoveType.MoveCoin,
   id,
   target,
-});
-
-export const moveUnknownCoinMove = (source: CoinLocation, target: CoinLocation): MoveCoin => ({
-  type: MoveType.MoveCoin,
-  source,
-  target,
-});
-
-export const moveCoinMove = (
-  id?: number,
-  target?: CoinLocation,
-  source?: CoinLocation,
-  reveal?: boolean
-): MoveCoin => ({
-  type: MoveType.MoveCoin,
-  id,
-  source,
-  target,
-  reveal,
-});
+  player
+})

@@ -1,14 +1,16 @@
-import GameState, {Phase, Step} from '../state/GameState'
+import GameState, { Phase, Step } from '../state/GameState'
 import GameView from '../state/view/GameView'
-import {MIN_DWARVES_PER_TAVERN, TAVERN_COUNT} from './constants'
-import {getCardsInTavern} from './location.utils'
-import {InTavern, LocatedCard} from '../state/LocatedCard'
-import {isLocatedCard} from './player.utils'
-import {Player, PlayerId} from '../state/Player'
-import {setStepMove} from '../moves/SetStep'
+import { MIN_DWARVES_PER_TAVERN, TAVERN_COUNT } from './constants'
+import { getCardsInTavern } from './location.utils'
+import { InTavern, LocatedCard } from '../state/LocatedCard'
+import { isLocatedCard } from './player.utils'
+import { Player, PlayerId } from '../state/Player'
+import { setStepMove } from '../moves/SetStep'
 import MoveView from '../moves/MoveView'
 import Move from '../moves/Move'
-import {isAge1, isEndOfAge, isEndOfGame} from './age.utils'
+import { isAge1, isEndOfAge, isEndOfGame } from './age.utils'
+import { getPlayerWithMajority } from './distinction.utils'
+import { Distinctions } from '../cards/Distinctions'
 
 export const getCardByTavern = (players: (Player | PlayerId)[]) => Math.max(MIN_DWARVES_PER_TAVERN, players.length)
 
@@ -21,7 +23,9 @@ export const getCurrentTavernCards = (state: GameState | GameView): LocatedCard[
 
 export const mayGoToNextTavern = (game: GameState | GameView): (Move | MoveView)[] => {
   if (isEndOfAge(game) && isAge1(game)) {
-    return [setStepMove(Step.TroopEvaluation)]
+    if (game.distinctions.some((d) => getPlayerWithMajority(game, Distinctions[d.id].majorityOf))) {
+      return [setStepMove(Step.TroopEvaluation)]
+    }
   }
 
   if (isEndOfAge(game) || isEndOfGame(game)) {

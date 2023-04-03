@@ -49,7 +49,7 @@ class GemTradeRules extends NidavellirRules {
       return moveGemMove(gemByPlayer[players[index]].id, {
         type: LocationType.PlayerBoard,
         player: newPlayer
-      })
+      }, newPlayer)
     })
   }
 
@@ -74,10 +74,7 @@ class GemTradeRules extends NidavellirRules {
 
     // for each tie, order coins by value (to exchange it)
     const orderedCoinsByGemValues = mapValues(trading, (values) => {
-      return orderBy(values, (v) => {
-        console.log(v, (v.location as OnPlayerBoard), gems, trading, gems[(v.location as OnPlayerBoard).player])
-        return Gems[gems[(v.location as OnPlayerBoard).player].id].value
-      })
+      return orderBy(values, (v) => Gems[gems[(v.location as OnPlayerBoard).player].id].value)
     })
 
     const moves = []
@@ -85,7 +82,6 @@ class GemTradeRules extends NidavellirRules {
     for (const key of keys) {
       // If there is a tie (more than one player with same coin value
       if (orderedCoinsByGemValues[key].length > 1) {
-        console.log('Treade a gem')
         moves.push(...this.getGemExchangesMoves(orderedCoinsByGemValues[key], gems))
       }
     }
@@ -94,7 +90,6 @@ class GemTradeRules extends NidavellirRules {
   }
 
   onMoveGem(move: MoveGem): (Move | MoveView)[] {
-    console.log('Move a gem')
     const gem = this.game.gems.find((g) => isOnPlayerBoard(g.location) && g.id === move.id)
 
     if (!gem) {
@@ -102,7 +97,7 @@ class GemTradeRules extends NidavellirRules {
     }
 
     const playersById = keyBy(this.game.players, (p) => p.id)
-    const player = playersById[(gem.location as OnPlayerBoard).player]
+    const player = playersById[move.player]
     player.traded = true
     gem.location = move.target
 
@@ -118,7 +113,6 @@ class GemTradeRules extends NidavellirRules {
           trade.every((c) => playersById[(c.location as OnPlayerBoard).player].traded)
       )
     ) {
-      console.log('May go the the next tavern')
       return mayGoToNextTavern(this.game)
     }
 

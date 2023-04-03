@@ -1,7 +1,7 @@
-import {AgeRules} from './AgeRules'
-import {isAge2, isEndOfAge, isEndOfGame} from '../utils/age.utils'
-import {setStepMove} from '../moves/SetStep'
-import {Step} from '../state/GameState'
+import { AgeRules } from './AgeRules'
+import { isAge2, isEndOfAge, isEndOfGame } from '../utils/age.utils'
+import { setStepMove } from '../moves/SetStep'
+import { Step } from '../state/GameState'
 import MoveView from '../moves/MoveView'
 import Move from '../moves/Move'
 
@@ -12,7 +12,7 @@ class Age2Rules extends AgeRules {
       return [setStepMove(Step.Scoring)]
     }
 
-    return []
+    return super.getAutomaticMoves()
   }
 
   onPass(): (Move | MoveView)[] {
@@ -20,4 +20,4 @@ class Age2Rules extends AgeRules {
   }
 }
 
-export {Age2Rules}
+export { Age2Rules }
