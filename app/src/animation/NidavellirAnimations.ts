@@ -32,14 +32,14 @@ export default class NidavellirAnimations extends Animations<GameState | GameVie
         }
         return 1.5
       case MoveType.MoveDistinction:
-        return 1
+        return 1.5
       case MoveType.MoveHero:
-        return 1
+        return 1.5
       case MoveType.MoveGem:
         if (isInDiscard(move.target)) {
           return 0
         }
-        return 1
+        return 1.5
       default:
         return 0
     }

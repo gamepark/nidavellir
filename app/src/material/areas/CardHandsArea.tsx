@@ -14,24 +14,24 @@ type CardHandsAreaProps = {
 };
 
 const CardHandsArea: FC<CardHandsAreaProps> = (props) => {
-  const {game} = props
+  const { game } = props
   const playerPositions = usePlayerPositions()
   const cardDeckSize = useCardDecksSize(game.cards)
   const playerWithHand = entries(cardDeckSize[LocationType.PlayerHand] as object)
   return (
     <>
-      {playerWithHand.map((e) => (
-        <CardHandArea key={`hand-${e[0]}`} handSize={e[1]} player={+e[0]}
-                      css={playerHand(e[0], e[1] as number, playerPositions)}/>
-      ))}
+      { playerWithHand.map((e) => (
+        <CardHandArea key={ `hand-${ e[0] }` } handSize={ e[1] } player={ +e[0] }
+                      css={ playerHand(e[0], playerPositions) }/>
+      )) }
     </>
   )
 }
-const playerHand = (playerId: string, deckSize: number, playerPositions: any) => {
+const playerHand = (playerId: string, playerPositions: any) => {
   const position = playerBoardPositions[playerPositions[playerId]]
   return css`
-    transform: translate3d(${getCardPositionInHandX(position, deckSize, 0) - 2}em,
-    ${getCardPositionInHandY(position) - 10}em,
+    transform: translate3d(${ getCardPositionInHandX(position, 0) - 2 }em,
+    ${ getCardPositionInHandY(position) - 10 }em,
     90em);
   `
 }

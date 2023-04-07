@@ -8,6 +8,7 @@ import { MoveCoin } from '@gamepark/nidavellir/moves/MoveCoin'
 import GameView from '@gamepark/nidavellir/state/view/GameView'
 import { isThisCoin } from '@gamepark/nidavellir/utils/coin.utils'
 import { tavernHeight, tavernWidth } from '../material/Styles'
+import { useTranslation } from 'react-i18next'
 
 type BidRevelationAnimationProps = {
   animation: Animation<MoveCoin>;
@@ -15,7 +16,8 @@ type BidRevelationAnimationProps = {
 };
 
 const BidRevelationAnimation: FC<BidRevelationAnimationProps> = (props) => {
-  const {game, animation} = props
+  const { game, animation } = props
+  const { t } = useTranslation()
   const coin = game.coins.find((c) => isThisCoin(c, animation.move))!
 
   if (animation.move.target || !animation.move.reveal) {
@@ -25,14 +27,14 @@ const BidRevelationAnimation: FC<BidRevelationAnimationProps> = (props) => {
   const currentTavern = game.tavern
 
   return (
-    <div css={animationStyle}>
-      <div css={header}>
-        <span>Player has bid</span>
+    <div css={ animationStyle }>
+      <div css={ header }>
+        <span>{ t('player.animation.bid') }</span>
       </div>
-      <div css={content}>
-        <Tavern tavern={currentTavern} css={tavernAnimation}/>
-        <span css={arrow}>&gt;</span>
-        <CoinToken coin={coin} css={coinStyle}/>
+      <div css={ content }>
+        <Tavern tavern={ currentTavern } css={ tavernAnimation }/>
+        <span css={ arrow }>&gt;</span>
+        <CoinToken coin={ coin } css={ coinStyle }/>
       </div>
 
 
@@ -81,8 +83,8 @@ const tavernAnimation = css`
   position: relative;
   top: unset;
   left: unset;
-  height: ${tavernHeight * 0.3}em;
-  width: ${tavernWidth * 0.3}em;
+  height: ${ tavernHeight * 0.3 }em;
+  width: ${ tavernWidth * 0.3 }em;
 `
 
 const arrow = css`

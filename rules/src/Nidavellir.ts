@@ -169,6 +169,8 @@ export default class Nidavellir
 
     if (move.age) {
       card.age = move.age
+    } else if (card.id !== undefined) {
+      card.age = Cards[card.id].age
     }
 
     if (isInArmy(card.location) && isInDiscard(move.target)) {
@@ -210,6 +212,11 @@ export default class Nidavellir
 
     if (move.hide) {
       coin.hidden = true
+
+      // Not a perfect solution but needed to avoid issues on reload
+      if (move.target && (move.target as any).player !== undefined && isView(this.game) && this.game.playerId !== (move.target as any).player) {
+        delete coin.id
+      }
     }
 
     if (move.target) {
@@ -263,7 +270,7 @@ export default class Nidavellir
   getView(playerId?: PlayerId | undefined): GameView {
     // Cards will be hidden when in the age deck
     const ageCardWithoutSecret: SecretCard[] = this.game.cards.map((c) => {
-      const hideSecret = isInAgeDeck(c.location)
+      const hideSecret = isInAgeDeck(c.location) || (isInPlayerHand(c.location) && playerId !== c.location.player)
       return hideSecret ? omit(c, 'id') : c
     })
 
@@ -308,7 +315,9 @@ export default class Nidavellir
       case MoveType.MoveCard:
         const card = this.game.cards.find((c) => c.id === move.id)!
         if (move.reveal) {
-          return { ...move, source: card.location }
+          if (isInPlayerHand(card.location) && card.location.player !== playerId) {
+            return { ...move, source: card.location }
+          }
         }
 
         if (isInTavern(move.target)) {

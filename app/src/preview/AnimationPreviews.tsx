@@ -15,7 +15,7 @@ type AnimationPreviewProps = {
 };
 
 const AnimationPreviews: FC<AnimationPreviewProps> = (props) => {
-  const {player, game, view} = props
+  const { player, game, view } = props
   const me = usePlayerId()
   const playerPanelIndex = game.players.findIndex((p) => p.id === player)!
   const animation = useAnimation()
@@ -28,9 +28,9 @@ const AnimationPreviews: FC<AnimationPreviewProps> = (props) => {
 
   return (
     <div
-      css={[playerAnimationPosition(playerPanelIndex), playerAnimation]}
+      css={ [playerAnimationPosition(playerPanelIndex), playerAnimation] }
     >
-      <AnimationComponent animation={animation} game={game}/>
+      <AnimationComponent animation={ animation } game={ game }/>
     </div>
   )
 }
@@ -39,15 +39,15 @@ const playerAnimationPosition = (index: number) => css`
   position: absolute;
   opacity: 1;
   transition: opacity 0.2s;
-  transform: translate3d(-110%, ${1.5 + index * (1 + playerPanelHeight)}em, 1000em);
+  transform: translate3d(-110%, ${ 1.5 + index * (1 + playerPanelHeight) }em, 1000em);
 `
 
 const playerAnimation = css`
   background-color: #c3ebf1;
   border-radius: 1em;
   border: 0.1em solid black;
-  width: ${playerPanelsWidth}em;
-  height: ${playerPanelHeight}em;
+  width: ${ playerPanelsWidth }em;
+  height: ${ playerPanelHeight }em;
 
   &:after {
     content: '';
