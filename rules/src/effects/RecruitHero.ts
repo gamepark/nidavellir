@@ -1,16 +1,16 @@
 import Move from '../moves/Move'
 import MoveType from '../moves/MoveType'
-import {getNextIndexByType} from '../utils/player.utils'
-import {Heroes, Thrud, Ylud} from '../cards/Heroes'
-import {LocationType} from '../state/Location'
-import {MoveHero, moveHeroMove} from '../moves/MoveHero'
+import { getNextIndexByType } from '../utils/player.utils'
+import { Heroes, Thrud, Ylud } from '../cards/Heroes'
+import { LocationType } from '../state/Location'
+import { MoveHero, moveHeroMove } from '../moves/MoveHero'
 import MoveView from '../moves/MoveView'
-import {EffectType} from './EffectType'
+import { EffectType } from './EffectType'
 import EffectRules from './EffectRules'
-import {applyThrud, computeRecruitHeroCount} from '../utils/hero.utils'
-import {isInHeroDeck} from '../utils/location.utils'
-import {HeroType} from '../cards/Hero'
-import {DWARF_COLUMNS, getCardsInCommandZone} from '../utils/card.utils'
+import { applyThrud, computeRecruitHeroCount } from '../utils/hero.utils'
+import { isInHeroDeck } from '../utils/location.utils'
+import { HeroType } from '../cards/Hero'
+import { DWARF_COLUMNS, getCardsInCommandZone } from '../utils/card.utils'
 import size from 'lodash/size'
 
 export type RecruitHero = {
@@ -65,7 +65,6 @@ class RecruitHeroRules extends EffectRules {
         } else {
           const nextIndex = nextIndexesByType[Heroes[h.id!].type].nextIndex
 
-          // TODO: there is a case where the hero can be placed à several places
           return moveHeroMove(h.id, {
             type: LocationType.Army,
             player: this.player.id,
@@ -119,4 +118,4 @@ class RecruitHeroRules extends EffectRules {
   }
 }
 
-export {RecruitHeroRules}
+export { RecruitHeroRules }

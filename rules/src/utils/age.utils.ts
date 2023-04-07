@@ -1,13 +1,14 @@
-import GameState, {Step} from '../state/GameState'
+import GameState, { Step } from '../state/GameState'
 import GameView from '../state/view/GameView'
-import {getCardByTavern} from './tavern.utils'
-import {TAVERN_COUNT} from './constants'
-import {getCardsInTavern, isInAgeDeck} from './location.utils'
-import {getTavernCoins} from './coin.utils'
+import { getCardByTavern } from './tavern.utils'
+import { TAVERN_COUNT } from './constants'
+import { getCardsInTavern, isInAgeDeck, isOnPlayerBoard } from './location.utils'
+import { getTavernCoins } from './coin.utils'
 import groupBy from 'lodash/groupBy'
-import {OnPlayerBoard} from '../state/CommonLocations'
-import {Coins} from '../coins/Coins'
+import { OnPlayerBoard } from '../state/CommonLocations'
+import { Coins } from '../coins/Coins'
 import pickBy from 'lodash/pickBy'
+import { Gem6, Gems } from '../gems/Gems'
 
 export const isAge1 = (game: GameState | GameView) => {
   const playerCount = game.players.length
@@ -47,7 +48,11 @@ export const drawTavernCards = (state: GameState) => {
 export const getTrades = (state: GameState | GameView) => {
   // Here, the tavern for the gem trade must be the previous one (to get right coins)
   const tavern = state.tavern
-  const tavernCoins = getTavernCoins(state, tavern)
+  const tavernCoins = getTavernCoins(state, tavern).filter((c) => {
+    const playerId = (c.location as OnPlayerBoard).player
+    const gem = state.gems.find((g) => isOnPlayerBoard(g.location) && g.location.player === playerId)!
+    return Gems[gem.id] !== Gem6
+  })
 
   // Group coins by values (to see tie)
   const coinsByValue = groupBy(tavernCoins, (c) => {

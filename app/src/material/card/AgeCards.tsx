@@ -96,7 +96,7 @@ const cardPosition = (
     return `translate3d(
         ${ getCardPositionInTavernX(card.location.index, playerCount) }em,
         ${ getCardPositionInTavernY(card.location.tavern) }em,
-        ${ (card.location.index + 1) * cardWidth }em
+        ${ (card.location.index + 1) * cardWidth * 0 }em
       )
     `
   }
