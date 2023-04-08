@@ -46,7 +46,7 @@ const PlayerBoardColumn: FC<CardColumnProps> = (props) => {
     canDrop,
     drop,
     collect: (monitor) => ({
-      isOver: monitor.isOver(),
+      isOver: monitor.isOver({ shallow: true }),
       isDragging: monitor.getItem() !== null,
       droppable: monitor.canDrop()
     })
@@ -59,13 +59,17 @@ const PlayerBoardColumn: FC<CardColumnProps> = (props) => {
     }
   }
 
+  console.log('COlumn', type)
+  console.log('Is over', isOver)
+  console.log('Droppable', droppable)
+
   return (
     <div
       ref={ ref }
       css={ [
         cardColumn(position, type, color, background),
         isSelectable && (!isDragging || droppable) && selectable,
-        droppable && onTop,
+        droppable && onTop(position, type),
         isOver && droppable && overPlace
       ] }
       onClick={ onClick }
@@ -73,9 +77,13 @@ const PlayerBoardColumn: FC<CardColumnProps> = (props) => {
   )
 }
 
-const onTop = css`
-  transform: translateZ(100em);
-`
+const onTop = (playerIndex: number, type: DwarfType) => {
+  const position = playerBoardPositions[playerIndex]
+
+  return css`
+    transform: translate3d(${ playerBoardColumnLeft(position, type) }em, ${ playerBoardColumnTop(position) }em, 100em);
+  `
+}
 
 const overPlace = css`
   background-color: rgba(255, 255, 255, 1);
@@ -99,8 +107,7 @@ const cardColumn = (playerIndex: number, type: DwarfType, color: string, backgro
     background-color: ${ background };
     border: 0.3em solid ${ color };
     border-radius: 2em;
-    ${ position.left && `left: ${ playerBoardColumnLeft(position, type) }em;` }
-    ${ position.top && `top: ${ playerBoardColumnTop(position) }em;` }
+    transform: translate3d(${ playerBoardColumnLeft(position, type) }em, ${ playerBoardColumnTop(position) }em, 0);
   `
 }
 

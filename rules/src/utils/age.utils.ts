@@ -50,8 +50,8 @@ export const getTrades = (state: GameState | GameView) => {
   const tavern = state.tavern
   const tavernCoins = getTavernCoins(state, tavern).filter((c) => {
     const playerId = (c.location as OnPlayerBoard).player
-    const gem = state.gems.find((g) => isOnPlayerBoard(g.location) && g.location.player === playerId)!
-    return Gems[gem.id] !== Gem6
+    const gem = state.gems.find((g) => isOnPlayerBoard(g.location) && g.location.player === playerId)
+    return !gem || Gems[gem.id] !== Gem6
   })
 
   // Group coins by values (to see tie)

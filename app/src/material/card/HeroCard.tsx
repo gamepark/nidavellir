@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
-import {css} from '@emotion/react'
-import {FC, HTMLAttributes, useState} from 'react'
-import {cardHeight, cardWidth, shineEffect} from '../Styles'
+import { css } from '@emotion/react'
+import { FC, HTMLAttributes, useState } from 'react'
+import { cardHeight, cardWidth, shineEffect } from '../Styles'
 import Images from '../../images/Images'
 import {
   Aegur,
@@ -27,17 +27,17 @@ import {
   Ylud,
   Zoral
 } from '@gamepark/nidavellir/cards/Heroes'
-import {Hero} from '@gamepark/nidavellir/cards/Hero'
-import {Animation, useAnimation, useAnimations, usePlay} from '@gamepark/react-client'
+import { Hero } from '@gamepark/nidavellir/cards/Hero'
+import { Animation, useAnimation, useAnimations, usePlay } from '@gamepark/react-client'
 import MoveType from '@gamepark/nidavellir/moves/MoveType'
-import {MoveHero} from '@gamepark/nidavellir/moves/MoveHero'
+import { MoveHero } from '@gamepark/nidavellir/moves/MoveHero'
 import Move from '@gamepark/nidavellir/moves/Move'
-import {draggableHero, DraggableMaterial} from '../../draggable/DraggableMaterial'
-import {Draggable} from '@gamepark/react-components'
-import {LocatedCard} from '@gamepark/nidavellir/state/LocatedCard'
-import {useProjection} from '../View'
-import {heroRulesDialog, setRulesDialog} from '@gamepark/nidavellir/moves/RulesDialog/RulesDialog'
-import {useLongPress} from 'use-long-press'
+import { draggableHero, DraggableMaterial } from '../../draggable/DraggableMaterial'
+import { Draggable } from '@gamepark/react-components'
+import { LocatedCard } from '@gamepark/nidavellir/state/LocatedCard'
+import { useProjection } from '../View'
+import { heroRulesDialog, setRulesDialog } from '@gamepark/nidavellir/moves/RulesDialog/RulesDialog'
+import { useLongPress } from 'use-long-press'
 
 type HeroCardProps = {
   card: LocatedCard;
@@ -47,9 +47,9 @@ type HeroCardProps = {
 } & HTMLAttributes<HTMLDivElement>;
 
 const HeroCard: FC<HeroCardProps> = (props) => {
-  const {card, moves = [], transform, scale, ...rest} = props
+  const { card, moves = [], transform, scale, ...rest } = props
   const play = usePlay()
-  const animation = useAnimation(({move}) => move.type === MoveType.MoveHero && move.id === card.id)
+  const animation = useAnimation(({ move }) => move.type === MoveType.MoveHero && move.id === card.id)
   const animations = useAnimations()
   const item = draggableHero(card.id)
   const projection = useProjection()
@@ -71,7 +71,7 @@ const HeroCard: FC<HeroCardProps> = (props) => {
       return
     }
 
-    play(setRulesDialog(heroRulesDialog(card)), {local: true})
+    play(setRulesDialog(heroRulesDialog(card)), { local: true })
   }
 
   const detail = Heroes[card.id!]
@@ -88,37 +88,37 @@ const HeroCard: FC<HeroCardProps> = (props) => {
 
   return (
     <Draggable
-      canDrag={isSelectable}
-      type={DraggableMaterial.Hero}
-      item={onDrag}
-      projection={projection}
-      drop={playMove}
-      end={onEnd}
-      preTransform={`${isDragging || animation ? `translateZ(1000em)` : ''} ${transform?.(card) ?? ''}`}
-      css={[heroCard(scale), isSelectable && selectable, animation && transitionFor(animation)]}
-      onClick={onHeroClick}
-      {...longPress()}
-      {...rest}
+      canDrag={ isSelectable }
+      type={ DraggableMaterial.Hero }
+      item={ onDrag }
+      projection={ projection }
+      drop={ playMove }
+      end={ onEnd }
+      preTransform={ `${ isDragging || animation ? `translateZ(1000em)` : '' } ${ transform?.(card) ?? '' }` }
+      css={ [heroCard(scale), isSelectable && selectable, animation && transitionFor(animation)] }
+      onClick={ onHeroClick }
+      { ...longPress() }
+      { ...rest }
     >
-      {<div css={heroCardFace(detail)}/>}
+      { <div css={ heroCardFace(detail) }/> }
     </Draggable>
   )
 }
 
 const transitionFor = (animation: Animation) => css`
   z-index: 100 !important;
-  transition: ${animation.duration}s transform;
+  transition: ${ animation.duration }s transform;
 `
 
 const selectable = css`
   cursor: grab;
-  ${shineEffect}
+  ${ shineEffect }
 `
 
 const heroCard = (scale: number = 1) => css`
   position: absolute;
-  height: ${cardHeight * scale}em;
-  width: ${cardWidth * scale}em;
+  height: ${ cardHeight * scale }em;
+  width: ${ cardWidth * scale }em;
   border-radius: 2.5em;
   cursor: pointer;
 `
@@ -130,10 +130,9 @@ const heroCardFace = (hero: Hero) => css`
   height: 100%;
   width: 100%;
   border-radius: 2.5em;
-  background-image: url(${HeroCardFront.get(hero)!});
+  background-image: url(${ HeroCardFront.get(hero)! });
   background-size: cover;
   cursor: pointer;
-  pointer-events: auto;
   backface-visibility: hidden;
   image-rendering: -webkit-optimize-contrast;
   box-shadow: 0 0 0.7em -0.2em black;
@@ -162,4 +161,4 @@ HeroCardFront.set(Uline, Images.Uline)
 HeroCardFront.set(Ylud, Images.Ylud)
 HeroCardFront.set(Zoral, Images.Zoral)
 
-export {HeroCard}
+export { HeroCard }

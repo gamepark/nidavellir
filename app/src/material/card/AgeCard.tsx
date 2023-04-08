@@ -132,13 +132,13 @@ const getCardAge = (card: SecretCard) => {
 }
 
 const AgeCard: FC<AgeCardProps> = (props) => {
-  const {card, moves = [], transform, scale, ...rest} = props
+  const { card, moves = [], transform, scale, ...rest } = props
   const play = usePlay()
   const detail = card.id !== undefined ? Cards[card.id] : undefined
   const age = getCardAge(card)
   const item = card.id !== undefined ? draggableCard(card.id) : undefined
   const projection = useProjection()
-  const animation = useAnimation(({move}) => move.type === MoveType.MoveCard && isThisCard(card, move))
+  const animation = useAnimation(({ move }) => move.type === MoveType.MoveCard && isThisCard(card, move))
   const animations = useAnimations()
   const [isDragging, setDragging] = useState(false)
 
@@ -158,7 +158,7 @@ const AgeCard: FC<AgeCardProps> = (props) => {
       return
     }
 
-    play(setRulesDialog(ageCardRulesDialog(card)), {local: true})
+    play(setRulesDialog(ageCardRulesDialog(card)), { local: true })
   }
 
   const isSelectable = !animations?.length && !animation && !!moves?.length
@@ -174,43 +174,42 @@ const AgeCard: FC<AgeCardProps> = (props) => {
 
   return (
     <Draggable
-      canDrag={isSelectable}
-      type={DraggableMaterial.Card}
-      item={onDrag}
-      projection={projection}
-      drop={playMove}
-      end={onEnd}
-      preTransform={`${transform?.(card, age) ?? ''} ${animation || isDragging ? `translateZ(1000em)` : ''} ${
+      canDrag={ isSelectable }
+      type={ DraggableMaterial.Card }
+      item={ onDrag }
+      projection={ projection }
+      drop={ playMove }
+      end={ onEnd }
+      preTransform={ `${ transform?.(card, age) ?? '' } ${ animation || isDragging ? `translateZ(1000em)` : '' } ${
         !detail ? `rotateY(180deg)` : ''
-      }`}
-      css={[ageCard(scale), isSelectable && selectable, animation && transitionFor(animation)]}
-      onClick={onCardClick}
-      {...longPress()}
-      {...rest}
+      }` }
+      css={ [ageCard(scale), isSelectable && selectable, animation && transitionFor(animation)] }
+      onClick={ onCardClick }
+      { ...longPress() }
+      { ...rest }
     >
-      {!!detail && <div css={ageCardFace(detail)}/>}
-      <div css={ageCardBack(age)}/>
+      { !!detail && <div css={ ageCardFace(detail) }/> }
+      <div css={ ageCardBack(age) }/>
     </Draggable>
   )
 }
 
 const transitionFor = (animation: Animation) => css`
-  transition: ${animation.duration}s transform;
+  transition: ${ animation.duration }s transform;
 `
 
 const selectable = css`
   cursor: grab;
-  ${shineEffect}
+  ${ shineEffect }
 `
 
 const ageCard = (scale: number = 1) => css`
   position: absolute;
-  height: ${cardHeight * scale}em;
-  width: ${cardWidth * scale}em;
+  height: ${ cardHeight * scale }em;
+  width: ${ cardWidth * scale }em;
   border-radius: 2.5em;
   transform-style: preserve-3d;
   cursor: pointer;
-  pointer-events: all
 `
 
 const ageCardFace = (card: Card) => css`
@@ -220,7 +219,7 @@ const ageCardFace = (card: Card) => css`
   height: 100%;
   width: 100%;
   border-radius: 2.5em;
-  background-image: url(${AgeCardFront.get(card)!});
+  background-image: url(${ AgeCardFront.get(card)! });
   background-size: cover;
   backface-visibility: hidden;;
   image-rendering: -webkit-optimize-contrast;
@@ -235,7 +234,7 @@ const ageCardBack = (age: number = 1) => css`
   width: 100%;
   border-radius: 2.5em;
   background-size: cover;
-  background-image: url(${AgeCardBacks.get(age)!});
+  background-image: url(${ AgeCardBacks.get(age)! });
   transform: rotateY(180deg);
   backface-visibility: hidden;
   box-shadow: 0 0 0.7em -0.2em black;
