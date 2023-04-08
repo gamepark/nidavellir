@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import GameView from '@gamepark/nidavellir/state/view/GameView'
-import { FC } from 'react'
+import { FC, useMemo, useState } from 'react'
 import MoveType from '@gamepark/nidavellir/moves/MoveType'
 import {
   Aegur,
@@ -34,6 +34,7 @@ import { HeroCard } from '../material/card/HeroCard'
 import { Trans } from 'react-i18next'
 import Images from '../images/Images'
 import { BLACKSMITH_COLOR, EXPLORER_COLOR, HUNTER_COLOR, MINER_COLOR, WARRIOR_COLOR } from '../material/Styles'
+import { isInArmy } from '@gamepark/nidavellir/utils/location.utils'
 
 type HeroRulesDialogContentProps = {
   game: GameView;
@@ -44,13 +45,40 @@ type HeroRulesDialogContentProps = {
 const HeroRulesDialogContent: FC<HeroRulesDialogContentProps> = (props) => {
   const { game, rulesDialog, close } = props
   const { hero } = rulesDialog
+  const heroes = useMemo(() => game.heroes.filter((h) => {
+    if (isInArmy(hero.location)) {
+      return isInArmy(h.location) && hero.location.player === h.location.player
+    }
+
+    return h.location.type === hero.location.type
+  }), [hero, game.heroes])
+  const [currentHero, setCurrentHero] = useState(heroes.findIndex((h) => h.id === hero.id))
+  const onNext = () => {
+    if (currentHero === heroes.length - 1) {
+      setCurrentHero(0)
+      return
+    }
+
+    setCurrentHero(currentHero + 1)
+  }
+  const onPrevious = () => {
+    if (currentHero === 0) {
+      setCurrentHero(heroes.length - 1)
+      return
+    }
+
+    setCurrentHero(currentHero - 1)
+  }
+
   return (
     <CardRulesDialogContent
       game={ game }
-      card={ hero }
+      card={ heroes[currentHero] }
       close={ close }
       moveTypes={ [MoveType.MoveHero] }
-      cardRules={ getCardRules(hero.id) }
+      cardRules={ getCardRules(heroes[currentHero].id) }
+      onNext={ heroes.length > 1 ? onNext : undefined }
+      onPrevious={ heroes.length > 1 ? onPrevious : undefined }
       CardComponent={ HeroCard }
     />
   )
