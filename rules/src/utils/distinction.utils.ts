@@ -17,10 +17,6 @@ export const getPlayersWithMajority = (state: GameState | GameView, type: DwarfT
       sum(army.cards.map((c) => Cards[c.id!].grades?.[type]?.length ?? 0)) +
       sum(army.heroes.map((c) => Heroes[c.id!].grades?.[type]?.length ?? 0))
 
-    if (ranks === 0) {
-      continue
-    }
-
     if (ranks > majority) {
       majority = ranks
       playersWithMajority = [player.id]
