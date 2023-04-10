@@ -87,8 +87,11 @@ export const getDwergBrothersScore = (cards: LocatedCard[]) => {
     [DwergAesir, DwergSigmir, DwergJungir, DwergYmir, DwergBergelmir].some((h) => h === Heroes[c.id!])
   )
 
-  const browerCount = dwergBrothers.length === 0 ? 0 : dwergBrothers.length - 1
-  return [13, 40, 81, 108, 135][browerCount]
+  if (!dwergBrothers.length) {
+    return 0
+  }
+
+  return [13, 40, 81, 108, 135][dwergBrothers.length - 1]
 }
 
 export const getGoldCoinsScore = (game: GameState | GameView, playerId: PlayerId) => {
