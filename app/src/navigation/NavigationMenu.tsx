@@ -30,7 +30,7 @@ const NavigationIcons = {
 const NavigationMenu: FC<NavigationMenuProps> = (props) => {
   const { game, view, changeView, scoreDisplayed, setDisplayScore } = props
 
-  const views = useViews()
+  const views = useViews(game.players)
   const { t } = useTranslation()
   const playerId = usePlayerId()
   const play = usePlay()

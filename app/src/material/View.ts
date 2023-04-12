@@ -31,17 +31,24 @@ export const viewProjection = (monitor: DragLayerMonitor, view?: View) => {
   return { x, y }
 }
 
-export const useViews = (): View[] => {
+export const useViews = (players: Player[]): View[] => {
+  const displayedPlayers = useDisplayedPlayers(players)
   const { t } = useTranslation()
   return useMemo(
     () => [
       { type: ViewType.GLOBAL, label: t('menu.global', 'Global'), scale: BASE_SCALE },
       { type: ViewType.TAVERNS, label: t('menu.tavern', 'Tavern'), scale: 0.8 },
       { type: ViewType.HEROES, label: t('menu.heroes', 'Heroes'), scale: 0.8 },
-      { type: ViewType.TREASURE, label: t('menu.treasure', 'Treasure'), scale: 0.8 }
+      { type: ViewType.TREASURE, label: t('menu.treasure', 'Treasure'), scale: 0.8 },
+      ...displayedPlayers.map((k) => ({
+        type: ViewType.PLAYER,
+        player: k,
+        label: '',
+        scale: 0.78
+      }))
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [displayedPlayers]
   )
 }
 

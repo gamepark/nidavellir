@@ -28,7 +28,7 @@ type Props = {
 };
 
 export default function GameDisplay({ game }: Props) {
-  const views = useViews()
+  const views = useViews(game.players)
   const [view, setView] = useState<View>(views.find((v) => v.type === ViewType.GLOBAL)!)
   const [scoreDisplayed, setDisplayScore] = useState(false)
   const placements = usePlacements(game.players)
