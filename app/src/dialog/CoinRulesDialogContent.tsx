@@ -42,11 +42,11 @@ const CoinRulesDialogContent: FC<CoinRulesDialogContentProps> = (props) => {
   )
   const legalMoves = useLegalMoves(
     game,
-    playerId,
     [MoveType.MoveCoin, MoveType.TransformCoin, MoveType.TradeCoins],
+    playerId,
     predicate
   )
-  const player = game.players.find((p) => p.id === playerId)!
+  const player = game.players.find((p) => p.id === playerId)
   const rules = getCoinRules(game, coin, player)
 
   const hasActions = !!legalMoves.length
@@ -183,8 +183,8 @@ const getSpecialCoinDescription = (coin: SecretCoin): any[] => {
   return []
 }
 
-const getCoinRules = (game: GameView, coin: SecretCoin, player: Player): RuleDetail | undefined => {
-  if (player.effects?.length && (coin.location as any)?.player === player.id) {
+const getCoinRules = (game: GameView, coin: SecretCoin, player?: Player): RuleDetail | undefined => {
+  if (player && player.effects?.length && (coin.location as any)?.player === player.id) {
     const rule = getCoinEffectRules(game, coin, player.effects[0])
     if (rule) {
       return rule
@@ -199,7 +199,7 @@ const getCoinRules = (game: GameView, coin: SecretCoin, player: Player): RuleDet
         description: [<Trans defaults="coin.rules.desc.treasure" components={ [<strong/>] }/>, ...specialEffect]
       }
     case LocationType.PlayerHand:
-      const ylud = hasHero(game, player.id, Ylud)
+      const ylud = hasHero(game, coin.location.player, Ylud)
       return {
         header: <Trans defaults={ 'coin.rules.header.hand' }/>,
         description: [

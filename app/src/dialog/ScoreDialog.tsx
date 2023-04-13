@@ -20,6 +20,7 @@ import {
   getWarriorScore
 } from '@gamepark/nidavellir/utils/score.utils'
 import { Step } from '@gamepark/nidavellir/state/GameState'
+import { getPlayerName } from '../hook/player.hook'
 
 type ScoreDialogProps = {
   game: GameView;
@@ -44,7 +45,7 @@ const ScoreDialog: FC<ScoreDialogProps> = (props) => {
         <tr>
           <th css={ itemType }></th>
           { players.map((p) => (
-            <th css={ [playerName, playerColumn] }><span>{ p.name ?? t('player.name', { player: p.id }) }</span></th>
+            <th css={ [playerName, playerColumn] }><span>{ getPlayerName(t, p.id, p.name) }</span></th>
           )) }
         </tr>
         </thead>

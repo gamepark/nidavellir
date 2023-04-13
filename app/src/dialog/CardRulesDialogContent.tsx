@@ -35,7 +35,7 @@ const CardRulesDialogContent: FC<CardRulesDialogContentProps> = (props) => {
     (move: any) => (move.id !== undefined ? card.id === move.id : isSameCardLocation(card.location, move.source)),
     [card]
   )
-  const legalMoves = useLegalMoves(game, playerId, moveTypes, predicate)
+  const legalMoves = useLegalMoves(game, moveTypes, playerId, predicate)
 
   const hasActions = !!legalMoves.length
   return (

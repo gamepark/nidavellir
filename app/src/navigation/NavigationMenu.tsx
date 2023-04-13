@@ -34,7 +34,7 @@ const NavigationMenu: FC<NavigationMenuProps> = (props) => {
   const { t } = useTranslation()
   const playerId = usePlayerId()
   const play = usePlay()
-  const legalMoves = useLegalMoves(game, playerId, [MoveType.Pass])
+  const legalMoves = useLegalMoves(game, [MoveType.Pass], playerId)
   const canPass = legalMoves.length === 1
 
   const pass = () => {

@@ -45,7 +45,7 @@ const AgeCards: FC<AgeCardsProps> = (props) => {
   const { game } = props
   const playerId = usePlayerId()
   const playerPositions = usePlayerPositions()
-  const moves = useLegalMoves<MoveCard>(game, playerId, [MoveType.MoveCard])
+  const moves = useLegalMoves<MoveCard>(game, [MoveType.MoveCard], playerId)
   const getCardMoves = useCallback(
     (c: SecretCard) =>
       moves.filter((m) => (c.id !== undefined ? m.id === c.id : isSameCardLocation(m.source!, c.location))),
