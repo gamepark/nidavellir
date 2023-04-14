@@ -54,7 +54,6 @@ class TroopEvaluationRules extends NidavellirRules {
           const wonDistinctions = distinctionByPlayers[p.id] ?? []
           const commandZoneCards = getCardsInCommandZone(this.game, p.id)
 
-          console.log('Win distinction', p.id, wonDistinctions)
           return wonDistinctions.flatMap((d, index) => {
             const moveDistinction = moveDistinctionMove(d.id, {
               type: LocationType.CommandZone,
@@ -124,7 +123,6 @@ class TroopEvaluationRules extends NidavellirRules {
   }
 
   private onMoveDistinction(move: MoveDistinction) {
-    console.log(isView(this.game), move, 'move distinction')
     const remainingMoves = this.getWonDistinctions()
     const distinction = this.game.distinctions.find((d) => d.id === move.id)!
     const distinctionCard = Distinctions[distinction.id]

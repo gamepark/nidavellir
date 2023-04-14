@@ -33,8 +33,6 @@ const ScoreDialog: FC<ScoreDialogProps> = (props) => {
   const { t } = useTranslation()
   useKeyDown('Escape', close)
 
-  console.log('Is VIew ? ', game.view)
-
   return (
     <Dialog css={ [largeDialogCss, modalStyle] } onBackdropClick={ close } open
             transitionDelay={ 0 }>

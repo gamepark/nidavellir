@@ -99,7 +99,7 @@ export default class Nidavellir
       if (this.game.step === Step.TroopEvaluation) {
         return [...delegates, new TroopEvaluationRules(this.game)]
       }
-      
+
       return delegates
     }
 
@@ -208,7 +208,6 @@ export default class Nidavellir
       }
     )
     if (!coin) {
-      console.log(move)
       throw new Error(`Trying to move a coin that does not exists: ${ JSON.stringify(move) }`)
     }
 
