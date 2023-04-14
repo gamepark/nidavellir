@@ -1,13 +1,13 @@
 import EffectRules from './EffectRules'
-import {EffectType} from './EffectType'
+import { EffectType } from './EffectType'
 import Move from '../moves/Move'
 import MoveView from '../moves/MoveView'
-import {getChooseCardMove, onChooseCard} from '../utils/card.utils'
-import {LocationType} from '../state/Location'
-import {MoveCard, moveKnownCardMove} from '../moves/MoveCard'
+import { getChooseCardMove, onChooseCard } from '../utils/card.utils'
+import { LocationType } from '../state/Location'
+import { MoveCard, moveKnownCardMove } from '../moves/MoveCard'
 import MoveType from '../moves/MoveType'
-import {isInAge2Deck, isInPlayerHand} from '../utils/location.utils'
-import {Cards} from '../cards/Cards'
+import { isInAge2Deck, isInPlayerHand } from '../utils/location.utils'
+import { Cards } from '../cards/Cards'
 
 export type DrawCard = {
   type: EffectType.DRAW_CARD;
@@ -64,9 +64,15 @@ export class DrawCardRules extends EffectRules {
       (c) => isInPlayerHand(c.location) && c.location.player === this.player.id
     )
 
+    const card = Cards[move.id!]
+
+    // First, card effect
+    if (card.effects?.length) {
+      this.player.effects.push(...JSON.parse(JSON.stringify(card.effects)))
+    }
+
     onChooseCard(this.game, this.player, move.id!, 'age')
     if (cardsInHand.length === this.effect.count - this.effect.keep) {
-      const card = Cards[move.id!]
       const locationType = card.age === 1 ? LocationType.Age1Deck : LocationType.Age2Deck
       const ageDeckLength = this.game.cards.filter((c) => locationType === c.location.type).length
       this.player.effects.shift()

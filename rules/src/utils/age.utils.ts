@@ -27,9 +27,13 @@ export const isEndOfAge = (game: GameState | GameView) => {
 
   const cardInTaverns = getCardsInTavern(game)
   if (playerCount <= 3) {
-    return cardInTaverns.length === 0 && (isAge1(game) ? game.round === 4 : game.round === 8)
-  }
 
+    if (playerCount === 3) {
+      return cardInTaverns.length === 0 && (isAge1(game) ? game.round === 4 : game.round === 8)
+    } else {
+      return cardInTaverns.length <= 1 && (isAge1(game) ? game.round === 4 : game.round === 8)
+    }
+  }
 
   return cardInTaverns.length === 0 && (isAge1(game) ? game.round === 3 : game.round === 6)
 }

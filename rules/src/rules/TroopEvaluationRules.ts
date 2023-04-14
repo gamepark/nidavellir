@@ -1,7 +1,7 @@
 import { NidavellirRules } from './NidavellirRules'
 import Move from '../moves/Move'
 import MoveType from '../moves/MoveType'
-import MoveView from '../moves/MoveView'
+import MoveView, { isView } from '../moves/MoveView'
 import {
   CrownJeweler,
   Distinctions,
@@ -54,6 +54,7 @@ class TroopEvaluationRules extends NidavellirRules {
           const wonDistinctions = distinctionByPlayers[p.id] ?? []
           const commandZoneCards = getCardsInCommandZone(this.game, p.id)
 
+          console.log('Win distinction', p.id, wonDistinctions)
           return wonDistinctions.flatMap((d, index) => {
             const moveDistinction = moveDistinctionMove(d.id, {
               type: LocationType.CommandZone,
@@ -123,15 +124,13 @@ class TroopEvaluationRules extends NidavellirRules {
   }
 
   private onMoveDistinction(move: MoveDistinction) {
+    console.log(isView(this.game), move, 'move distinction')
     const remainingMoves = this.getWonDistinctions()
     const distinction = this.game.distinctions.find((d) => d.id === move.id)!
     const distinctionCard = Distinctions[distinction.id]
     if (distinctionCard.effects) {
       const player = this.game.players.find((p) => p.id === move.player)!
-
-      if (distinctionCard.effects) {
-        player.effects.push(...distinctionCard.effects)
-      }
+      player.effects.push(...distinctionCard.effects)
       delete player.ready
     }
 

@@ -1,4 +1,6 @@
 import Move from './Move'
-type MoveRandomized = Move;
+import { ShuffleCoins, ShuffleCoinsRandomized } from './ShuffleCoins'
 
-export default MoveRandomized;
+type MoveRandomized = Exclude<Move, ShuffleCoins> | ShuffleCoinsRandomized;
+
+export default MoveRandomized

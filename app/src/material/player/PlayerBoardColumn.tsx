@@ -59,10 +59,6 @@ const PlayerBoardColumn: FC<CardColumnProps> = (props) => {
     }
   }
 
-  console.log('COlumn', type)
-  console.log('Is over', isOver)
-  console.log('Droppable', droppable)
-
   return (
     <div
       ref={ ref }

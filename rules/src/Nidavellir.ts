@@ -34,9 +34,11 @@ import { ScoringRules } from './rules/ScoringRules'
 import { isAge1, isEndOfGame } from './utils/age.utils'
 import { Age1Rules } from './rules/Age1Rules'
 import { Age2Rules } from './rules/Age2Rules'
-import { ShuffleCoins } from './moves/ShuffleCoins'
+import { ShuffleCoinsRandomized } from './moves/ShuffleCoins'
 import { getActivePlayer } from './utils/player.utils'
 import { Cards } from './cards/Cards'
+import shuffle from 'lodash/shuffle'
+import { TroopEvaluationRules } from './rules/TroopEvaluationRules'
 
 export default class Nidavellir
   extends Rules<GameState | GameView, Move | MoveView, PlayerId>
@@ -70,11 +72,17 @@ export default class Nidavellir
   }
 
   randomize(move: Move): Move & MoveRandomized {
+    if (move.type === MoveType.ShuffleCoins) {
+      return ({
+        ...move,
+        shuffledCoins: shuffle(move.coins)
+      })
+    }
+
     return move
   }
 
   isOver(): boolean {
-    // FIXME: rules seems to not use delegate here ?
     return isEndOfGame(this.game)
   }
 
@@ -88,6 +96,10 @@ export default class Nidavellir
       .map((p) => new EffectsRules[p.effects[0].type](this.game, p))
 
     if (delegates.length) {
+      if (this.game.step === Step.TroopEvaluation) {
+        return [...delegates, new TroopEvaluationRules(this.game)]
+      }
+      
       return delegates
     }
 
@@ -103,7 +115,7 @@ export default class Nidavellir
    *
    * @param move The move that should be applied to current state.
    */
-  play(move: Move | MoveView) {
+  play(move: MoveRandomized) {
     switch (move.type) {
       case MoveType.MoveCard:
         this.onMoveCard(move)
@@ -134,19 +146,15 @@ export default class Nidavellir
     return super.play(move)
   }
 
-  private onShuffleCoins(move: ShuffleCoins) {
-    // Randomizing the new indexes for the coins since order must be hidden to the player
-    // TODO: move to MoveRandomized
-    // TODO: here, remove the randomization and only swap coins in the list to prevent coin index switching
-    //const indexes = shuffle(Array.from(Array(move.coins.length)).map((_, index) => index));
-    const indexes = Array.from(Array(move.coins.length)).map((_, index) => index)
-    move.coins.forEach((c, index) => {
-      const coin = this.game.coins.find((coin) => coin.id === c)!
-      if (isView(this.game) && isInPlayerHand(coin.location)) {
-        if (this.game.playerId !== coin.location.player) {
-          coin.location.index = indexes[index]
-          delete coin.id
-        }
+  private onShuffleCoins(move: ShuffleCoinsRandomized) {
+    const indexes = move.coins.map((c) => this.game.coins.findIndex((coin) => coin.id === c))
+    const shuffledCoins = move.shuffledCoins.map((c) => this.game.coins.find((coin) => coin.id === c)!.location)
+    indexes.forEach((indexToMove, index) => {
+      const location = shuffledCoins[index]
+      if (!isView(this.game)) {
+        this.game.coins[indexToMove].location = location
+      } else if (isInPlayerHand(location) && location.player !== this.game.playerId) {
+        delete this.game.coins[indexToMove].id
       }
     })
   }
@@ -195,10 +203,12 @@ export default class Nidavellir
       throw new Error(`Trying to move a coin but neither source or id are set`)
     }
 
-    const coin = this.game.coins.find((c) =>
-      c.id !== undefined && move.id !== undefined ? move.id === c.id : isSameCoinLocation(move.source!, c.location)
+    const coin = this.game.coins.find((c) => {
+        return c.id !== undefined && move.id !== undefined ? move.id === c.id : isSameCoinLocation(move.source!, c.location)
+      }
     )
     if (!coin) {
+      console.log(move)
       throw new Error(`Trying to move a coin that does not exists: ${ JSON.stringify(move) }`)
     }
 
@@ -353,7 +363,9 @@ export default class Nidavellir
         }
       }
       case MoveType.MoveCoin:
-        const coin = this.game.coins.find((c) => c.id === move.id)!
+        const coin = this.game.coins.find((c) => {
+          return c.id === move.id
+        })!
         if (move.target) {
           if (isInPlayerHand(move.target)) {
             if (playerId === move.target.player) {
