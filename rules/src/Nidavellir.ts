@@ -394,6 +394,10 @@ export default class Nidavellir
             if (playerId === move.target.player || !coin.hidden) {
               return move
             } else {
+              if (move.reveal) {
+                return { ...move, source: coin.location }
+              }
+              
               return { ...omit(move, 'id'), source: coin.location }
             }
           }
