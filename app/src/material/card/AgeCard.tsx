@@ -109,7 +109,6 @@ import { draggableCard, DraggableMaterial } from '../../draggable/DraggableMater
 import { useProjection } from '../View'
 import Move from '@gamepark/nidavellir/moves/Move'
 import { ageCardRulesDialog, setRulesDialog } from '@gamepark/nidavellir/moves/RulesDialog/RulesDialog'
-import { useLongPress } from 'use-long-press'
 import { isThisCard } from '@gamepark/nidavellir/utils/card.utils'
 
 type AgeCardProps = {
@@ -142,7 +141,6 @@ const AgeCard: FC<AgeCardProps> = (props) => {
   const animations = useAnimations()
   const [isDragging, setDragging] = useState(false)
 
-  const longPress = useLongPress(() => (!isDragging ? playMove(moves[0]) : undefined))
   const playMove = (move: Move) => {
     if (move) {
       play(move)
@@ -185,7 +183,6 @@ const AgeCard: FC<AgeCardProps> = (props) => {
       }` }
       css={ [ageCard(scale), isSelectable && selectable, animation && transitionFor(animation)] }
       onClick={ onCardClick }
-      { ...longPress() }
       { ...rest }
     >
       { !!detail && <div css={ ageCardFace(detail) }/> }
