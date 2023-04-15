@@ -1,7 +1,7 @@
 import { NidavellirRules } from './NidavellirRules'
 import Move from '../moves/Move'
 import MoveType from '../moves/MoveType'
-import MoveView, { isView } from '../moves/MoveView'
+import MoveView from '../moves/MoveView'
 import {
   CrownJeweler,
   Distinctions,

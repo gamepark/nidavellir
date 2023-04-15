@@ -1,4 +1,4 @@
-import { RandomMove, Rules, SecretInformation, Undo } from '@gamepark/rules-api'
+import { Action, RandomMove, Rules, SecretInformation, Undo } from '@gamepark/rules-api'
 import GameState, { Step } from './state/GameState'
 import GameView from './state/view/GameView'
 import { isGameOptions, NidavellirOptions } from './NidavellirOptions'
@@ -39,6 +39,7 @@ import { getActivePlayer } from './utils/player.utils'
 import { Cards } from './cards/Cards'
 import shuffle from 'lodash/shuffle'
 import { TroopEvaluationRules } from './rules/TroopEvaluationRules'
+import { LocationType } from './state/Location'
 
 export default class Nidavellir
   extends Rules<GameState | GameView, Move | MoveView, PlayerId>
@@ -67,7 +68,22 @@ export default class Nidavellir
     }
   }
 
-  canUndo(): boolean {
+  canUndo(action: Action<Move, PlayerId>, consecutiveActions: Action<Move, PlayerId>[]): boolean {
+    return action.move.type !== MoveType.Pass
+      && this.isCancellable(action.move)
+      && action.consequences.every((move) => this.isCancellable(move))
+      && !consecutiveActions.length
+  }
+
+  isCancellable(move: Move): boolean {
+    if (move.type === MoveType.MoveCoin) {
+      return !move.reveal
+    }
+
+    if (move.type === MoveType.MoveCard) {
+      return move.target.type !== LocationType.Age1Deck && move.target.type !== LocationType.Age2Deck
+    }
+
     return true
   }
 
