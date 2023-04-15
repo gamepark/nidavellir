@@ -1,6 +1,6 @@
 {
   "name": "@gamepark/nidavellir",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Nidavellir rules for Game Park",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
