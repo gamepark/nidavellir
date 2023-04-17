@@ -6,14 +6,16 @@ import { isEndOfGame } from '@gamepark/nidavellir/utils/age.utils'
 import maxBy from 'lodash/maxBy'
 import { Step } from '@gamepark/nidavellir/state/GameState'
 import { Player, PlayerId } from '@gamepark/nidavellir/state/Player'
-import { hasHero } from '@gamepark/nidavellir/utils/hero.utils'
+import { getPlayerWithHero, hasHero } from '@gamepark/nidavellir/utils/hero.utils'
 import { Heroes, Uline } from '@gamepark/nidavellir/cards/Heroes'
 import {
   isInArmy,
   isInCommandZone,
   isInDiscard,
   isInPlayerHand,
-  isOnPlayerBoard, isSameCoinLocation
+  isInTreasure,
+  isOnPlayerBoard,
+  isSameCoinLocation
 } from '@gamepark/nidavellir/utils/location.utils'
 import { TFunction } from 'i18next'
 import { getActivePlayer } from '@gamepark/nidavellir/utils/player.utils'
@@ -31,6 +33,7 @@ import { CARD_RULES } from './dialog/AgeCardRulesDialogContent'
 import { Cards } from '@gamepark/nidavellir/cards/Cards'
 import { RoyalOffering } from '@gamepark/nidavellir/cards/Card'
 import { HERO_RULES } from './dialog/HeroRulesDialogContent'
+import { getPlayerCoinForTavern } from '@gamepark/nidavellir/utils/coin.utils'
 
 type Props = {
   loading: boolean;
@@ -39,7 +42,7 @@ type Props = {
 
 const isDescribedAnimation = (a: Animation<Move | MoveView, PlayerId>) => {
   const move = a.move
-  return !a.action.cancelled && ((move.type === MoveType.MoveCoin && (!move.target || (!isInPlayerHand(move.target) && move.player !== undefined)))
+  return !a.action.cancelled && ((move.type === MoveType.MoveCoin && (!move.target || isInTreasure(move.target) || (!isInPlayerHand(move.target) && move.player !== undefined)))
     || (move.type === MoveType.MoveCard && (isInArmy(move.target) || isInDiscard(move.target)) && move.player !== undefined)
     || (move.type === MoveType.MoveHero && (isInArmy(move.target) || isInCommandZone(move.target) || isInDiscard(move.target)) && move.player !== undefined)
     || (move.type === MoveType.MoveDistinction && move.player !== undefined))
@@ -112,11 +115,18 @@ const getMoveCoinAnimationText = (t: TFunction, _game: GameView, move: MoveCoin,
         })
       }
 
+      if (move.id !== undefined) {
+        return itsMe ? t('header.me.coin.obtain', { coin: Coins[move.id].value }) : t('header.other.coin.obtain-known', {
+          player: getPlayerName(t, move.player!, playerInfo.name),
+          coin: Coins[move.id].value
+        })
+      }
+
       return itsMe ? t('header.me.coin.obtain') : t('header.other.coin.obtain', { player: getPlayerName(t, move.player!, playerInfo.name) })
 
   }
 
-  return 'Whoops'
+  return
 }
 
 export const getMoveCardAnimationText = (t: TFunction, _game: GameView, move: MoveCard, players: PlayerInfos[], playerId?: PlayerId) => {
@@ -144,7 +154,7 @@ export const getMoveCardAnimationText = (t: TFunction, _game: GameView, move: Mo
       })
   }
 
-  return ''
+  return
 }
 
 export const getMoveHeroAnimationText = (t: TFunction, _game: GameView, move: MoveHero, players: PlayerInfos[], playerId?: PlayerId) => {
@@ -168,14 +178,14 @@ export const getMoveHeroAnimationText = (t: TFunction, _game: GameView, move: Mo
     case LocationType.Army: {
       const hero = Heroes[move.id!]
       const rules = HERO_RULES.get(hero)!()
-      return itsMe ? t('header.me.hero.recruit', { choice: rules.header }) : t('header.other.hero.recruit', {
+      return itsMe ? t('header.me.hero.recruit', { hero: rules.header }) : t('header.other.hero.recruit', {
         hero: rules.header,
         player: getPlayerName(t, move.player!, playerInfo.name)
       })
     }
   }
 
-  return ''
+  return
 }
 
 export const getAnimationText = (t: TFunction, game: GameView, animation: Animation<MoveCoin | MoveHero | MoveDistinction | MoveCard, PlayerId>, players: PlayerInfos[], playerId?: PlayerId) => {
@@ -192,15 +202,35 @@ export const getAnimationText = (t: TFunction, game: GameView, animation: Animat
   }
 
 
-  return 'Whoops Animation'
+  return
+}
+
+export const getBidRevelationText = (t: TFunction, game: GameView, players: PlayerInfos[], playerId?: PlayerId) => {
+  const playerWithUline = getPlayerWithHero(game, Uline)
+  if (playerWithUline) {
+    const itsMe = playerId === playerWithUline.id
+    if (getPlayerCoinForTavern(game, playerWithUline.id, game.tavern) === undefined
+      && game.players.every((p) => p.id === playerWithUline.id || !getPlayerCoinForTavern(game, p.id, game.tavern)!.hidden)) {
+      const playerInfo = players.find((p) => p.id === playerWithUline.id)!
+      return itsMe ? t('header.me.bids.uline') : t('header.other.bids.uline', {
+        player: getPlayerName(t, playerWithUline.id, playerInfo.name)
+      })
+    } else if (!playerWithUline.ready) {
+      return itsMe ? t('header.me.not-ready') : t('header.other.not-ready')
+    }
+  }
+
+  return t('header.bids.revelation', { tavern: t(`tavern.${ game.tavern }.name`) })
 }
 
 export const getHeader = (t: TFunction, game: GameView, players: PlayerInfos[], playerId?: PlayerId) => {
   switch (game.step) {
+    case Step.EnterDwarves:
+      return t('header.turn-preparation')
     case Step.Bids:
       return getBidsText(t, game, players, playerId)
     case Step.BidRevelation:
-      return t('header.bids.revelation', { tavern: t(`tavern.${ game.tavern }.name`) })
+      return getBidRevelationText(t, game, players, playerId)
     case Step.ElvalandTurn:
       return getElvalandTurnText(t, game, players, playerId)
   }
@@ -255,7 +285,7 @@ export const getBidsText = (t: TFunction, game: GameView, _players: PlayerInfos[
         return t('header.me.not-ready')
       }
 
-      return ('header.me.bids')
+      return t('header.me.bids')
     }
   }
 

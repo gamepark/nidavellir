@@ -70,7 +70,7 @@ const CoinRulesDialogContent: FC<CoinRulesDialogContentProps> = (props) => {
           { hasActions && (
             <div css={ movesContainer }>
               <div css={ actionTitle }>
-                <span>{ t('Actions') }</span>
+                <span>{ t('move.actions') }</span>
               </div>
               <div css={ buttonContainer }>
                 { legalMoves.map((m, index) => (
