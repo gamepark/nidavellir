@@ -72,7 +72,7 @@ export default class Nidavellir
     return action.move.type !== MoveType.Pass
       && this.isCancellable(action.move)
       && action.consequences.every((move) => this.isCancellable(move))
-      && !consecutiveActions.length
+      && (!consecutiveActions.length || this.game.step === Step.Bids)
   }
 
   isCancellable(move: Move): boolean {
@@ -397,7 +397,7 @@ export default class Nidavellir
               if (move.reveal) {
                 return { ...move, source: coin.location }
               }
-              
+
               return { ...omit(move, 'id'), source: coin.location }
             }
           }

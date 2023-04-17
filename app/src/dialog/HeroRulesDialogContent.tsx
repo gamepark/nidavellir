@@ -84,8 +84,8 @@ const HeroRulesDialogContent: FC<HeroRulesDialogContentProps> = (props) => {
   )
 }
 
-const CARD_RULES = new Map<Hero, (card: Hero) => RuleDetail>()
-CARD_RULES.set(Bonfur, () => ({
+export const HERO_RULES = new Map<Hero, () => RuleDetail>()
+HERO_RULES.set(Bonfur, () => ({
   header: <Trans defaults="hero.rules.header.bonfur" components={ [<strong/>] }/>,
   description: [
     <Trans defaults="hero.rules.desc.bonfur" components={ [<strong/>] }/>,
@@ -93,7 +93,7 @@ CARD_RULES.set(Bonfur, () => ({
     <Trans defaults="age-card.rules.desc.blacksmith" components={ [<strong/>] }/>
   ]
 }))
-CARD_RULES.set(Aegur, () => ({
+HERO_RULES.set(Aegur, () => ({
   header: <Trans defaults="hero.rules.header.aegur" components={ [<strong/>] }/>,
   description: [
     <Trans defaults="hero.rules.desc.aegur" components={ [<strong/>] }/>,
@@ -101,7 +101,7 @@ CARD_RULES.set(Aegur, () => ({
     <Trans defaults="age-card.rules.desc.blacksmith" components={ [<strong/>] }/>
   ]
 }))
-CARD_RULES.set(Dagda, () => ({
+HERO_RULES.set(Dagda, () => ({
   header: <Trans defaults="hero.rules.header.dagda" components={ [<strong/>] }/>,
   description: [
     <Trans defaults="hero.rules.desc.dagda" components={ [<strong/>] }/>,
@@ -109,7 +109,7 @@ CARD_RULES.set(Dagda, () => ({
     <Trans defaults="age-card.rules.desc.hunter" components={ [<strong/>] }/>
   ]
 }))
-CARD_RULES.set(Aral, () => ({
+HERO_RULES.set(Aral, () => ({
   header: <Trans defaults="hero.rules.header.aral" components={ [<strong/>] }/>,
   description: [
     <Trans defaults="hero.rules.desc.aral" components={ [<strong/>] }/>,
@@ -117,7 +117,7 @@ CARD_RULES.set(Aral, () => ({
     <Trans defaults="age-card.rules.desc.hunter" components={ [<strong/>] }/>
   ]
 }))
-CARD_RULES.set(Kraal, () => ({
+HERO_RULES.set(Kraal, () => ({
   header: <Trans defaults="hero.rules.header.kraal" components={ [<strong/>] }/>,
   description: [
     <Trans defaults="hero.rules.desc.kraal" components={ [<strong/>] }/>,
@@ -125,7 +125,7 @@ CARD_RULES.set(Kraal, () => ({
     <Trans defaults="age-card.rules.desc.warrior" components={ [<strong/>] }/>
   ]
 }))
-CARD_RULES.set(Tarah, () => ({
+HERO_RULES.set(Tarah, () => ({
   header: <Trans defaults="hero.rules.header.tarah" components={ [<strong/>] }/>,
   description: [
     <Trans defaults="hero.rules.desc.tarah" components={ [<strong/>] }/>,
@@ -133,7 +133,7 @@ CARD_RULES.set(Tarah, () => ({
     <Trans defaults="age-card.rules.desc.warrior" components={ [<strong/>] }/>
   ]
 }))
-CARD_RULES.set(Lokdur, () => ({
+HERO_RULES.set(Lokdur, () => ({
   header: <Trans defaults="hero.rules.header.lokdur" components={ [<strong/>] }/>,
   description: [
     <Trans defaults="hero.rules.desc.lokdur" components={ [<strong/>] }/>,
@@ -141,7 +141,7 @@ CARD_RULES.set(Lokdur, () => ({
     <Trans defaults="age-card.rules.desc.miner" components={ [<strong/>] }/>
   ]
 }))
-CARD_RULES.set(Zoral, () => ({
+HERO_RULES.set(Zoral, () => ({
   header: <Trans defaults="hero.rules.header.zoral" components={ [<strong/>] }/>,
   description: [
     <Trans defaults="hero.rules.desc.zoral" components={ [<strong/>] }/>,
@@ -149,7 +149,7 @@ CARD_RULES.set(Zoral, () => ({
     <Trans defaults="age-card.rules.desc.miner" components={ [<strong/>] }/>
   ]
 }))
-CARD_RULES.set(Idunn, () => ({
+HERO_RULES.set(Idunn, () => ({
   header: <Trans defaults="hero.rules.header.idunn" components={ [<strong/>] }/>,
   description: [
     <Trans defaults="hero.rules.desc.idunn" components={ [<strong/>] }/>,
@@ -157,7 +157,7 @@ CARD_RULES.set(Idunn, () => ({
     <Trans defaults="age-card.rules.desc.explorer" components={ [<strong/>] }/>
   ]
 }))
-CARD_RULES.set(Hourya, () => ({
+HERO_RULES.set(Hourya, () => ({
   header: <Trans defaults="hero.rules.header.hourya" components={ [<strong/>] }/>,
   description: [
     <Trans defaults="hero.rules.desc.hourya" components={ [<strong/>] }/>,
@@ -165,32 +165,32 @@ CARD_RULES.set(Hourya, () => ({
     <Trans defaults="age-card.rules.desc.explorer" components={ [<strong/>] }/>
   ]
 }))
-CARD_RULES.set(Astrid, () => ({
+HERO_RULES.set(Astrid, () => ({
   header: <Trans defaults="hero.rules.header.astrid" components={ [<strong/>] }/>,
   description: [<Trans defaults="hero.rules.desc.astrid" components={ [<strong/>] }/>]
 }))
-CARD_RULES.set(DwergYmir, () => ({
+HERO_RULES.set(DwergYmir, () => ({
   header: <Trans defaults="hero.rules.header.dwerg-ymir" components={ [<strong/>] }/>,
   description: [<Trans defaults="hero.rules.desc.dwerg" components={ [<strong/>] }/>, <div css={ dwergScoring }/>]
 }))
-CARD_RULES.set(DwergJungir, () => ({
+HERO_RULES.set(DwergJungir, () => ({
   header: <Trans defaults="hero.rules.header.dwerg-jungir" components={ [<strong/>] }/>,
   description: [<Trans defaults="hero.rules.desc.dwerg" components={ [<strong/>] }/>, <div css={ dwergScoring }/>]
 }))
-CARD_RULES.set(DwergAesir, () => ({
+HERO_RULES.set(DwergAesir, () => ({
   header: <Trans defaults="hero.rules.header.dwerg-aesir" components={ [<strong/>] }/>,
   description: [<Trans defaults="hero.rules.desc.dwerg" components={ [<strong/>] }/>, <div css={ dwergScoring }/>]
 }))
-CARD_RULES.set(DwergSigmir, () => ({
+HERO_RULES.set(DwergSigmir, () => ({
   header: <Trans defaults="hero.rules.header.dwerg-sigmir" components={ [<strong/>] }/>,
   description: [<Trans defaults="hero.rules.desc.dwerg" components={ [<strong/>] }/>, <div css={ dwergScoring }/>]
 }))
-CARD_RULES.set(DwergBergelmir, () => ({
+HERO_RULES.set(DwergBergelmir, () => ({
   header: <Trans defaults="hero.rules.header.dwerg-bergelmir" components={ [<strong/>] }/>,
   description: [<Trans defaults="hero.rules.desc.dwerg" components={ [<strong/>] }/>, <div css={ dwergScoring }/>]
 }))
 
-CARD_RULES.set(Ylud, () => ({
+HERO_RULES.set(Ylud, () => ({
   header: <Trans defaults="hero.rules.header.ylud" components={ [<strong/>] }/>,
   description: [
     <Trans
@@ -206,21 +206,21 @@ CARD_RULES.set(Ylud, () => ({
     />
   ]
 }))
-CARD_RULES.set(Thrud, () => ({
+HERO_RULES.set(Thrud, () => ({
   header: <Trans defaults="hero.rules.header.thrud" components={ [<strong/>] }/>,
   description: [<Trans defaults="hero.rules.desc.thrud" components={ [<strong/>] }/>]
 }))
-CARD_RULES.set(Uline, () => ({
+HERO_RULES.set(Uline, () => ({
   header: <Trans defaults="hero.rules.header.uline" components={ [<strong/>] }/>,
   description: [<Trans defaults="hero.rules.desc.uline" components={ [<strong/>] }/>]
 }))
 
-CARD_RULES.set(Skaa, () => ({
+HERO_RULES.set(Skaa, () => ({
   header: <Trans defaults="hero.rules.header.skaa" components={ [<strong/>] }/>,
   description: [<Trans defaults="hero.rules.desc.skaa" components={ [<strong/>] }/>]
 }))
 
-CARD_RULES.set(Grid, () => ({
+HERO_RULES.set(Grid, () => ({
   header: <Trans defaults="hero.rules.header.grid" components={ [<strong/>] }/>,
   description: [<Trans defaults="hero.rules.desc.grid" components={ [<strong/>] } value={ { additionalValue: 7 } }/>]
 }))
@@ -261,7 +261,7 @@ const dwergScoring = css`
 
 const getCardRules = (id: number) => {
   const card = Heroes[id]
-  return CARD_RULES.get(card)!(card)
+  return HERO_RULES.get(card)!()
 }
 
 export { HeroRulesDialogContent }
