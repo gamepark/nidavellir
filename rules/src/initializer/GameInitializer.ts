@@ -21,9 +21,13 @@ import mapValues from 'lodash/mapValues'
 
 class GameInitializer {
   private options: NidavellirOptions
+  private players: { id: number }[]
 
   constructor(options: NidavellirOptions) {
     this.options = options
+    this.players = Array.from(Array(options.players)).map((_, id) => ({
+      id: id + 1
+    }))
   }
 
   private initializeAgeCards = (): LocatedCard[] => {
@@ -31,13 +35,13 @@ class GameInitializer {
     const cards = allCards.filter(
       ([, card]) =>
         card !== BlacksmithDwarfKingsGreatArmorer &&
-        (!card.minPlayers || this.options.players.length >= card.minPlayers)
+        (!card.minPlayers || this.options.players >= card.minPlayers)
     )
 
     const distinctionCard = allCards.find(([, card]) => card === BlacksmithDwarfKingsGreatArmorer)![0]
     const [age1, age2] = partition(shuffle(cards), (c) => c[1].age === 1)
 
-    const cardsByTavern = getCardByTavern(this.options.players.map((p) => p.id))
+    const cardsByTavern = getCardByTavern(this.players.map((p) => p.id))
     const numberOfCard = cardsByTavern * TAVERN_COUNT
     const drawnTavernCard = age1.splice(0, numberOfCard)
     return [
@@ -75,7 +79,7 @@ class GameInitializer {
     const goldCoins = mapValues(groupBy(
       coins.filter(([, coin]) => coin.color === CoinColor.Gold),
       (c) => c[1].value
-    ), (coins, key) => (this.options.players.length <= 3 && [7, 9, 11].includes(+key)) ? [coins[0]] : coins)
+    ), (coins, key) => (this.players.length <= 3 && [7, 9, 11].includes(+key)) ? [coins[0]] : coins)
 
     const baseCoinsByValue: Record<number, any> = groupBy(
       coins.filter(([, coin]) => coin.color === CoinColor.Bronze),
@@ -85,7 +89,7 @@ class GameInitializer {
     const huntingMasterCoin = coins.find(([, coin]) => coin === HuntingMasterCoin)![0]
 
     return [
-      ...this.options.players.flatMap((p, index) => {
+      ...this.players.flatMap((p, index) => {
         return [
           baseCoinsByValue[0][index],
           baseCoinsByValue[2][index],
@@ -117,11 +121,11 @@ class GameInitializer {
     const baseGems = Array.from(Gems.entries())
     const distinctionGem = baseGems.find(([, gem]) => gem === Gem6)!
 
-    const forPlayerGems = baseGems.filter(([, gem]) => gem.value !== 6).slice(-this.options.players.length)
+    const forPlayerGems = baseGems.filter(([, gem]) => gem.value !== 6).slice(-this.players.length)
     const shuffledGems = shuffle(forPlayerGems)
 
     return [
-      ...this.options.players.map((p, index): LocatedGem => {
+      ...this.players.map((p, index): LocatedGem => {
         return {
           id: shuffledGems[index][0],
           location: { type: LocationType.PlayerBoard, player: p.id }
@@ -156,7 +160,7 @@ class GameInitializer {
   }
 
   private initializePlayers = (): Player[] => {
-    return this.options.players.map((p) => ({
+    return this.players.map((p) => ({
       id: p.id,
       effects: []
     }))

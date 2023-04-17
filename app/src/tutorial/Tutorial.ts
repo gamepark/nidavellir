@@ -6,7 +6,7 @@ import { GameInitializer } from '@gamepark/nidavellir/initializer/GameInitialize
 
 const You = 1
 const Opponent = 2
-const state = new GameInitializer({ players: [{ id: You }, { id: Opponent }] }).getState()
+const state = new GameInitializer({ players: 2 }).getState()
 const NidavellirTutorial: TutorialDescription<GameState, Move, PlayerId> = {
 
   setupTutorial: () => {
