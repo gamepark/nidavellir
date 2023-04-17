@@ -1,12 +1,11 @@
-import {EffectType} from './EffectType'
+import { EffectType } from './EffectType'
 import EffectRules from './EffectRules'
 import Move from '../moves/Move'
 import MoveView from '../moves/MoveView'
 import MoveType from '../moves/MoveType'
-import {LocationType} from '../state/Location'
-import {getCoinOnPlayerBoard, isOnPlayerBoard} from '../utils/location.utils'
-import {TAVERN_COUNT} from '../utils/constants'
-import {moveCoinAndRevealMove} from '../moves/MoveCoin'
+import { LocationType } from '../state/Location'
+import { getCoinOnPlayerBoard, isOnPlayerBoard } from '../utils/location.utils'
+import { moveCoinAndHideMove } from '../moves/MoveCoin'
 
 export type UlineEffect = {
   type: EffectType.ULINE;
@@ -21,17 +20,10 @@ class UlineRules extends EffectRules {
     const tavern = this.game.tavern
     const boardCoins = getCoinOnPlayerBoard(this.game, this.player.id)
 
-    if (
-      tavern === TAVERN_COUNT - 1 &&
-      !boardCoins.some((c) => c.hidden && isOnPlayerBoard(c.location) && c.location.index === tavern)
-    ) {
-      return []
-    }
-
     return boardCoins
       .filter((c) => c.hidden && isOnPlayerBoard(c.location) && c.location.index! >= tavern)
       .map((c, index) =>
-        moveCoinAndRevealMove(c.id!, {
+        moveCoinAndHideMove(c.id!, {
           type: LocationType.PlayerHand,
           player: this.player.id,
           index
@@ -57,4 +49,4 @@ class UlineRules extends EffectRules {
   }
 }
 
-export {UlineRules}
+export { UlineRules }

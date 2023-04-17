@@ -1,7 +1,7 @@
 import Move from '../moves/Move'
 import MoveType from '../moves/MoveType'
 import { getNextIndexByType } from '../utils/player.utils'
-import { Heroes, Thrud, Ylud } from '../cards/Heroes'
+import { Heroes, Thrud, Uline, Ylud } from '../cards/Heroes'
 import { LocationType } from '../state/Location'
 import { MoveHero, moveHeroMove } from '../moves/MoveHero'
 import MoveView from '../moves/MoveView'
@@ -12,6 +12,7 @@ import { isInHeroDeck } from '../utils/location.utils'
 import { HeroType } from '../cards/Hero'
 import { DWARF_COLUMNS, getCardsInCommandZone } from '../utils/card.utils'
 import size from 'lodash/size'
+import { UlineRules } from './UlineEffect'
 
 export type RecruitHero = {
   type: EffectType.RECRUIT_HERO;
@@ -110,7 +111,7 @@ class RecruitHeroRules extends EffectRules {
       this.player.effects.shift()
     }
 
-    if (hero.effects?.length) {
+    if (hero.effects?.length && (hero !== Uline || new UlineRules(this.game, this.player).getAutomaticMoves().length)) {
       this.player.effects.unshift(...JSON.parse(JSON.stringify(hero.effects)))
     }
 
