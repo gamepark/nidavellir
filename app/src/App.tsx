@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 import GameView from '@gamepark/nidavellir/state/view/GameView'
-import {FailuresDialog, FullscreenDialog, Menu, useGame} from '@gamepark/react-client'
-import {Header, ImagesLoader, LoadingScreen} from '@gamepark/react-components'
-import {useEffect, useState} from 'react'
-import {DndProvider} from 'react-dnd-multi-backend'
+import { FailuresDialog, FullscreenDialog, Menu, useGame } from '@gamepark/react-client'
+import { Header, ImagesLoader, LoadingScreen } from '@gamepark/react-components'
+import { useEffect, useState } from 'react'
+import { DndProvider } from 'react-dnd-multi-backend'
 import HTML5ToTouch from 'react-dnd-multi-backend/dist/cjs/HTML5toTouch'
 import GameDisplay from './GameDisplay'
 import HeaderText from './HeaderText'
@@ -18,14 +18,15 @@ export default function App() {
   }, [])
   const loading = !game || imagesLoading || isJustDisplayed
   return (
-    <DndProvider options={HTML5ToTouch}>
-      {!loading && <GameDisplay game={game}/>}
-      <LoadingScreen display={loading} author="Someone" artist="Somebody" publisher="Nobody" developer="You"/>
-      <Header><HeaderText loading={loading} game={game}/></Header>
+    <DndProvider options={ HTML5ToTouch }>
+      { !loading && <GameDisplay game={ game }/> }
+      <LoadingScreen display={ loading } author="Serge Laget" artist="Jean-Marie Minguez" publisher="GRRRE Games"
+                     developer="Patrick Beaumé"/>
+      <Header><HeaderText loading={ loading } game={ game }/></Header>
       <Menu/>
       <FailuresDialog/>
       <FullscreenDialog/>
-      <ImagesLoader images={Object.values(Images)} onImagesLoad={() => setImagesLoading(false)}/>
+      <ImagesLoader images={ Object.values(Images) } onImagesLoad={ () => setImagesLoading(false) }/>
     </DndProvider>
   )
 }
