@@ -1,7 +1,7 @@
 import EffectRules from './EffectRules'
 import { EffectType } from './EffectType'
 import Move from '../moves/Move'
-import MoveView, { isView } from '../moves/MoveView'
+import MoveView from '../moves/MoveView'
 import { getChooseCardMove, onChooseCard } from '../utils/card.utils'
 import { LocationType } from '../state/Location'
 import { MoveCard, moveKnownCardMove } from '../moves/MoveCard'
