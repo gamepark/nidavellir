@@ -176,7 +176,6 @@ export default class Nidavellir
   }
 
   private onMoveCard(move: MoveCard & { age?: number }) {
-    console.log(move)
     if (move.id === undefined && move.source === undefined) {
       throw new Error(`It is impossible to move a card that is not known (no id or source set)`)
     }

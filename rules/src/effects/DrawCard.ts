@@ -66,8 +66,6 @@ export class DrawCardRules extends EffectRules {
 
     const card = Cards[move.id!]
 
-    console.log(isView(this.game), move)
-
     // First, card effect
     if (card.effects?.length) {
       this.player.effects.push(...JSON.parse(JSON.stringify(card.effects)))

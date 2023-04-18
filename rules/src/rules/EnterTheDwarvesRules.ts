@@ -30,7 +30,6 @@ class EnterTheDwarvesRules extends NidavellirRules {
       moves.push(...this.moveCoinInPlayerHand())
       moves.push(setStepMove(Step.Bids))
 
-      console.log('Moves', drawnCards, isView(this.game))
       return moves
     }
 

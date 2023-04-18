@@ -87,10 +87,8 @@ const getMoveCoinAnimationText = (t: TFunction, _game: GameView, move: MoveCoin,
   const itsMe = move.player === playerId
   const playerInfo = players.find((p) => p.id === move.player)!
   if (!move.target && move.reveal) {
-    console.log('REVEALING')
     const coin = _game.coins.find((c) => move.id !== undefined ? c.id === move.id : isSameCoinLocation(move.source!, c.location))!
     if (isOnPlayerBoard(coin.location) && (coin.location.index ?? 0) > 2) {
-      console.log('ON PLAYER BOARD')
       return itsMe ? t('header.me.reveal-pouch') : t('header.other.reveal-pouch', {
         player: getPlayerName(t, move.player!, playerInfo.name)
       })

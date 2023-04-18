@@ -17,7 +17,6 @@ const CardHandArea: FC<CardHandAreaProps> = (props) => {
   const { handSize, player, ...rest } = props
   const { t } = useTranslation()
   const animation = useAnimation((a) => {
-    a && console.log('Move', a.move)
     return a.move.type === MoveType.MoveCard &&
       ((a.move.target && isInPlayerHand(a.move.target) && player === a.move.target.player)
         || (a.move.source && isInPlayerHand(a.move.source) && player === a.move.source.player))
