@@ -1,7 +1,7 @@
 import EffectRules from './EffectRules'
 import { EffectType } from './EffectType'
 import Move from '../moves/Move'
-import MoveView from '../moves/MoveView'
+import MoveView, { isView } from '../moves/MoveView'
 import { getChooseCardMove, onChooseCard } from '../utils/card.utils'
 import { LocationType } from '../state/Location'
 import { MoveCard, moveKnownCardMove } from '../moves/MoveCard'
@@ -65,6 +65,8 @@ export class DrawCardRules extends EffectRules {
     )
 
     const card = Cards[move.id!]
+
+    console.log(isView(this.game), move)
 
     // First, card effect
     if (card.effects?.length) {

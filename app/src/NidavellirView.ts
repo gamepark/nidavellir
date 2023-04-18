@@ -25,9 +25,8 @@ export default class NidavellirView extends Nidavellir {
   }
 
   keepPredictableMoves(moves: Move[]): (Move & MoveView)[] {
-    const firstUnpredictableMoveIndex = moves.findIndex((move) => !this.isPredictableMove(move))
-    return (firstUnpredictableMoveIndex !== -1 ? moves.slice(0, firstUnpredictableMoveIndex) : moves) as (Move &
-      MoveView)[]
+    const firstUnpredictableMoveIndex = moves.findIndex(move => !this.isPredictableMove(move))
+    return (firstUnpredictableMoveIndex !== -1 ? moves.slice(0, firstUnpredictableMoveIndex) : moves) as (Move & MoveView)[]
   }
 
   play(_move: MoveRandomized): (Move | MoveView)[] {

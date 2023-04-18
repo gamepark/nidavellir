@@ -176,6 +176,7 @@ export default class Nidavellir
   }
 
   private onMoveCard(move: MoveCard & { age?: number }) {
+    console.log(move)
     if (move.id === undefined && move.source === undefined) {
       throw new Error(`It is impossible to move a card that is not known (no id or source set)`)
     }
@@ -183,6 +184,7 @@ export default class Nidavellir
     const card = this.game.cards.find((c) =>
       c.id !== undefined && move.id !== undefined ? move.id === c.id : isSameCardLocation(move.source!, c.location)
     )
+
     if (!card) {
       throw new Error(`Trying to move a card that does not exists: ${ move.id }`)
     }
@@ -339,6 +341,12 @@ export default class Nidavellir
     switch (move.type) {
       case MoveType.MoveCard:
         const card = this.game.cards.find((c) => c.id === move.id)!
+
+        if (isInAgeDeck(card.location) && isInPlayerHand(move.target) && move.target.player === playerId) {
+          return { ...move, source: card.location }
+        }
+
+
         if (move.reveal) {
           if (isInPlayerHand(card.location) && card.location.player !== playerId) {
             return { ...move, source: card.location }
@@ -350,7 +358,7 @@ export default class Nidavellir
         }
 
         if ((isInPlayerHand(move.target) && playerId !== move.target.player)
-          || (isInPlayerHand(card.location) && isInAgeDeck(move.target) && playerId !== card.location.player)) {
+          || (isInPlayerHand(card.location) && isInAgeDeck(move.target))) {
           return { ...omit(move, 'id'), source: card.location, age: Cards[card.id!].age }
         }
 

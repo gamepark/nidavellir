@@ -14,12 +14,14 @@ type CardHandAreaProps = {
 } & HTMLAttributes<HTMLDivElement>;
 
 const CardHandArea: FC<CardHandAreaProps> = (props) => {
-  const {handSize, player, ...rest} = props
-  const {t} = useTranslation()
-  const animation = useAnimation((a) =>
-    a.move.type === MoveType.MoveCard &&
-    ((isInPlayerHand(a.move.target) && player === a.move.target.player)
-      || (isInPlayerHand(a.move.source) && player === a.move.source.player)))
+  const { handSize, player, ...rest } = props
+  const { t } = useTranslation()
+  const animation = useAnimation((a) => {
+    a && console.log('Move', a.move)
+    return a.move.type === MoveType.MoveCard &&
+      ((a.move.target && isInPlayerHand(a.move.target) && player === a.move.target.player)
+        || (a.move.source && isInPlayerHand(a.move.source) && player === a.move.source.player))
+  })
 
   if (animation) {
     return null
@@ -27,9 +29,9 @@ const CardHandArea: FC<CardHandAreaProps> = (props) => {
 
 
   return (
-    <div css={area(handSize)} {...rest}>
-      <div css={title}>
-        <span>{t('hand.card.header', 'Hand')}</span>
+    <div css={ area(handSize) } { ...rest }>
+      <div css={ title }>
+        <span>{ t('hand.card.header', 'Hand') }</span>
       </div>
     </div>
   )
@@ -38,8 +40,8 @@ const CardHandArea: FC<CardHandAreaProps> = (props) => {
 const area = (handSize: number) => css`
   position: absolute;
   border-radius: 3em;
-  width: ${(cardWidth + 2) * handSize + 2}em;
-  height: ${cardHeight + 12}em;
+  width: ${ (cardWidth + 2) * handSize + 2 }em;
+  height: ${ cardHeight + 12 }em;
   background-color: #e9e3d8;
 `
 

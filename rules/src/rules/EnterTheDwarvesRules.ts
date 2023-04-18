@@ -2,7 +2,7 @@ import Move from '../moves/Move'
 import { NidavellirRules } from './NidavellirRules'
 import MoveType from '../moves/MoveType'
 import GameState, { Step } from '../state/GameState'
-import MoveView from '../moves/MoveView'
+import MoveView, { isView } from '../moves/MoveView'
 import { getCardsInTavern, isSameCoinLocation } from '../utils/location.utils'
 import { LocationType } from '../state/Location'
 import { getCardByTavern } from '../utils/tavern.utils'
@@ -30,6 +30,7 @@ class EnterTheDwarvesRules extends NidavellirRules {
       moves.push(...this.moveCoinInPlayerHand())
       moves.push(setStepMove(Step.Bids))
 
+      console.log('Moves', drawnCards, isView(this.game))
       return moves
     }
 
