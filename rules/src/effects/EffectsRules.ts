@@ -1,19 +1,20 @@
-import GameState from '../state/GameState';
-import GameView from '../state/view/GameView';
-import { Player } from '../state/Player';
-import EffectRules from './EffectRules';
-import { TransformCoinRules } from './TransformCoin';
-import { EffectType } from './EffectType';
-import { RecruitHeroRules } from './RecruitHero';
-import { KingsGreatArmorerRules } from './KingsGreatArmorer';
-import { HuntingMasterRules } from './HuntingMaster';
-import { PioneerOfTheKingdomRules } from './PioneerOfTheKingdom';
-import { CrownJewelerRules } from './CrownJeweler';
-import { TradeCoinRules } from './TradeCoin';
-import { YludRules } from './YludEffect';
-import { UlineRules } from './UlineEffect';
-import { DiscardCardRules } from './DiscardCard';
-import { DrawCardRules } from './DrawCard';
+import GameState from '../state/GameState'
+import GameView from '../state/view/GameView'
+import { Player } from '../state/Player'
+import EffectRules from './EffectRules'
+import { TransformCoinRules } from './TransformCoin'
+import { EffectType } from './EffectType'
+import { RecruitHeroRules } from './RecruitHero'
+import { KingsGreatArmorerRules } from './KingsGreatArmorer'
+import { HuntingMasterRules } from './HuntingMaster'
+import { PioneerOfTheKingdomRules } from './PioneerOfTheKingdom'
+import { CrownJewelerRules } from './CrownJeweler'
+import { TradeCoinRules } from './TradeCoin'
+import { YludRules } from './YludEffect'
+import { UlineRules } from './UlineEffect'
+import { DiscardCardRules } from './DiscardCard'
+import { DrawCardRules } from './DrawCard'
+import { ThrudRules } from './ThrudEffect'
 
 export const EffectsRules: Record<EffectType, new (game: GameState | GameView, player: Player) => EffectRules> = {
   [EffectType.TRANSFORM_COIN]: TransformCoinRules,
@@ -25,6 +26,7 @@ export const EffectsRules: Record<EffectType, new (game: GameState | GameView, p
   [EffectType.CROWN_JEWELER]: CrownJewelerRules,
   [EffectType.YLUD]: YludRules,
   [EffectType.ULINE]: UlineRules,
+  [EffectType.THRUD]: ThrudRules,
   [EffectType.DISCARD_CARD]: DiscardCardRules,
-  [EffectType.DRAW_CARD]: DrawCardRules,
-};
+  [EffectType.DRAW_CARD]: DrawCardRules
+}

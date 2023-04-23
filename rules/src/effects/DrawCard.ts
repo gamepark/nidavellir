@@ -66,12 +66,15 @@ export class DrawCardRules extends EffectRules {
 
     const card = Cards[move.id!]
 
-    // First, card effect
-    if (card.effects?.length) {
-      this.player.effects.push(...JSON.parse(JSON.stringify(card.effects)))
+    const moves = onChooseCard(this.game, this.player, move, 'age')
+    if (moves.length) {
+      return moves
     }
 
-    onChooseCard(this.game, this.player, move.id!, 'age')
+    // First, card effect
+    if (card.effects?.length) {
+      this.player.effects.unshift(...JSON.parse(JSON.stringify(card.effects)))
+    }
     if (cardsInHand.length === this.effect.count - this.effect.keep) {
       const locationType = card.age === 1 ? LocationType.Age1Deck : LocationType.Age2Deck
       const ageDeckLength = this.game.cards.filter((c) => locationType === c.location.type).length

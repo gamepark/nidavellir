@@ -20,7 +20,7 @@ export const moveKnownCardMove = (id: number, target: CardLocation, player?: Pla
   player
 })
 
-export const moveCardAndRevealMove = (id: number, target: CardLocation, player: PlayerId): MoveCard => ({
+export const moveCardAndRevealMove = (id: number, target: CardLocation, player?: PlayerId): MoveCard => ({
   type: MoveType.MoveCard,
   id,
   target,

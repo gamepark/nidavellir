@@ -11,13 +11,7 @@ import pickBy from 'lodash/pickBy'
 import { Gem6, Gems } from '../gems/Gems'
 
 export const isAge1 = (game: GameState | GameView) => {
-  const playerCount = game.players.length
-
-  if (playerCount <= 3) {
-    return game.round <= 4 || game.step === Step.TroopEvaluation
-  }
-
-  return game.round <= 3 || game.step === Step.TroopEvaluation
+  return game.age === 1
 }
 
 export const isAge2 = (state: GameState | GameView) => !isAge1(state)

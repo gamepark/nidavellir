@@ -8,9 +8,7 @@ import { Player, PlayerId } from '../state/Player'
 import { setStepMove } from '../moves/SetStep'
 import MoveView from '../moves/MoveView'
 import Move from '../moves/Move'
-import { isAge1, isEndOfAge, isEndOfGame } from './age.utils'
-import { getPlayerWithMajority } from './distinction.utils'
-import { Distinctions } from '../cards/Distinctions'
+import { isEndOfAge, isEndOfGame } from './age.utils'
 
 export const getCardByTavern = (players: (Player | PlayerId)[]) => Math.max(MIN_DWARVES_PER_TAVERN, players.length)
 
@@ -22,12 +20,6 @@ export const getCurrentTavernCards = (state: GameState | GameView): LocatedCard[
 }
 
 export const mayGoToNextTavern = (game: GameState | GameView): (Move | MoveView)[] => {
-  if (isEndOfAge(game) && isAge1(game)) {
-    if (game.distinctions.some((d) => getPlayerWithMajority(game, Distinctions[d.id].majorityOf))) {
-      return [setStepMove(Step.TroopEvaluation)]
-    }
-  }
-
   if (isEndOfAge(game) || isEndOfGame(game)) {
     return []
   }
@@ -48,7 +40,6 @@ export const nextTavern = (game: GameState | GameView): (Move | MoveView)[] => {
     game.tavern++
     return [setStepMove(Step.BidRevelation)]
   } else {
-    game.round++
     game.phase = Phase.TurnPreparation
 
     return [setStepMove(Step.EnterDwarves)]

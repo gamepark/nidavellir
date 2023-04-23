@@ -208,7 +208,7 @@ export const getBidRevelationText = (t: TFunction, game: GameView, players: Play
   if (playerWithUline) {
     const itsMe = playerId === playerWithUline.id
     if (getPlayerCoinForTavern(game, playerWithUline.id, game.tavern) === undefined
-      && game.players.every((p) => p.id === playerWithUline.id || !getPlayerCoinForTavern(game, p.id, game.tavern)!.hidden)) {
+      && (game.players.every((p) => p.id === playerWithUline.id || !getPlayerCoinForTavern(game, p.id, game.tavern)!.hidden))) {
       const playerInfo = players.find((p) => p.id === playerWithUline.id)!
       return itsMe ? t('header.me.bids.uline') : t('header.other.bids.uline', {
         player: getPlayerName(t, playerWithUline.id, playerInfo.name)

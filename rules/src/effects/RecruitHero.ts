@@ -1,16 +1,16 @@
 import Move from '../moves/Move'
 import MoveType from '../moves/MoveType'
 import { getNextIndexByType } from '../utils/player.utils'
-import { Heroes, Thrud, Uline, Ylud } from '../cards/Heroes'
+import { Heroes, Uline, Ylud } from '../cards/Heroes'
 import { LocationType } from '../state/Location'
 import { MoveHero, moveHeroMove } from '../moves/MoveHero'
 import MoveView from '../moves/MoveView'
 import { EffectType } from './EffectType'
 import EffectRules from './EffectRules'
-import { applyThrud, computeRecruitHeroCount } from '../utils/hero.utils'
+import { computeRecruitHeroCount } from '../utils/hero.utils'
 import { isInHeroDeck } from '../utils/location.utils'
 import { HeroType } from '../cards/Hero'
-import { DWARF_COLUMNS, getCardsInCommandZone } from '../utils/card.utils'
+import { DWARF_COLUMNS, getCardsInCommandZone, onChooseCard } from '../utils/card.utils'
 import size from 'lodash/size'
 import { UlineRules } from './UlineEffect'
 
@@ -87,17 +87,9 @@ class RecruitHeroRules extends EffectRules {
 
   onRecruitHero(move: MoveHero): (Move | MoveView)[] {
     const hero = Heroes[move.id]
-
-    if (hero !== Thrud) {
-      const thrudMoves = applyThrud(this.game, this.player, move)
-      if (thrudMoves.length) {
-        return thrudMoves
-      }
-    }
-
-    this.player.playedCard = {
-      id: move.id,
-      deck: 'heroes'
+    const moves = onChooseCard(this.game, this.player, move, 'heroes', false, false)
+    if (moves.length) {
+      return moves
     }
 
     const recruitHeroCount = computeRecruitHeroCount(this.game, this.player.id)
@@ -108,6 +100,7 @@ class RecruitHeroRules extends EffectRules {
     }
 
     if (!this.effect.count) {
+
       this.player.effects.shift()
     }
 

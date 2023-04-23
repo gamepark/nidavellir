@@ -40,6 +40,7 @@ import { Cards } from './cards/Cards'
 import shuffle from 'lodash/shuffle'
 import { TroopEvaluationRules } from './rules/TroopEvaluationRules'
 import { LocationType } from './state/Location'
+import { SetStep } from './moves/SetStep'
 
 export default class Nidavellir
   extends Rules<GameState | GameView, Move | MoveView, PlayerId>
@@ -112,11 +113,9 @@ export default class Nidavellir
       .map((p) => new EffectsRules[p.effects[0].type](this.game, p))
 
     if (delegates.length) {
-      if (this.game.step === Step.TroopEvaluation) {
-        return [...delegates, new TroopEvaluationRules(this.game)]
-      }
-
       return delegates
+    } else if (this.game.step === Step.TroopEvaluation) {
+      return [new TroopEvaluationRules(this.game)]
     }
 
     if (isAge1(this.game)) {
@@ -153,6 +152,7 @@ export default class Nidavellir
         break
       case MoveType.SetStep:
         this.game.step = move.step
+        this.onSetStep(move)
         break
       case MoveType.ShuffleCoins:
         this.onShuffleCoins(move)
@@ -160,6 +160,20 @@ export default class Nidavellir
     }
 
     return super.play(move)
+  }
+
+  private onSetStep(move: SetStep) {
+    if (move.step === Step.TroopEvaluation) {
+
+      if (this.game.distinction === undefined) {
+        this.game.distinction = 0
+      } else {
+        this.game.distinction++
+      }
+    }
+    if (move.step === Step.EnterDwarves) {
+      this.game.round++
+    }
   }
 
   private onShuffleCoins(move: ShuffleCoinsRandomized) {
@@ -348,6 +362,10 @@ export default class Nidavellir
 
         if (move.reveal) {
           if (isInPlayerHand(card.location) && card.location.player !== playerId) {
+            return { ...move, source: card.location }
+          }
+
+          if (isInDiscard(move.target)) {
             return { ...move, source: card.location }
           }
         }

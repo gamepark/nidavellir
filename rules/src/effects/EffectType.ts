@@ -10,4 +10,6 @@ export enum EffectType {
   ULINE,
   DISCARD_CARD,
   DRAW_CARD,
+
+  THRUD,
 }

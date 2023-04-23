@@ -1,4 +1,4 @@
-import GameState from '../state/GameState'
+import GameState, { Step } from '../state/GameState'
 import GameView from '../state/view/GameView'
 import { getArmy } from './player.utils'
 import { DwarfType } from '../cards/Card'
@@ -6,6 +6,8 @@ import sum from 'lodash/sum'
 import { Cards } from '../cards/Cards'
 import { Heroes } from '../cards/Heroes'
 import { PlayerId } from '../state/Player'
+import { setStepMove } from '../moves/SetStep'
+import { isAge1, isEndOfAge } from './age.utils'
 
 export const getPlayersWithMajority = (state: GameState | GameView, type: DwarfType): PlayerId[] => {
   let majority: number = 0
@@ -31,4 +33,12 @@ export const getPlayersWithMajority = (state: GameState | GameView, type: DwarfT
 export const getPlayerWithMajority = (state: GameState | GameView, type: DwarfType) => {
   const players = getPlayersWithMajority(state, type)
   return players.length === 1 ? players[0] : undefined
+}
+
+export const triggerDistinctions = (game: GameState | GameView) => {
+  if (!isAge1(game) || !isEndOfAge(game)) {
+    return [];
+  }
+
+  return [setStepMove(Step.TroopEvaluation)]
 }

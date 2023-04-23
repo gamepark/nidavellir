@@ -1,23 +1,23 @@
-import {Player, PlayerId} from '../state/Player'
+import { Player, PlayerId } from '../state/Player'
 import GameState from '../state/GameState'
 import GameView from '../state/view/GameView'
-import {getArmy} from './player.utils'
-import {Cards} from '../cards/Cards'
-import {Card, DwarfType} from '../cards/Card'
-import {InArmy, LocatedCard} from '../state/LocatedCard'
-import {SecretCard} from '../state/view/SecretCard'
-import {isInArmy, isInCommandZone, isInHeroDeck} from './location.utils'
+import { getArmy } from './player.utils'
+import { Cards } from '../cards/Cards'
+import { Card, DwarfType } from '../cards/Card'
+import { InArmy, LocatedCard } from '../state/LocatedCard'
+import { SecretCard } from '../state/view/SecretCard'
+import { isInArmy, isInCommandZone, isInHeroDeck } from './location.utils'
 import sum from 'lodash/sum'
-import {Heroes, Thrud, Ylud} from '../cards/Heroes'
-import {EffectType} from '../effects/EffectType'
-import {Effect} from '../effects/Effect'
-import {Hero} from '../cards/Hero'
-import {MoveHero, moveHeroMove} from '../moves/MoveHero'
-import {getCardsInCommandZone} from './card.utils'
-import {LocationType} from '../state/Location'
+import { Heroes, Thrud, Ylud } from '../cards/Heroes'
+import { EffectType } from '../effects/EffectType'
+import { Effect } from '../effects/Effect'
+import { Hero } from '../cards/Hero'
+import { MoveHero, moveHeroMove } from '../moves/MoveHero'
+import { getCardsInCommandZone } from './card.utils'
+import { LocationType } from '../state/Location'
 import MoveView from '../moves/MoveView'
 import Move from '../moves/Move'
-import {MoveCard} from '../moves/MoveCard'
+import { MoveCard } from '../moves/MoveCard'
 
 export const countGrades = (army: { cards: SecretCard[]; heroes: LocatedCard[] }, type: DwarfType) => {
   return (
@@ -121,13 +121,18 @@ export const applyThrud = (
     const thrud = getHero(game, player.id, Thrud)
     if (thrud && isInArmy(thrud.location) && thrud.location.column === move.target.column) {
       const cardsInCommandZone = getCardsInCommandZone(game, player.id)
+      let thrudIndex = cardsInCommandZone.heroes.length + cardsInCommandZone.distinctions.length
+
+      if (!player.effects.some((e) => e.type === EffectType.THRUD)) {
+        player.effects.push({ type: EffectType.THRUD })
+      }
       return [
         moveHeroMove(thrud.id, {
           type: LocationType.CommandZone,
           player: player.id,
-          index: cardsInCommandZone.heroes.length + cardsInCommandZone.distinctions.length
+          index: thrudIndex
         }, player.id),
-        JSON.parse(JSON.stringify({...move, target: {...move.target, index: move.target.index! - 1}}))
+        JSON.parse(JSON.stringify({ ...move, target: { ...move.target, index: move.target.index! - 1 } }))
       ]
     }
   }
@@ -137,8 +142,8 @@ export const applyThrud = (
 
 export const ensureHeroes = (game: GameState | GameView) => {
   const playerWithYlud = getPlayerWithHero(game, Ylud)
-  if (playerWithYlud) {
-    playerWithYlud.effects.push({type: EffectType.YLUD})
+  if (playerWithYlud && isInCommandZone(getHero(game, playerWithYlud.id, Ylud)!.location)) {
+    playerWithYlud.effects.push({ type: EffectType.YLUD })
     delete playerWithYlud.ready
   }
 }

@@ -7,8 +7,12 @@ import { getNextIndexByType } from './player.utils'
 import { Cards } from '../cards/Cards'
 import { MoveCard, moveCardAndRevealMove } from '../moves/MoveCard'
 import { LocationType } from '../state/Location'
-import { mayRecruitNewHeroes } from './hero.utils'
+import { applyThrud, mayRecruitNewHeroes } from './hero.utils'
 import { SecretCard } from '../state/view/SecretCard'
+import { MoveHero } from '../moves/MoveHero'
+import MoveView from '../moves/MoveView'
+import Move from '../moves/Move'
+import { Heroes, Thrud } from '../cards/Heroes'
 
 export const getCardsInCommandZone = (game: GameState | GameView, playerId: PlayerId) => {
   const heroes = game.heroes.filter((c) => isInCommandZone(c.location) && c.location.player === playerId)
@@ -45,16 +49,28 @@ export const getChooseCardMove = (game: GameState | GameView, player: Player, ca
 export const onChooseCard = (
   game: GameState | GameView,
   player: Player,
-  cardId: number,
+  move: (MoveCard | MoveHero),
   origin: 'age' | 'heroes',
-  unshit?: boolean
-) => {
+  unshit?: boolean,
+  computeHeroes: boolean = true
+): (Move | MoveView)[] => {
   player.playedCard = {
-    id: cardId,
+    id: move.id!,
     deck: origin
   }
 
-  mayRecruitNewHeroes(game, player, unshit)
+  if (origin !== 'heroes' || Heroes[move.id!] !== Thrud) {
+    const thrudMoves = applyThrud(game, player, move)
+    if (thrudMoves.length) {
+      return thrudMoves
+    }
+  }
+
+  if (computeHeroes) {
+    mayRecruitNewHeroes(game, player, unshit)
+  }
+
+  return []
 }
 
 export const isThisCard = (card: SecretCard, move: MoveCard) => {

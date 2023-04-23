@@ -36,9 +36,9 @@ export const PioneerOfTheKingdom: Distinction = {
 }
 
 export const Distinctions: Distinction[] = [
-  KingsGreatArmorer,
+  KingsHand,
   HuntingMaster,
-  PioneerOfTheKingdom,
   CrownJeweler,
-  KingsHand
+  KingsGreatArmorer,
+  PioneerOfTheKingdom
 ]

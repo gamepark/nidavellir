@@ -12,7 +12,6 @@ import GameState from '../state/GameState'
 import GameView from '../state/view/GameView'
 import { isExchangeCoin } from '../utils/coin.utils'
 import { getChooseCardMove, onChooseCard } from '../utils/card.utils'
-import { applyThrud } from '../utils/hero.utils'
 
 class ChooseCardRules extends NidavellirRules {
   player: Player
@@ -43,10 +42,6 @@ class ChooseCardRules extends NidavellirRules {
   }
 
   chooseCard(move: MoveCard) {
-    const thrudMoves = applyThrud(this.game, this.player, move)
-    if (thrudMoves.length) {
-      return thrudMoves
-    }
 
 
     const tavern = this.game.tavern
@@ -57,13 +52,16 @@ class ChooseCardRules extends NidavellirRules {
 
     const card = Cards[move.id!]
 
-    // First, card effect
-    if (card.effects?.length) {
-      this.player.effects.push(...JSON.parse(JSON.stringify(card.effects)))
+    // Then, potential hero recruiting
+    const moves = onChooseCard(this.game, this.player, move, 'age', true)
+    if (moves.length) {
+      return moves
     }
 
-    // Then, potential hero recruiting
-    onChooseCard(this.game, this.player, move.id!, 'age')
+    // First, card effect
+    if (card.effects?.length) {
+      this.player.effects.unshift(...JSON.parse(JSON.stringify(card.effects)))
+    }
 
     // Trade is only triggered if the player has played a 0-value coin
     // Finally, trade coin if needed
@@ -73,7 +71,7 @@ class ChooseCardRules extends NidavellirRules {
       })
     }
 
-    return []
+    return moves
   }
 }
 

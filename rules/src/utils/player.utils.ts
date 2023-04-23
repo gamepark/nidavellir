@@ -48,14 +48,16 @@ export const getElvalandTurnOrder = (state: GameState | GameView): PlayerId[] =>
 
 export const getActivePlayer = (state: GameState | GameView) => state.players.find((p) => state.activePlayer === p.id)!
 
-export const getArmy = (state: GameState | GameView, playerId: PlayerId, type?: DwarfType) => ({
-  cards: state.cards.filter(
-    (c) => isInArmy(c.location) && c.location.player === playerId && (!type || c.location.column === type)
-  ),
-  heroes: state.heroes.filter(
-    (c) => isInArmy(c.location) && c.location.player === playerId && (!type || c.location.column === type)
-  )
-})
+export const getArmy = (state: GameState | GameView, playerId: PlayerId, type?: DwarfType) => {
+  return ({
+    cards: state.cards.filter(
+      (c) => isInArmy(c.location) && c.location.player === playerId && (!type || c.location.column === type)
+    ),
+    heroes: state.heroes.filter(
+      (c) => isInArmy(c.location) && c.location.player === playerId && (!type || c.location.column === type)
+    )
+  })
+}
 
 export const isLocatedCard = (c: SecretCard | LocatedCard): c is LocatedCard => c.id !== undefined
 export const isLocatedCoin = (c: SecretCoin | LocatedCard | undefined): c is LocatedCoin => c?.id !== undefined

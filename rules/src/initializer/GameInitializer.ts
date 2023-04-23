@@ -176,7 +176,8 @@ class GameInitializer {
     phase: Phase.TurnPreparation,
     step: Step.Bids,
     tavern: 0,
-    round: 1
+    round: 1,
+    age: 1
   })
 }
 

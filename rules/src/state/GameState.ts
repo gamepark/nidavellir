@@ -30,6 +30,10 @@ type GameState = {
   step: Step;
   tavern: number;
   round: number;
+
+  age: number;
+
+  distinction?: number;
 };
 
 export default GameState;
