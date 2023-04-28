@@ -23,7 +23,6 @@ export const mayGoToNextTavern = (game: GameState | GameView): (Move | MoveView)
   if (isEndOfAge(game) || isEndOfGame(game)) {
     return []
   }
-
   return nextTavern(game)
 }
 
@@ -41,7 +40,6 @@ export const nextTavern = (game: GameState | GameView): (Move | MoveView)[] => {
     return [setStepMove(Step.BidRevelation)]
   } else {
     game.phase = Phase.TurnPreparation
-
     return [setStepMove(Step.EnterDwarves)]
   }
 }

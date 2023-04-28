@@ -33,7 +33,6 @@ import { CARD_RULES } from './dialog/AgeCardRulesDialogContent'
 import { Cards } from '@gamepark/nidavellir/cards/Cards'
 import { RoyalOffering } from '@gamepark/nidavellir/cards/Card'
 import { HERO_RULES } from './dialog/HeroRulesDialogContent'
-import { getPlayerCoinForTavern } from '@gamepark/nidavellir/utils/coin.utils'
 
 type Props = {
   loading: boolean;
@@ -203,19 +202,10 @@ export const getAnimationText = (t: TFunction, game: GameView, animation: Animat
   return
 }
 
-export const getBidRevelationText = (t: TFunction, game: GameView, players: PlayerInfos[], playerId?: PlayerId) => {
+export const getBidRevelationText = (t: TFunction, game: GameView, _players: PlayerInfos[], _playerId?: PlayerId) => {
   const playerWithUline = getPlayerWithHero(game, Uline)
   if (playerWithUline) {
-    const itsMe = playerId === playerWithUline.id
-    if (getPlayerCoinForTavern(game, playerWithUline.id, game.tavern) === undefined
-      && (game.players.every((p) => p.id === playerWithUline.id || !getPlayerCoinForTavern(game, p.id, game.tavern)!.hidden))) {
-      const playerInfo = players.find((p) => p.id === playerWithUline.id)!
-      return itsMe ? t('header.me.bids.uline') : t('header.other.bids.uline', {
-        player: getPlayerName(t, playerWithUline.id, playerInfo.name)
-      })
-    } else if (!playerWithUline.ready) {
-      return itsMe ? t('header.me.not-ready') : t('header.other.not-ready')
-    }
+
   }
 
   return t('header.bids.revelation', { tavern: t(`tavern.${ game.tavern }.name`) })

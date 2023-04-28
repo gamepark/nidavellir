@@ -31,7 +31,7 @@ import { Pass } from './moves/Pass'
 import { EffectsRules } from './effects/EffectsRules'
 import { NidavellirRules } from './rules/NidavellirRules'
 import { ScoringRules } from './rules/ScoringRules'
-import { isAge1, isEndOfGame } from './utils/age.utils'
+import { isAge1, isEndOfAge, isEndOfGame } from './utils/age.utils'
 import { Age1Rules } from './rules/Age1Rules'
 import { Age2Rules } from './rules/Age2Rules'
 import { ShuffleCoinsRandomized } from './moves/ShuffleCoins'
@@ -172,6 +172,10 @@ export default class Nidavellir
       }
     }
     if (move.step === Step.EnterDwarves) {
+      if (isEndOfAge(this.game) && this.game.age === 1) {
+        this.game.age = 2
+      }
+
       this.game.round++
     }
   }

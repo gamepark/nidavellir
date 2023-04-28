@@ -46,6 +46,15 @@ class ThrudRules extends EffectRules {
         break
       case MoveType.Pass:
         this.player.effects.shift()
+        if (!this.game.players.some((e) => e.effects.length)) {
+          for (const p of this.game.players) {
+            delete p.ready
+            delete p.discardedCoin
+            delete p.discardedCard
+            delete p.playedCard
+            delete p.traded
+          }
+        }
         if (this.game.step !== Step.TroopEvaluation) {
           return triggerDistinctions(this.game)
         }

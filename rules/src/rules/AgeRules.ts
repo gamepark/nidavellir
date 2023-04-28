@@ -2,7 +2,7 @@ import { NidavellirRules } from './NidavellirRules'
 import Move from '../moves/Move'
 import MoveView from '../moves/MoveView'
 import MoveType from '../moves/MoveType'
-import { isAge1, isEndOfAge } from '../utils/age.utils'
+import { isEndOfAge } from '../utils/age.utils'
 import { Phase } from '../state/GameState'
 import { TurnPreparationRules } from './TurnPreparationRules'
 import { TavernResolutionRules } from './TavernResolutionRules'
@@ -41,10 +41,6 @@ abstract class AgeRules extends NidavellirRules {
   onInnerPass = () => {
     if (isEndOfAge(this.game)) {
       ensureHeroes(this.game)
-    }
-
-    if (isAge1(this.game) && isEndOfAge(this.game) && !this.game.players.some((p) => p.effects.length)) {
-      this.game.age = 2
     }
   }
 }

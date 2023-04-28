@@ -1,21 +1,21 @@
-import {NidavellirRules} from './NidavellirRules'
+import { NidavellirRules } from './NidavellirRules'
 import MoveType from '../moves/MoveType'
 import Move from '../moves/Move'
-import {mayGoToNextTavern} from '../utils/tavern.utils'
-import {LocatedCoin} from '../state/LocatedCoin'
-import {MoveGem, moveGemMove} from '../moves/MoveGem'
-import {isOnPlayerBoard} from '../utils/location.utils'
-import {SecretCoin} from '../state/view/SecretCoin'
-import {OnPlayerBoard} from '../state/CommonLocations'
-import {LocationType} from '../state/Location'
+import { mayGoToNextTavern } from '../utils/tavern.utils'
+import { LocatedCoin } from '../state/LocatedCoin'
+import { MoveGem, moveGemMove } from '../moves/MoveGem'
+import { isOnPlayerBoard } from '../utils/location.utils'
+import { SecretCoin } from '../state/view/SecretCoin'
+import { OnPlayerBoard } from '../state/CommonLocations'
+import { LocationType } from '../state/Location'
 import keyBy from 'lodash/keyBy'
 import mapValues from 'lodash/mapValues'
 import orderBy from 'lodash/orderBy'
 import values from 'lodash/values'
-import {Gems} from '../gems/Gems'
+import { Gems } from '../gems/Gems'
 import MoveView from '../moves/MoveView'
-import {getTrades} from '../utils/age.utils'
-import {tradeGemsMove} from '../moves/TradeGems'
+import { getTrades } from '../utils/age.utils'
+import { tradeGemsMove } from '../moves/TradeGems'
 
 class GemTradeRules extends NidavellirRules {
   getAutomaticMoves(): (Move | MoveView)[] {
@@ -120,4 +120,4 @@ class GemTradeRules extends NidavellirRules {
   }
 }
 
-export {GemTradeRules}
+export { GemTradeRules }
