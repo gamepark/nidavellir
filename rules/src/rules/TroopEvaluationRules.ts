@@ -102,7 +102,6 @@ class TroopEvaluationRules extends NidavellirRules {
       && this.game.distinction === Distinctions.indexOf(PioneerOfTheKingdom)
       && isInDiscard(move.target)
       && getPlayerWithMajority(this.game, PioneerOfTheKingdom.majorityOf) === undefined) {
-      console.log(this.game.tavern)
       return nextTavern(this.game)
     }
 

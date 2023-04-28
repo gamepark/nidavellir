@@ -23,7 +23,6 @@ class TurnPreparationRules extends NidavellirRules {
   }
 
   getAutomaticMoves(): (Move | MoveView)[] {
-    console.log('Once upon a time', JSON.parse(JSON.stringify(this.game.players)))
     if (this.game.players.every((p) => p.ready)) {
       return [nextPhaseMove]
     }
