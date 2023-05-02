@@ -2,11 +2,9 @@ import { NidavellirRules } from './NidavellirRules'
 import Move from '../moves/Move'
 import MoveView from '../moves/MoveView'
 import MoveType from '../moves/MoveType'
-import { isEndOfAge } from '../utils/age.utils'
 import { Phase } from '../state/GameState'
 import { TurnPreparationRules } from './TurnPreparationRules'
 import { TavernResolutionRules } from './TavernResolutionRules'
-import { ensureHeroes } from '../utils/hero.utils'
 
 abstract class AgeRules extends NidavellirRules {
   delegate(): NidavellirRules | undefined {
@@ -19,12 +17,6 @@ abstract class AgeRules extends NidavellirRules {
   }
 
   play(move: Move | MoveView): (Move | MoveView)[] {
-    switch (move.type) {
-      case MoveType.Pass:
-        this.onInnerPass()
-        break
-    }
-
     const consequences = super.play(move)
 
     switch (move.type) {
@@ -37,12 +29,6 @@ abstract class AgeRules extends NidavellirRules {
   }
 
   abstract onPass(move: any): (Move | MoveView)[];
-
-  onInnerPass = () => {
-    if (isEndOfAge(this.game)) {
-      ensureHeroes(this.game)
-    }
-  }
 }
 
 export { AgeRules }

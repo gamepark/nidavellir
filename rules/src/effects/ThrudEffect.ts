@@ -2,16 +2,13 @@ import EffectRules from './EffectRules'
 import Move from '../moves/Move'
 import MoveView from '../moves/MoveView'
 import MoveType from '../moves/MoveType'
-import { passMove } from '../moves/Pass'
 import { getNextIndexByType } from '../utils/player.utils'
 import { LocationType } from '../state/Location'
 import { Heroes, Thrud } from '../cards/Heroes'
 import { MoveHero, moveHeroMove } from '../moves/MoveHero'
-import { isInCommandZone } from '../utils/location.utils'
+import { isInArmy, isInCommandZone } from '../utils/location.utils'
 import { DWARF_COLUMNS, onChooseCard } from '../utils/card.utils'
 import { EffectType } from './EffectType'
-import { triggerDistinctions } from '../utils/distinction.utils'
-import { Step } from '../state/GameState'
 
 export type ThrudEffect = {
   type: EffectType.THRUD;
@@ -32,8 +29,6 @@ class ThrudRules extends EffectRules {
           }, this.player.id)
         })
       }
-
-      return [passMove(this.player.id)]
     }
 
     return []
@@ -44,26 +39,16 @@ class ThrudRules extends EffectRules {
       case MoveType.MoveHero:
         this.onMoveThrud(move)
         break
-      case MoveType.Pass:
-        this.player.effects.shift()
-        if (!this.game.players.some((e) => e.effects.length)) {
-          for (const p of this.game.players) {
-            delete p.ready
-            delete p.discardedCoin
-            delete p.discardedCard
-            delete p.playedCard
-            delete p.traded
-          }
-        }
-        if (this.game.step !== Step.TroopEvaluation) {
-          return triggerDistinctions(this.game)
-        }
     }
 
     return []
   }
 
   onMoveThrud = (move: MoveHero): (Move | MoveView)[] => {
+    if (isInArmy(move.target)) {
+      this.player.effects.shift()
+    }
+
     const moves = onChooseCard(this.game, this.player, move, 'heroes', true)
     if (moves.length) {
       return moves

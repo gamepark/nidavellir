@@ -1,7 +1,7 @@
-import { LocatedCard } from './LocatedCard';
-import { LocatedCoin } from './LocatedCoin';
-import { LocatedGem } from './LocatedGem';
-import { Player, PlayerId } from './Player';
+import { LocatedCard } from './LocatedCard'
+import { LocatedCoin } from './LocatedCoin'
+import { LocatedGem } from './LocatedGem'
+import { Player, PlayerId } from './Player'
 
 export enum Phase {
   TurnPreparation = 1,
@@ -16,6 +16,8 @@ export enum Step {
   TroopEvaluation,
   GemTrade,
   Scoring,
+  EndOfAge1,
+  EndOfAge2
 }
 
 type GameState = {
@@ -36,4 +38,4 @@ type GameState = {
   distinction?: number;
 };
 
-export default GameState;
+export default GameState

@@ -13,7 +13,7 @@ import { getPlayerWithMajority } from '../utils/distinction.utils'
 import { MoveDistinction, moveDistinctionMove } from '../moves/MoveDistinction'
 import { LocationType } from '../state/Location'
 import { getCardsInCommandZone, getNextCardIndexInDiscard, onChooseCard } from '../utils/card.utils'
-import { isInAge2Deck, isInArmy, isInDiscard, isInDistinctionDeck } from '../utils/location.utils'
+import { isInAge2Deck, isInArmy, isInDiscard, isInDistinctionDeck, isInPlayerHand } from '../utils/location.utils'
 import { nextTavern } from '../utils/tavern.utils'
 import { Player, PlayerId } from '../state/Player'
 import { HuntingMasterRules } from '../effects/HuntingMaster'
@@ -23,6 +23,7 @@ import { MoveCard, moveCardAndRevealMove } from '../moves/MoveCard'
 import { BlacksmithDwarfKingsGreatArmorer, Cards } from '../cards/Cards'
 import { setStepMove } from '../moves/SetStep'
 import { Step } from '../state/GameState'
+import { passMove } from '../moves/Pass'
 
 class TroopEvaluationRules extends NidavellirRules {
 
@@ -38,6 +39,8 @@ class TroopEvaluationRules extends NidavellirRules {
     if (!isInDistinctionDeck(distinction.location)) {
       return []
     }
+
+
     if (card === PioneerOfTheKingdom && playerWithMajority === undefined) {
       const ageCard = this.game.cards.filter((c) => isInAge2Deck(c.location))[0]!
       return [
@@ -76,16 +79,38 @@ class TroopEvaluationRules extends NidavellirRules {
     return !player.ready
   }
 
+  getLegalMoves(playerId: PlayerId): (Move | MoveView)[] {
+    const player = this.game.players.find((p) => p.id === playerId)!
+    if (player && !player.ready && !player.effects.length) {
+      return [passMove(playerId)]
+    }
+
+    return super.getLegalMoves(playerId)
+  }
+
   play(move: Move | MoveView) {
     switch (move.type) {
       case MoveType.MoveDistinction:
         return this.onMoveDistinction(move)
       case MoveType.MoveCard:
         return this.onMoveCard(move)
+      case MoveType.Pass:
+        return this.onPass()
+
 
     }
 
     return []
+  }
+
+  private onPass(): (Move | MoveView)[] {
+    if (this.game.distinction !== undefined
+      && Distinctions[this.game.distinctions[this.game.distinction].id] === KingsGreatArmorer
+      && this.game.players.every((p) => p.ready)) {
+      return [setStepMove(Step.TroopEvaluation)]
+    }
+
+    return [];
   }
 
   private onMoveCard(move: MoveCard): (Move | MoveView)[] {
@@ -94,6 +119,7 @@ class TroopEvaluationRules extends NidavellirRules {
       const player = this.game.players.find((p) => p.id === move.player)!
       const moves = onChooseCard(this.game, player, move, 'age')
       if (moves.length) {
+        delete player.ready
         return moves
       }
     }
@@ -101,6 +127,7 @@ class TroopEvaluationRules extends NidavellirRules {
     if (card !== BlacksmithDwarfKingsGreatArmorer
       && this.game.distinction === Distinctions.indexOf(PioneerOfTheKingdom)
       && isInDiscard(move.target)
+      && !this.game.cards.some((c) => isInPlayerHand(c.location))
       && getPlayerWithMajority(this.game, PioneerOfTheKingdom.majorityOf) === undefined) {
       return nextTavern(this.game)
     }
@@ -119,6 +146,10 @@ class TroopEvaluationRules extends NidavellirRules {
 
     if (card === PioneerOfTheKingdom) {
       return nextTavern(this.game)
+    }
+
+    if (card === KingsGreatArmorer) {
+      return []
     }
 
     return [setStepMove(Step.TroopEvaluation)]
