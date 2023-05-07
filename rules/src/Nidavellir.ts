@@ -92,7 +92,7 @@ export default class Nidavellir
     if (move.type === MoveType.ShuffleCoins) {
       return ({
         ...move,
-        shuffledCoins: shuffle(move.coins)
+        shuffledIds: shuffle(move.ids)
       })
     }
 
@@ -136,8 +136,9 @@ export default class Nidavellir
         this.onMoveCard(move)
         break
       case MoveType.MoveHero:
+        const originalPosition = this.game.heroes.find((h) => h.id === move.id)!.location
         this.onMoveHero(move)
-        break
+        return super.play({ ...move, source: originalPosition })
       case MoveType.MoveDistinction:
         this.onMoveDistinction(move)
         break
@@ -180,16 +181,12 @@ export default class Nidavellir
     }
   }
 
-  private onShuffleCoins(move: ShuffleCoinsRandomized) {
-    const indexes = move.coins.map((c) => this.game.coins.findIndex((coin) => coin.id === c))
-    const shuffledCoins = move.shuffledCoins.map((c) => this.game.coins.find((coin) => coin.id === c)!.location)
-    indexes.forEach((indexToMove, index) => {
-      const location = shuffledCoins[index]
-      if (!isView(this.game)) {
-        this.game.coins[indexToMove].location = location
-      } else if (isInPlayerHand(location) && location.player !== this.game.playerId) {
-        delete this.game.coins[indexToMove].id
-      }
+  protected onShuffleCoins(move: ShuffleCoinsRandomized) {
+    const ids = move.ids
+    const shuffledLocations = move.shuffledIds.map((c) => this.game.coins.find((locatedCoin) => locatedCoin.id === c)!.location)
+    ids.forEach((id, index) => {
+      const location = shuffledLocations[index]
+      this.game.coins.find((locatedCoin) => locatedCoin.id === id)!.location = location
     })
   }
 
@@ -234,6 +231,7 @@ export default class Nidavellir
   }
 
   private onMoveCoin(move: MoveCoin) {
+
     if (!move.source && move.id === undefined) {
       throw new Error(`Trying to move a coin but neither source or id are set`)
     }
@@ -242,6 +240,7 @@ export default class Nidavellir
         return c.id !== undefined && move.id !== undefined ? move.id === c.id : isSameCoinLocation(move.source!, c.location)
       }
     )
+
     if (!coin) {
       throw new Error(`Trying to move a coin that does not exists: ${ JSON.stringify(move) }`)
     }
@@ -251,7 +250,7 @@ export default class Nidavellir
     }
 
     if (move.reveal) {
-      coin.hidden = false
+      delete coin.hidden
     }
 
     if (move.hide) {
@@ -273,6 +272,7 @@ export default class Nidavellir
       }
       coin.location = move.target
     }
+    //  console.log('End move coin', JSON.parse(JSON.stringify(this.game.coins[7])))
   }
 
   private onMoveGem(move: MoveGem) {
@@ -318,11 +318,11 @@ export default class Nidavellir
       return hideSecret ? omit(c, 'id') : c
     })
 
-    // CoinMaterial will be hidden when chosen by the user at the auction phase
+    // CoinMaterial will be hidden when chosen by the user at the bid phase
     const coinWithoutSecret: SecretCoin[] = this.game.coins.map((c) => {
       const hideSecret =
         (isOnPlayerBoard(c.location) && c.hidden && c.location.player !== playerId) ||
-        (isInPlayerHand(c.location) && c.location.player !== playerId)
+        (isInPlayerHand(c.location) && c.hidden && c.location.player !== playerId)
 
       return hideSecret ? omit(c, 'id') : c
     })
@@ -354,8 +354,14 @@ export default class Nidavellir
    * @param playerId The player id
    * @return What a person should know about the move that was played
    */
-  getMoveView(move: Move, playerId?: PlayerId): MoveView {
+  getMoveView(move: MoveRandomized, playerId?: PlayerId): MoveView {
     switch (move.type) {
+      case MoveType.ShuffleCoins:
+        const { shuffledIds, ...moveView } = move
+        return {
+          ...moveView,
+          sources: move.ids.map((id) => this.game.coins.find((c) => c.id === id)!.location)
+        }
       case MoveType.MoveCard:
         const card = this.game.cards.find((c) => c.id === move.id)!
 
@@ -415,7 +421,11 @@ export default class Nidavellir
             if (playerId === move.target.player) {
               return move
             } else {
-              return { ...move, source: coin.location }
+              if (move.reveal) {
+                return { ...move, source: coin.location }
+              }
+
+              return { ...omit(move, 'id'), source: coin.location }
             }
           }
 
@@ -436,6 +446,10 @@ export default class Nidavellir
           return { ...move, source: coin.location }
         }
 
+        if (move.hide) {
+          return { ...omit(move, 'id'), source: coin.location }
+        }
+
         return move
       default:
         return move
@@ -451,7 +465,7 @@ export default class Nidavellir
    * @param _playerId Identifier of the player seeing the move
    * @return What a person should know about the move that was played
    */
-  getPlayerMoveView(move: Move, _playerId: PlayerId): MoveView {
+  getPlayerMoveView(move: MoveRandomized, _playerId: PlayerId): MoveView {
     return this.getMoveView(move, _playerId)
   }
 }

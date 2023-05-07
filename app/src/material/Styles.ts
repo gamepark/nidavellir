@@ -138,8 +138,9 @@ export const getCoinPositionInTreasureY = (token: Coin, _z: number) => {
   return treasureTop + Math.floor((token.value - 5) / 7) * (coinTokenHeight + 3)
 }
 
-export const getCoinPositionInTreasureX = (token: Coin, z: number, index?: number) =>
-  treasureLeft + ((token.value - 5) % 7) * (coinTokenWidth + 3) + (index ?? 0) + z * 1.5
+export const getCoinPositionInTreasureX = (token: Coin, z: number, index?: number) => {
+  return treasureLeft + ((token.value - 5) % 7) * (coinTokenWidth + 3) + (index ?? 0) + z * 1.5
+}
 
 export const getCoinPositionOnPlayerBoardX = (position: any, index: number) => {
   switch (index) {

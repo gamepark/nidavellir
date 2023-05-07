@@ -66,7 +66,7 @@ class EnterTheDwarvesRules extends NidavellirRules {
             index
           }, p.id)
         ),
-        shuffleCoinMove(coins.map((c) => c.id!))
+        shuffleCoinMove(coins.map((c) => c.id!), p.id)
       ]
     })
   }

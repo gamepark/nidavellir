@@ -1,13 +1,14 @@
 import Move from '../../moves/Move'
 import MoveView from '../../moves/MoveView'
-import {getCoinsInPlayerHand} from '../../utils/location.utils'
-import {getPlayerCoinForTavern, isExchangeCoin} from '../../utils/coin.utils'
-import {getCombinations, isLocatedCoin} from '../../utils/player.utils'
-import {tradeCoinsMove} from '../../moves/TradeCoins'
+import { getCoinsInPlayerHand, isInPlayerHand } from '../../utils/location.utils'
+import { getPlayerCoinForTavern, isExchangeCoin } from '../../utils/coin.utils'
+import { getCombinations, isLocatedCoin } from '../../utils/player.utils'
+import { tradeCoinsMove } from '../../moves/TradeCoins'
 import MoveType from '../../moves/MoveType'
-import {TradeCoinBaseRules} from '../TradeCoinBase'
-import {SecretCoin} from '../../state/view/SecretCoin'
-import {LocatedCoin} from '../../state/LocatedCoin'
+import { TradeCoinBaseRules } from '../TradeCoinBase'
+import { SecretCoin } from '../../state/view/SecretCoin'
+import { LocatedCoin } from '../../state/LocatedCoin'
+import { shuffleCoinMove } from '../../moves/ShuffleCoins'
 
 export class TradeCoinWithUlineRules extends TradeCoinBaseRules {
   getEffectAutomaticMoves(): (Move | MoveView)[] {
@@ -34,5 +35,17 @@ export class TradeCoinWithUlineRules extends TradeCoinBaseRules {
     }
 
     return []
+  }
+
+  protected shuffleCoins(moves: (Move | MoveView)[], tradedCoinId: number, _notTradedCoinId: number, treasureCoinId: number) {
+    moves.push(shuffleCoinMove(
+      this.game.coins
+        .filter((c) =>
+          c.id === treasureCoinId
+          || (isInPlayerHand(c.location) && c.location.player === this.player.id && c.id !== tradedCoinId)
+        )
+        .map((c) => c.id!),
+      this.player.id
+    ))
   }
 }

@@ -1,16 +1,17 @@
 import EffectRules from './EffectRules'
 import Move from '../moves/Move'
 import MoveType from '../moves/MoveType'
-import {LocationType} from '../state/Location'
-import {isInDiscard, isInTreasure, isSameCoinLocation} from '../utils/location.utils'
-import {Coins} from '../coins/Coins'
-import {moveKnownCoinMove, revealCoinMove} from '../moves/MoveCoin'
-import {getTreasureCoinForValue, getTreasureCoins} from '../utils/coin.utils'
-import {CoinColor} from '../coins/Coin'
+import { LocationType } from '../state/Location'
+import { isInDiscard, isInTreasure, isSameCoinLocation } from '../utils/location.utils'
+import { Coins } from '../coins/Coins'
+import { hideCoinMove, moveKnownCoinMove, revealCoinMove } from '../moves/MoveCoin'
+import { getTreasureCoinForValue, getTreasureCoins } from '../utils/coin.utils'
+import { CoinColor } from '../coins/Coin'
 import maxBy from 'lodash/maxBy'
 import sumBy from 'lodash/sumBy'
-import {TradeCoins} from '../moves/TradeCoins'
+import { TradeCoins } from '../moves/TradeCoins'
 import MoveView from '../moves/MoveView'
+import { shuffleCoinMove } from '../moves/ShuffleCoins'
 
 export class TradeCoinBaseRules extends EffectRules {
   play(move: Move) {
@@ -40,7 +41,7 @@ export class TradeCoinBaseRules extends EffectRules {
     const maximumCoinIndex = coins.indexOf(maximumCoin)
     const coin = Coins[maximumCoin]
 
-    const moves = move.ids.map((i) => revealCoinMove(i, this.player.id))
+    const moves: (Move | MoveView)[] = move.ids.map((i) => revealCoinMove(i, this.player.id))
 
     if (coin.color === CoinColor.Bronze) {
       // Discard bronze coin
@@ -63,6 +64,7 @@ export class TradeCoinBaseRules extends EffectRules {
       )
     }
 
+
     const value = sumBy(coins, (c) => Coins[c].value)
     const treasureCoin = getTreasureCoinForValue(getTreasureCoins(this.game), value)
     const actualMaximumCoin = this.game.coins.find(
@@ -71,8 +73,22 @@ export class TradeCoinBaseRules extends EffectRules {
 
     // Get the treasure coin,
     moves.push(moveKnownCoinMove(treasureCoin.id!, actualMaximumCoin.location, this.player.id))
+    moves.push(hideCoinMove(treasureCoin.id!, this.player.id))
+    const notTradedCoin = move.ids.find((i) => i !== maximumCoin)!
+    moves.push(hideCoinMove(notTradedCoin, this.player.id))
+    this.shuffleCoins(moves, maximumCoin, notTradedCoin, treasureCoin.id!)
 
     this.player.effects.shift()
     return moves
+  }
+
+  protected shuffleCoins(moves: (Move | MoveView)[], _tradedCoinId: number, notTradedCoinId: number, treasureCoinId: number) {
+    moves.push(shuffleCoinMove(
+      [
+        notTradedCoinId,
+        treasureCoinId
+      ],
+      this.player.id
+    ))
   }
 }

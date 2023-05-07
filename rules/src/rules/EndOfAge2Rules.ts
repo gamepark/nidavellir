@@ -9,6 +9,8 @@ import { isInArmy } from '../utils/location.utils'
 import { getCardsInCommandZone } from '../utils/card.utils'
 import { moveHeroMove } from '../moves/MoveHero'
 import { LocationType } from '../state/Location'
+import { PlayerId } from '../state/Player'
+import { passMove } from '../moves/Pass'
 
 class EndOfAge2Rules extends NidavellirRules {
 
@@ -31,6 +33,15 @@ class EndOfAge2Rules extends NidavellirRules {
 
     if (this.game.players.every((p) => p.ready)) {
       return [setStepMove(Step.Scoring)]
+    }
+
+    return []
+  }
+
+  getLegalMoves(playerId: PlayerId): (Move | MoveView)[] {
+    const player = this.game.players.find((p) => p.id === playerId)!
+    if (!player.ready) {
+      return [passMove(player.id)]
     }
 
     return []

@@ -202,10 +202,25 @@ export const getAnimationText = (t: TFunction, game: GameView, animation: Animat
   return
 }
 
-export const getBidRevelationText = (t: TFunction, game: GameView, _players: PlayerInfos[], _playerId?: PlayerId) => {
+export const getBidRevelationText = (t: TFunction, game: GameView, players: PlayerInfos[], playerId?: PlayerId) => {
   const playerWithUline = getPlayerWithHero(game, Uline)
   if (playerWithUline) {
+    const itsMe = playerId === playerWithUline.id
+    const playerInfo = players.find((p) => p.id === playerWithUline.id)!
+    const coinOnTavern = game.coins
+      .find((c) => isOnPlayerBoard(c.location) && c.location.player === playerWithUline.id && c.location.index === game.tavern)
 
+    if (coinOnTavern) {
+      return itsMe ? t('header.me.not-ready') : t('header.other.not-ready', {
+        player: getPlayerName(t, playerInfo.id, playerInfo.name)
+      })
+    } else {
+      return itsMe ? t('header.me.bids.uline', { tavern: t(`tavern.${ game.tavern }.name`) }) : t('header.other.bids.uline', {
+          tavern: t(`tavern.${ game.tavern }.name`),
+          player: getPlayerName(t, playerInfo.id, playerInfo.name)
+        }
+      )
+    }
   }
 
   return t('header.bids.revelation', { tavern: t(`tavern.${ game.tavern }.name`) })
@@ -266,10 +281,10 @@ export const getBidsText = (t: TFunction, game: GameView, _players: PlayerInfos[
   const me = game.players.find((p) => p.id === playerId)
   if (me && !me.ready) {
     if (!hasHero(game, me.id, Uline)) {
-      const coinOnTavern = game.coins
-        .find((c) => isOnPlayerBoard(c.location) && c.location.player && c.location.index === game.tavern)
+      const coinInHands = game.coins
+        .find((c) => isInPlayerHand(c.location) && c.location.player === playerId)
 
-      if (coinOnTavern) {
+      if (!coinInHands) {
         return t('header.me.not-ready')
       }
 

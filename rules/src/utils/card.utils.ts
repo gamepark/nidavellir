@@ -10,8 +10,6 @@ import { LocationType } from '../state/Location'
 import { applyThrud, mayRecruitNewHeroes } from './hero.utils'
 import { SecretCard } from '../state/view/SecretCard'
 import { MoveHero } from '../moves/MoveHero'
-import MoveView from '../moves/MoveView'
-import Move from '../moves/Move'
 import { Heroes, Thrud } from '../cards/Heroes'
 
 export const getCardsInCommandZone = (game: GameState | GameView, playerId: PlayerId) => {
@@ -53,7 +51,7 @@ export const onChooseCard = (
   origin: 'age' | 'heroes',
   unshit?: boolean,
   computeHeroes: boolean = true
-): (Move | MoveView)[] => {
+): (MoveHero | MoveCard)[] => {
   player.playedCard = {
     id: move.id!,
     deck: origin

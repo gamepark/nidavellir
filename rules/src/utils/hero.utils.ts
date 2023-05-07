@@ -15,8 +15,6 @@ import { Hero } from '../cards/Hero'
 import { MoveHero, moveHeroMove } from '../moves/MoveHero'
 import { getCardsInCommandZone } from './card.utils'
 import { LocationType } from '../state/Location'
-import MoveView from '../moves/MoveView'
-import Move from '../moves/Move'
 import { MoveCard } from '../moves/MoveCard'
 
 export const countGrades = (army: { cards: SecretCard[]; heroes: LocatedCard[] }, type: DwarfType) => {
@@ -116,7 +114,7 @@ export const applyThrud = (
   game: GameState | GameView,
   player: Player,
   move: MoveHero | MoveCard
-): (Move | MoveView)[] => {
+): (MoveHero | MoveCard)[] => {
   if (move.target && isInArmy(move.target)) {
     const thrud = getHero(game, player.id, Thrud)
     if (thrud && isInArmy(thrud.location) && thrud.location.column === move.target.column) {
@@ -142,7 +140,7 @@ export const applyThrud = (
 
 export const ensureHeroes = (game: GameState | GameView) => {
   const playerWithYlud = getPlayerWithHero(game, Ylud)
-  if (playerWithYlud && isInCommandZone(getHero(game, playerWithYlud.id, Ylud)!.location)) {
+  if (playerWithYlud) {
     playerWithYlud.effects.push({ type: EffectType.YLUD })
     delete playerWithYlud.ready
   }

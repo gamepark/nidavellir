@@ -3,11 +3,11 @@ import EffectRules from './EffectRules'
 import Move from '../moves/Move'
 import MoveView from '../moves/MoveView'
 import MoveType from '../moves/MoveType'
-import { getNextIndexByType } from '../utils/player.utils'
+import { getArmy, getNextIndexByType } from '../utils/player.utils'
 import { LocationType } from '../state/Location'
-import { Ylud } from '../cards/Heroes'
+import { Heroes, Ylud } from '../cards/Heroes'
 import { MoveHero, moveHeroMove } from '../moves/MoveHero'
-import { isInCommandZone } from '../utils/location.utils'
+import { isInArmy, isInCommandZone } from '../utils/location.utils'
 import { DWARF_COLUMNS, onChooseCard } from '../utils/card.utils'
 import { getHero } from '../utils/hero.utils'
 
@@ -19,9 +19,23 @@ class YludRules extends EffectRules {
   getPlayerMoves(): (Move | MoveView)[] {
     if (!this.player.ready) {
       const ylud = getHero(this.game, this.player.id, Ylud)!
+      const nextIndexesByType = getNextIndexByType(this.game, this.player.id)
       if (isInCommandZone(ylud.location)) {
-        const nextIndexesByType = getNextIndexByType(this.game, this.player.id)
         return DWARF_COLUMNS.map((type) => {
+          return moveHeroMove(ylud.id, {
+            type: LocationType.Army,
+            player: this.player.id,
+            index: nextIndexesByType[type].nextIndex,
+            column: type
+          }, this.player.id)
+        })
+      } else if (isInArmy(ylud.location)) {
+        const yludLocation = ylud.location
+        return DWARF_COLUMNS.flatMap((type) => {
+          if (yludLocation.column === type) {
+            return []
+          }
+
           return moveHeroMove(ylud.id, {
             type: LocationType.Army,
             player: this.player.id,
@@ -45,10 +59,28 @@ class YludRules extends EffectRules {
   }
 
   onMoveYlud = (move: MoveHero): (Move | MoveView)[] => {
+    if (Heroes[move.id] !== Ylud) {
+      return []
+    }
+
+    if (move.source && isInArmy(move.source)) {
+
+      const source = move.source
+      const otherCardsInColumn = getArmy(this.game, this.player.id, source.column)
+      otherCardsInColumn.cards
+        .filter((c) => isInArmy(c.location) && (c.location.index!) > (source.index!))
+        .forEach((c) => c.location.index!--)
+
+      otherCardsInColumn.heroes
+        .filter((h) => isInArmy(h.location) && (h.location.index!) > (source.index!))
+        .forEach((h) => h.location.index!--)
+    }
+
     const moves = onChooseCard(this.game, this.player, move, 'heroes', true)
     if (moves.length) {
       return moves
     }
+
 
     this.player.effects.shift()
     return []

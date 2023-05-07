@@ -9,6 +9,7 @@ import { MoveHero, moveHeroMove } from '../moves/MoveHero'
 import { isInArmy, isInCommandZone } from '../utils/location.utils'
 import { DWARF_COLUMNS, onChooseCard } from '../utils/card.utils'
 import { EffectType } from './EffectType'
+import { MoveCard } from '../moves/MoveCard'
 
 export type ThrudEffect = {
   type: EffectType.THRUD;
@@ -45,16 +46,21 @@ class ThrudRules extends EffectRules {
   }
 
   onMoveThrud = (move: MoveHero): (Move | MoveView)[] => {
-    if (isInArmy(move.target)) {
-      this.player.effects.shift()
+    if (Heroes[move.id] !== Thrud) {
+      return []
     }
 
-    const moves = onChooseCard(this.game, this.player, move, 'heroes', true)
+    const moves = onChooseCard(this.game, this.player, move, 'heroes')
     if (moves.length) {
       return moves
     }
 
-    return []
+    let consequences: (MoveCard | MoveHero)[] = []
+    if (isInArmy(move.target)) {
+      this.player.effects.shift()
+    }
+
+    return consequences
   }
 }
 

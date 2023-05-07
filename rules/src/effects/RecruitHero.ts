@@ -100,7 +100,6 @@ class RecruitHeroRules extends EffectRules {
     }
 
     if (!this.effect.count) {
-
       this.player.effects.shift()
     }
 

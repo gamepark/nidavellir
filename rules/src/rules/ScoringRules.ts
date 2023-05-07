@@ -1,10 +1,10 @@
-import {NidavellirRules} from './NidavellirRules'
+import { NidavellirRules } from './NidavellirRules'
 import Move from '../moves/Move'
 import MoveView from '../moves/MoveView'
-import {scoringMove} from '../moves/Scoring'
+import { scoringMove } from '../moves/Scoring'
 import MoveType from '../moves/MoveType'
-import {getPlayerScore} from '../utils/score.utils'
-import {revealCoinMove} from '../moves/MoveCoin'
+import { getPlayerScore } from '../utils/score.utils'
+import { revealCoinMove } from '../moves/MoveCoin'
 
 class ScoringRules extends NidavellirRules {
   getAutomaticMoves(): (Move | MoveView)[] {
@@ -34,4 +34,4 @@ class ScoringRules extends NidavellirRules {
   }
 }
 
-export {ScoringRules}
+export { ScoringRules }

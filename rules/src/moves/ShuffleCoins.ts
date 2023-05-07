@@ -1,15 +1,21 @@
 import MoveType from './MoveType'
+import { PlayerId } from '../state/Player'
+import { CoinLocation } from '../state/LocatedCoin'
 
 export type ShuffleCoins = {
   type: MoveType.ShuffleCoins;
-  coins: number[];
+  ids: number[];
+  player: PlayerId;
+
+  sources?: CoinLocation[]
 };
 
 export type ShuffleCoinsRandomized = ShuffleCoins & {
-  shuffledCoins: number[];
+  shuffledIds: number[];
 };
 
-export const shuffleCoinMove = (coins: number[]): ShuffleCoins => ({
+export const shuffleCoinMove = (ids: number[], player: PlayerId): ShuffleCoins => ({
   type: MoveType.ShuffleCoins,
-  coins
+  ids,
+  player
 })

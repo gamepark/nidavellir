@@ -1,6 +1,6 @@
 import MoveType from './MoveType'
-import {CoinLocation} from '../state/LocatedCoin'
-import {PlayerId} from '../state/Player'
+import { CoinLocation } from '../state/LocatedCoin'
+import { PlayerId } from '../state/Player'
 
 export type MoveCoin = {
   type: MoveType.MoveCoin;
@@ -16,6 +16,13 @@ export const revealCoinMove = (id: number, player?: PlayerId): MoveCoin => ({
   type: MoveType.MoveCoin,
   id,
   reveal: true,
+  player
+})
+
+export const hideCoinMove = (id: number, player?: PlayerId): MoveCoin => ({
+  type: MoveType.MoveCoin,
+  id,
+  hide: true,
   player
 })
 
