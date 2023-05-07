@@ -272,7 +272,6 @@ export default class Nidavellir
       }
       coin.location = move.target
     }
-    //  console.log('End move coin', JSON.parse(JSON.stringify(this.game.coins[7])))
   }
 
   private onMoveGem(move: MoveGem) {
