@@ -417,7 +417,7 @@ export default class Nidavellir
         })!
         if (move.target) {
           if (isInPlayerHand(move.target)) {
-            if (playerId === move.target.player) {
+            if (playerId === move.player) {
               return move
             } else {
               if (move.reveal) {
@@ -429,7 +429,7 @@ export default class Nidavellir
           }
 
           if (isOnPlayerBoard(move.target)) {
-            if (playerId === move.target.player || !coin.hidden) {
+            if (playerId === move.player || !coin.hidden) {
               return move
             } else {
               if (move.reveal) {
@@ -442,11 +442,19 @@ export default class Nidavellir
         }
 
         if (move.reveal) {
-          return { ...move, source: coin.location }
+          if (move.player !== playerId) {
+            return { ...move, source: coin.location }
+          }
+
+          return move
         }
 
         if (move.hide) {
-          return { ...omit(move, 'id'), source: coin.location }
+          if (move.player !== playerId) {
+            return { ...omit(move, 'id'), source: coin.location }
+          }
+
+          return move
         }
 
         return move

@@ -25,6 +25,7 @@ const Tavern: FC<TavernProps> = (props) => {
 
 const tavernStyle = (tavern: number, scale: number = 1, playerCount?: number) => css`
   position: absolute;
+  cursor: pointer;
   height: ${ tavernHeight * scale }em;
   width: ${ tavernWidth * scale }em;
   top: ${ tavernTop(tavern) }em;

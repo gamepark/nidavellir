@@ -19,7 +19,7 @@ export const revealCoinMove = (id: number, player?: PlayerId): MoveCoin => ({
   player
 })
 
-export const hideCoinMove = (id: number, player?: PlayerId): MoveCoin => ({
+export const hideCoinMove = (id: number, player: PlayerId): MoveCoin => ({
   type: MoveType.MoveCoin,
   id,
   hide: true,
