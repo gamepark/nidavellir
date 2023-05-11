@@ -10,6 +10,7 @@ import { useLegalMoves } from '../hook/rules.hook'
 import MoveType from '@gamepark/nidavellir/moves/MoveType'
 import { usePlayerId } from '@gamepark/react-client'
 import { isOnPlayerBoard } from '@gamepark/nidavellir/utils/location.utils'
+import { MoveCoinToTavernButton } from './moves/MoveCoinToTavernButton'
 import { MoveButton } from './moves/MoveButton'
 
 type TavernRulesDialogContentProps = {
@@ -65,7 +66,12 @@ const TavernRulesDialogContent: FC<TavernRulesDialogContentProps> = (props) => {
               </div>
               <div css={ buttonContainer }>
                 { legalMoves.map((m, index) => (
-                  <MoveButton key={ index } move={ m } onClick={ close } game={ game }/>
+                  <MoveButton
+                    key={ index }
+                    move={ m }
+                    onClick={ close }
+                    game={ game }
+                    Component={ MoveCoinToTavernButton }/>
                 )) }
               </div>
             </div>
