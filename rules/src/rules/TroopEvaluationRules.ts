@@ -110,7 +110,7 @@ class TroopEvaluationRules extends NidavellirRules {
       return [setStepMove(Step.TroopEvaluation)]
     }
 
-    return [];
+    return []
   }
 
   private onMoveCard(move: MoveCard): (Move | MoveView)[] {
@@ -121,6 +121,10 @@ class TroopEvaluationRules extends NidavellirRules {
       if (moves.length) {
         delete player.ready
         return moves
+      }
+
+      if (player.effects.length === 0 && player.ready) {
+        return [setStepMove(Step.TroopEvaluation)]
       }
     }
 
