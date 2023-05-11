@@ -14,6 +14,7 @@ import { HeroRulesDialogContent } from './HeroRulesDialogContent'
 import { DistinctionRulesDialogContent } from './DistinctionRulesDialogContent'
 import { CoinRulesDialogContent } from './CoinRulesDialogContent'
 import { GemRulesDialogContent } from './GemRulesDialogContent'
+import { TavernRulesDialogContent } from './TavernRulesDialogContent'
 
 type Props = {
   game: GameView;
@@ -24,7 +25,8 @@ const RulesDialogContents = {
   [RulesDialogType.Hero]: HeroRulesDialogContent,
   [RulesDialogType.Distinction]: DistinctionRulesDialogContent,
   [RulesDialogType.Coin]: CoinRulesDialogContent,
-  [RulesDialogType.Gem]: GemRulesDialogContent
+  [RulesDialogType.Gem]: GemRulesDialogContent,
+  [RulesDialogType.Tavern]: TavernRulesDialogContent
 }
 
 export default function RulesDialog({ game }: Props) {

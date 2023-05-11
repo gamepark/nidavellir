@@ -98,7 +98,8 @@ export const getGoldCoinsScore = (game: GameState | GameView, playerId: PlayerId
   if (game.step !== Step.Scoring) {
     return 0
   }
-  const coins = getPlayerCoins(game, playerId).filter((c) => Coins[c.id!].color !== CoinColor.Bronze)
+  
+  const coins = getPlayerCoins(game, playerId)
   return sumBy(coins, (c) => Coins[c.id!].value)
 }
 
