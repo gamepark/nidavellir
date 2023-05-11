@@ -9,7 +9,6 @@ import { getCardsInCommandZone } from './card.utils'
 import GameState, { Step } from '../state/GameState'
 import sumBy from 'lodash/sumBy'
 import { Coins } from '../coins/Coins'
-import { CoinColor } from '../coins/Coin'
 import { getPlayersWithMajority } from './distinction.utils'
 import maxBy from 'lodash/maxBy'
 import { getPlayerCoins } from './coin.utils'
@@ -98,7 +97,7 @@ export const getGoldCoinsScore = (game: GameState | GameView, playerId: PlayerId
   if (game.step !== Step.Scoring) {
     return 0
   }
-  
+
   const coins = getPlayerCoins(game, playerId)
   return sumBy(coins, (c) => Coins[c.id!].value)
 }
