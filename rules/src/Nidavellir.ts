@@ -82,7 +82,9 @@ export default class Nidavellir
     }
 
     if (move.type === MoveType.MoveCard) {
-      return move.target.type !== LocationType.Age1Deck && move.target.type !== LocationType.Age2Deck
+      return move.target.type !== LocationType.Age1Deck
+        && move.target.type !== LocationType.Age2Deck
+        && move.target.type !== LocationType.PlayerHand
     }
 
     return true

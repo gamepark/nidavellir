@@ -76,7 +76,7 @@ class YludRules extends EffectRules {
         .forEach((h) => h.location.index!--)
     }
 
-    const moves = onChooseCard(this.game, this.player, move, 'heroes', true)
+    const moves = onChooseCard(this.game, this.player, move, 'heroes')
     if (moves.length) {
       return moves
     }
