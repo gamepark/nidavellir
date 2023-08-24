@@ -1,4 +1,3 @@
-import { Effect } from '../effects/Effect';
 import { Grades } from './Grades';
 import { isEnumValue } from "@gamepark/rules-api";
 
@@ -17,7 +16,6 @@ export type DwarfDescription = {
   copies?: number;
   grades?: Grades;
   minPlayers?: number;
-  effects?: Effect[];
 };
 
 

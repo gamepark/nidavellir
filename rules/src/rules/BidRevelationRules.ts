@@ -50,7 +50,7 @@ class BidRevelationRules extends MaterialRulesPart {
     }
 
     return [
-      this.rules().startPlayerTurn(RuleId.ElvalandTurn, nextPlayer?.location.player!)
+      this.rules().startPlayerTurn(RuleId.ChooseCard, nextPlayer?.location.player!)
     ]
   }
 

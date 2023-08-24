@@ -1,13 +1,14 @@
-import { isStartPlayerTurn, Location, MaterialGame, MaterialMove, MaterialRulesPart, MoveItem } from "@gamepark/rules-api";
-import { Memory } from "../Memory";
+import { isStartPlayerTurn, Location, MaterialGame, MaterialItem, MaterialMove, MaterialRulesPart, MoveItem } from "@gamepark/rules-api";
+import { Effect, Memory } from "../Memory";
 import { MaterialType } from "../../material/MaterialType";
-import { Cards, isDwarfDescription, isHeroDescription } from "../../cards/Cards";
+import { Cards, isDwarfDescription, isHeroDescription, isRoyalOfferingDescription } from "../../cards/Cards";
 import { LocationType } from "../../material/LocationType";
 import Army from "./Army";
 import { Card } from "../../material/Card";
 import { PlayerId } from "../../state/Player";
 import { DwarfType } from "../../cards/DwarfDescription";
 import { RuleId } from "../RuleId";
+import { HeroesEffects } from "../../cards/Heroes";
 
 export class CardChoice extends MaterialRulesPart {
 
@@ -37,10 +38,8 @@ export class CardChoice extends MaterialRulesPart {
   onMove(move: MoveItem) {
     const moves: MaterialMove[] = []
     const movedItem = this.material(MaterialType.Card).getItem(move.itemIndex)!
-    const description = Cards[movedItem.id.front]
-    if (description.effects) {
-      console.warn("Effect are not managed yet. Please be patient")
-    }
+
+    this.applyEffect(movedItem)
 
     if (move.position.location?.type !== LocationType.Army) return []
 
@@ -59,5 +58,20 @@ export class CardChoice extends MaterialRulesPart {
 
   get hasRecruitment() {
     return this.remind(Memory.Recruitements)
+  }
+
+  applyEffect (item: MaterialItem) {
+    const cardId = item.id.front
+    const description = Cards[cardId]
+
+    if (isRoyalOfferingDescription(cardId, description)) {
+      this.memorize(Memory.TransformBonus, description.bonus)
+      this.memorize<Effect>(Memory.Effect, { rule: RuleId.TransformCoin })
+    }
+
+    if (isHeroDescription(cardId, description)) {
+      const effect = HeroesEffects[cardId]
+      if (effect) this.memorize<Effect>(Memory.Effect, HeroesEffects[cardId])
+    }
   }
 }

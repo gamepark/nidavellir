@@ -10,13 +10,15 @@ export const locationsStrategies = {
     [LocationType.HeroesDeck]: new PositiveSequenceStrategy(),
     [LocationType.PlayerHand]: new PositiveSequenceStrategy(),
     [LocationType.Discard]: new PositiveSequenceStrategy(),
-    [LocationType.Army]: new PositiveSequenceStrategy("y")
+    [LocationType.Army]: new PositiveSequenceStrategy("y"),
+    [LocationType.DistinctionsDeck]: new PositiveSequenceStrategy(),
   },
   [MaterialType.Coin]: {
     [LocationType.Treasure]: new PositiveSequenceStrategy(),
     [LocationType.CommandZone]: new PositiveSequenceStrategy(),
     [LocationType.PlayerHand]: new PositiveSequenceStrategy(),
     [LocationType.Discard]: new PositiveSequenceStrategy(),
+    [LocationType.DistinctionsDeck]: new PositiveSequenceStrategy(),
   },
   [MaterialType.Distinction]: {
     [LocationType.CommandZone]: new PositiveSequenceStrategy(),

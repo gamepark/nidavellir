@@ -1,5 +1,4 @@
 import { DwarfDescription, DwarfType } from './DwarfDescription';
-import { EffectType } from '../effects/EffectType';
 import { Card, isHero, isRoyalOffering, isSimpleDwarf } from "../material/Card";
 import { HeroDescription } from "./HeroDescription";
 import { RoyalOfferingDescription } from "./RoyalOfferingDescription";
@@ -716,52 +715,27 @@ export const ExplorerDwarf8Age2: DwarfDescription = {
 
 export const RoyalOffering1Age1: RoyalOfferingDescription = {
   age: 1,
-  effects: [
-    {
-      type: EffectType.TRANSFORM_COIN,
-      additionalValue: 3,
-    },
-  ],
+  bonus: 3
 };
 
 export const RoyalOffering2Age1: RoyalOfferingDescription = {
   age: 1,
-  effects: [
-    {
-      type: EffectType.TRANSFORM_COIN,
-      additionalValue: 3,
-    },
-  ],
+  bonus: 3
 };
 
 export const RoyalOffering1Age2: RoyalOfferingDescription = {
   age: 2,
-  effects: [
-    {
-      type: EffectType.TRANSFORM_COIN,
-      additionalValue: 5,
-    },
-  ],
+  bonus: 5
 };
 
 export const RoyalOffering2Age2: RoyalOfferingDescription = {
   age: 2,
-  effects: [
-    {
-      type: EffectType.TRANSFORM_COIN,
-      additionalValue: 5,
-    },
-  ],
+  bonus: 5
 };
 
 export const RoyalOffering3Age2: RoyalOfferingDescription = {
   age: 2,
-  effects: [
-    {
-      type: EffectType.TRANSFORM_COIN,
-      additionalValue: 5,
-    },
-  ],
+  bonus: 5
 };
 
 export const BlacksmithDwarfKingsGreatArmorer: DwarfDescription = {

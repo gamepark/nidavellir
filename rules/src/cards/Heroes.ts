@@ -1,18 +1,13 @@
 import { HeroDescription } from './HeroDescription';
 import { DwarfType } from './DwarfDescription';
-import { EffectType } from '../effects/EffectType';
+import { Card } from "../material/Card";
+import { RuleId } from "../rules/RuleId";
 
 export const Bonfur: HeroDescription = {
   type: DwarfType.Blacksmith,
   grades: {
     [DwarfType.Blacksmith]: [0, 0, 0],
-  },
-  effects: [
-    {
-      type: EffectType.DISCARD_CARD,
-      count: 1,
-    },
-  ],
+  }
 };
 
 export const Aegur: HeroDescription = {
@@ -26,13 +21,7 @@ export const Dagda: HeroDescription = {
   type: DwarfType.Hunter,
   grades: {
     [DwarfType.Hunter]: [0, 0, 0],
-  },
-  effects: [
-    {
-      type: EffectType.DISCARD_CARD,
-      count: 2,
-    },
-  ],
+  }
 };
 
 export const Aral: HeroDescription = {
@@ -142,25 +131,14 @@ export const Uline: HeroDescription = {
   type: DwarfType.Neutral,
   grades: {
     [DwarfType.Neutral]: [9],
-  },
-  effects: [
-    {
-      type: EffectType.ULINE,
-    },
-  ],
+  }
 };
 
 export const Grid: HeroDescription = {
   type: DwarfType.Neutral,
   grades: {
     [DwarfType.Neutral]: [7],
-  },
-  effects: [
-    {
-      type: EffectType.TRANSFORM_COIN,
-      additionalValue: 7,
-    },
-  ],
+  }
 };
 
 export const Heroes: HeroDescription[] = [
@@ -186,3 +164,10 @@ export const Heroes: HeroDescription[] = [
   Uline,
   Grid,
 ];
+
+export const HeroesEffects: Partial<Record<Card, RuleId>> = {
+  [RuleId.Grid]: RuleId.Grid,
+  [RuleId.Uline]: RuleId.Uline,
+  [RuleId.Dagda]: RuleId.Dagda,
+  [RuleId.Bonfur]: RuleId.Bonfur
+}

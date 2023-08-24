@@ -1,16 +1,9 @@
 import { DistinctionDescription } from './DistinctionDescription'
 import { DwarfType } from './DwarfDescription'
-import { EffectType } from '../effects/EffectType'
-import {Distinction} from "../material/Distinction";
+import { Distinction } from "../material/Distinction";
 
 export const KingsHand: DistinctionDescription = {
-  majorityOf: DwarfType.Warrior,
-  effects: [
-    {
-      type: EffectType.TRANSFORM_COIN,
-      additionalValue: 5
-    }
-  ]
+  majorityOf: DwarfType.Warrior
 }
 
 export const HuntingMaster: DistinctionDescription = {
@@ -26,14 +19,7 @@ export const KingsGreatArmorer: DistinctionDescription = {
 }
 
 export const PioneerOfTheKingdom: DistinctionDescription = {
-  majorityOf: DwarfType.Explorer,
-  effects: [
-    {
-      type: EffectType.DRAW_CARD,
-      count: 3,
-      keep: 1
-    }
-  ]
+  majorityOf: DwarfType.Explorer
 }
 
 export const DistinctionDescriptions: Record<Distinction, DistinctionDescription> = {

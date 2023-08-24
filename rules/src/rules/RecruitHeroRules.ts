@@ -1,8 +1,8 @@
-import { isMoveItemType, ItemMove, MaterialItem, RuleMove, RuleStep } from "@gamepark/rules-api";
+import { isMoveItemType, isStartPlayerTurn, ItemMove, MaterialItem, RuleMove, RuleStep } from "@gamepark/rules-api";
 import { MaterialType } from "../material/MaterialType";
 import { LocationType } from "../material/LocationType";
 import { isHero } from "../material/Card";
-import { Memory } from "./Memory";
+import { Effect, Memory } from "./Memory";
 import { HeroWithActionRuleIds, RuleId } from "./RuleId";
 import ElvalandTurn from "./helpers/ElvalandTurn";
 import { CardChoice } from "./helpers/CardChoice";
@@ -15,6 +15,7 @@ class RecruitHeroRules extends EffectRule {
 
   onRuleStart(_move: RuleMove, previousRule?: RuleStep) {
     if (previousRule && HeroWithActionRuleIds.includes(previousRule.id) && !this.hasRecruitement) return this.endOfHeroResolution
+    if (this.effect) return [this.goToEffect]
     return []
   }
 
@@ -62,7 +63,13 @@ class RecruitHeroRules extends EffectRule {
     const chooseCard = new CardChoice(this.game, this.player)
     const moves = chooseCard.onMove(move)
 
-    // If there is effect moves here
+    if (moves.some((move) => isStartPlayerTurn(move))) {
+      return moves;
+    }
+
+    if (this.effect) {
+      moves.push(this.goToEffect)
+    }
 
     if (this.hasRecruitement) return moves;
 
@@ -87,6 +94,14 @@ class RecruitHeroRules extends EffectRule {
     }
 
     return moves
+  }
+
+  get effect() {
+    return this.remind<Effect>(Memory.Effect)
+  }
+
+  get goToEffect() {
+    return this.rules().startPlayerTurn(this.effect, this.player)
   }
 
   get hasRecruitement() {

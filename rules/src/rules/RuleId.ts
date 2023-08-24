@@ -7,25 +7,19 @@ export enum RuleId {
   RecruitHero,
   TradeCoin,
   TransformCoin,
-  DrawCard,
-  ElvalandTurn,
   KingsHand,
   HuntingMaster,
   CrownJeweler,
   KingsGreatArmorer,
   PioneerOfTheKingdom,
-  TroopEvaluation,
   GemTrade,
-  Scoring,
-  EndOfAge1,
-  EndOfAge2,
 
   // Heroes
-  Grid,
-  Uline,
-  Dagda,
   Bonfur,
+  Dagda,
+  Grid,
   Thrud,
+  Uline,
   Ylud
 }
 
@@ -41,6 +35,5 @@ export const HeroWithActionRuleIds = [
   RuleId.Grid,
   RuleId.Uline,
   RuleId.Dagda,
-  RuleId.Bonfur,
-  RuleId.Thrud
+  RuleId.Bonfur
 ]

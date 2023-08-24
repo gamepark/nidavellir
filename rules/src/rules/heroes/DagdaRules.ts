@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove } from "@gamepark/rules-api"
+import { isMoveItemType, ItemMove, RuleMove } from "@gamepark/rules-api"
 import { Memory } from "../Memory";
 import { LocationType } from "../../material/LocationType";
 import HeroRules from "./HeroRules";
@@ -46,8 +46,8 @@ export class DagdaRules extends HeroRules {
     return this.remind(Memory.Dagda)
   }
 
-  onRuleEnd() {
+  onRuleEnd(move: RuleMove) {
     this.forget(Memory.Dagda)
-    return []
+    return super.onRuleEnd(move)
   }
 }

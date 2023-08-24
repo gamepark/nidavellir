@@ -1,4 +1,4 @@
-import { isMoveItemType, isStartPlayerTurn, ItemMove, PlayerTurnRule } from "@gamepark/rules-api";
+import { isMoveItemType, isStartPlayerTurn, ItemMove, MaterialMove, PlayerTurnRule, RuleMove, RuleStep } from "@gamepark/rules-api";
 import { MaterialType } from "../material/MaterialType";
 import { LocationType } from "../material/LocationType";
 import { Memory } from "./Memory";
@@ -7,6 +7,12 @@ import { CardChoice } from "./helpers/CardChoice";
 import { RuleId } from "./RuleId";
 
 class ChooseCardRules extends PlayerTurnRule {
+
+  onRuleStart(_move: RuleMove<number, RuleId>, previousRule?: RuleStep) {
+    if (previousRule?.id === RuleId.Thrud) return this.choiceEnded
+    return []
+  }
+
   getAutomaticMoves() {
     const moves = this.chooseCardMoves
     if (moves.length === 1) {
@@ -36,26 +42,29 @@ class ChooseCardRules extends PlayerTurnRule {
     // TODO: store effect ???
     const cardChoice = new CardChoice(this.game, this.player)
     const moves = cardChoice.onMove(move)
-    const otherMoves = []
-    const elvalandTurn = new ElvalandTurn(this.game, this.player)
 
-    if (moves.some(((move) => isStartPlayerTurn(move) && move.id === RuleId.RecruitHero))) {
+    if (moves.some((move) => isStartPlayerTurn(move))) {
       return moves;
     }
 
-    otherMoves.push(...elvalandTurn.moveToTradeCoin)
-
-    if (!otherMoves.length) {
-      otherMoves.push(...elvalandTurn.endOfTurnMoves)
-    }
-
-    moves.push(...otherMoves)
+    moves.push(...this.choiceEnded)
 
     return moves;
   }
 
   get tavern() {
     return this.remind(Memory.Tavern)
+  }
+
+  get choiceEnded () {
+    const elvalandTurn = new ElvalandTurn(this.game, this.player)
+    const moves: MaterialMove[] = elvalandTurn.moveToTradeCoin
+
+    if (!moves.length) {
+      moves.push(...elvalandTurn.endOfTurnMoves)
+    }
+
+    return moves;
   }
 
 

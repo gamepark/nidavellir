@@ -1,4 +1,5 @@
 import { RuleStep } from "@gamepark/rules-api";
+import { RuleId } from "./RuleId";
 
 export enum Memory {
   Tavern = 1,
@@ -12,12 +13,15 @@ export enum Memory {
   TransformBonus,
   TransformedCoinLocation,
   Dagda,
-  Thrud
+  Thrud,
+  Effect,
 }
 
 export type PreviousRule = RuleStep
 
 export type DiscardedCoin = {
-  tavern: number;
+  tavern: number
   index: number
 }
+
+export type Effect = RuleId
