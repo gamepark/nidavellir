@@ -1,12 +1,8 @@
-import { Hero, HeroType } from './Hero';
-import { DwarfType } from './Card';
-import GameState from '../state/GameState';
-import GameView from '../state/view/GameView';
-import { PlayerId } from '../state/Player';
-import { getArmy } from '../utils/player.utils';
+import { HeroDescription } from './HeroDescription';
+import { DwarfType } from './DwarfDescription';
 import { EffectType } from '../effects/EffectType';
 
-export const Bonfur: Hero = {
+export const Bonfur: HeroDescription = {
   type: DwarfType.Blacksmith,
   grades: {
     [DwarfType.Blacksmith]: [0, 0, 0],
@@ -19,14 +15,14 @@ export const Bonfur: Hero = {
   ],
 };
 
-export const Aegur: Hero = {
+export const Aegur: HeroDescription = {
   type: DwarfType.Blacksmith,
   grades: {
     [DwarfType.Blacksmith]: [0, 0],
   },
 };
 
-export const Dagda: Hero = {
+export const Dagda: HeroDescription = {
   type: DwarfType.Hunter,
   grades: {
     [DwarfType.Hunter]: [0, 0, 0],
@@ -39,87 +35,82 @@ export const Dagda: Hero = {
   ],
 };
 
-export const Aral: Hero = {
+export const Aral: HeroDescription = {
   type: DwarfType.Hunter,
   grades: {
     [DwarfType.Hunter]: [0, 0],
   },
 };
 
-export const Kraal: Hero = {
+export const Kraal: HeroDescription = {
   type: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [7, 0],
   },
 };
 
-export const Tarah: Hero = {
+export const Tarah: HeroDescription = {
   type: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [14],
   },
 };
 
-export const Lokdur: Hero = {
+export const Lokdur: HeroDescription = {
   type: DwarfType.Miner,
   grades: {
     [DwarfType.Miner]: [3],
   },
 };
 
-export const Zoral: Hero = {
+export const Zoral: HeroDescription = {
   type: DwarfType.Miner,
   grades: {
     [DwarfType.Miner]: [1, 0, 0],
   },
 };
 
-export const Idunn: Hero = {
+export const Idunn: HeroDescription = {
   type: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [7],
   },
 };
 
-export const Hourya: Hero = {
+export const Hourya: HeroDescription = {
   type: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [20],
   },
-  condition: {
-    isActive(game: GameState | GameView, playerId: PlayerId): boolean {
-      const army = getArmy(game, playerId, DwarfType.Explorer);
-      return army.cards.length + army.heroes.length >= 5;
-    },
-  },
+  minGrades: 5
 };
 
-export const Astrid: Hero = {
-  type: HeroType.Neutral,
+export const Astrid: HeroDescription = {
+  type: DwarfType.Neutral,
 };
 
-export const DwergYmir: Hero = {
-  type: HeroType.Neutral,
+export const DwergYmir: HeroDescription = {
+  type: DwarfType.Neutral,
 };
 
-export const DwergAesir: Hero = {
-  type: HeroType.Neutral,
+export const DwergAesir: HeroDescription = {
+  type: DwarfType.Neutral,
 };
 
-export const DwergSigmir: Hero = {
-  type: HeroType.Neutral,
+export const DwergSigmir: HeroDescription = {
+  type: DwarfType.Neutral,
 };
 
-export const DwergJungir: Hero = {
-  type: HeroType.Neutral,
+export const DwergJungir: HeroDescription = {
+  type: DwarfType.Neutral,
 };
 
-export const DwergBergelmir: Hero = {
-  type: HeroType.Neutral,
+export const DwergBergelmir: HeroDescription = {
+  type: DwarfType.Neutral,
 };
 
-export const Thrud: Hero = {
-  type: HeroType.Neutral,
+export const Thrud: HeroDescription = {
+  type: DwarfType.Neutral,
   grades: {
     [DwarfType.Blacksmith]: [13],
     [DwarfType.Hunter]: [13],
@@ -129,8 +120,8 @@ export const Thrud: Hero = {
   },
 };
 
-export const Ylud: Hero = {
-  type: HeroType.Neutral,
+export const Ylud: HeroDescription = {
+  type: DwarfType.Neutral,
   grades: {
     [DwarfType.Blacksmith]: [0],
     [DwarfType.Hunter]: [0],
@@ -140,17 +131,17 @@ export const Ylud: Hero = {
   },
 };
 
-export const Skaa: Hero = {
-  type: HeroType.Neutral,
+export const Skaa: HeroDescription = {
+  type: DwarfType.Neutral,
   grades: {
-    [HeroType.Neutral]: [17],
+    [DwarfType.Neutral]: [17],
   },
 };
 
-export const Uline: Hero = {
-  type: HeroType.Neutral,
+export const Uline: HeroDescription = {
+  type: DwarfType.Neutral,
   grades: {
-    [HeroType.Neutral]: [9],
+    [DwarfType.Neutral]: [9],
   },
   effects: [
     {
@@ -159,10 +150,10 @@ export const Uline: Hero = {
   ],
 };
 
-export const Grid: Hero = {
-  type: HeroType.Neutral,
+export const Grid: HeroDescription = {
+  type: DwarfType.Neutral,
   grades: {
-    [HeroType.Neutral]: [7],
+    [DwarfType.Neutral]: [7],
   },
   effects: [
     {
@@ -172,7 +163,7 @@ export const Grid: Hero = {
   ],
 };
 
-export const Heroes: Hero[] = [
+export const Heroes: HeroDescription[] = [
   Bonfur,
   Aegur,
   Dagda,

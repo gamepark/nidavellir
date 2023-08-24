@@ -98,7 +98,7 @@ import {
   WarriorDwarf9Age2
 } from '@gamepark/nidavellir/cards/Cards'
 import { cardHeight, cardWidth, shineEffect } from '../Styles'
-import { Card } from '@gamepark/nidavellir/cards/Card'
+import { DwarfDescription } from '@gamepark/nidavellir/cards/DwarfDescription'
 import { isInAge1Deck, isInAgeDeck } from '@gamepark/nidavellir/utils/location.utils'
 import Images from '../../images/Images'
 import { Animation, useAnimation, useAnimations, usePlay } from '@gamepark/react-client'
@@ -209,7 +209,7 @@ const ageCard = (scale: number = 1) => css`
   cursor: pointer;
 `
 
-const ageCardFace = (card: Card) => css`
+const ageCardFace = (card: DwarfDescription) => css`
   position: absolute;
   top: 0;
   left: 0;
@@ -238,7 +238,7 @@ const ageCardBack = (age: number = 1) => css`
   image-rendering: -webkit-optimize-contrast;
 `
 
-const AgeCardFront = new Map<Card, any>()
+const AgeCardFront = new Map<DwarfDescription, any>()
 AgeCardFront.set(BlacksmithDwarf1Age1, Images.BlacksmithDwarf1Age1)
 AgeCardFront.set(BlacksmithDwarf1Age2, Images.BlacksmithDwarf1Age2)
 AgeCardFront.set(BlacksmithDwarf2Age1, Images.BlacksmithDwarf2Age1)

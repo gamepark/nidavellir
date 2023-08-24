@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { DwarfType } from '@gamepark/nidavellir/cards/Card'
+import { DwarfType } from '@gamepark/nidavellir/cards/DwarfDescription'
 import { FC } from 'react'
 import {
   columnWidth,

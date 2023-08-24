@@ -27,7 +27,7 @@ import {
   Ylud,
   Zoral
 } from '@gamepark/nidavellir/cards/Heroes'
-import { Hero } from '@gamepark/nidavellir/cards/Hero'
+import { HeroDescription } from '@gamepark/nidavellir/cards/HeroDescription'
 import { Animation, useAnimation, useAnimations, usePlay } from '@gamepark/react-client'
 import MoveType from '@gamepark/nidavellir/moves/MoveType'
 import { MoveHero } from '@gamepark/nidavellir/moves/MoveHero'
@@ -120,7 +120,7 @@ const heroCard = (scale: number = 1) => css`
   cursor: pointer;
 `
 
-const heroCardFace = (hero: Hero) => css`
+const heroCardFace = (hero: HeroDescription) => css`
   position: absolute;
   top: 0;
   left: 0;
@@ -135,7 +135,7 @@ const heroCardFace = (hero: Hero) => css`
   box-shadow: 0 0 0.7em -0.2em black;
 `
 
-const HeroCardFront = new Map<Hero, any>()
+const HeroCardFront = new Map<HeroDescription, any>()
 HeroCardFront.set(Aegur, Images.Aegur)
 HeroCardFront.set(Aral, Images.Aral)
 HeroCardFront.set(Astrid, Images.Astrid)

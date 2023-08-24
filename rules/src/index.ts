@@ -1,2 +1,2 @@
-export {default} from './Nidavellir'
+export {default} from './NidavellirRules'
 export {NidavellirOptionsSpec} from './NidavellirOptions'

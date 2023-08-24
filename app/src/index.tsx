@@ -1,6 +1,6 @@
 import { css, Global } from '@emotion/react'
 import { NidavellirOptionsSpec } from '@gamepark/nidavellir/NidavellirOptions'
-import Nidavellir from '@gamepark/nidavellir/Nidavellir'
+import Nidavellir from '@gamepark/nidavellir/NidavellirRules'
 import { GameProvider, setupTranslation } from '@gamepark/react-client'
 import normalize from 'emotion-normalize'
 import { StrictMode } from 'react'

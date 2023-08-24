@@ -6,7 +6,7 @@ import { gemTokenHeight, gemTokenWidth } from '../Styles';
 import { Animation, useAnimation, usePlay } from '@gamepark/react-client';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
 import { Gem1, Gem2, Gem3, Gem4, Gem5, Gem6, Gems } from '@gamepark/nidavellir/gems/Gems';
-import { Gem } from '@gamepark/nidavellir/gems/Gem';
+import { GemDescription } from '@gamepark/nidavellir/gems/GemDescription';
 import { LocatedGem } from '@gamepark/nidavellir/state/LocatedGem';
 import { gemRulesDialog, setRulesDialog } from '@gamepark/nidavellir/moves/RulesDialog/RulesDialog';
 
@@ -51,7 +51,7 @@ const gemToken = (scale: number = 1) => css`
   will-change: transform;
 `;
 
-const gemFace = (gem: Gem) => css`
+const gemFace = (gem: GemDescription) => css`
   position: absolute;
   top: 0;
   left: 0;
@@ -65,7 +65,7 @@ const gemFace = (gem: Gem) => css`
   filter: drop-shadow(0.3em 0.3em 0.6em black);
 `;
 
-const GemTokensImages = new Map<Gem, any>();
+const GemTokensImages = new Map<GemDescription, any>();
 GemTokensImages.set(Gem1, Images.Gem1);
 GemTokensImages.set(Gem2, Images.Gem2);
 GemTokensImages.set(Gem3, Images.Gem3);

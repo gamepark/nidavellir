@@ -1,4 +1,4 @@
-import { LocationType } from './Location';
+import { LocationType } from '../material/LocationType';
 import { PlayerId } from './Player';
 
 export type OnPlayerBoard = {

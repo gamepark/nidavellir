@@ -2,7 +2,7 @@ import GameView from '@gamepark/nidavellir/state/view/GameView'
 import { FC } from 'react'
 import MoveType from '@gamepark/nidavellir/moves/MoveType'
 import { Cards } from '@gamepark/nidavellir/cards/Cards'
-import { Card, DwarfType, RoyalOffering } from '@gamepark/nidavellir/cards/Card'
+import { DwarfDescription, DwarfType, RoyalOffering } from '@gamepark/nidavellir/cards/DwarfDescription'
 import { CardRulesDialogContent, RuleDetail } from './CardRulesDialogContent'
 import { AgeCardRulesDialog } from '@gamepark/nidavellir/moves/RulesDialog/RulesDialog'
 import { AgeCard } from '../material/card/AgeCard'
@@ -30,7 +30,7 @@ const AgeCardRulesDialogContent: FC<AgeCardRulesDialogContentProps> = (props) =>
   )
 }
 
-export const CARD_RULES = new Map<DwarfType | RoyalOffering, (card: Card) => RuleDetail>()
+export const CARD_RULES = new Map<DwarfType | RoyalOffering, (card: DwarfDescription) => RuleDetail>()
 CARD_RULES.set(DwarfType.Warrior, () => ({
   header: <Trans defaults="age-card.rules.header.warrior"/>,
   description: [<Trans defaults="age-card.rules.desc.warrior" components={ [<strong/>] }/>]
@@ -51,7 +51,7 @@ CARD_RULES.set(DwarfType.Blacksmith, () => ({
   header: <Trans defaults="age-card.rules.header.blacksmith"/>,
   description: [<Trans defaults="age-card.rules.desc.blacksmith" components={ [<strong/>] }/>]
 }))
-CARD_RULES.set(RoyalOffering.RoyalOffering, (card: Card) => ({
+CARD_RULES.set(RoyalOffering.RoyalOffering, (card: DwarfDescription) => ({
   header: <Trans defaults="age-card.rules.header.royal-offering"/>,
   description: [
     <Trans

@@ -2,7 +2,7 @@
 import { css } from '@emotion/react';
 import { FC } from 'react';
 import Images from '../../images/Images';
-import { LocationType } from '@gamepark/nidavellir/state/Location';
+import { LocationType } from '@gamepark/nidavellir/material/LocationType';
 import { Trans } from 'react-i18next';
 import { MoveCoin } from '@gamepark/nidavellir/moves/MoveCoin';
 import { CoinLocation } from '@gamepark/nidavellir/state/LocatedCoin';

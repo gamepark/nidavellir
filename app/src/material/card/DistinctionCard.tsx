@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import { FC, HTMLAttributes } from 'react';
 import { cardHeight, cardWidth } from '../Styles';
 import Images from '../../images/Images';
-import { Distinction } from '@gamepark/nidavellir/cards/Distinction';
+import { DistinctionDescription } from '@gamepark/nidavellir/cards/DistinctionDescription';
 import { Animation, useAnimation, usePlay } from '@gamepark/react-client';
 import MoveType from '@gamepark/nidavellir/moves/MoveType';
 import {
@@ -61,7 +61,7 @@ const distinctionCard = (scale: number = 1) => css`
   cursor: pointer;
 `;
 
-const distinctionCardFace = (distinction: Distinction) => css`
+const distinctionCardFace = (distinction: DistinctionDescription) => css`
   position: absolute;
   top: 0;
   left: 0;
@@ -75,7 +75,7 @@ const distinctionCardFace = (distinction: Distinction) => css`
   box-shadow: 0 0 0.3em black;
 `;
 
-const DistinctionCardFront = new Map<Distinction, any>();
+const DistinctionCardFront = new Map<DistinctionDescription, any>();
 DistinctionCardFront.set(KingsHand, Images.KingsHand);
 DistinctionCardFront.set(HuntingMaster, Images.HuntingMaster);
 DistinctionCardFront.set(CrownJeweler, Images.CrownJeweler);

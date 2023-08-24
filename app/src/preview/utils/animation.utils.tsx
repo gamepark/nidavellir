@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { LocationType } from '@gamepark/nidavellir/state/Location'
+import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { Animation } from '@gamepark/react-client'
 import MoveType from '@gamepark/nidavellir/moves/MoveType'
 import { Player, PlayerId } from '@gamepark/nidavellir/state/Player'

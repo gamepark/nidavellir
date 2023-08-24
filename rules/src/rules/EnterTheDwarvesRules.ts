@@ -1,74 +1,36 @@
-import Move from '../moves/Move'
-import { NidavellirRules } from './NidavellirRules'
-import MoveType from '../moves/MoveType'
-import GameState, { Step } from '../state/GameState'
-import MoveView from '../moves/MoveView'
-import { getCardsInTavern, isSameCoinLocation } from '../utils/location.utils'
-import { LocationType } from '../state/Location'
-import { getCardByTavern } from '../utils/tavern.utils'
-import { drawTavernCards } from '../utils/age.utils'
-import { moveKnownCardMove } from '../moves/MoveCard'
-import { MoveCoin, moveKnownCoinMove } from '../moves/MoveCoin'
-import { shuffleCoinMove } from '../moves/ShuffleCoins'
-import { setStepMove } from '../moves/SetStep'
-import { getPlayerCoins } from '../utils/coin.utils'
+import { LocationType } from '../material/LocationType'
+import { MaterialMove, MaterialRulesPart } from "@gamepark/rules-api";
+import { MaterialType } from "../material/MaterialType";
+import { RuleId } from "./RuleId";
+import { MIN_DWARVES_PER_TAVERN } from "./helpers/Tavern";
+import { TAVERN_COUNT } from "../utils/constants";
 
-class EnterTheDwarvesRules extends NidavellirRules {
-  getAutomaticMoves(): (Move | MoveView)[] {
-    if (!getCardsInTavern(this.game).length) {
-      const game = this.game as GameState
-      const cardsByTavern = getCardByTavern(game.players)
-      const drawnCards = drawTavernCards(game)
-      const moves: Move[] = drawnCards.map((c, index) =>
-        moveKnownCardMove(c.id!, {
-          type: LocationType.Tavern,
-          tavern: Math.floor(index / cardsByTavern),
-          index: index % cardsByTavern
-        })
+
+class EnterTheDwarvesRules extends MaterialRulesPart {
+  onRuleStart(): MaterialMove[] {
+    const moves = this.fillTavern
+    for (const player of this.game.players) {
+      moves.push(
+        ...this.material(MaterialType.Coin)
+          .player(player)
+          .location((location) => LocationType.PlayerHand !== location.type)
+          .moveItems({ location: { type: LocationType.PlayerHand, player } })
       )
-
-      moves.push(...this.moveCoinInPlayerHand())
-      moves.push(setStepMove(Step.Bids))
-
-      return moves
     }
 
-    return super.getAutomaticMoves()
+    moves.push(this.rules().startRule(RuleId.Bids))
+    return moves
   }
 
-  play(move: Move | MoveView) {
-    switch (move.type) {
-      case MoveType.MoveCoin:
-        return this.onMoveCoinInHand(move)
-    }
+  get fillTavern(): MaterialMove[] {
+    const cardsByTavern = Math.max(MIN_DWARVES_PER_TAVERN, this.game.players.length)
+    const numberOfCard = cardsByTavern * TAVERN_COUNT
 
-    return super.play(move)
-  }
-
-  onMoveCoinInHand = (move: MoveCoin) => {
-    const coin = this.game.coins.find((c) => {
-      return c.id !== undefined && move.id !== undefined
-        ? move.id === c.id
-        : isSameCoinLocation(move.target!, c.location)
-    })!
-    coin.hidden = true
-    return []
-  }
-
-  moveCoinInPlayerHand = () => {
-    return this.game.players.flatMap((p) => {
-      const coins = getPlayerCoins(this.game, p.id)
-      return [
-        ...coins.flatMap((c, index) =>
-          moveKnownCoinMove(c.id!, {
-            type: LocationType.PlayerHand,
-            player: p.id,
-            index
-          }, p.id)
-        ),
-        shuffleCoinMove(coins.map((c) => c.id!), p.id)
-      ]
-    })
+    return this.material(MaterialType.Card)
+      .location((location) => LocationType.Age1Deck === location.type || LocationType.Age2Deck === location.type)
+      .sort(card => -card.location.x!)
+      .limit(numberOfCard)
+      .moveItems({ location: { type: LocationType.Tavern }})
   }
 }
 

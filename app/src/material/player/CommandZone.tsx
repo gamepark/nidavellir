@@ -16,7 +16,7 @@ import MoveType from '@gamepark/nidavellir/moves/MoveType'
 import { useDrop } from 'react-dnd'
 import { useLegalMoves } from '../../hook/rules.hook'
 import GameView from '@gamepark/nidavellir/state/view/GameView'
-import { LocationType } from '@gamepark/nidavellir/state/Location'
+import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 
 type CommandZoneProps = {
   position: any;

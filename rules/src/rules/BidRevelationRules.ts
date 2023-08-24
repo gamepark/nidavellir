@@ -1,107 +1,65 @@
-import {NidavellirRules} from './NidavellirRules'
-import Move from '../moves/Move'
-import {getCoinsInPlayerHand, isOnPlayerBoard} from '../utils/location.utils'
-import MoveView from '../moves/MoveView'
-import {moveCoinAndRevealMove, revealCoinMove} from '../moves/MoveCoin'
-import MoveType from '../moves/MoveType'
-import {Step} from '../state/GameState'
-import {getNextPlayer} from '../utils/player.utils'
-import {setStepMove} from '../moves/SetStep'
-import {PlayerId} from '../state/Player'
-import {Uline} from '../cards/Heroes'
-import {getPlayerCoinForTavern} from '../utils/coin.utils'
-import {passMove} from '../moves/Pass'
-import {LocationType} from '../state/Location'
-import {getPlayerWithHero} from '../utils/hero.utils'
-import {OnPlayerBoard} from '../state/CommonLocations'
+import { LocationType } from '../material/LocationType'
+import { isMoveItemType, ItemMove, MaterialMove, MaterialRulesPart } from "@gamepark/rules-api";
+import { Memory } from "./Memory";
+import { MaterialType } from "../material/MaterialType";
+import { Card } from "../material/Card";
+import { RuleId } from "./RuleId";
+import { Coins } from "../coins/Coins";
 
-class BidRevelationRules extends NidavellirRules {
-  getAutomaticMoves(): (Move | MoveView)[] {
-    const tavern = this.game.tavern
-    const tavernCoins = this.game.coins.filter((c) => isOnPlayerBoard(c.location) && c.location.index === tavern)
+class BidRevelationRules extends MaterialRulesPart {
 
-    if (tavernCoins.some((c) => c.hidden)) {
-      return tavernCoins.map((c) => revealCoinMove(c.id!, (c.location as OnPlayerBoard).player))
-    }
-
-    return []
+  onRuleStart() {
+    return this.coinsToReveal.moveItems({ rotation: {} })
   }
 
-  isTurnToPlay(playerId: PlayerId): boolean {
-    const playerWithUline = getPlayerWithHero(this.game, Uline)
-    if (playerWithUline && playerId === playerWithUline.id && !playerWithUline.ready) {
-      return true
-    }
+  afterItemMove(move: ItemMove) {
+    if (isMoveItemType(MaterialType.Coin)(move)) {
+      const remainingCoins = this.coinsToReveal
+      if (remainingCoins.length) return []
+      const playerWithUline = this.material(MaterialType.Card).location(LocationType.CommandZone).filter((item) => item.id.front === Card.Uline).getItem()
 
-    return super.isTurnToPlay(playerId)
-  }
+      if (playerWithUline) {
+        const tavernCoin = this
+          .material(MaterialType.Coin)
+          .location((location) => location.type === LocationType.Tavern && location.x === this.tavern)
+          .player(playerWithUline.location.player)
+          .length
 
-  getLegalMoves(playerId: PlayerId): (Move | MoveView)[] {
-    const tavern = this.game.tavern
-    const remainingCoinToReveal = this.game.coins.find(
-      (c) => isOnPlayerBoard(c.location) && c.location.index === tavern && c.hidden
-    )
-
-    if (remainingCoinToReveal) {
-      return []
-    }
-
-    const playerWithUline = getPlayerWithHero(this.game, Uline)
-
-    if (playerId === playerWithUline?.id) {
-      const tavern = this.game.tavern
-      if (getPlayerCoinForTavern(this.game, playerId, tavern)) {
-        return [passMove(playerId)]
+        if (!tavernCoin) return [this.rules().startPlayerTurn(RuleId.UlineBid, playerWithUline.location.player!)]
       }
 
-      return getCoinsInPlayerHand(this.game, playerId).map((c) =>
-        moveCoinAndRevealMove(c.id!, {
-          type: LocationType.PlayerBoard,
-          index: tavern,
-          player: playerWithUline.id
-        }, playerWithUline.id)
-      )
+      return this.moveToElvalandTurn
     }
 
     return []
   }
 
-  play(move: Move | MoveView) {
-    switch (move.type) {
-      case MoveType.MoveCoin:
-        return this.onMoveCoin()
-      case MoveType.Pass:
-        return this.onPass()
+  get tavern() {
+    return this.remind(Memory.Tavern)
+  }
+
+  get moveToElvalandTurn(): MaterialMove[] {
+    const nextPlayer = this
+      .material(MaterialType.Coin)
+      .location((location) => location.type === LocationType.PlayerBoard)
+      .maxBy((item) => Coins[item.id.front].value)
+      .getItem()
+
+    if (!nextPlayer) {
+      throw new Error("There is an error while searching the next player")
     }
 
-    return super.play(move)
+    return [
+      this.rules().startPlayerTurn(RuleId.ElvalandTurn, nextPlayer?.location.player!)
+    ]
   }
 
-  onMoveCoin = (): (Move | MoveView)[] => {
-    const tavern = this.game.tavern
-    const remainingCoinToReveal = this.game.coins.find(
-      (c) => isOnPlayerBoard(c.location) && c.location.index === tavern && c.hidden
-    )
-
-    const playerWithUline = getPlayerWithHero(this.game, Uline)
-    if (!playerWithUline && !remainingCoinToReveal) {
-      return this.goToEvalandTurn()
-    }
-
-    return []
-  }
-
-  onPass = () => {
-    // The only case the player can pass at this step is when the player has Uline
-    return this.goToEvalandTurn()
-  }
-
-  goToEvalandTurn = () => {
-    this.game.activePlayer = getNextPlayer(this.game)
-    this.game.players.forEach((p) => {
-      delete p.ready
-    })
-    return [setStepMove(Step.ElvalandTurn)]
+  get coinsToReveal() {
+    const tavern = this.remind(Memory.Tavern)
+    return this
+      .material(MaterialType.Coin)
+      .location((location) => location.type === LocationType.PlayerBoard && location.x === tavern)
+      .rotation((rotation) => rotation?.y === 1)
   }
 }
 

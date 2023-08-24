@@ -4,8 +4,8 @@ import { MoveHero } from '@gamepark/nidavellir/moves/MoveHero';
 import { FC } from 'react';
 import { CardLocation, InArmy } from '@gamepark/nidavellir/state/LocatedCard';
 import Images from '../../images/Images';
-import { LocationType } from '@gamepark/nidavellir/state/Location';
-import { DwarfType } from '@gamepark/nidavellir/cards/Card';
+import { LocationType } from '@gamepark/nidavellir/material/LocationType';
+import { DwarfType } from '@gamepark/nidavellir/cards/DwarfDescription';
 import { useTranslation } from 'react-i18next';
 
 type MoveHeroButtonProps = {

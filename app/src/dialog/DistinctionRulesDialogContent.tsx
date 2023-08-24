@@ -3,7 +3,7 @@ import { css } from '@emotion/react';
 import GameView from '@gamepark/nidavellir/state/view/GameView';
 import { FC } from 'react';
 import { CardRulesDialogContent, RuleDetail } from './CardRulesDialogContent';
-import { Distinction } from '@gamepark/nidavellir/cards/Distinction';
+import { DistinctionDescription } from '@gamepark/nidavellir/cards/DistinctionDescription';
 import {
   CrownJeweler,
   Distinctions,
@@ -55,7 +55,7 @@ const divider = css`
   border-bottom: 0.1em solid rgba(0, 0, 0, 0.5);
 `;
 
-const CARD_RULES = new Map<Distinction, (card: Distinction) => RuleDetail>();
+const CARD_RULES = new Map<DistinctionDescription, (card: DistinctionDescription) => RuleDetail>();
 CARD_RULES.set(KingsHand, () => ({
   header: (
     <Trans

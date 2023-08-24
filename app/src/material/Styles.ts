@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { css, keyframes } from '@emotion/react'
-import { Coin } from '@gamepark/nidavellir/coins/Coin'
+import { CoinDescription } from '@gamepark/nidavellir/coins/CoinDescription'
 import { SecretCard } from '@gamepark/nidavellir/state/view/SecretCard'
 import { InAgeDeck } from '@gamepark/nidavellir/state/LocatedCard'
 import { DragLayerMonitor } from 'react-dnd'
 import { View } from './View'
-import { DwarfType, RoyalOffering } from '@gamepark/nidavellir/cards/Card'
-import { HeroType } from '@gamepark/nidavellir/cards/Hero'
+import { DwarfType, RoyalOffering } from '@gamepark/nidavellir/cards/DwarfDescription'
+import { HeroType } from '@gamepark/nidavellir/cards/HeroDescription'
 
 /**
  * Dwarf colors
@@ -134,11 +134,11 @@ export const getCoinPositionInHandRotate = (position: any) => {
   return `${ position.rotateZ === 180 ? 'rotateZ(180deg)' : '' }`
 }
 
-export const getCoinPositionInTreasureY = (token: Coin, _z: number) => {
+export const getCoinPositionInTreasureY = (token: CoinDescription, _z: number) => {
   return treasureTop + Math.floor((token.value - 5) / 7) * (coinTokenHeight + 3)
 }
 
-export const getCoinPositionInTreasureX = (token: Coin, z: number, index?: number) => {
+export const getCoinPositionInTreasureX = (token: CoinDescription, z: number, index?: number) => {
   return treasureLeft + ((token.value - 5) % 7) * (coinTokenWidth + 3) + (index ?? 0) + z * 1.5
 }
 

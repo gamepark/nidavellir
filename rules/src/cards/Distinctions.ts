@@ -1,8 +1,9 @@
-import { Distinction } from './Distinction'
-import { DwarfType } from './Card'
+import { DistinctionDescription } from './DistinctionDescription'
+import { DwarfType } from './DwarfDescription'
 import { EffectType } from '../effects/EffectType'
+import {Distinction} from "../material/Distinction";
 
-export const KingsHand: Distinction = {
+export const KingsHand: DistinctionDescription = {
   majorityOf: DwarfType.Warrior,
   effects: [
     {
@@ -12,19 +13,19 @@ export const KingsHand: Distinction = {
   ]
 }
 
-export const HuntingMaster: Distinction = {
+export const HuntingMaster: DistinctionDescription = {
   majorityOf: DwarfType.Hunter
 }
 
-export const CrownJeweler: Distinction = {
+export const CrownJeweler: DistinctionDescription = {
   majorityOf: DwarfType.Miner
 }
 
-export const KingsGreatArmorer: Distinction = {
+export const KingsGreatArmorer: DistinctionDescription = {
   majorityOf: DwarfType.Blacksmith
 }
 
-export const PioneerOfTheKingdom: Distinction = {
+export const PioneerOfTheKingdom: DistinctionDescription = {
   majorityOf: DwarfType.Explorer,
   effects: [
     {
@@ -35,10 +36,19 @@ export const PioneerOfTheKingdom: Distinction = {
   ]
 }
 
-export const Distinctions: Distinction[] = [
-  KingsHand,
-  HuntingMaster,
-  CrownJeweler,
-  KingsGreatArmorer,
-  PioneerOfTheKingdom
+export const DistinctionDescriptions: Record<Distinction, DistinctionDescription> = {
+  [Distinction.KingsHand]: KingsHand,
+  [Distinction.HuntingMaster]: HuntingMaster,
+  [Distinction.CrownJeweler]: CrownJeweler,
+  [Distinction.KingsGreatArmorer]: KingsGreatArmorer,
+  [Distinction.PioneerOfTheKingdom]: PioneerOfTheKingdom
+}
+
+export const Distinctions: DistinctionDescription[] = [
+    KingsHand,
+    HuntingMaster,
+    CrownJeweler,
+    KingsGreatArmorer,
+    PioneerOfTheKingdom
 ]
+

@@ -1,77 +1,47 @@
-import Move from '../moves/Move'
-import {getPlayerBidCombination} from '../utils/bid.utils'
-import {NidavellirRules} from './NidavellirRules'
-import {passMove} from '../moves/Pass'
-import {LocationType} from '../state/Location'
-import {MoveCoin, moveKnownCoinMove} from '../moves/MoveCoin'
-import MoveView from '../moves/MoveView'
-import {PlayerId} from '../state/Player'
-import MoveType from '../moves/MoveType'
-import {isOnPlayerBoard} from '../utils/location.utils'
-import uniqBy from 'lodash/uniqBy'
+import { LocationType } from '../material/LocationType'
+import { PlayerId } from '../state/Player'
+import { isMoveItemType, ItemMove, MaterialMove, SimultaneousRule } from "@gamepark/rules-api";
+import { MaterialType } from "../material/MaterialType";
+import { RuleId } from "./RuleId";
+import Bid from "./helpers/Bid";
 
-class BidsRules extends NidavellirRules {
-  isTurnToPlay(playerId: PlayerId): boolean {
-    return !this.game.players.find((p) => playerId === p.id)!.ready
-  }
+class BidsRules extends SimultaneousRule<PlayerId, MaterialType, LocationType> {
 
-  getLegalMoves(playerId: number): (Move | MoveView)[] {
-    const bidCombinations = getPlayerBidCombination(this.game, playerId)
-    const player = this.game.players.find((p) => p.id === playerId)!
+    getLegalMoves(player: PlayerId): MaterialMove[] {
+        const combinations = new Bid(this.game, player).combinations
 
-    if (player.ready) {
-      return []
+        if (!combinations.length) {
+            return [this.rules().endPlayerTurn(player)]
+        }
+
+        return combinations
     }
 
-    if (bidCombinations.length === 0) {
-      return [passMove(playerId)]
+    afterItemMove(move: ItemMove) {
+        const moves: MaterialMove[] = []
+        if (isMoveItemType(MaterialType.Coin)(move) && move.position.location && move.position.location.type === LocationType.PlayerBoard) {
+            const player = move.position.location.player!
+            const playerCoins = this.material(MaterialType.Coin).player(player)
+            const coinsOnBoard = playerCoins.location(LocationType.PlayerBoard)
+            const coinsInHand = playerCoins.location(LocationType.PlayerHand)
+            const availableBidSpaces = Array.from(Array(5)).filter((place) => !coinsOnBoard.filter((item) => item.location.x! === place))
+
+            if (coinsInHand.length === 1 || (coinsInHand.length === 2 && !coinsOnBoard.filter((item) => item.location.x! > 2).length)) {
+                if (availableBidSpaces.length !== coinsInHand.length) console.error("There is a difference between the number of coin in hand and the remaining place")
+                coinsInHand.getIndexes().forEach((itemIndex, index) => {
+                    moves.push(
+                      coinsInHand.index(itemIndex).moveItem({ location: { type: LocationType.PlayerBoard, player, x: availableBidSpaces[index] }})
+                    )
+                })
+            }
+        }
+
+        return moves
     }
 
-    return bidCombinations.flatMap(({coin, area}) =>
-      moveKnownCoinMove(coin!, {
-        type: LocationType.PlayerBoard,
-        player: playerId,
-        index: area
-      }, playerId)
-    )
-  }
-
-  play(move: Move | MoveView): (Move | MoveView)[] {
-    switch (move.type) {
-      case MoveType.MoveCoin:
-        return this.onBid(move)
+    getMovesAfterPlayersDone() {
+        return [this.rules().startRule(RuleId.BidRevelation)]
     }
-
-    return []
-  }
-
-  onBid(move: MoveCoin): (Move | MoveView)[] {
-    if (move.target && isOnPlayerBoard(move.target)) {
-      const moves = this.game.players
-        .filter((p) => p.id === move.player)
-        .flatMap((p) => {
-          const combinations = getPlayerBidCombination(this.game, p.id)
-          if (combinations.every((c) => c.area > 2) || uniqBy(combinations, (c) => c.area).length === 1) {
-            const uniqCombination = uniqBy(combinations, ['coin', 'area'])
-            return uniqCombination.map((c) =>
-              moveKnownCoinMove(c.coin!, {
-                type: LocationType.PlayerBoard,
-                player: p.id,
-                index: c.area
-              }, p.id)
-            )
-          }
-
-          return []
-        })
-
-      if (moves.length) {
-        return [moves[0]]
-      }
-    }
-
-    return []
-  }
 }
 
 export {BidsRules}

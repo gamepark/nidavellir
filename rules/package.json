@@ -17,14 +17,10 @@
     "prepublishOnly": "tsc"
   },
   "peerDependencies": {
-    "lodash": "^4.17.21",
-    "lodash.shuffle": "^4.2.0"
+    "@gamepark/rules-api": ">=6.2"
   },
   "devDependencies": {
-    "@gamepark/rules-api": "~5.22.0",
-    "@types/lodash": "^4.14.186",
-    "i18next": "^21.2.4",
-    "lodash": "^4.17.21",
-    "lodash.shuffle": "^4.2.0"
+    "@gamepark/rules-api": "~6.2.0",
+    "i18next": "^22.0.3"
   }
 }

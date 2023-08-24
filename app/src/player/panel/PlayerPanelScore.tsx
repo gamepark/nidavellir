@@ -4,7 +4,7 @@ import { FC } from 'react';
 import GameView from '@gamepark/nidavellir/state/view/GameView';
 import { Player } from '@gamepark/nidavellir/state/Player';
 import { playerPanelScoreWidth } from '../../material/Styles';
-import { DwarfType } from '@gamepark/nidavellir/cards/Card';
+import { DwarfType } from '@gamepark/nidavellir/cards/DwarfDescription';
 import Images from '../../images/Images';
 import {
   getBlacksmithScore,

@@ -2,7 +2,7 @@
 import {css} from '@emotion/react'
 import {SecretCoin} from '@gamepark/nidavellir/state/view/SecretCoin'
 import {FC, HTMLAttributes, useState} from 'react'
-import {Coin} from '@gamepark/nidavellir/coins/Coin'
+import {CoinDescription} from '@gamepark/nidavellir/coins/CoinDescription'
 import {
   Coin0,
   Coin2,
@@ -142,7 +142,7 @@ const coinToken = (scale: number = 1) => css`
   will-change: transform;
 `
 
-const coinFace = (coin: Coin) => css`
+const coinFace = (coin: CoinDescription) => css`
   position: absolute;
   top: 0;
   left: 0;
@@ -178,7 +178,7 @@ const coinBack = css`
   box-shadow: 0.5em 0.5em 0.7em -0.2em black;
 `
 
-const CoinTokensImages = new Map<Coin, any>()
+const CoinTokensImages = new Map<CoinDescription, any>()
 CoinTokensImages.set(Coin0, Images.Bronze0)
 CoinTokensImages.set(Coin2, Images.Bronze2)
 CoinTokensImages.set(Coin3, Images.Bronze3)

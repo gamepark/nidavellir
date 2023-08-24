@@ -1,4 +1,4 @@
-import { LocationType } from './Location';
+import { LocationType } from '../material/LocationType';
 import { InDiscard, InDistinctionDeck, InPlayerHand, OnPlayerBoard } from './CommonLocations';
 
 export type InTreasure = {

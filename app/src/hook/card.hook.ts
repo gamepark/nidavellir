@@ -3,7 +3,7 @@ import { SecretCard } from '@gamepark/nidavellir/state/view/SecretCard';
 import { useMemo } from 'react';
 import mapValues from 'lodash/mapValues';
 import groupBy from 'lodash/groupBy';
-import { LocationType } from '@gamepark/nidavellir/state/Location';
+import { LocationType } from '@gamepark/nidavellir/material/LocationType';
 
 export const useCardDecksSize = (cards: (LocatedCard | SecretCard)[]) => {
   const withPlayerLocations = useMemo(() => [LocationType.PlayerHand, LocationType.Army, LocationType.CommandZone], []);

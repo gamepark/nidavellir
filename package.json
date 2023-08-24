@@ -8,11 +8,14 @@
   "license": "ISC",
   "devDependencies": {
     "lerna": "^4.0.0",
-    "typescript": "^4.4.2",
-    "prettier": "^2.7.1"
+    "typescript": "^4.9.5"
   },
   "scripts": {
     "start": "yarn workspace @gamepark/nidavellir-app run start",
-    "build": "yarn workspace @gamepark/nidavellir-app run build"
+    "build": "yarn workspace @gamepark/nidavellir-app run build",
+    "linkall": "yarn link react react-dom react-redux @dnd-kit/core @emotion/react react-i18next @gamepark/rules-api @gamepark/react-client @gamepark/react-game @apollo/client @types/react",
+    "unlinkall": "yarn unlink react react-dom react-redux @dnd-kit/core @emotion/react react-i18next @gamepark/rules-api @gamepark/react-client @gamepark/react-game @apollo/client @types/react",
+    "linkgp": "yarn link @gamepark/react-client @gamepark/rules-api @gamepark/react-game",
+    "unlinkgp": "yarn unlink @gamepark/react-client @gamepark/rules-api @gamepark/react-game"
   }
 }

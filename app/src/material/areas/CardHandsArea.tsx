@@ -5,7 +5,7 @@ import { CardHandArea } from './CardHandArea'
 import { getCardPositionInHandX, getCardPositionInHandY, playerBoardPositions } from '../Styles'
 import { useCardDecksSize } from '../../hook/card.hook'
 import entries from 'lodash/entries'
-import { LocationType } from '@gamepark/nidavellir/state/Location'
+import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import GameView from '@gamepark/nidavellir/state/view/GameView'
 import { usePlayerPositions } from '../../table/TableContext'
 

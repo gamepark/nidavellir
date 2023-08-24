@@ -27,7 +27,7 @@ import {
   Ylud,
   Zoral
 } from '@gamepark/nidavellir/cards/Heroes'
-import { Hero } from '@gamepark/nidavellir/cards/Hero'
+import { HeroDescription } from '@gamepark/nidavellir/cards/HeroDescription'
 import { CardRulesDialogContent, RuleDetail } from './CardRulesDialogContent'
 import { HeroRulesDialog } from '@gamepark/nidavellir/moves/RulesDialog/RulesDialog'
 import { HeroCard } from '../material/card/HeroCard'
@@ -84,7 +84,7 @@ const HeroRulesDialogContent: FC<HeroRulesDialogContentProps> = (props) => {
   )
 }
 
-export const HERO_RULES = new Map<Hero, () => RuleDetail>()
+export const HERO_RULES = new Map<HeroDescription, () => RuleDetail>()
 HERO_RULES.set(Bonfur, () => ({
   header: <Trans defaults="hero.rules.header.bonfur" components={ [<strong/>] }/>,
   description: [

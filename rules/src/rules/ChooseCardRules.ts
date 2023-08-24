@@ -1,78 +1,64 @@
-import { NidavellirRules } from './NidavellirRules'
-import { Player, PlayerId } from '../state/Player'
-import Move from '../moves/Move'
-import { getCardsInTavern, isOnPlayerBoard } from '../utils/location.utils'
-import MoveType from '../moves/MoveType'
-import { isLocatedCoin } from '../utils/player.utils'
-import { InTavern } from '../state/LocatedCard'
-import { MoveCard } from '../moves/MoveCard'
-import { Cards } from '../cards/Cards'
-import { EffectType } from '../effects/EffectType'
-import GameState from '../state/GameState'
-import GameView from '../state/view/GameView'
-import { isExchangeCoin } from '../utils/coin.utils'
-import { getChooseCardMove, onChooseCard } from '../utils/card.utils'
+import { isMoveItemType, isStartPlayerTurn, ItemMove, PlayerTurnRule } from "@gamepark/rules-api";
+import { MaterialType } from "../material/MaterialType";
+import { LocationType } from "../material/LocationType";
+import { Memory } from "./Memory";
+import ElvalandTurn from "./helpers/ElvalandTurn";
+import { CardChoice } from "./helpers/CardChoice";
+import { RuleId } from "./RuleId";
 
-class ChooseCardRules extends NidavellirRules {
-  player: Player
+class ChooseCardRules extends PlayerTurnRule {
+  getAutomaticMoves() {
+    const moves = this.chooseCardMoves
+    if (moves.length === 1) {
+      return [moves[0]]
+    }
 
-  constructor(game: GameState | GameView, player: Player) {
-    super(game)
-    this.player = player
+    return super.getAutomaticMoves();
   }
 
-  getLegalMoves(playerId: PlayerId): Move[] {
-    if (playerId !== this.player.id || this.player.playedCard !== undefined) {
-      return []
-    }
-
-    const currentTavern = this.game.tavern
-    const tavernCards = getCardsInTavern(this.game).filter((c) => (c.location as InTavern).tavern === currentTavern)
-
-    return tavernCards.map((c) => getChooseCardMove(this.game, this.player, c.id!))
+  getPlayerMoves() {
+    return this.chooseCardMoves;
   }
 
-  play(move: Move) {
-    switch (move.type) {
-      case MoveType.MoveCard:
-        return this.chooseCard(move)
-    }
+  get chooseCardMoves() {
+    const cardChoice = new CardChoice(this.game, this.player)
+    const tavern = this.remind(Memory.Tavern)
 
-    return super.play(move)
+    return this
+      .material(MaterialType.Card)
+      .location((location) => location.type === LocationType.Tavern && location.x === tavern)
+      .moveItems((item) => ({ location: cardChoice.getLocation(item.id.front)}))
   }
 
-  chooseCard(move: MoveCard) {
+  afterItemMove(move: ItemMove) {
+    if (!isMoveItemType(MaterialType.Card)(move)) return []
 
+    // TODO: store effect ???
+    const cardChoice = new CardChoice(this.game, this.player)
+    const moves = cardChoice.onMove(move)
+    const otherMoves = []
+    const elvalandTurn = new ElvalandTurn(this.game, this.player)
 
-    const tavern = this.game.tavern
-    const playerCoin = this.game.coins.find(
-      (coin) =>
-        isOnPlayerBoard(coin.location) && coin.location.index === tavern && coin.location.player === this.player.id
-    )
-
-    const card = Cards[move.id!]
-
-    // Then, potential hero recruiting
-    const moves = onChooseCard(this.game, this.player, move, 'age', true)
-    if (moves.length) {
-      return moves
+    if (moves.some(((move) => isStartPlayerTurn(move) && move.id === RuleId.RecruitHero))) {
+      return moves;
     }
 
-    // First, card effect
-    if (card.effects?.length) {
-      this.player.effects.unshift(...JSON.parse(JSON.stringify(card.effects)))
+    otherMoves.push(...elvalandTurn.moveToTradeCoin)
+
+    if (!otherMoves.length) {
+      otherMoves.push(...elvalandTurn.endOfTurnMoves)
     }
 
-    // Trade is only triggered if the player has played a 0-value coin
-    // Finally, trade coin if needed
-    if (playerCoin && isLocatedCoin(playerCoin) && isExchangeCoin(playerCoin)) {
-      this.player.effects.push({
-        type: EffectType.TRADE_COIN
-      })
-    }
+    moves.push(...otherMoves)
 
-    return moves
+    return moves;
   }
+
+  get tavern() {
+    return this.remind(Memory.Tavern)
+  }
+
+
 }
 
 export { ChooseCardRules }
