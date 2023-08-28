@@ -1,5 +1,5 @@
 import {SecretMaterialRules} from '@gamepark/rules-api'
-import {PlayerId} from './state/Player'
+import {PlayerId} from './player/Player'
 import {LocationType} from './material/LocationType'
 import {MaterialType} from "./material/MaterialType";
 import {hidingStrategies} from "./configuration/HidingStrategies";

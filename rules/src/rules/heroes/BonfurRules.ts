@@ -1,11 +1,11 @@
 import { isMoveItemType, ItemMove } from "@gamepark/rules-api"
 import { LocationType } from "../../material/LocationType";
-import HeroRules from "./HeroRules";
 import { MaterialType } from "../../material/MaterialType";
 import { dwarfTypes } from "../../cards/DwarfDescription";
-import { Card } from "../../material/Card";
+import { Card } from "../../cards/Cards";
+import { EffectRule } from "../effect/EffectRule";
 
-export class BonfurRules extends HeroRules {
+export class BonfurRules extends EffectRule {
 
   getPlayerMoves() {
     const army = this.army
@@ -15,11 +15,11 @@ export class BonfurRules extends HeroRules {
       .getItem()!
 
     return dwarfTypes
-      .filter((type) => bonfur.location.x !== type)
+      .filter((type) => bonfur.location.id !== type)
       .flatMap((type) =>
         army
-          .location((location) => location.x === type)
-          .maxBy((item) => item.location.y!)
+          .location((location) => location.id === type)
+          .maxBy((item) => item.location.x!)
           .moveItems({ location: { type: LocationType.Discard } })
       )
   }
@@ -27,7 +27,7 @@ export class BonfurRules extends HeroRules {
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move) || move.position.location?.type !== LocationType.Discard) return []
 
-    return [this.goBackToRecruitHeroRules]
+    return this.end
   }
 
   get army() {

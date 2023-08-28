@@ -1,36 +1,26 @@
-import { isMoveItemType, isStartPlayerTurn, ItemMove, MaterialItem, RuleMove, RuleStep } from "@gamepark/rules-api";
+import { isMoveItemType, ItemMove, MaterialItem, RuleMove } from "@gamepark/rules-api";
 import { MaterialType } from "../material/MaterialType";
 import { LocationType } from "../material/LocationType";
-import { isHero } from "../material/Card";
-import { Effect, Memory } from "./Memory";
-import { HeroWithActionRuleIds, RuleId } from "./RuleId";
-import ElvalandTurn from "./helpers/ElvalandTurn";
-import { CardChoice } from "./helpers/CardChoice";
+import { Cards, isHero } from "../cards/Cards";
+import { Memory } from "./Memory";
+import PlayerTurn from "./helpers/PlayerTurn";
 import { EffectRule } from "./effect/EffectRule";
 import Army from "./helpers/Army";
-import { Cards } from "../cards/Cards";
 import { HeroDescription } from "../cards/HeroDescription";
 
 class RecruitHeroRules extends EffectRule {
 
-  onRuleStart(_move: RuleMove, previousRule?: RuleStep) {
-    if (previousRule && HeroWithActionRuleIds.includes(previousRule.id) && !this.hasRecruitement) return this.endOfHeroResolution
-    if (this.effect) return [this.goToEffect]
-    return []
-  }
-
-  onRuleEnd(_move: RuleMove<number, RuleId>) {
-    this.forget(Memory.PreviousRule)
-    return []
+  onRuleStart(_move: RuleMove) {
+    return new PlayerTurn(this.game, this.player).goToEffect
   }
 
   getPlayerMoves() {
-    const chooseCard = new CardChoice(this.game, this.player)
+    const chooseCard = new PlayerTurn(this.game, this.player)
     return this
       .material(MaterialType.Card)
       .location(LocationType.HeroesDeck)
-      .filter(this.isRecruitable)
-      .moveItems((item) => ({ location: chooseCard.getLocation(item.id.front) }))
+      .filter((item) => this.canBeRecruited(item))
+      .moveItems((item) => ({ location: chooseCard.getCardLocation(item.id.front) }))
   }
 
   beforeItemMove(move: ItemMove) {
@@ -49,7 +39,7 @@ class RecruitHeroRules extends EffectRule {
     return []
   }
 
-  isRecruitable (item: MaterialItem): boolean {
+  canBeRecruited (item: MaterialItem): boolean {
     const id = item.id.front
     const description = Cards[id] as HeroDescription
     if (!description.minGrades) return true;
@@ -60,52 +50,7 @@ class RecruitHeroRules extends EffectRule {
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move)) return []
 
-    const chooseCard = new CardChoice(this.game, this.player)
-    const moves = chooseCard.onMove(move)
-
-    if (moves.some((move) => isStartPlayerTurn(move))) {
-      return moves;
-    }
-
-    if (this.effect) {
-      moves.push(this.goToEffect)
-    }
-
-    if (this.hasRecruitement) return moves;
-
-    moves.push(...this.endOfHeroResolution)
-    return moves;
-  }
-
-  get endOfHeroResolution() {
-    const moves = []
-    const moveToPrevious = this.moveToPreviousRule
-    if (moveToPrevious.length) {
-      moves.push(...moveToPrevious)
-      return moves;
-    }
-
-    const elvalandTurn = new ElvalandTurn(this.game, this.player)
-    const tradeCoin = elvalandTurn.moveToTradeCoin
-    if (tradeCoin.length) {
-      moves.push(...tradeCoin)
-    } else {
-      moves.push(...elvalandTurn.endOfTurnMoves)
-    }
-
-    return moves
-  }
-
-  get effect() {
-    return this.remind<Effect>(Memory.Effect)
-  }
-
-  get goToEffect() {
-    return this.rules().startPlayerTurn(this.effect, this.player)
-  }
-
-  get hasRecruitement() {
-    return this.remind(Memory.Recruitements)
+    return new PlayerTurn(this.game, this.player).onChooseCard(move)
   }
 }
 

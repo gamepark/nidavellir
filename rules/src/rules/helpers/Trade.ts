@@ -16,7 +16,7 @@ export class Trade extends MaterialRulesPart {
     const tavern = this.tavern
     const coinIndexes = this
       .material(MaterialType.Coin)
-      .location((location) => location.type === LocationType.Tavern && location.x === tavern)
+      .location((location) => location.type === LocationType.PlayerBoard && location.id === tavern)
       .getIndexes()
       .map((index) => {
         const item = this.material(MaterialType.Coin).getItem(index)!
@@ -35,13 +35,10 @@ export class Trade extends MaterialRulesPart {
 
   get trades(): Record<number, number[]>{
     // Here, the tavern for the gem trade must be the previous one (to get right coins)
-    const tavernCoins = this.tavernCoins.filter((c) => {
-      const player = c.location.player!
-      return !!this.material(MaterialType.Gem).player(player).length
-    })
+    const tavernCoins = this.tavernCoins
 
     // Group coins by values (to see tie)
-    const coinsByValue = groupBy(tavernCoins.getIndexes(), this.getCoinValue)
+    const coinsByValue = groupBy(tavernCoins.getIndexes(), (c) => this.getCoinValue(c))
 
     // Omit coin value with only one coin
     return pickBy(coinsByValue, (c) => c.length > 1)

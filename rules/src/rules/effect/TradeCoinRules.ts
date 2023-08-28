@@ -1,15 +1,15 @@
 import { CustomMove, isCustomMoveType, ItemPosition } from "@gamepark/rules-api";
 import { MaterialType } from "../../material/MaterialType";
-import { Card } from "../../material/Card";
 import { LocationType } from "../../material/LocationType";
 import maxBy from "lodash/maxBy";
 import { Coins } from "../../coins/Coins";
 import { CoinColor } from "../../coins/CoinDescription";
-import ElvalandTurn from "../helpers/ElvalandTurn";
 import { ExchangeCoin } from "../helpers/ExchangeCoin";
 import { isExchangeCoin } from "../../utils/coin.utils";
 import { CustomMoveType } from "../../moves/CustomMoveType";
 import { EffectRule } from "./EffectRule";
+import { Card } from "../../cards/Cards";
+import { PlayerBoardSpace } from "../../material/PlayerBoardSpace";
 
 export class TradeCoinRules extends EffectRule {
 
@@ -19,7 +19,7 @@ export class TradeCoinRules extends EffectRule {
     const pouch = this.pouch
     return [
       ...pouch.moveItems({ rotation: {} }),
-      this.rules().customMove(CustomMoveType.TradeCoins, pouch)
+      this.rules().customMove(CustomMoveType.TradeCoins, pouch.getIndexes())
     ]
   }
 
@@ -35,7 +35,10 @@ export class TradeCoinRules extends EffectRule {
   onCustomMove(move: CustomMove) {
     if (isCustomMoveType(CustomMoveType.TradeCoins)(move)) {
       // Here is the reveal of token
-      const hiddenCoins = this.material(MaterialType.Coin).rotation((rotation) => !!rotation?.y).length
+      const hiddenCoins = this
+        .material(MaterialType.Coin)
+        .indexes(move.data)
+        .rotation((rotation) => !!rotation?.y).length
       if (hiddenCoins) return []
 
       const tradedCoinsIndexes: number[] = move.data
@@ -52,13 +55,11 @@ export class TradeCoinRules extends EffectRule {
       const treasureCoin = new ExchangeCoin(this.game, tradedCoins).treasureCoin
 
       const notTradedCoinIndex = tradedCoinsIndexes.find((index) => index !== maximumCoin)!
-      const newCoins = this.material(MaterialType.Coin).indexes([notTradedCoinIndex, maximumCoin])
+      const newCoins = this.material(MaterialType.Coin).indexes([notTradedCoinIndex, treasureCoin.getIndex()])
       moves.push(treasureCoin.moveItem({ location: maximumCoinItem.location, rotation: { y: 1 } }))
-      moves.push(newCoins.moveItem({ rotation: { y: 1 } }))
+      moves.push(this.material(MaterialType.Coin).index(notTradedCoinIndex).moveItem({ rotation: { y: 1 } }))
       moves.push(newCoins.shuffle())
-      moves.push(...new ElvalandTurn(this.game, this.player).endOfTurnMoves)
-
-      moves.push(...this.moveToPreviousRule)
+      moves.push(...this.end)
       return moves
     }
 
@@ -68,15 +69,20 @@ export class TradeCoinRules extends EffectRule {
   get pouch() {
     return this
       .material(MaterialType.Coin)
-      .location((location) => location.type === LocationType.Tavern && location.x! > 2)
+      .player(this.player)
+      .location((location) => location.type === LocationType.PlayerBoard && location.id >= PlayerBoardSpace.Pouch1)
   }
 
   get hasUline(): boolean {
-    return !!this.material(MaterialType.Card).id(({ front }: Record<string, any>) => front === Card.Uline).length
+    return !!this
+      .material(MaterialType.Card)
+      .player(this.player)
+      .id(({ front }: Record<string, any>) => front === Card.Uline)
+      .length
   }
 
   get tradableCoins() {
-    return this.material(MaterialType.Coin).player(this.player).filter((item) => !isExchangeCoin(item.id))
+    return this.material(MaterialType.Coin).player(this.player).filter((item) => !isExchangeCoin(item))
   }
 }
 

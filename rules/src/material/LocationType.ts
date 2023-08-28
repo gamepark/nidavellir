@@ -10,4 +10,5 @@ export enum LocationType {
   Discard,
   Army,
   CommandZone,
+  Table
 }

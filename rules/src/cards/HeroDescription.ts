@@ -1,4 +1,4 @@
-import { DwarfType } from './DwarfDescription';
+import { DwarfType } from './DwarfType';
 import { Grades } from './Grades';
 
 export type HeroDescription = {

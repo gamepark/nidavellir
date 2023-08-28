@@ -1,7 +1,8 @@
 import { MaterialGame, MaterialRulesPart } from "@gamepark/rules-api";
-import { PlayerId } from "../../state/Player";
+import { PlayerId } from "../../player/Player";
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
+import { tokenSpaces } from "../../material/PlayerBoardSpace";
 
 export default class Bid extends MaterialRulesPart {
 
@@ -14,9 +15,9 @@ export default class Bid extends MaterialRulesPart {
     const coinsOnBoard = playerCoins.location(LocationType.PlayerBoard)
     const coinsInHand = playerCoins.location(LocationType.PlayerHand)
 
-    return Array.from(Array(5)).flatMap((x) => {
-      if (coinsOnBoard.location((location) => location.x === x)) return []
-      return coinsInHand.moveItems({ location: { type: LocationType.PlayerBoard, x, player: this.player }, rotation: { y: 1 } })
+    return tokenSpaces.flatMap((id) => {
+      if (coinsOnBoard.location((location) => location.id === id).length) return []
+      return coinsInHand.moveItems({ location: { type: LocationType.PlayerBoard, id, player: this.player }, rotation: { y: 1 } })
     })
   }
 }

@@ -1,4 +1,4 @@
-import { DwarfType } from './DwarfDescription';
+import { DwarfType } from './DwarfType';
 
 export type DistinctionDescription = {
   majorityOf: DwarfType;

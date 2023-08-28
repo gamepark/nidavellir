@@ -1,5 +1,5 @@
 import { DistinctionDescription } from './DistinctionDescription'
-import { DwarfType } from './DwarfDescription'
+import { DwarfType } from './DwarfType'
 import { Distinction } from "../material/Distinction";
 
 export const KingsHand: DistinctionDescription = {

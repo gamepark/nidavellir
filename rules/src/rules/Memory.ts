@@ -13,7 +13,6 @@ export enum Memory {
   TransformBonus,
   TransformedCoinLocation,
   Dagda,
-  Thrud,
   Effect,
 }
 

@@ -1,32 +1,40 @@
 import { MaterialGameSetup, MaterialMove } from "@gamepark/rules-api";
-import { PlayerId } from "./state/Player";
+import { PlayerId } from "./player/Player";
 import { MaterialType } from "./material/MaterialType";
 import { LocationType } from "./material/LocationType";
 import { NidavellirOptions } from "./NidavellirOptions";
 import shuffle from "lodash/shuffle";
-import { TAVERN_COUNT } from "./utils/constants";
 import { bronzeCoins, Coin, goldCoins } from "./material/Coin";
 import { lessThan4PlayersTreasure, moreThan3PlayersTreasure } from "./configuration/CoinPerPlayers";
 import { baseGems, Gem } from "./material/Gem";
 import { RuleId } from "./rules/RuleId";
 import { distinctions } from "./material/Distinction";
-import { age1Cards, age2Cards, Card, CardDeck, heroCards } from "./material/Card";
+import { age1Cards, age2Cards, Card, CardDeck, heroCards } from "./cards/Cards";
 import { cardsMinPlayers } from "./configuration/CardsMinPlayers";
 import { MIN_DWARVES_PER_TAVERN } from "./rules/helpers/Tavern";
+import { locationsStrategies } from "./configuration/LocationStrategies";
+import { taverns } from "./material/Tavern";
+import { PlayerBoardSpace } from "./material/PlayerBoardSpace";
+import { Memory } from "./rules/Memory";
 
 export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, LocationType, NidavellirOptions> {
+  locationsStrategies = locationsStrategies
   setupMaterial(options: NidavellirOptions): void {
     this.setupPlayers(options)
-    this.setupCoins(options)
+    this.setupTreasure(options)
     this.setupGems()
     this.setupDistinctions()
     this.setupCard(options)
     this.setupTavern(options)
     this.setupHeroes()
+
+    this.memorize(Memory.Tavern, 1)
+    this.memorize(Memory.Age, 1)
+    this.memorize(Memory.Round, 1)
   }
 
   start(_options: NidavellirOptions) {
-    return { id: RuleId.Bids }
+    return { id: RuleId.Bids, players: this.players }
   }
 
   setupCard(options: NidavellirOptions) {
@@ -54,11 +62,11 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
     )
   }
 
-  setupCoins(options: NidavellirOptions) {
+  setupTreasure(options: NidavellirOptions) {
     const goldCoinQuantities = options.players <= 3 ? lessThan4PlayersTreasure : moreThan3PlayersTreasure
     this.material(MaterialType.Coin)
       .createItems(
-        goldCoins.flatMap((id) =>
+        goldCoins.flatMap((id,) =>
           Array.from(Array(goldCoinQuantities[id] ?? 1)).map(() => ({ id, location: { type: LocationType.Treasure } }))
         )
       )
@@ -84,23 +92,25 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
     }
   }
 
-  setupPlayer(playerId: PlayerId, gem: Gem) {
-    const location = { type: LocationType.PlayerBoard, player: playerId }
-    this.material(MaterialType.Coin).createItems(bronzeCoins.map((id) => ({ id, location })))
-    this.material(MaterialType.Coin).player(playerId).shuffle()
-    this.material(MaterialType.Gem).createItem({ id: gem, location })
+  setupPlayer(player: PlayerId, gem: Gem) {
+    this.material(MaterialType.Coin).createItems(bronzeCoins.map((id) => ({ id, location: { type: LocationType.PlayerHand, player } })))
+    this.material(MaterialType.Coin).player(player).shuffle()
+    this.material(MaterialType.Gem).createItem({ id: gem, location: { type: LocationType.PlayerBoard, player, id: PlayerBoardSpace.Gem } })
 
   }
 
   setupTavern(options: NidavellirOptions): MaterialMove[] {
     const cardsByTavern = Math.max(MIN_DWARVES_PER_TAVERN, options.players)
-    const numberOfCard = cardsByTavern * TAVERN_COUNT
-
-    return this.material(MaterialType.Card)
-      .location((location) => LocationType.Age1Deck === location.type || LocationType.Age2Deck === location.type)
+    const drawnCards = this.material(MaterialType.Card)
+      .location((location) => LocationType.Age1Deck === location.type)
       .sort(card => -card.location.x!)
-      .limit(numberOfCard)
-      .moveItems({ location: { type: LocationType.Tavern }})
+      .limit(cardsByTavern * 3)
+      .getIndexes()
+
+    return taverns.flatMap((tavern) => this.material(MaterialType.Card)
+      .indexes(drawnCards.splice(0, 3))
+      .moveItems({ location: { type: LocationType.Tavern, id: tavern }})
+    )
   }
 
 }

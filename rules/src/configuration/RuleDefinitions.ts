@@ -22,7 +22,7 @@ import { UlineRules } from "../rules/heroes/UlineRules";
 import { YludRules } from "../rules/heroes/YludRules";
 
 
-export const rules: Record<number, MaterialRulesPartCreator> = {
+export const rules: Record<RuleId, MaterialRulesPartCreator> = {
     [RuleId.EnterDwarves]: EnterTheDwarvesRules,
     [RuleId.Bids]: BidsRules,
     [RuleId.BidRevelation]: BidRevelationRules,

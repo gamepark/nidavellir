@@ -1,12 +1,12 @@
 import { isMoveItemType, ItemMove, RuleMove } from "@gamepark/rules-api"
 import { Memory } from "../Memory";
 import { LocationType } from "../../material/LocationType";
-import HeroRules from "./HeroRules";
 import { MaterialType } from "../../material/MaterialType";
 import { dwarfTypes } from "../../cards/DwarfDescription";
-import { Card } from "../../material/Card";
+import { Card } from "../../cards/Cards";
+import { EffectRule } from "../effect/EffectRule";
 
-export class DagdaRules extends HeroRules {
+export class DagdaRules extends EffectRule {
 
   getPlayerMoves() {
     const army = this.army
@@ -16,11 +16,11 @@ export class DagdaRules extends HeroRules {
       .getItem()!
 
     return dwarfTypes
-      .filter((type) => this.lastDiscardColumn !== type && dagda.location.x !== type)
+      .filter((type) => this.lastDiscardColumn !== type && dagda.location.id !== type)
       .flatMap((type) =>
         army
-          .location((location) => location.x === type)
-          .maxBy((item) => item.location.y!)
+          .location((location) => location.id === type)
+          .maxBy((item) => item.location.x!)
           .moveItems({ location: { type: LocationType.Discard } })
       )
   }
@@ -29,10 +29,10 @@ export class DagdaRules extends HeroRules {
     if (!isMoveItemType(MaterialType.Card)(move) || move.position.location?.type !== LocationType.Discard) return []
 
     if (this.lastDiscardColumn !== undefined) {
-      return [this.goBackToRecruitHeroRules]
+      return this.end
     }
 
-    this.memorize(Memory.Dagda, move.position.location.x)
+    this.memorize(Memory.Dagda, move.position.location.id)
     return []
   }
 

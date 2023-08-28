@@ -2,7 +2,7 @@ import { LocationType } from '../material/LocationType'
 import { isMoveItemType, ItemMove, MaterialMove, MaterialRulesPart } from "@gamepark/rules-api";
 import { Memory } from "./Memory";
 import { MaterialType } from "../material/MaterialType";
-import { Card } from "../material/Card";
+import { Card } from "../cards/Cards";
 import { RuleId } from "./RuleId";
 import { Coins } from "../coins/Coins";
 
@@ -21,7 +21,7 @@ class BidRevelationRules extends MaterialRulesPart {
       if (playerWithUline) {
         const tavernCoin = this
           .material(MaterialType.Coin)
-          .location((location) => location.type === LocationType.Tavern && location.x === this.tavern)
+          .location((location) => location.type === LocationType.PlayerHand && location.id === this.tavern)
           .player(playerWithUline.location.player)
           .length
 
@@ -41,8 +41,8 @@ class BidRevelationRules extends MaterialRulesPart {
   get moveToElvalandTurn(): MaterialMove[] {
     const nextPlayer = this
       .material(MaterialType.Coin)
-      .location((location) => location.type === LocationType.PlayerBoard)
-      .maxBy((item) => Coins[item.id.front].value)
+      .location((location) => location.type === LocationType.PlayerBoard && location.id === this.tavern)
+      .maxBy((item) => Coins[item.id].value)
       .getItem()
 
     if (!nextPlayer) {
@@ -50,15 +50,14 @@ class BidRevelationRules extends MaterialRulesPart {
     }
 
     return [
-      this.rules().startPlayerTurn(RuleId.ChooseCard, nextPlayer?.location.player!)
+      this.rules().startPlayerTurn(RuleId.ChooseCard, nextPlayer.location.player!)
     ]
   }
 
   get coinsToReveal() {
-    const tavern = this.remind(Memory.Tavern)
     return this
       .material(MaterialType.Coin)
-      .location((location) => location.type === LocationType.PlayerBoard && location.x === tavern)
+      .location((location) => location.type === LocationType.PlayerBoard && location.id === this.tavern)
       .rotation((rotation) => rotation?.y === 1)
   }
 }

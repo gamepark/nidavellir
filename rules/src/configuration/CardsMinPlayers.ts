@@ -1,4 +1,4 @@
-import {Card} from "../material/Card";
+import { Card } from "../cards/Cards";
 
 export const cardsMinPlayers: Partial<Record<Card, number>> = {
     [Card.WarriorDwarf9Age1]: 5,

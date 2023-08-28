@@ -9,15 +9,10 @@ import { Memory } from "./Memory";
 import { CustomMoveType } from "../moves/CustomMoveType";
 import { MaterialType } from "../material/MaterialType";
 import { Tavern } from "./helpers/Tavern";
+import { PlayerBoardSpace } from "../material/PlayerBoardSpace";
 
 class GemTradeRules extends MaterialRulesPart {
-  getAutomaticMoves() {
-
-    if (this.allTraded) {
-      return []
-    }
-
-
+  onRuleStart() {
     return [this.rules().customMove(CustomMoveType.TradeGems)]
   }
 
@@ -34,8 +29,8 @@ class GemTradeRules extends MaterialRulesPart {
   onCustomMove(move: CustomMove) {
     if (isCustomMoveType(CustomMoveType.TradeGems)(move)) {
       const gems: Record<string, MaterialItem> = keyBy(
-        this.material(MaterialType.Gem).location(LocationType.PlayerBoard).getItem()!,
-        (g) => g.location.player
+        this.material(MaterialType.Gem).location(LocationType.PlayerBoard).getItems(),
+        (g) => g.location.player!
       )
 
       const trading = new Trade(this.game).trades
@@ -73,7 +68,7 @@ class GemTradeRules extends MaterialRulesPart {
     return reversed.flatMap((coin, index) => {
       const item = this.material(MaterialType.Coin).getItem(coin)!
       const newPlayer = item.location.player!
-      return this.material(MaterialType.Gem).id(gemByPlayer[players[index]].id).moveItems({ location: { type: LocationType.PlayerBoard, player: newPlayer }})
+      return this.material(MaterialType.Gem).id(gemByPlayer[players[index]].id).moveItems({ location: { type: LocationType.PlayerBoard, id: PlayerBoardSpace.Gem, player: newPlayer }})
     })
   }
 
@@ -83,6 +78,8 @@ class GemTradeRules extends MaterialRulesPart {
     this.memorize(Memory.Trade, true, move.position.location?.player)
     if (!this.allTraded) return []
 
+    console.log("Trade", this.allTraded, this.remind(Memory.Trade), new Tavern(this.game).end)
+    this.forget(Memory.Trade)
     return new Tavern(this.game).end
   }
 }

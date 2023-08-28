@@ -4,13 +4,12 @@ import { CoinColor } from "../../coins/CoinDescription";
 import { LocationType } from "../../material/LocationType";
 import { Coins } from "../../coins/Coins";
 import { ExchangeCoin } from "../helpers/ExchangeCoin";
-import { Effect, Memory } from "../Memory";
+import { Memory } from "../Memory";
 import { EffectRule } from "./EffectRule";
 
 export class TransformCoinRules extends EffectRule {
 
   onRuleEnd() {
-    if (this.remind<Effect>(Memory.Effect) === this.game.rule?.id) this.forget(Memory.Effect)
     this.forget(Memory.TransformBonus)
     return []
   }
@@ -48,7 +47,7 @@ export class TransformCoinRules extends EffectRule {
         moves.push(playerCoins.location(LocationType.PlayerHand).shuffle())
       }
 
-      moves.push(...this.moveToPreviousRule)
+      moves.push(...this.end)
       return moves
     }
 

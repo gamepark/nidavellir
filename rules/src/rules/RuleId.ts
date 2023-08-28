@@ -23,14 +23,6 @@ export enum RuleId {
   Ylud
 }
 
-export const TroopEvaluationRuleIds = [
-  RuleId.KingsHand,
-  RuleId.HuntingMaster,
-  RuleId.CrownJeweler,
-  RuleId.KingsGreatArmorer,
-  RuleId.PioneerOfTheKingdom
-]
-
 export const HeroWithActionRuleIds = [
   RuleId.Grid,
   RuleId.Uline,

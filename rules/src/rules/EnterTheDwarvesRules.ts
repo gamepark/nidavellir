@@ -3,7 +3,8 @@ import { MaterialMove, MaterialRulesPart } from "@gamepark/rules-api";
 import { MaterialType } from "../material/MaterialType";
 import { RuleId } from "./RuleId";
 import { MIN_DWARVES_PER_TAVERN } from "./helpers/Tavern";
-import { TAVERN_COUNT } from "../utils/constants";
+import { taverns } from "../material/Tavern";
+import { Memory } from "./Memory";
 
 
 class EnterTheDwarvesRules extends MaterialRulesPart {
@@ -17,20 +18,31 @@ class EnterTheDwarvesRules extends MaterialRulesPart {
           .moveItems({ location: { type: LocationType.PlayerHand, player } })
       )
     }
-
-    moves.push(this.rules().startRule(RuleId.Bids))
+    moves.push(this.rules().startSimultaneousRule(RuleId.Bids, this.game.players))
     return moves
   }
 
   get fillTavern(): MaterialMove[] {
     const cardsByTavern = Math.max(MIN_DWARVES_PER_TAVERN, this.game.players.length)
-    const numberOfCard = cardsByTavern * TAVERN_COUNT
-
-    return this.material(MaterialType.Card)
-      .location((location) => LocationType.Age1Deck === location.type || LocationType.Age2Deck === location.type)
+    const drawnCards = this.material(MaterialType.Card)
+      .location((location) => this.age === 1? LocationType.Age1Deck === location.type: LocationType.Age2Deck === location.type)
       .sort(card => -card.location.x!)
-      .limit(numberOfCard)
-      .moveItems({ location: { type: LocationType.Tavern }})
+      .limit(cardsByTavern * 3)
+      .getIndexes()
+
+    return taverns.flatMap((tavern) => this.material(MaterialType.Card)
+      .indexes(drawnCards.splice(0, 3))
+      .moveItems({ location: { type: LocationType.Tavern, id: tavern }})
+    )
+  }
+
+  onRuleEnd() {
+    this.memorize(Memory.Tavern, 1)
+    return []
+  }
+
+  get age () {
+    return this.remind(Memory.Age)
   }
 }
 

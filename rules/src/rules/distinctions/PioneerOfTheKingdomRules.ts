@@ -2,7 +2,7 @@ import { DistinctionRules } from "./DistinctionRules";
 import { isMoveItemType, ItemMove, MaterialMove, RuleMove } from "@gamepark/rules-api";
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
-import { CardChoice } from "../helpers/CardChoice";
+import PlayerTurn from "../helpers/PlayerTurn";
 
 
 class PioneerOfTheKingdomRules extends DistinctionRules {
@@ -40,22 +40,22 @@ class PioneerOfTheKingdomRules extends DistinctionRules {
     const player = this.player
     if (!player || player !== playerId) return []
 
-    const cardChoice = new CardChoice(this.game, player)
+    const playerTurn = new PlayerTurn(this.game, player)
     return this
       .material(MaterialType.Card)
       .location(LocationType.PlayerHand)
       .player(player)
-      .moveItems((item) => ({ location: cardChoice.getLocation(item.id.front) }))
+      .moveItems((item) => ({ location: playerTurn.getCardLocation(item.id.front) }))
   }
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move) || move.position.location?.type === LocationType.PlayerHand) return []
     const player = this.player
-    if (!player) return new DistinctionRules(this.game).endDistinction
+    if (!player) return this.endDistinction
 
     if (move.position.location?.type === LocationType.Army) {
-      const cardChoice = new CardChoice(this.game, player)
-      const moves = cardChoice.onMove(move)
+      this.memorizeRule(player)
+      const moves = new PlayerTurn(this.game, player).onChooseCard(move)
 
       if (moves.length) {
         return moves;
@@ -63,7 +63,7 @@ class PioneerOfTheKingdomRules extends DistinctionRules {
     }
 
     const cardInHands = this.cardsInHand
-    if (!cardInHands?.length) return new DistinctionRules(this.game).endDistinction
+    if (!cardInHands?.length) return this.endDistinction
     if (cardInHands.length === 2) {
       return [
         ...cardInHands.moveItems({ location: { type: LocationType.Age2Deck } }),

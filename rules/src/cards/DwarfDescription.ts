@@ -1,14 +1,7 @@
 import { Grades } from './Grades';
 import { isEnumValue } from "@gamepark/rules-api";
+import { DwarfType } from "./DwarfType";
 
-export enum DwarfType {
-  Blacksmith = 1,
-  Hunter,
-  Explorer,
-  Miner,
-  Warrior,
-  Neutral
-}
 
 export type DwarfDescription = {
   age?: number;

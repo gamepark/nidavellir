@@ -1,7 +1,5 @@
 import { HeroDescription } from './HeroDescription';
-import { DwarfType } from './DwarfDescription';
-import { Card } from "../material/Card";
-import { RuleId } from "../rules/RuleId";
+import { DwarfType } from './DwarfType';
 
 export const Bonfur: HeroDescription = {
   type: DwarfType.Blacksmith,
@@ -164,10 +162,3 @@ export const Heroes: HeroDescription[] = [
   Uline,
   Grid,
 ];
-
-export const HeroesEffects: Partial<Record<Card, RuleId>> = {
-  [RuleId.Grid]: RuleId.Grid,
-  [RuleId.Uline]: RuleId.Uline,
-  [RuleId.Dagda]: RuleId.Dagda,
-  [RuleId.Bonfur]: RuleId.Bonfur
-}

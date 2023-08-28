@@ -1,7 +1,3 @@
-import { SecretCard } from '../../state/view/SecretCard'
-import { LocatedCard } from '../../state/LocatedCard'
-import { SecretCoin } from '../../state/view/SecretCoin'
-import { LocatedGem } from '../../state/LocatedGem'
 
 export const SET_RULES_DIALOG = 'SET_RULES_DIALOG'
 
@@ -20,22 +16,22 @@ export type RulesDialog =
 
 export type AgeCardRulesDialog = {
   type: RulesDialogType.AgeCard;
-  card: SecretCard;
+  card: any;
 };
 
 export type HeroRulesDialog = {
   type: RulesDialogType.Hero;
-  hero: LocatedCard;
+  hero: any;
 };
 
 export type DistinctionRulesDialog = {
   type: RulesDialogType.Distinction;
-  distinction: LocatedCard;
+  distinction: any;
 };
 
 export type GemRulesDialog = {
   type: RulesDialogType.Gem;
-  gem: LocatedGem;
+  gem: any;
 };
 
 export type TavernRulesDialog = {
@@ -45,7 +41,7 @@ export type TavernRulesDialog = {
 
 export type CoinRulesDialog = {
   type: RulesDialogType.Coin;
-  coin: SecretCoin;
+  coin: any;
 };
 
 export enum RulesDialogType {
@@ -60,18 +56,18 @@ export enum RulesDialogType {
 
 export const setRulesDialog = (rulesDialog?: RulesDialog): SetRulesDialog => ({ type: SET_RULES_DIALOG, rulesDialog })
 
-export const ageCardRulesDialog = (card: SecretCard): AgeCardRulesDialog => ({ type: RulesDialogType.AgeCard, card })
+export const ageCardRulesDialog = (card: any): AgeCardRulesDialog => ({ type: RulesDialogType.AgeCard, card })
 
-export const heroRulesDialog = (hero: LocatedCard): HeroRulesDialog => ({ type: RulesDialogType.Hero, hero })
+export const heroRulesDialog = (hero: any): HeroRulesDialog => ({ type: RulesDialogType.Hero, hero })
 
-export const distinctionRulesDialog = (distinction: LocatedCard): DistinctionRulesDialog => ({
+export const distinctionRulesDialog = (distinction: any): DistinctionRulesDialog => ({
   type: RulesDialogType.Distinction,
   distinction
 })
 
-export const coinRulesDialog = (coin: SecretCoin): CoinRulesDialog => ({ type: RulesDialogType.Coin, coin })
+export const coinRulesDialog = (coin: any): CoinRulesDialog => ({ type: RulesDialogType.Coin, coin })
 
-export const gemRulesDialog = (gem: LocatedGem): GemRulesDialog => ({
+export const gemRulesDialog = (gem: any): GemRulesDialog => ({
   type: RulesDialogType.Gem,
   gem
 })

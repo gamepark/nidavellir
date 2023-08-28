@@ -1,32 +1,51 @@
-/** @jsxImportSource @emotion/react */
-import GameView from '@gamepark/nidavellir/state/view/GameView'
-import { FailuresDialog, FullscreenDialog, Menu, useGame } from '@gamepark/react-client'
-import { Header, ImagesLoader, LoadingScreen } from '@gamepark/react-components'
-import { useEffect, useState } from 'react'
-import { DndProvider } from 'react-dnd-multi-backend'
-import HTML5ToTouch from 'react-dnd-multi-backend/dist/cjs/HTML5toTouch'
-import GameDisplay from './GameDisplay'
-import HeaderText from './HeaderText'
-import Images from './images/Images'
+import { useGame } from "@gamepark/react-game/dist/hooks/useGame";
+import { MaterialGame } from "@gamepark/rules-api";
+import { useEffect, useState } from "react";
+import { GameDisplay } from "./GameDisplay";
+import { LoadingScreen, MaterialHeader, MaterialImageLoader, Menu, FailuresDialog, FullscreenDialog } from "@gamepark/react-game";
+import { RuleId } from "@gamepark/nidavellir/rules/RuleId";
+import { ReactJSXElement } from '@emotion/react/types/jsx-namespace'
 
 export default function App() {
-  const game = useGame<GameView>()
-  const [imagesLoading, setImagesLoading] = useState(true)
+  const game = useGame<MaterialGame>()
   const [isJustDisplayed, setJustDisplayed] = useState(true)
+  const [isImagesLoading, setImagesLoading] = useState(true)
   useEffect(() => {
-    setTimeout(() => setJustDisplayed(false), 2000)
+    setTimeout(() => setJustDisplayed(false), 1000)
   }, [])
-  const loading = !game || imagesLoading || isJustDisplayed
+  const loading = !game || isJustDisplayed || isImagesLoading
   return (
-    <DndProvider options={ HTML5ToTouch }>
-      { !loading && <GameDisplay game={ game }/> }
-      <LoadingScreen display={ loading } author="Serge Laget" artist="Jean-Marie Minguez" publisher="GRRRE Games"
-                     developer="Patrick Beaumé"/>
-      <Header><HeaderText loading={ loading } game={ game }/></Header>
+    <>
+      <GameDisplay/>
+      <LoadingScreen display={loading} author="Wolfgang Kramer" artist="Yann Valeani" publisher="Super Meeple" developer="Game Park"/>
+      <MaterialHeader rulesStepsHeaders={RulesHeaders} GameOver={() => <p />} loading={loading}/>
+      <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)}/>
       <Menu/>
       <FailuresDialog/>
       <FullscreenDialog/>
-      <ImagesLoader images={ Object.values(Images) } onImagesLoad={ () => setImagesLoading(false) }/>
-    </DndProvider>
+    </>
   )
+}
+
+const RulesHeaders: Record<RuleId, () => ReactJSXElement> = {
+  [RuleId.EnterDwarves]: () => <p></p>,
+  [RuleId.Bids]: () => <p></p>,
+  [RuleId.BidRevelation]: () => <p></p>,
+  [RuleId.UlineBid]: () => <p></p>,
+  [RuleId.ChooseCard]: () => <p></p>,
+  [RuleId.RecruitHero]: () => <p></p>,
+  [RuleId.TradeCoin]: () => <p></p>,
+  [RuleId.TransformCoin]: () => <p></p>,
+  [RuleId.KingsHand]: () => <p></p>,
+  [RuleId.HuntingMaster]: () => <p></p>,
+  [RuleId.CrownJeweler]: () => <p></p>,
+  [RuleId.KingsGreatArmorer]: () => <p></p>,
+  [RuleId.PioneerOfTheKingdom]: () => <p></p>,
+  [RuleId.GemTrade]: () => <p></p>,
+  [RuleId.Bonfur]: () => <p></p>,
+  [RuleId.Dagda]: () => <p></p>,
+  [RuleId.Grid]: () => <p></p>,
+  [RuleId.Thrud]: () => <p></p>,
+  [RuleId.Uline]: () => <p></p>,
+  [RuleId.Ylud]: () => <p></p>,
 }

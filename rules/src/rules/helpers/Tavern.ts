@@ -1,11 +1,11 @@
 import { MaterialMove, MaterialRulesPart } from "@gamepark/rules-api";
 import { Memory } from "../Memory";
-import { TAVERN_COUNT } from "../../utils/constants";
 import { RuleId } from "../RuleId";
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
 import { TroopEvaluation } from "./TroopEvaluation";
-import { Card } from "../../material/Card";
+import { Card } from "../../cards/Cards";
+import { PlayerBoardSpace } from "../../material/PlayerBoardSpace";
 
 export const MIN_DWARVES_PER_TAVERN = 3;
 export class Tavern extends MaterialRulesPart {
@@ -27,10 +27,11 @@ export class Tavern extends MaterialRulesPart {
     }
 
 
-    if (this.tavern < TAVERN_COUNT - 1) {
-      this.memorize(Memory.Tavern, this.tavern + 1)
+    if (this.tavern < PlayerBoardSpace.ShiningHorse) {
+      this.memorize(Memory.Tavern, (tavern) => tavern + 1)
       return [this.rules().startRule(RuleId.BidRevelation)]
     } else {
+      this.memorize(Memory.Round, (round) => round + 1)
       return [this.rules().startRule(RuleId.EnterDwarves)]
     }
   }

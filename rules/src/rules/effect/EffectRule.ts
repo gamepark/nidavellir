@@ -1,11 +1,16 @@
-import { Memory, PreviousRule } from "../Memory";
-import { PlayerTurnRule } from "@gamepark/rules-api"
+import { MaterialMove, PlayerTurnRule } from "@gamepark/rules-api"
+import PlayerTurn from "../helpers/PlayerTurn";
+import { Effect, Memory } from "../Memory";
 
 export abstract class EffectRule extends PlayerTurnRule {
-  
-  get moveToPreviousRule() {
-    const previousRule = this.remind<PreviousRule>(Memory.PreviousRule);
-    if (!previousRule?.player) return []
-    return [this.rules().startPlayerTurn(previousRule.id, this.player)]
+
+  getPlayerMoves(): MaterialMove[] {
+    return [];
+  }
+
+  get end() {
+    if (this.remind<Effect>(Memory.Effect) === this.game.rule?.id) this.forget(Memory.Effect)
+    return new PlayerTurn(this.game, this.player)
+      .goToNextRules
   }
 }
