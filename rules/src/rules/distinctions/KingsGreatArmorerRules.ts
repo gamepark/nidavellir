@@ -17,18 +17,21 @@ class KingsGreatArmorerRules extends DistinctionRules {
       .location(LocationType.DistinctionsDeck)
       .id((id) => (id as Record<string, any>).front === Card.BlacksmithDwarfKingsGreatArmorer)
 
-    console.log("BLUBLU")
     // If the player trigger recruitment effect, it can come back. In this case card.length is 0
     if (!card.length) return this.endDistinction
 
+    this.memorizeRule(this.player!)
     moves.push(card.moveItem((item) => ({ location: playerTurn.getCardLocation(item.id.front) })))
     return moves;
   }
 
   afterItemMove(move: ItemMove): any[] {
-
     if (!isMoveItemType(MaterialType.Card)(move)) return []
-    return new PlayerTurn(this.game, this.player!).onChooseCard(move)
+
+    const moves = new PlayerTurn(this.game, this.player!).onChooseCard(move)
+
+    if (!moves.length) return this.endDistinction
+    return moves;
   }
 }
 

@@ -20,13 +20,13 @@ import { Memory } from "./rules/Memory";
 export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, LocationType, NidavellirOptions> {
   locationsStrategies = locationsStrategies
   setupMaterial(options: NidavellirOptions): void {
-    this.setupPlayers(options)
-    this.setupTreasure(options)
-    this.setupGems()
+    this.setupDistinctionGem()
     this.setupDistinctions()
+    this.setupTreasure(options)
+    this.setupHeroes()
     this.setupCard(options)
     this.setupTavern(options)
-    this.setupHeroes()
+    this.setupPlayers(options)
 
     this.memorize(Memory.Tavern, 1)
     this.memorize(Memory.Age, 1)
@@ -74,7 +74,7 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
     this.material(MaterialType.Coin).createItem({ id: Coin.HuntingMasterCoin, location: { type: LocationType.DistinctionsDeck } })
   }
 
-  setupGems() {
+  setupDistinctionGem() {
     this.material(MaterialType.Gem).createItem({ id: Gem.Gem6, location: { type: LocationType.DistinctionsDeck } })
   }
 
@@ -93,7 +93,7 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
   }
 
   setupPlayer(player: PlayerId, gem: Gem) {
-    this.material(MaterialType.Coin).createItems(bronzeCoins.map((id) => ({ id, location: { type: LocationType.PlayerHand, player } })))
+    this.material(MaterialType.Coin).createItems(bronzeCoins.map((id) => ({ id, location: { type: LocationType.Hand, player } })))
     this.material(MaterialType.Coin).player(player).shuffle()
     this.material(MaterialType.Gem).createItem({ id: gem, location: { type: LocationType.PlayerBoard, player, id: PlayerBoardSpace.Gem } })
 

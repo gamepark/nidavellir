@@ -8,7 +8,7 @@ import sumBy from "lodash/sumBy";
 
 export class ExchangeCoin extends MaterialRulesPart {
 
-  constructor(game: MaterialGame, readonly coins: Material, readonly bonus?: number) {
+    constructor(game: MaterialGame, readonly coins: Material, readonly bonus?: number) {
     super(game);
   }
 

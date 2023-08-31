@@ -10,11 +10,8 @@ class UlineBidRules extends PlayerTurnRule {
   }
 
   afterItemMove(move: ItemMove) {
-    if (isMoveItemType(MaterialType.Coin)(move)) {
-      return [this.rules().startRule(RuleId.BidRevelation)]
-    }
-
-    return []
+    if (!isMoveItemType(MaterialType.Coin)(move)) return []
+    return [this.rules().startRule(RuleId.BidRevelation)]
   }
 }
 

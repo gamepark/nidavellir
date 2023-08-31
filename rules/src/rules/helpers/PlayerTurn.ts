@@ -25,29 +25,17 @@ export default class PlayerTurn extends MaterialRulesPart {
 
   get endOfTurnMoves(): MaterialMove[] {
     if (!this.isLastPlayer) return [this.rules().startPlayerTurn(RuleId.ChooseCard, this.nextPlayer)]
-    const moves: MaterialMove[] = this.discardTavernMoves
+
+    // TODO : only discard at 2 player and if there is one card left...
+    //const moves: MaterialMove[] = this.discardTavernMoves
 
     if (this.game.rule?.id !== RuleId.GemTrade && new Trade(this.game).exists) {
-      moves.push(this.rules().startRule(RuleId.GemTrade))
-    } else {
-      moves.push(...new Tavern(this.game).end)
+      return [this.rules().startRule(RuleId.GemTrade)]
     }
 
-    return moves
+    return new Tavern(this.game).end
   }
 
-  get goToTradeOrPassToNextPlayer() {
-    const moves = []
-    const playerTurn = new PlayerTurn(this.game, this.player)
-    const tradeCoin = playerTurn.goToTradeCoin
-    if (tradeCoin.length) {
-      moves.push(...tradeCoin)
-    } else {
-      moves.push(...playerTurn.endOfTurnMoves)
-    }
-
-    return moves
-  }
   get effect() {
     return this.remind<Effect>(Memory.Effect)
   }
@@ -128,13 +116,9 @@ export default class PlayerTurn extends MaterialRulesPart {
       .getItem()!
   }
 
-  get goToTradeCoin(  ) {
+  get goToTradeCoin() {
     if (this.isTradeCoin) return []
     const coin = this.tavernCoin
-    console.log(this.tavernCoin, this
-      .material(MaterialType.Coin)
-      .location((location: Location) => location.type === LocationType.PlayerBoard)
-      .getItems())
     if (!isExchangeCoin(coin)) return []
 
     return [this.rules().startPlayerTurn(RuleId.TradeCoin, this.player)]
@@ -176,7 +160,7 @@ export default class PlayerTurn extends MaterialRulesPart {
       return moves;
     }
 
-    moves.push(...this.goToTradeOrPassToNextPlayer)
+    moves.push(...this.endOfTurnMoves)
 
     return moves;
   }
@@ -184,8 +168,12 @@ export default class PlayerTurn extends MaterialRulesPart {
   get moveToPreviousRule() {
     if (!this.previousRule) return []
     const previousRule = this.previousRule;
-    if (!previousRule?.player) return []
+    if (previousRule.id === this.ruleId || !previousRule?.player) return []
     return [this.rules().startPlayerTurn(previousRule.id, this.player)]
+  }
+
+  get ruleId() {
+    return this.game.rule?.id
   }
 
   get previousRule () {
@@ -238,7 +226,7 @@ export default class PlayerTurn extends MaterialRulesPart {
     if (!thrud.length || thrud.getIndex() === move.itemIndex) return []
 
     return [
-      thrud.moveItem({ location: { type: LocationType.PlayerHand, player: thrud.getItem()!.location.player } }),
+      thrud.moveItem({ location: { type: LocationType.Hand, player: thrud.getItem()!.location.player } }),
       this.rules().startPlayerTurn(RuleId.Thrud, this.player)
     ]
   }

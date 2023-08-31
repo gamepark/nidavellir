@@ -1,4 +1,4 @@
-import { MaterialGame, MaterialMove, RuleMove } from "@gamepark/rules-api";
+import { MaterialGame, MaterialMove, RuleMove, RuleStep } from "@gamepark/rules-api";
 import { TroopEvaluation } from "../helpers/TroopEvaluation";
 import { Memory, PreviousRule } from "../Memory";
 import { PlayerId } from "../../player/Player";
@@ -9,9 +9,12 @@ export class DistinctionRules extends TroopEvaluation {
     super(game);
   }
 
-  onRuleStart(_move: RuleMove): MaterialMove[] {
-    const previousRule = this.previousRule
-    if (previousRule && previousRule.id === this.ruleId) this.forget(Memory.PreviousRule)
+  onRuleStart(_move: RuleMove, _previousRule?: RuleStep): MaterialMove[] {
+    const ruleId = this.ruleId
+    if (_previousRule?.id === ruleId) return []
+
+    const previous = this.previousRule
+    if (previous && previous.id === ruleId) this.forget(Memory.PreviousRule)
     const player = this.player
 
     if (player) {

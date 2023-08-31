@@ -5,6 +5,7 @@ import { RuleId } from "./RuleId";
 import { MIN_DWARVES_PER_TAVERN } from "./helpers/Tavern";
 import { taverns } from "../material/Tavern";
 import { Memory } from "./Memory";
+import { Card } from "../cards/Cards";
 
 
 class EnterTheDwarvesRules extends MaterialRulesPart {
@@ -14,12 +15,24 @@ class EnterTheDwarvesRules extends MaterialRulesPart {
       moves.push(
         ...this.material(MaterialType.Coin)
           .player(player)
-          .location((location) => LocationType.PlayerHand !== location.type)
-          .moveItems({ location: { type: LocationType.PlayerHand, player } })
+          .location((location) => LocationType.Hand !== location.type)
+          .moveItems({ location: { type: LocationType.Hand, player } })
       )
     }
-    moves.push(this.rules().startSimultaneousRule(RuleId.Bids, this.game.players))
+
+    moves.push(this.rules().startSimultaneousRule(RuleId.Bids, this.playersThatMustBid))
     return moves
+  }
+
+  get playersThatMustBid() {
+    return this.game.players.filter((player) => {
+      const uline = this
+        .material(MaterialType.Card)
+        .id((id: Record<string, any>) => id.front === Card.Uline)
+        .player(player)
+
+      return !uline.length
+    })
   }
 
   get fillTavern(): MaterialMove[] {

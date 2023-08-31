@@ -29,8 +29,8 @@ export class PlayerBoardSpaceLocator extends ItemLocator<PlayerId, MaterialType,
     }
   }
 
-  isHidden(item: MaterialItem<PlayerId, LocationType>): boolean {
-    return item.rotation?.y === 1
+  isHidden(item: MaterialItem<PlayerId, LocationType>, { type }: ItemContext): boolean {
+    return MaterialType.Coin === type && !item.rotation?.y
   }
 
   getRotation(_item: MaterialItem<PlayerId, LocationType>, context: ItemContext): number {

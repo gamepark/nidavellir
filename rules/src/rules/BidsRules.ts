@@ -10,6 +10,7 @@ import { Memory } from "./Memory";
 class BidsRules extends SimultaneousRule<PlayerId, MaterialType, LocationType> {
 
     getLegalMoves(player: PlayerId): MaterialMove[] {
+        if (!this.isTurnToPlay(player)) return []
         return new Bid(this.game, player).combinations
     }
 
@@ -18,7 +19,7 @@ class BidsRules extends SimultaneousRule<PlayerId, MaterialType, LocationType> {
         if (isMoveItemType(MaterialType.Coin)(move) && move.position.location && move.position.location.type === LocationType.PlayerBoard) {
             const player = move.position.location.player!
             const playerCoins = this.material(MaterialType.Coin).player(player)
-            const coinsInHand = playerCoins.location(LocationType.PlayerHand)
+            const coinsInHand = playerCoins.location(LocationType.Hand)
             if (!coinsInHand.length) return [this.rules().endPlayerTurn(player)]
 
             const coinsOnBoard = playerCoins.location(LocationType.PlayerBoard)
@@ -27,7 +28,7 @@ class BidsRules extends SimultaneousRule<PlayerId, MaterialType, LocationType> {
             if (coinsInHand.length === 1 || (coinsInHand.length === 2 && !coinsOnBoard.filter((item) => item.location.id > PlayerBoardSpace.ShiningHorse).length)) {
                 if (availableBidSpaces.length !== coinsInHand.length) console.error("There is a difference between the number of coin in hand and the remaining place")
                 moves.push(
-                  coinsInHand.index(coinsInHand.getIndex()).moveItem({ location: { type: LocationType.PlayerBoard, player, id: availableBidSpaces[0] }, rotation: { y: 1 }})
+                  coinsInHand.index(coinsInHand.getIndex()).moveItem({ location: { type: LocationType.PlayerBoard, player, id: availableBidSpaces[0] }})
                 )
             }
         }

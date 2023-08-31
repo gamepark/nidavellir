@@ -13,7 +13,7 @@ export class Tavern extends MaterialRulesPart {
   get end(): MaterialMove[] {
     if (this.isEndOfAge) {
       const startYlud = this.startYlud
-      if (startYlud) return startYlud
+      if (startYlud.length) return startYlud
 
       if (this.age === 2) {
         return this.moveThrudInCommandZone
@@ -59,7 +59,6 @@ export class Tavern extends MaterialRulesPart {
 
   get isEndOfAge() {
     const playerCount = this.game.players.length
-
     const cardInTaverns = this.material(MaterialType.Card).location(LocationType.Tavern)
     const round = this.round
     if (playerCount <= 3) {

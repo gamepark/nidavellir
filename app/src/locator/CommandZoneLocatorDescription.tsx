@@ -6,7 +6,7 @@ import { css } from "@emotion/react";
 import { Coordinates, Location } from "@gamepark/rules-api";
 import { playerBoardDescription } from "../material/PlayerBoardDescription";
 
-export class CommandZoneDescription extends LocationDescription {
+export class CommandZoneLocatorDescription extends LocationDescription {
   width = cardDescription.width + 0.4
   height = 23.2
   alwaysVisible = true

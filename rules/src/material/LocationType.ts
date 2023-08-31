@@ -6,7 +6,7 @@ export enum LocationType {
   Age2Deck,
   HeroesDeck,
   Treasure,
-  PlayerHand,
+  Hand,
   Discard,
   Army,
   CommandZone,

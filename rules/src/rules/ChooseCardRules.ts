@@ -20,7 +20,7 @@ class ChooseCardRules extends PlayerTurnRule {
 
   get chooseCardMoves() {
     const playerTurn = new PlayerTurn(this.game, this.player)
-    const tavern = this.remind(Memory.Tavern)
+    const tavern = this.tavern
 
     return this
       .material(MaterialType.Card)
@@ -31,7 +31,7 @@ class ChooseCardRules extends PlayerTurnRule {
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move)) return []
 
-    console.log(move)
+    //console.log(move, this.tavern)
     return new PlayerTurn(this.game, this.player).onChooseCard(move)
   }
 

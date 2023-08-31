@@ -8,6 +8,6 @@ export class TreasureLocationStrategy implements LocationStrategy<PlayerId, Mate
 
   addItem(material: Material, item: MaterialItem): void {
     item.location.x = Coins[item.id].value - 5
-    item.location.z = material.filter((i: MaterialItem) => item.id === i.id).length
+    item.location.z = material.id((id) => item.id === id).length
   }
 }

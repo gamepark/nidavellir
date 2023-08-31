@@ -22,19 +22,11 @@ export const PioneerOfTheKingdom: DistinctionDescription = {
   majorityOf: DwarfType.Explorer
 }
 
-export const DistinctionDescriptions: Record<Distinction, DistinctionDescription> = {
+export const Distinctions: Record<Distinction, DistinctionDescription> = {
   [Distinction.KingsHand]: KingsHand,
   [Distinction.HuntingMaster]: HuntingMaster,
   [Distinction.CrownJeweler]: CrownJeweler,
   [Distinction.KingsGreatArmorer]: KingsGreatArmorer,
   [Distinction.PioneerOfTheKingdom]: PioneerOfTheKingdom
 }
-
-export const Distinctions: DistinctionDescription[] = [
-    KingsHand,
-    HuntingMaster,
-    CrownJeweler,
-    KingsGreatArmorer,
-    PioneerOfTheKingdom
-]
 

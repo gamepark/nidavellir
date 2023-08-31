@@ -6,7 +6,7 @@ import { EffectRule } from "../effect/EffectRule";
 export class UlineRules extends EffectRule {
   onRuleStart(_move: RuleMove, _previousRule?: RuleStep) {
     return [
-      ...this.hiddenCoins.moveItems({ location: { type: LocationType.PlayerHand, player: this.player } }),
+      ...this.hiddenCoins.moveItems({ location: { type: LocationType.Hand, player: this.player } }),
       ...this.end
     ]
   }
@@ -15,6 +15,6 @@ export class UlineRules extends EffectRule {
     return this.material(MaterialType.Coin)
       .location(LocationType.PlayerBoard)
       .player(this.player)
-      .rotation((rotation) => rotation?.y === 1)
+      .rotation((rotation) => !rotation?.y)
   }
 }

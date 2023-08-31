@@ -4,11 +4,10 @@ import { PlayerId } from "@gamepark/nidavellir/player/Player";
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
 import { Coordinates, MaterialItem } from "@gamepark/rules-api";
-import { CommandZoneDescription } from "./CommandZoneDescription";
-import Army from "@gamepark/nidavellir/rules/helpers/Army";
+import { CommandZoneLocatorDescription } from "./CommandZoneLocatorDescription";
 
 export class CommandZoneLocator extends LineLocator<PlayerId, MaterialType, LocationType> {
-  locationDescription = new CommandZoneDescription()
+  locationDescription = new CommandZoneLocatorDescription()
 
   getCoordinates(item: MaterialItem<PlayerId, LocationType>, context: ItemContext<PlayerId, MaterialType, LocationType>): Coordinates {
     const locationCoordinates = this.locationDescription.getCoordinates(item.location, context)
@@ -20,9 +19,5 @@ export class CommandZoneLocator extends LineLocator<PlayerId, MaterialType, Loca
 
   getDelta(_item: MaterialItem, context: ItemContext) {
     return { y: 1.2, z: context.material[context.type].thickness}
-  }
-
-  getItemIndex(item: MaterialItem<PlayerId, LocationType>, context: ItemContext<PlayerId, MaterialType, LocationType>): number {
-    return new Army(context.rules.game, item.location.player!).getGradeIndex(item);
   }
 }

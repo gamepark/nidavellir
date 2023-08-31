@@ -1,5 +1,5 @@
 import { isMoveItemType, ItemMove, RuleMove } from "@gamepark/rules-api"
-import { Memory } from "../Memory";
+import { Dagda, Memory } from "../Memory";
 import { LocationType } from "../../material/LocationType";
 import { MaterialType } from "../../material/MaterialType";
 import { dwarfTypes } from "../../cards/DwarfDescription";
@@ -16,7 +16,7 @@ export class DagdaRules extends EffectRule {
       .getItem()!
 
     return dwarfTypes
-      .filter((type) => this.lastDiscardColumn !== type && dagda.location.id !== type)
+      .filter((type) => this.lastDiscardColumn?.type !== type && dagda.location.id !== type)
       .flatMap((type) =>
         army
           .location((location) => location.id === type)
@@ -25,14 +25,21 @@ export class DagdaRules extends EffectRule {
       )
   }
 
+  beforeItemMove(move: ItemMove) {
+    if (!isMoveItemType(MaterialType.Card)(move) || move.position.location?.type !== LocationType.Discard) return []
+    const movedItem = this.material(MaterialType.Card).index(move.itemIndex).getItem()!
+
+    if (!this.lastDiscardColumn) this.memorize<Dagda>(Memory.Dagda, { index: move.itemIndex, type: movedItem.location.id })
+    return []
+  }
+
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move) || move.position.location?.type !== LocationType.Discard) return []
 
-    if (this.lastDiscardColumn !== undefined) {
+    const lastColumn = this.lastDiscardColumn
+    if (lastColumn && lastColumn.index !== move.itemIndex) {
       return this.end
     }
-
-    this.memorize(Memory.Dagda, move.position.location.id)
     return []
   }
 
@@ -43,7 +50,7 @@ export class DagdaRules extends EffectRule {
   }
 
   get lastDiscardColumn() {
-    return this.remind(Memory.Dagda)
+    return this.remind<Dagda>(Memory.Dagda)
   }
 
   onRuleEnd(move: RuleMove) {

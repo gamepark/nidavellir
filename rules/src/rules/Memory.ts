@@ -1,5 +1,6 @@
 import { RuleStep } from "@gamepark/rules-api";
 import { RuleId } from "./RuleId";
+import { DwarfType } from "../cards/DwarfType";
 
 export enum Memory {
   Tavern = 1,
@@ -24,3 +25,8 @@ export type DiscardedCoin = {
 }
 
 export type Effect = RuleId
+
+export type Dagda = {
+  index: number;
+  type: DwarfType
+}

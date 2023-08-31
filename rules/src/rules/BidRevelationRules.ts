@@ -9,23 +9,26 @@ import { Coins } from "../coins/Coins";
 class BidRevelationRules extends MaterialRulesPart {
 
   onRuleStart() {
-    return this.coinsToReveal.moveItems({ rotation: {} })
+    return this.coinsToReveal.moveItems({ rotation: { y: 1 } })
   }
 
   afterItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.Coin)(move)) {
       const remainingCoins = this.coinsToReveal
       if (remainingCoins.length) return []
-      const playerWithUline = this.material(MaterialType.Card).location(LocationType.CommandZone).filter((item) => item.id.front === Card.Uline).getItem()
+      const playerWithUline = this
+        .material(MaterialType.Card)
+        .location(LocationType.CommandZone)
+        .id((id: Record<string, any>) => id.front === Card.Uline)
+        .getItem()
 
       if (playerWithUline) {
         const tavernCoin = this
           .material(MaterialType.Coin)
-          .location((location) => location.type === LocationType.PlayerHand && location.id === this.tavern)
+          .location((location) => location.type === LocationType.PlayerBoard && location.id === this.tavern)
           .player(playerWithUline.location.player)
-          .length
 
-        if (!tavernCoin) return [this.rules().startPlayerTurn(RuleId.UlineBid, playerWithUline.location.player!)]
+        if (!tavernCoin.length) return [this.rules().startPlayerTurn(RuleId.UlineBid, playerWithUline.location.player!)]
       }
 
       return this.moveToElvalandTurn
@@ -58,7 +61,7 @@ class BidRevelationRules extends MaterialRulesPart {
     return this
       .material(MaterialType.Coin)
       .location((location) => location.type === LocationType.PlayerBoard && location.id === this.tavern)
-      .rotation((rotation) => rotation?.y === 1)
+      .rotation((rotation) => !rotation?.y)
   }
 }
 

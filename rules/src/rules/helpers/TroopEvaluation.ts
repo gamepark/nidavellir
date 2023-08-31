@@ -12,14 +12,16 @@ import { Memory } from "../Memory";
 export class TroopEvaluation extends MaterialRulesPart {
 
   get endDistinction(): MaterialMove[] {
+    this.forget(Memory.PreviousRule)
     const remainingDistinctions = distinctions.slice(distinctions.indexOf(this.distinction) + 1)
     for (const d of remainingDistinctions) {
       const description = Distinctions[d]
       const playerWithMajority = this.getPlayerWithMajority(description.majorityOf)
-      if (Distinction.PioneerOfTheKingdom === d) return [this.rules().startRule(DistinctionRuleId[d])]
       if (playerWithMajority) return [this.rules().startPlayerTurn(DistinctionRuleId[d], playerWithMajority)]
+      if (Distinction.PioneerOfTheKingdom === d) return [this.rules().startRule(DistinctionRuleId[d])]
     }
 
+    // Must be set only once (here, it is set for each distinction
     if (!this.material(MaterialType.Card).location(LocationType.Age1Deck).length) this.memorize(Memory.Age, 2)
     return [this.rules().startRule(RuleId.EnterDwarves)]
   }
@@ -46,9 +48,7 @@ export class TroopEvaluation extends MaterialRulesPart {
   }
 
   get player() {
-    const distinction = this.distinction
-    const description = Distinctions[distinction]
-    return this.getPlayerWithMajority(description.majorityOf)
+    return this.game.rule?.player
   }
 
   get giveDistinctionToPlayer() {

@@ -993,7 +993,7 @@ export const Cards: Record<Card, CardDescription> = {
 };
 
 export const isHero = (card: Card) => card >= Card.Bonfur
-export const isSimpleDwarf = (card: Card) => card < Card.RoyalOffering1Age1
+export const isSimpleDwarf = (card: Card) => card < Card.RoyalOffering1Age1 || card === Card.BlacksmithDwarfKingsGreatArmorer
 export const isRoyalOffering = (card: Card) => card > Card.ExplorerDwarf8Age2 && card < Card.BlacksmithDwarfKingsGreatArmorer
 
 export const isAge1Card = (card: Card) => (Cards[card] as (DwarfDescription | RoyalOfferingDescription)).age === 1

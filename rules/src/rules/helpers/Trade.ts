@@ -6,6 +6,7 @@ import { LocationType } from "../../material/LocationType";
 import { DiscardedCoin, Memory } from "../Memory";
 import { Coins } from "../../coins/Coins";
 import isEmpty from "lodash/isEmpty";
+import { Gem } from "../../material/Gem";
 
 export class Trade extends MaterialRulesPart {
   get tavern() {
@@ -17,6 +18,10 @@ export class Trade extends MaterialRulesPart {
     const coinIndexes = this
       .material(MaterialType.Coin)
       .location((location) => location.type === LocationType.PlayerBoard && location.id === tavern)
+      .filter((item) => {
+        const gem = this.material(MaterialType.Gem).player(item.location.player)
+        return !gem.length || gem.getItem()!.id !== Gem.Gem6;
+      })
       .getIndexes()
       .map((index) => {
         const item = this.material(MaterialType.Coin).getItem(index)!
