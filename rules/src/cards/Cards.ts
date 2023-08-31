@@ -28,715 +28,177 @@ import {
 import { isEnumValue } from "@gamepark/rules-api"
 import { RuleId } from "../rules/RuleId";
 
-export const WarriorDwarf1Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Warrior,
-  grades: {
-    [DwarfType.Warrior]: [6],
-  },
-};
-export const WarriorDwarf2Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Warrior,
-  grades: {
-    [DwarfType.Warrior]: [4],
-  },
-};
-export const WarriorDwarf3Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Warrior,
-  grades: {
-    [DwarfType.Warrior]: [5],
-  },
-};
-export const WarriorDwarf4Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Warrior,
-  grades: {
-    [DwarfType.Warrior]: [6],
-  },
-};
-export const WarriorDwarf5Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Warrior,
-  grades: {
-    [DwarfType.Warrior]: [6],
-  },
-};
-export const WarriorDwarf6Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Warrior,
-  grades: {
-    [DwarfType.Warrior]: [7],
-  },
-};
-export const WarriorDwarf7Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Warrior,
-  grades: {
-    [DwarfType.Warrior]: [8],
-  },
-};
-export const WarriorDwarf8Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Warrior,
-  grades: {
-    [DwarfType.Warrior]: [9],
-  },
-};
-export const WarriorDwarf9Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Warrior,
-  grades: {
-    [DwarfType.Warrior]: [10],
-  },
-  minPlayers: 5,
-};
-
-export const WarriorDwarf1Age2: DwarfDescription = {
-  age: 2,
+export const WarriorGrade3: DwarfDescription = {
   type: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [3],
   },
 };
-export const WarriorDwarf2Age2: DwarfDescription = {
-  age: 2,
+export const WarriorGrade4: DwarfDescription = {
   type: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [4],
   },
 };
-export const WarriorDwarf3Age2: DwarfDescription = {
-  age: 2,
+
+export const WarriorGrade5: DwarfDescription = {
   type: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [5],
   },
 };
-export const WarriorDwarf4Age2: DwarfDescription = {
-  age: 2,
+
+export const WarriorGrade6: DwarfDescription = {
   type: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [6],
   },
 };
-export const WarriorDwarf5Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Warrior,
-  grades: {
-    [DwarfType.Warrior]: [6],
-  },
-};
-export const WarriorDwarf6Age2: DwarfDescription = {
-  age: 2,
+
+export const WarriorGrade7: DwarfDescription = {
   type: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [7],
   },
 };
-export const WarriorDwarf7Age2: DwarfDescription = {
-  age: 2,
+
+export const WarriorGrade8: DwarfDescription = {
   type: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [8],
   },
 };
-export const WarriorDwarf8Age2: DwarfDescription = {
-  age: 2,
+
+export const WarriorGrade9: DwarfDescription = {
   type: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [9],
   },
 };
-export const WarriorDwarf9Age2: DwarfDescription = {
-  age: 2,
+
+export const WarriorGrade10: DwarfDescription = {
   type: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [10],
   },
 };
 
-export const HunterDwarf1Age1: DwarfDescription = {
-  age: 1,
+
+export const Hunter: DwarfDescription = {
   type: DwarfType.Hunter,
   grades: {
     [DwarfType.Hunter]: [0],
   },
 };
 
-export const HunterDwarf2Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Hunter,
-  grades: {
-    [DwarfType.Hunter]: [0],
-  },
-};
-
-export const HunterDwarf3Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Hunter,
-  grades: {
-    [DwarfType.Hunter]: [0],
-  },
-};
-
-export const HunterDwarf4Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Hunter,
-  grades: {
-    [DwarfType.Hunter]: [0],
-  },
-};
-
-export const HunterDwarf5Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Hunter,
-  grades: {
-    [DwarfType.Hunter]: [0],
-  },
-};
-
-export const HunterDwarf6Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Hunter,
-  grades: {
-    [DwarfType.Hunter]: [0],
-  },
-};
-
-export const HunterDwarf7Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Hunter,
-  grades: {
-    [DwarfType.Hunter]: [0],
-  },
-  minPlayers: 5,
-};
-
-export const HunterDwarf8Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Hunter,
-  grades: {
-    [DwarfType.Hunter]: [0],
-  },
-  minPlayers: 5,
-};
-
-export const HunterDwarf1Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Hunter,
-  grades: {
-    [DwarfType.Hunter]: [0],
-  },
-};
-
-export const HunterDwarf2Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Hunter,
-  grades: {
-    [DwarfType.Hunter]: [0],
-  },
-};
-
-export const HunterDwarf3Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Hunter,
-  grades: {
-    [DwarfType.Hunter]: [0],
-  },
-};
-
-export const HunterDwarf4Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Hunter,
-  grades: {
-    [DwarfType.Hunter]: [0],
-  },
-};
-
-export const HunterDwarf5Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Hunter,
-  grades: {
-    [DwarfType.Hunter]: [0],
-  },
-};
-
-export const HunterDwarf6Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Hunter,
-  grades: {
-    [DwarfType.Hunter]: [0],
-  },
-};
-
-export const HunterDwarf7Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Hunter,
-  grades: {
-    [DwarfType.Hunter]: [0],
-  },
-  minPlayers: 5,
-};
-
-export const HunterDwarf8Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Hunter,
-  grades: {
-    [DwarfType.Hunter]: [0],
-  },
-  minPlayers: 5,
-};
-
-export const MinerDwarf1Age1: DwarfDescription = {
-  age: 1,
+export const MinerGrade0: DwarfDescription = {
   type: DwarfType.Miner,
   grades: {
     [DwarfType.Miner]: [0],
   },
 };
-
-export const MinerDwarf2Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Miner,
-  grades: {
-    [DwarfType.Miner]: [0],
-  },
-};
-
-export const MinerDwarf3Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Miner,
-  grades: {
-    [DwarfType.Miner]: [0],
-  },
-  minPlayers: 5,
-};
-
-export const MinerDwarf4Age1: DwarfDescription = {
-  age: 1,
+export const MinerGrade1: DwarfDescription = {
   type: DwarfType.Miner,
   grades: {
     [DwarfType.Miner]: [1],
   },
 };
 
-export const MinerDwarf5Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Miner,
-  grades: {
-    [DwarfType.Miner]: [1],
-  },
-};
-
-export const MinerDwarf6Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Miner,
-  grades: {
-    [DwarfType.Miner]: [1],
-  },
-  minPlayers: 5,
-};
-
-export const MinerDwarf7Age1: DwarfDescription = {
-  age: 1,
+export const MinerGrade2: DwarfDescription = {
   type: DwarfType.Miner,
   grades: {
     [DwarfType.Miner]: [2],
   },
 };
 
-export const MinerDwarf8Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Miner,
-  grades: {
-    [DwarfType.Miner]: [2],
-  },
-};
 
-export const MinerDwarf1Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Miner,
-  grades: {
-    [DwarfType.Miner]: [0],
-  },
-};
-
-export const MinerDwarf2Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Miner,
-  grades: {
-    [DwarfType.Miner]: [0],
-  },
-};
-
-export const MinerDwarf3Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Miner,
-  grades: {
-    [DwarfType.Miner]: [0],
-  },
-  minPlayers: 5,
-};
-
-export const MinerDwarf4Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Miner,
-  grades: {
-    [DwarfType.Miner]: [1],
-  },
-};
-
-export const MinerDwarf5Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Miner,
-  grades: {
-    [DwarfType.Miner]: [1],
-  },
-};
-
-export const MinerDwarf6Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Miner,
-  grades: {
-    [DwarfType.Miner]: [1],
-  },
-  minPlayers: 5,
-};
-
-export const MinerDwarf7Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Miner,
-  grades: {
-    [DwarfType.Miner]: [2],
-  },
-};
-
-export const MinerDwarf8Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Miner,
-  grades: {
-    [DwarfType.Miner]: [2],
-  },
-};
-
-export const BlacksmithDwarf1Age1: DwarfDescription = {
-  age: 1,
+export const Blacksmith: DwarfDescription = {
   type: DwarfType.Blacksmith,
   grades: {
     [DwarfType.Blacksmith]: [0],
   },
 };
 
-export const BlacksmithDwarf2Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
+/**
+ * Explorer1, // Explorer 5
+ * Explorer2, // Explorer 5
+ * Explorer3, // Explorer 6
+ * Explorer4, // Explorer 6
+ * Explorer5, // Explorer 7
+ * Explorer6, // Explorer 7
+ * Explorer7, // Explorer 8
+ * Explorer8, // Explorer 8
+ * Explorer9, // Explorer 9
+ * Explorer10, // Explorer 9
+ * Explorer11, // Explorer 10
+ * Explorer12, // Explorer 10
+ * Explorer13, // Explorer 11
+ * Explorer14, // Explorer 11
+ * Explorer15, // Explorer 12
+ * Explorer16, // Explorer 12
+ */
 
-export const BlacksmithDwarf3Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
-
-export const BlacksmithDwarf4Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
-
-export const BlacksmithDwarf5Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
-
-export const BlacksmithDwarf6Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
-
-export const BlacksmithDwarf7Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
-
-export const BlacksmithDwarf8Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
-
-export const BlacksmithDwarf9Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-  minPlayers: 5,
-};
-
-export const BlacksmithDwarf10Age1: DwarfDescription = {
-  age: 1,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-  minPlayers: 5,
-};
-
-export const BlacksmithDwarf1Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
-
-export const BlacksmithDwarf2Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
-
-export const BlacksmithDwarf3Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
-
-export const BlacksmithDwarf4Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
-
-export const BlacksmithDwarf5Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
-
-export const BlacksmithDwarf6Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
-
-export const BlacksmithDwarf7Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
-
-export const BlacksmithDwarf8Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
-
-export const BlacksmithDwarf9Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-  minPlayers: 5,
-};
-
-export const BlacksmithDwarf10Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Blacksmith,
-  grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-  minPlayers: 5,
-};
-
-export const ExplorerDwarf1Age1: DwarfDescription = {
-  age: 1,
+export const ExplorerGrade5: DwarfDescription = {
   type: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [5],
   },
 };
 
-export const ExplorerDwarf2Age1: DwarfDescription = {
-  age: 1,
+export const ExplorerGrade6: DwarfDescription = {
   type: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [6],
   },
 };
 
-export const ExplorerDwarf3Age1: DwarfDescription = {
-  age: 1,
+export const ExplorerGrade7: DwarfDescription = {
   type: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [7],
   },
 };
 
-export const ExplorerDwarf4Age1: DwarfDescription = {
-  age: 1,
+export const ExplorerGrade8: DwarfDescription = {
   type: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [8],
   },
 };
 
-export const ExplorerDwarf5Age1: DwarfDescription = {
-  age: 1,
+export const ExplorerGrade9: DwarfDescription = {
   type: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [9],
   },
 };
 
-export const ExplorerDwarf6Age1: DwarfDescription = {
-  age: 1,
+export const ExplorerGrade10: DwarfDescription = {
   type: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [10],
   },
 };
 
-export const ExplorerDwarf7Age1: DwarfDescription = {
-  age: 1,
+export const ExplorerGrade11: DwarfDescription = {
   type: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [11],
   },
 };
 
-export const ExplorerDwarf8Age1: DwarfDescription = {
-  age: 1,
+export const ExplorerGrade12: DwarfDescription = {
   type: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [12],
   },
-  minPlayers: 5,
 };
 
-export const ExplorerDwarf1Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Explorer,
-  grades: {
-    [DwarfType.Explorer]: [5],
-  },
-};
-
-export const ExplorerDwarf2Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Explorer,
-  grades: {
-    [DwarfType.Explorer]: [6],
-  },
-};
-
-export const ExplorerDwarf3Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Explorer,
-  grades: {
-    [DwarfType.Explorer]: [7],
-  },
-};
-
-export const ExplorerDwarf4Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Explorer,
-  grades: {
-    [DwarfType.Explorer]: [8],
-  },
-};
-
-export const ExplorerDwarf5Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Explorer,
-  grades: {
-    [DwarfType.Explorer]: [9],
-  },
-};
-
-export const ExplorerDwarf6Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Explorer,
-  grades: {
-    [DwarfType.Explorer]: [10],
-  },
-};
-
-export const ExplorerDwarf7Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Explorer,
-  grades: {
-    [DwarfType.Explorer]: [11],
-  },
-};
-
-export const ExplorerDwarf8Age2: DwarfDescription = {
-  age: 2,
-  type: DwarfType.Explorer,
-  grades: {
-    [DwarfType.Explorer]: [12],
-  },
-  minPlayers: 5,
-};
-
-export const RoyalOffering1Age1: RoyalOfferingDescription = {
-  age: 1,
+export const RoyalOffering3: RoyalOfferingDescription = {
   bonus: 3
 };
 
-export const RoyalOffering2Age1: RoyalOfferingDescription = {
-  age: 1,
-  bonus: 3
-};
-
-export const RoyalOffering1Age2: RoyalOfferingDescription = {
-  age: 2,
-  bonus: 5
-};
-
-export const RoyalOffering2Age2: RoyalOfferingDescription = {
-  age: 2,
-  bonus: 5
-};
-
-export const RoyalOffering3Age2: RoyalOfferingDescription = {
-  age: 2,
+export const RoyalOffering5: RoyalOfferingDescription = {
   bonus: 5
 };
 
@@ -756,101 +218,54 @@ export enum CardDeck {
 }
 
 export enum Card {
-  WarriorDwarf1Age1 = 1,
-  WarriorDwarf2Age1,
-  WarriorDwarf3Age1,
-  WarriorDwarf4Age1,
-  WarriorDwarf5Age1,
-  WarriorDwarf6Age1,
-  WarriorDwarf7Age1,
-  WarriorDwarf8Age1,
-  WarriorDwarf9Age1,
-  WarriorDwarf1Age2,
-  WarriorDwarf2Age2,
-  WarriorDwarf3Age2,
-  WarriorDwarf4Age2,
-  WarriorDwarf5Age2,
-  WarriorDwarf6Age2,
-  WarriorDwarf7Age2,
-  WarriorDwarf8Age2,
-  WarriorDwarf9Age2,
-  HunterDwarf1Age1,
-  HunterDwarf2Age1,
-  HunterDwarf3Age1,
-  HunterDwarf4Age1,
-  HunterDwarf5Age1,
-  HunterDwarf6Age1,
-  HunterDwarf7Age1,
-  HunterDwarf8Age1,
-  HunterDwarf1Age2,
-  HunterDwarf2Age2,
-  HunterDwarf3Age2,
-  HunterDwarf4Age2,
-  HunterDwarf5Age2,
-  HunterDwarf6Age2,
-  HunterDwarf7Age2,
-  HunterDwarf8Age2,
-  MinerDwarf1Age1,
-  MinerDwarf2Age1,
-  MinerDwarf3Age1,
-  MinerDwarf4Age1,
-  MinerDwarf5Age1,
-  MinerDwarf6Age1,
-  MinerDwarf7Age1,
-  MinerDwarf8Age1,
-  MinerDwarf1Age2,
-  MinerDwarf2Age2,
-  MinerDwarf3Age2,
-  MinerDwarf4Age2,
-  MinerDwarf5Age2,
-  MinerDwarf6Age2,
-  MinerDwarf7Age2,
-  MinerDwarf8Age2,
-  BlacksmithDwarf1Age1,
-  BlacksmithDwarf2Age1,
-  BlacksmithDwarf3Age1,
-  BlacksmithDwarf4Age1,
-  BlacksmithDwarf5Age1,
-  BlacksmithDwarf6Age1,
-  BlacksmithDwarf7Age1,
-  BlacksmithDwarf8Age1,
-  BlacksmithDwarf9Age1,
-  BlacksmithDwarf10Age1,
-  BlacksmithDwarf1Age2,
-  BlacksmithDwarf2Age2,
-  BlacksmithDwarf3Age2,
-  BlacksmithDwarf4Age2,
-  BlacksmithDwarf5Age2,
-  BlacksmithDwarf6Age2,
-  BlacksmithDwarf7Age2,
-  BlacksmithDwarf8Age2,
-  BlacksmithDwarf9Age2,
-  BlacksmithDwarf10Age2,
-  ExplorerDwarf1Age1,
-  ExplorerDwarf2Age1,
-  ExplorerDwarf3Age1,
-  ExplorerDwarf4Age1,
-  ExplorerDwarf5Age1,
-  ExplorerDwarf6Age1,
-  ExplorerDwarf7Age1,
-  ExplorerDwarf8Age1,
-  ExplorerDwarf1Age2,
-  ExplorerDwarf2Age2,
-  ExplorerDwarf3Age2,
-  ExplorerDwarf4Age2,
-  ExplorerDwarf5Age2,
-  ExplorerDwarf6Age2,
-  ExplorerDwarf7Age2,
-  ExplorerDwarf8Age2,
+  Warrior1 = 1, // Warrior grade 3
+  Warrior2, // Warrior grade 3
+  Warrior3, // Warrior grade 4
+  Warrior4, // Warrior grade 4
+  Warrior5, // Warrior grade 5
+  Warrior6,// Warrior grade 5
+  Warrior7,// Warrior grade 6
+  Warrior8,// Warrior grade 6
+  Warrior9,// Warrior grade 7
+  Warrior10,// Warrior grade 7
+  Warrior11,// Warrior grade 8
+  Warrior12,// Warrior grade 8
+  Warrior13,// Warrior grade 9
+  Warrior14,// Warrior grade 9
+  Warrior15,// Warrior grade 10
+  Warrior16,// Warrior grade 10
+  Hunter1,
+  Hunter2,
+  Miner1, // MIner 0 (tourné vers gauche)
+  Miner2, // Miner 0 (tourné vers droite)
+  Miner3, // Miner 1 (tourné vers la gauche)
+  Miner4, // Miner 1 (tourné vers la droite)
+  Miner5, // Miner 2(tourné vers gauche)
+  Miner6, // Miner 2(tourné vers la droite)
+  Blacksmith1,
+  Blacksmith2,
+  Explorer1, // Explorer 5
+  Explorer2, // Explorer 5
+  Explorer3, // Explorer 6
+  Explorer4, // Explorer 6
+  Explorer5, // Explorer 7
+  Explorer6, // Explorer 7
+  Explorer7, // Explorer 8
+  Explorer8, // Explorer 8
+  Explorer9, // Explorer 9
+  Explorer10, // Explorer 9
+  Explorer11, // Explorer 10
+  Explorer12, // Explorer 10
+  Explorer13, // Explorer 11
+  Explorer14, // Explorer 11
+  Explorer15, // Explorer 12
+  Explorer16, // Explorer 12
 
-  RoyalOffering1Age1 = 300,
-  RoyalOffering2Age1,
-  RoyalOffering1Age2,
-  RoyalOffering2Age2,
-  RoyalOffering3Age2,
+  RoyalOffering3,
+  RoyalOffering5,
 
   // Special distinction blacksmith
-  BlacksmithDwarfKingsGreatArmorer = 500,
+  BlacksmithKingsGreatArmorer = 500,
 
   // Heroes starts from 1000
   Bonfur = 1000,
@@ -877,98 +292,51 @@ export enum Card {
 }
 
 export const Cards: Record<Card, CardDescription> = {
-  [Card.WarriorDwarf1Age1]: WarriorDwarf1Age1,
-  [Card.WarriorDwarf2Age1]: WarriorDwarf2Age1,
-  [Card.WarriorDwarf3Age1]: WarriorDwarf3Age1,
-  [Card.WarriorDwarf4Age1]: WarriorDwarf4Age1,
-  [Card.WarriorDwarf5Age1]: WarriorDwarf5Age1,
-  [Card.WarriorDwarf6Age1]: WarriorDwarf6Age1,
-  [Card.WarriorDwarf7Age1]: WarriorDwarf7Age1,
-  [Card.WarriorDwarf8Age1]: WarriorDwarf8Age1,
-  [Card.WarriorDwarf9Age1]: WarriorDwarf9Age1,
-  [Card.WarriorDwarf1Age2]: WarriorDwarf1Age2,
-  [Card.WarriorDwarf2Age2]: WarriorDwarf2Age2,
-  [Card.WarriorDwarf3Age2]: WarriorDwarf3Age2,
-  [Card.WarriorDwarf4Age2]: WarriorDwarf4Age2,
-  [Card.WarriorDwarf5Age2]: WarriorDwarf5Age2,
-  [Card.WarriorDwarf6Age2]: WarriorDwarf6Age2,
-  [Card.WarriorDwarf7Age2]: WarriorDwarf7Age2,
-  [Card.WarriorDwarf8Age2]: WarriorDwarf8Age2,
-  [Card.WarriorDwarf9Age2]: WarriorDwarf9Age2,
-  [Card.HunterDwarf1Age1]: HunterDwarf1Age1,
-  [Card.HunterDwarf2Age1]: HunterDwarf2Age1,
-  [Card.HunterDwarf3Age1]: HunterDwarf3Age1,
-  [Card.HunterDwarf4Age1]: HunterDwarf4Age1,
-  [Card.HunterDwarf5Age1]: HunterDwarf5Age1,
-  [Card.HunterDwarf6Age1]: HunterDwarf6Age1,
-  [Card.HunterDwarf7Age1]: HunterDwarf7Age1,
-  [Card.HunterDwarf8Age1]: HunterDwarf8Age1,
-  [Card.HunterDwarf1Age2]: HunterDwarf1Age2,
-  [Card.HunterDwarf2Age2]: HunterDwarf2Age2,
-  [Card.HunterDwarf3Age2]: HunterDwarf3Age2,
-  [Card.HunterDwarf4Age2]: HunterDwarf4Age2,
-  [Card.HunterDwarf5Age2]: HunterDwarf5Age2,
-  [Card.HunterDwarf6Age2]: HunterDwarf6Age2,
-  [Card.HunterDwarf7Age2]: HunterDwarf7Age2,
-  [Card.HunterDwarf8Age2]: HunterDwarf8Age2,
-  [Card.MinerDwarf1Age1]: MinerDwarf1Age1,
-  [Card.MinerDwarf2Age1]: MinerDwarf2Age1,
-  [Card.MinerDwarf3Age1]: MinerDwarf3Age1,
-  [Card.MinerDwarf4Age1]: MinerDwarf4Age1,
-  [Card.MinerDwarf5Age1]: MinerDwarf5Age1,
-  [Card.MinerDwarf6Age1]: MinerDwarf6Age1,
-  [Card.MinerDwarf7Age1]: MinerDwarf7Age1,
-  [Card.MinerDwarf8Age1]: MinerDwarf8Age1,
-  [Card.MinerDwarf1Age2]: MinerDwarf1Age2,
-  [Card.MinerDwarf2Age2]: MinerDwarf2Age2,
-  [Card.MinerDwarf3Age2]: MinerDwarf3Age2,
-  [Card.MinerDwarf4Age2]: MinerDwarf4Age2,
-  [Card.MinerDwarf5Age2]: MinerDwarf5Age2,
-  [Card.MinerDwarf6Age2]: MinerDwarf6Age2,
-  [Card.MinerDwarf7Age2]: MinerDwarf7Age2,
-  [Card.MinerDwarf8Age2]: MinerDwarf8Age2,
-  [Card.BlacksmithDwarf1Age1]: BlacksmithDwarf1Age1,
-  [Card.BlacksmithDwarf2Age1]: BlacksmithDwarf2Age1,
-  [Card.BlacksmithDwarf3Age1]: BlacksmithDwarf3Age1,
-  [Card.BlacksmithDwarf4Age1]: BlacksmithDwarf4Age1,
-  [Card.BlacksmithDwarf5Age1]: BlacksmithDwarf5Age1,
-  [Card.BlacksmithDwarf6Age1]: BlacksmithDwarf6Age1,
-  [Card.BlacksmithDwarf7Age1]: BlacksmithDwarf7Age1,
-  [Card.BlacksmithDwarf8Age1]: BlacksmithDwarf8Age1,
-  [Card.BlacksmithDwarf9Age1]: BlacksmithDwarf9Age1,
-  [Card.BlacksmithDwarf10Age1]: BlacksmithDwarf10Age1,
-  [Card.BlacksmithDwarf1Age2]: BlacksmithDwarf1Age2,
-  [Card.BlacksmithDwarf2Age2]: BlacksmithDwarf2Age2,
-  [Card.BlacksmithDwarf3Age2]: BlacksmithDwarf3Age2,
-  [Card.BlacksmithDwarf4Age2]: BlacksmithDwarf4Age2,
-  [Card.BlacksmithDwarf5Age2]: BlacksmithDwarf5Age2,
-  [Card.BlacksmithDwarf6Age2]: BlacksmithDwarf6Age2,
-  [Card.BlacksmithDwarf7Age2]: BlacksmithDwarf7Age2,
-  [Card.BlacksmithDwarf8Age2]: BlacksmithDwarf8Age2,
-  [Card.BlacksmithDwarf9Age2]: BlacksmithDwarf9Age2,
-  [Card.BlacksmithDwarf10Age2]: BlacksmithDwarf10Age2,
-  [Card.ExplorerDwarf1Age1]: ExplorerDwarf1Age1,
-  [Card.ExplorerDwarf2Age1]: ExplorerDwarf2Age1,
-  [Card.ExplorerDwarf3Age1]: ExplorerDwarf3Age1,
-  [Card.ExplorerDwarf4Age1]: ExplorerDwarf4Age1,
-  [Card.ExplorerDwarf5Age1]: ExplorerDwarf5Age1,
-  [Card.ExplorerDwarf6Age1]: ExplorerDwarf6Age1,
-  [Card.ExplorerDwarf7Age1]: ExplorerDwarf7Age1,
-  [Card.ExplorerDwarf8Age1]: ExplorerDwarf8Age1,
-  [Card.ExplorerDwarf1Age2]: ExplorerDwarf1Age2,
-  [Card.ExplorerDwarf2Age2]: ExplorerDwarf2Age2,
-  [Card.ExplorerDwarf3Age2]: ExplorerDwarf3Age2,
-  [Card.ExplorerDwarf4Age2]: ExplorerDwarf4Age2,
-  [Card.ExplorerDwarf5Age2]: ExplorerDwarf5Age2,
-  [Card.ExplorerDwarf6Age2]: ExplorerDwarf6Age2,
-  [Card.ExplorerDwarf7Age2]: ExplorerDwarf7Age2,
-  [Card.ExplorerDwarf8Age2]: ExplorerDwarf8Age2,
-  [Card.RoyalOffering1Age1]: RoyalOffering1Age1,
-  [Card.RoyalOffering2Age1]: RoyalOffering2Age1,
-  [Card.RoyalOffering1Age2]: RoyalOffering1Age2,
-  [Card.RoyalOffering2Age2]: RoyalOffering2Age2,
-  [Card.RoyalOffering3Age2]: RoyalOffering3Age2,
-  [Card.BlacksmithDwarfKingsGreatArmorer]: BlacksmithDwarfKingsGreatArmorer,
+  [Card.Warrior1]: WarriorGrade3,
+  [Card.Warrior2]: WarriorGrade3,
+  [Card.Warrior3]: WarriorGrade4,
+  [Card.Warrior4]: WarriorGrade4,
+  [Card.Warrior5]: WarriorGrade5,
+  [Card.Warrior6]: WarriorGrade5,
+  [Card.Warrior7]: WarriorGrade6,
+  [Card.Warrior8]: WarriorGrade6,
+  [Card.Warrior9]: WarriorGrade7,
+  [Card.Warrior10]: WarriorGrade7,
+  [Card.Warrior11]: WarriorGrade8,
+  [Card.Warrior12]: WarriorGrade8,
+  [Card.Warrior13]: WarriorGrade9,
+  [Card.Warrior14]: WarriorGrade9,
+  [Card.Warrior15]: WarriorGrade10,
+  [Card.Warrior16]: WarriorGrade10,
+  [Card.Hunter1]: Hunter,
+  [Card.Hunter2]: Hunter,
+  [Card.Miner1]: MinerGrade0,
+  [Card.Miner2]: MinerGrade0,
+  [Card.Miner3]: MinerGrade1,
+  [Card.Miner4]: MinerGrade1,
+  [Card.Miner5]: MinerGrade2,
+  [Card.Miner6]: MinerGrade2,
+  [Card.Blacksmith1]: Blacksmith,
+  [Card.Blacksmith2]: Blacksmith,
+  [Card.Explorer1]: ExplorerGrade5,
+  [Card.Explorer2]: ExplorerGrade5,
+  [Card.Explorer3]: ExplorerGrade6,
+  [Card.Explorer4]: ExplorerGrade6,
+  [Card.Explorer5]: ExplorerGrade7,
+  [Card.Explorer6]: ExplorerGrade7,
+  [Card.Explorer7]: ExplorerGrade8,
+  [Card.Explorer8]: ExplorerGrade8,
+  [Card.Explorer9]: ExplorerGrade9,
+  [Card.Explorer10]: ExplorerGrade9,
+  [Card.Explorer11]: ExplorerGrade10,
+  [Card.Explorer12]: ExplorerGrade10,
+  [Card.Explorer13]: ExplorerGrade11,
+  [Card.Explorer14]: ExplorerGrade11,
+  [Card.Explorer15]: ExplorerGrade12,
+  [Card.Explorer16]: ExplorerGrade12,
+  [Card.BlacksmithKingsGreatArmorer]: BlacksmithDwarfKingsGreatArmorer,
+  [Card.RoyalOffering3]: RoyalOffering3,
+  [Card.RoyalOffering5]: RoyalOffering5,
   [Card.Bonfur]: Bonfur,
   [Card.Aegur]: Aegur,
   [Card.Dagda]: Dagda,
@@ -993,15 +361,12 @@ export const Cards: Record<Card, CardDescription> = {
 };
 
 export const isHero = (card: Card) => card >= Card.Bonfur
-export const isSimpleDwarf = (card: Card) => card < Card.RoyalOffering1Age1 || card === Card.BlacksmithDwarfKingsGreatArmorer
-export const isRoyalOffering = (card: Card) => card > Card.ExplorerDwarf8Age2 && card < Card.BlacksmithDwarfKingsGreatArmorer
-
-export const isAge1Card = (card: Card) => (Cards[card] as (DwarfDescription | RoyalOfferingDescription)).age === 1
-export const isAge2Card = (card: Card) => (Cards[card] as (DwarfDescription | RoyalOfferingDescription)).age === 2
+export const isSimpleDwarf = (card: Card) => card < Card.RoyalOffering3 || card === Card.BlacksmithKingsGreatArmorer
+export const isRoyalOffering = (card: Card) => card > Card.Explorer16 && card < Card.BlacksmithKingsGreatArmorer
 
 export const cards = Object.values(Card).filter<Card>(isEnumValue)
-export const age1Cards = cards.filter(isAge1Card)
-export const age2Cards = cards.filter(isAge2Card)
+
+export const dwarfCards = cards.filter((c) => (isSimpleDwarf(c) && c !== Card.BlacksmithKingsGreatArmorer) || isRoyalOffering(c))
 export const heroCards = cards.filter(isHero)
 
 export type CardDescription = DwarfDescription | HeroDescription | RoyalOfferingDescription

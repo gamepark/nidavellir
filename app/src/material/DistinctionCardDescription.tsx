@@ -3,7 +3,7 @@ import Images from "../images/Images";
 import { CardDescription } from "@gamepark/react-game/dist/components/material/FlatMaterial/CardDescription";
 import { Distinction } from "@gamepark/nidavellir/material/Distinction";
 
-export class DistinctionDescription extends CardDescription {
+export class DistinctionCardDescription extends CardDescription {
   width = 5.4
   ratio = 54 / 80
   borderRadius = 0.3
@@ -19,4 +19,4 @@ export class DistinctionDescription extends CardDescription {
   rules = () => <p></p>
 }
 
-export const distinctionDescription = new DistinctionDescription()
+export const distinctionDescription = new DistinctionCardDescription()

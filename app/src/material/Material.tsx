@@ -1,7 +1,7 @@
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
 import { MaterialDescription } from '@gamepark/react-game'
 import { cardDescription } from "./DwarfCardDescription";
-import { distinctionDescription } from "./DistinctionDescription";
+import { distinctionDescription } from "./DistinctionCardDescription";
 import { coinDescription } from "./CoinDescription";
 import { gemDescription } from "./GemDescription";
 import { playerBoardDescription } from "./PlayerBoardDescription";

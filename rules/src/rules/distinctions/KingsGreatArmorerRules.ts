@@ -15,7 +15,7 @@ class KingsGreatArmorerRules extends DistinctionRules {
     const card = this
       .material(MaterialType.Card)
       .location(LocationType.DistinctionsDeck)
-      .id((id) => (id as Record<string, any>).front === Card.BlacksmithDwarfKingsGreatArmorer)
+      .id((id) => (id as Record<string, any>).front === Card.BlacksmithKingsGreatArmorer)
 
     // If the player trigger recruitment effect, it can come back. In this case card.length is 0
     if (!card.length) return this.endDistinction

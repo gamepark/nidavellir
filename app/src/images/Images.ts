@@ -37,98 +37,51 @@ import LaughingGoblin from './tavern/laughing-goblin.png'
 import DancingDragon from './tavern/dancing-dragon.png'
 import ShiningHorse from './tavern/shining-horse.png'
 
-import BlacksmithDwarf1Age1 from './cards/age-card/blacksmith/BlacksmithDwarf1Age1.jpg'
-import BlacksmithDwarf1Age2 from './cards/age-card/blacksmith/BlacksmithDwarf1Age2.jpg'
-import BlacksmithDwarf2Age1 from './cards/age-card/blacksmith/BlacksmithDwarf2Age1.jpg'
-import BlacksmithDwarf2Age2 from './cards/age-card/blacksmith/BlacksmithDwarf2Age2.jpg'
-import BlacksmithDwarf3Age1 from './cards/age-card/blacksmith/BlacksmithDwarf3Age1.jpg'
-import BlacksmithDwarf3Age2 from './cards/age-card/blacksmith/BlacksmithDwarf3Age2.jpg'
-import BlacksmithDwarf4Age1 from './cards/age-card/blacksmith/BlacksmithDwarf4Age1.jpg'
-import BlacksmithDwarf4Age2 from './cards/age-card/blacksmith/BlacksmithDwarf4Age2.jpg'
-import BlacksmithDwarf5Age1 from './cards/age-card/blacksmith/BlacksmithDwarf5Age1.jpg'
-import BlacksmithDwarf5Age2 from './cards/age-card/blacksmith/BlacksmithDwarf5Age2.jpg'
-import BlacksmithDwarf6Age1 from './cards/age-card/blacksmith/BlacksmithDwarf6Age1.jpg'
-import BlacksmithDwarf6Age2 from './cards/age-card/blacksmith/BlacksmithDwarf6Age2.jpg'
-import BlacksmithDwarf7Age1 from './cards/age-card/blacksmith/BlacksmithDwarf7Age1.jpg'
-import BlacksmithDwarf7Age2 from './cards/age-card/blacksmith/BlacksmithDwarf7Age2.jpg'
-import BlacksmithDwarf8Age1 from './cards/age-card/blacksmith/BlacksmithDwarf8Age1.jpg'
-import BlacksmithDwarf8Age2 from './cards/age-card/blacksmith/BlacksmithDwarf8Age2.jpg'
-import BlacksmithDwarf9Age1 from './cards/age-card/blacksmith/BlacksmithDwarf9Age1.jpg'
-import BlacksmithDwarf9Age2 from './cards/age-card/blacksmith/BlacksmithDwarf9Age2.jpg'
-import BlacksmithDwarf10Age1 from './cards/age-card/blacksmith/BlacksmithDwarf10Age1.jpg'
-import BlacksmithDwarf10Age2 from './cards/age-card/blacksmith/BlacksmithDwarf10Age2.jpg'
-import BlacksmithDwarfKingsGreatArmorer from './cards/age-card/blacksmith/BlacksmithDwarfKingsGreatArmorer.jpg'
-import ExplorerDwarf1Age1 from './cards/age-card/explorer/ExplorerDwarf1Age1.jpg'
-import ExplorerDwarf1Age2 from './cards/age-card/explorer/ExplorerDwarf1Age2.jpg'
-import ExplorerDwarf2Age1 from './cards/age-card/explorer/ExplorerDwarf2Age1.jpg'
-import ExplorerDwarf2Age2 from './cards/age-card/explorer/ExplorerDwarf2Age2.jpg'
-import ExplorerDwarf3Age1 from './cards/age-card/explorer/ExplorerDwarf3Age1.jpg'
-import ExplorerDwarf3Age2 from './cards/age-card/explorer/ExplorerDwarf3Age2.jpg'
-import ExplorerDwarf4Age1 from './cards/age-card/explorer/ExplorerDwarf4Age1.jpg'
-import ExplorerDwarf4Age2 from './cards/age-card/explorer/ExplorerDwarf4Age2.jpg'
-import ExplorerDwarf5Age1 from './cards/age-card/explorer/ExplorerDwarf5Age1.jpg'
-import ExplorerDwarf5Age2 from './cards/age-card/explorer/ExplorerDwarf5Age2.jpg'
-import ExplorerDwarf6Age1 from './cards/age-card/explorer/ExplorerDwarf6Age1.jpg'
-import ExplorerDwarf6Age2 from './cards/age-card/explorer/ExplorerDwarf6Age2.jpg'
-import ExplorerDwarf7Age1 from './cards/age-card/explorer/ExplorerDwarf7Age1.jpg'
-import ExplorerDwarf7Age2 from './cards/age-card/explorer/ExplorerDwarf7Age2.jpg'
-import ExplorerDwarf8Age1 from './cards/age-card/explorer/ExplorerDwarf8Age1.jpg'
-import ExplorerDwarf8Age2 from './cards/age-card/explorer/ExplorerDwarf8Age2.jpg'
-import HunterDwarf1Age1 from './cards/age-card/hunter/HunterDwarf1Age1.jpg'
-import HunterDwarf1Age2 from './cards/age-card/hunter/HunterDwarf1Age2.jpg'
-import HunterDwarf2Age1 from './cards/age-card/hunter/HunterDwarf2Age1.jpg'
-import HunterDwarf2Age2 from './cards/age-card/hunter/HunterDwarf2Age2.jpg'
-import HunterDwarf3Age1 from './cards/age-card/hunter/HunterDwarf3Age1.jpg'
-import HunterDwarf3Age2 from './cards/age-card/hunter/HunterDwarf3Age2.jpg'
-import HunterDwarf4Age1 from './cards/age-card/hunter/HunterDwarf4Age1.jpg'
-import HunterDwarf4Age2 from './cards/age-card/hunter/HunterDwarf4Age2.jpg'
-import HunterDwarf5Age1 from './cards/age-card/hunter/HunterDwarf5Age1.jpg'
-import HunterDwarf5Age2 from './cards/age-card/hunter/HunterDwarf5Age2.jpg'
-import HunterDwarf6Age1 from './cards/age-card/hunter/HunterDwarf6Age1.jpg'
-import HunterDwarf6Age2 from './cards/age-card/hunter/HunterDwarf6Age2.jpg'
-import HunterDwarf7Age1 from './cards/age-card/hunter/HunterDwarf7Age1.jpg'
-import HunterDwarf7Age2 from './cards/age-card/hunter/HunterDwarf7Age2.jpg'
-import HunterDwarf8Age1 from './cards/age-card/hunter/HunterDwarf8Age1.jpg'
-import HunterDwarf8Age2 from './cards/age-card/hunter/HunterDwarf8Age2.jpg'
-import MinerDwarf1Age1 from './cards/age-card/miner/MinerDwarf1Age1.jpg'
-import MinerDwarf1Age2 from './cards/age-card/miner/MinerDwarf1Age2.jpg'
-import MinerDwarf2Age1 from './cards/age-card/miner/MinerDwarf2Age1.jpg'
-import MinerDwarf2Age2 from './cards/age-card/miner/MinerDwarf2Age2.jpg'
-import MinerDwarf3Age1 from './cards/age-card/miner/MinerDwarf3Age1.jpg'
-import MinerDwarf3Age2 from './cards/age-card/miner/MinerDwarf3Age2.jpg'
-import MinerDwarf4Age1 from './cards/age-card/miner/MinerDwarf4Age1.jpg'
-import MinerDwarf4Age2 from './cards/age-card/miner/MinerDwarf4Age2.jpg'
-import MinerDwarf5Age1 from './cards/age-card/miner/MinerDwarf5Age1.jpg'
-import MinerDwarf5Age2 from './cards/age-card/miner/MinerDwarf5Age2.jpg'
-import MinerDwarf6Age1 from './cards/age-card/miner/MinerDwarf6Age1.jpg'
-import MinerDwarf6Age2 from './cards/age-card/miner/MinerDwarf6Age2.jpg'
-import MinerDwarf7Age1 from './cards/age-card/miner/MinerDwarf7Age1.jpg'
-import MinerDwarf7Age2 from './cards/age-card/miner/MinerDwarf7Age2.jpg'
-import MinerDwarf8Age1 from './cards/age-card/miner/MinerDwarf8Age1.jpg'
-import MinerDwarf8Age2 from './cards/age-card/miner/MinerDwarf8Age2.jpg'
-import RoyalOffering1Age1 from './cards/age-card/royal-offering/RoyalOffering1Age1.jpg'
-import RoyalOffering1Age2 from './cards/age-card/royal-offering/RoyalOffering1Age2.jpg'
-import RoyalOffering2Age1 from './cards/age-card/royal-offering/RoyalOffering2Age1.jpg'
-import RoyalOffering2Age2 from './cards/age-card/royal-offering/RoyalOffering2Age2.jpg'
-import RoyalOffering3Age2 from './cards/age-card/royal-offering/RoyalOffering3Age2.jpg'
-import WarriorDwarf1Age1 from './cards/age-card/warrior/WarriorDwarf1Age1.jpg'
-import WarriorDwarf1Age2 from './cards/age-card/warrior/WarriorDwarf1Age2.jpg'
-import WarriorDwarf2Age1 from './cards/age-card/warrior/WarriorDwarf2Age1.jpg'
-import WarriorDwarf2Age2 from './cards/age-card/warrior/WarriorDwarf2Age2.jpg'
-import WarriorDwarf3Age1 from './cards/age-card/warrior/WarriorDwarf3Age1.jpg'
-import WarriorDwarf3Age2 from './cards/age-card/warrior/WarriorDwarf3Age2.jpg'
-import WarriorDwarf4Age1 from './cards/age-card/warrior/WarriorDwarf4Age1.jpg'
-import WarriorDwarf4Age2 from './cards/age-card/warrior/WarriorDwarf4Age2.jpg'
-import WarriorDwarf5Age1 from './cards/age-card/warrior/WarriorDwarf5Age1.jpg'
-import WarriorDwarf5Age2 from './cards/age-card/warrior/WarriorDwarf5Age2.jpg'
-import WarriorDwarf6Age1 from './cards/age-card/warrior/WarriorDwarf6Age1.jpg'
-import WarriorDwarf6Age2 from './cards/age-card/warrior/WarriorDwarf6Age2.jpg'
-import WarriorDwarf7Age1 from './cards/age-card/warrior/WarriorDwarf7Age1.jpg'
-import WarriorDwarf7Age2 from './cards/age-card/warrior/WarriorDwarf7Age2.jpg'
-import WarriorDwarf8Age1 from './cards/age-card/warrior/WarriorDwarf8Age1.jpg'
-import WarriorDwarf8Age2 from './cards/age-card/warrior/WarriorDwarf8Age2.jpg'
-import WarriorDwarf9Age1 from './cards/age-card/warrior/WarriorDwarf9Age1.jpg'
-import WarriorDwarf9Age2 from './cards/age-card/warrior/WarriorDwarf9Age2.jpg'
+import Blacksmith1 from './cards/age-card/blacksmith/Blacksmith1.jpg'
+import Blacksmith2 from './cards/age-card/blacksmith/Blacksmith2.jpg'
+import BlacksmithKingsGreatArmorer from './cards/age-card/blacksmith/BlacksmithKingsGreatArmorer.jpg'
+import ExplorerGrade5_1 from './cards/age-card/explorer/ExplorerGrade5_1.jpg'
+import ExplorerGrade5_2 from './cards/age-card/explorer/ExplorerGrade5_2.jpg'
+import ExplorerGrade6_1 from './cards/age-card/explorer/ExplorerGrade6_1.jpg'
+import ExplorerGrade6_2 from './cards/age-card/explorer/ExplorerGrade6_2.jpg'
+import ExplorerGrade7_1 from './cards/age-card/explorer/ExplorerGrade7_1.jpg'
+import ExplorerGrade7_2 from './cards/age-card/explorer/ExplorerGrade7_2.jpg'
+import ExplorerGrade8_1 from './cards/age-card/explorer/ExplorerGrade8_1.jpg'
+import ExplorerGrade8_2 from './cards/age-card/explorer/ExplorerGrade8_2.jpg'
+import ExplorerGrade9_1 from './cards/age-card/explorer/ExplorerGrade9_1.jpg'
+import ExplorerGrade9_2 from './cards/age-card/explorer/ExplorerGrade9_2.jpg'
+import ExplorerGrade10_1 from './cards/age-card/explorer/ExplorerGrade10_1.jpg'
+import ExplorerGrade10_2 from './cards/age-card/explorer/ExplorerGrade10_2.jpg'
+import ExplorerGrade11_1 from './cards/age-card/explorer/ExplorerGrade11_1.jpg'
+import ExplorerGrade11_2 from './cards/age-card/explorer/ExplorerGrade11_2.jpg'
+import ExplorerGrade12_1 from './cards/age-card/explorer/ExplorerGrade12_1.jpg'
+import ExplorerGrade12_2 from './cards/age-card/explorer/ExplorerGrade12_2.jpg'
+import Hunter1 from './cards/age-card/hunter/Hunter1.jpg'
+import Hunter2 from './cards/age-card/hunter/Hunter2.jpg'
+import MinerGrade0_1 from './cards/age-card/miner/MinerGrade0_1.jpg'
+import MinerGrade0_2 from './cards/age-card/miner/MinerGrade0_2.jpg'
+import MinerGrade1_1 from './cards/age-card/miner/MinerGrade1_1.jpg'
+import MinerGrade1_2 from './cards/age-card/miner/MinerGrade1_2.jpg'
+import MinerGrade2_1 from './cards/age-card/miner/MinerGrade2_1.jpg'
+import MinerGrade2_2 from './cards/age-card/miner/MinerGrade2_2.jpg'
+import RoyalOffering3 from './cards/age-card/royal-offering/RoyalOffering3.jpg'
+import RoyalOffering5 from './cards/age-card/royal-offering/RoyalOffering5.jpg'
+import WarriorGrade3_1 from './cards/age-card/warrior/WarriorGrade3_1.jpg'
+import WarriorGrade3_2 from './cards/age-card/warrior/WarriorGrade3_2.jpg'
+import WarriorGrade4_1 from './cards/age-card/warrior/WarriorGrade4_1.jpg'
+import WarriorGrade4_2 from './cards/age-card/warrior/WarriorGrade4_2.jpg'
+import WarriorGrade5_1 from './cards/age-card/warrior/WarriorGrade5_1.jpg'
+import WarriorGrade5_2 from './cards/age-card/warrior/WarriorGrade5_2.jpg'
+import WarriorGrade6_1 from './cards/age-card/warrior/WarriorGrade6_1.jpg'
+import WarriorGrade6_2 from './cards/age-card/warrior/WarriorGrade6_2.jpg'
+import WarriorGrade7_1 from './cards/age-card/warrior/WarriorGrade7_1.jpg'
+import WarriorGrade7_2 from './cards/age-card/warrior/WarriorGrade7_2.jpg'
+import WarriorGrade8_1 from './cards/age-card/warrior/WarriorGrade8_1.jpg'
+import WarriorGrade8_2 from './cards/age-card/warrior/WarriorGrade8_2.jpg'
+import WarriorGrade9_1 from './cards/age-card/warrior/WarriorGrade9_1.jpg'
+import WarriorGrade9_2 from './cards/age-card/warrior/WarriorGrade9_2.jpg'
+import WarriorGrade10_1 from './cards/age-card/warrior/WarriorGrade10_1.jpg'
+import WarriorGrade10_2 from './cards/age-card/warrior/WarriorGrade10_2.jpg'
 
 import Aegur from './cards/heroes/Aegur.jpg'
 import Aral from './cards/heroes/Aral.jpg'
@@ -225,98 +178,51 @@ const Images = {
   LaughingGoblin,
   DancingDragon,
   ShiningHorse,
-  BlacksmithDwarf1Age1,
-  BlacksmithDwarf1Age2,
-  BlacksmithDwarf2Age1,
-  BlacksmithDwarf2Age2,
-  BlacksmithDwarf3Age1,
-  BlacksmithDwarf3Age2,
-  BlacksmithDwarf4Age1,
-  BlacksmithDwarf4Age2,
-  BlacksmithDwarf5Age1,
-  BlacksmithDwarf5Age2,
-  BlacksmithDwarf6Age1,
-  BlacksmithDwarf6Age2,
-  BlacksmithDwarf7Age1,
-  BlacksmithDwarf7Age2,
-  BlacksmithDwarf8Age1,
-  BlacksmithDwarf8Age2,
-  BlacksmithDwarf9Age1,
-  BlacksmithDwarf9Age2,
-  BlacksmithDwarf10Age1,
-  BlacksmithDwarf10Age2,
-  BlacksmithDwarfKingsGreatArmorer,
-  ExplorerDwarf1Age1,
-  ExplorerDwarf1Age2,
-  ExplorerDwarf2Age1,
-  ExplorerDwarf2Age2,
-  ExplorerDwarf3Age1,
-  ExplorerDwarf3Age2,
-  ExplorerDwarf4Age1,
-  ExplorerDwarf4Age2,
-  ExplorerDwarf5Age1,
-  ExplorerDwarf5Age2,
-  ExplorerDwarf6Age1,
-  ExplorerDwarf6Age2,
-  ExplorerDwarf7Age1,
-  ExplorerDwarf7Age2,
-  ExplorerDwarf8Age1,
-  ExplorerDwarf8Age2,
-  HunterDwarf1Age1,
-  HunterDwarf1Age2,
-  HunterDwarf2Age1,
-  HunterDwarf2Age2,
-  HunterDwarf3Age1,
-  HunterDwarf3Age2,
-  HunterDwarf4Age1,
-  HunterDwarf4Age2,
-  HunterDwarf5Age1,
-  HunterDwarf5Age2,
-  HunterDwarf6Age1,
-  HunterDwarf6Age2,
-  HunterDwarf7Age1,
-  HunterDwarf7Age2,
-  HunterDwarf8Age1,
-  HunterDwarf8Age2,
-  MinerDwarf1Age1,
-  MinerDwarf1Age2,
-  MinerDwarf2Age1,
-  MinerDwarf2Age2,
-  MinerDwarf3Age1,
-  MinerDwarf3Age2,
-  MinerDwarf4Age1,
-  MinerDwarf4Age2,
-  MinerDwarf5Age1,
-  MinerDwarf5Age2,
-  MinerDwarf6Age1,
-  MinerDwarf6Age2,
-  MinerDwarf7Age1,
-  MinerDwarf7Age2,
-  MinerDwarf8Age1,
-  MinerDwarf8Age2,
-  RoyalOffering1Age1,
-  RoyalOffering1Age2,
-  RoyalOffering2Age1,
-  RoyalOffering2Age2,
-  RoyalOffering3Age2,
-  WarriorDwarf1Age1,
-  WarriorDwarf1Age2,
-  WarriorDwarf2Age1,
-  WarriorDwarf2Age2,
-  WarriorDwarf3Age1,
-  WarriorDwarf3Age2,
-  WarriorDwarf4Age1,
-  WarriorDwarf4Age2,
-  WarriorDwarf5Age1,
-  WarriorDwarf5Age2,
-  WarriorDwarf6Age1,
-  WarriorDwarf6Age2,
-  WarriorDwarf7Age1,
-  WarriorDwarf7Age2,
-  WarriorDwarf8Age1,
-  WarriorDwarf8Age2,
-  WarriorDwarf9Age1,
-  WarriorDwarf9Age2,
+  Blacksmith2,
+  Blacksmith1,
+  BlacksmithKingsGreatArmorer,
+  ExplorerGrade5_1,
+  ExplorerGrade5_2,
+  ExplorerGrade6_1,
+  ExplorerGrade6_2,
+  ExplorerGrade7_1,
+  ExplorerGrade7_2,
+  ExplorerGrade8_1,
+  ExplorerGrade8_2,
+  ExplorerGrade9_1,
+  ExplorerGrade9_2,
+  ExplorerGrade10_1,
+  ExplorerGrade10_2,
+  ExplorerGrade11_1,
+  ExplorerGrade11_2,
+  ExplorerGrade12_1,
+  ExplorerGrade12_2,
+  Hunter1,
+  Hunter2,
+  MinerGrade0_1,
+  MinerGrade0_2,
+  MinerGrade1_1,
+  MinerGrade1_2,
+  MinerGrade2_1,
+  MinerGrade2_2,
+  RoyalOffering3,
+  RoyalOffering5,
+  WarriorGrade3_1,
+  WarriorGrade3_2,
+  WarriorGrade4_1,
+  WarriorGrade4_2,
+  WarriorGrade5_1,
+  WarriorGrade5_2,
+  WarriorGrade6_1,
+  WarriorGrade6_2,
+  WarriorGrade7_1,
+  WarriorGrade7_2,
+  WarriorGrade8_1,
+  WarriorGrade8_2,
+  WarriorGrade9_1,
+  WarriorGrade9_2,
+  WarriorGrade10_1,
+  WarriorGrade10_2,
   Aegur,
   Aral,
   Astrid,

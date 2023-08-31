@@ -43,7 +43,6 @@ export class PlayerHandLocator extends HandLocator<PlayerId, MaterialType, Locat
     if (item.location.player === player) {
       const coins = rules.material(MaterialType.Coin).location(LocationType.Hand).player(player)
       const sorted = orderBy(coins.getIndexes(), [(c) => Coins[coins.getItem(c)!.id].value, (c) => coins.getItem(c)!.location.x ])
-      console.log(sorted, coins.getIndexes())
       return sorted.indexOf(index)
     } else {
       return item.location.x!

@@ -4,11 +4,8 @@ import { DwarfType } from "./DwarfType";
 
 
 export type DwarfDescription = {
-  age?: number;
   type: DwarfType;
-  copies?: number;
   grades?: Grades;
-  minPlayers?: number;
 };
 
 

@@ -9,8 +9,8 @@ import { lessThan4PlayersTreasure, moreThan3PlayersTreasure } from "./configurat
 import { baseGems, Gem } from "./material/Gem";
 import { RuleId } from "./rules/RuleId";
 import { distinctions } from "./material/Distinction";
-import { age1Cards, age2Cards, Card, CardDeck, heroCards } from "./cards/Cards";
-import { cardsMinPlayers } from "./configuration/CardsMinPlayers";
+import { Card, CardDeck, dwarfCards, heroCards } from "./cards/Cards";
+import { age1For5Players, age1ForMinus5Players, age2For5Players, age2ForMinus5Players } from "./configuration/CardsMinPlayers";
 import { MIN_DWARVES_PER_TAVERN } from "./rules/helpers/Tavern";
 import { locationsStrategies } from "./configuration/LocationStrategies";
 import { taverns } from "./material/Tavern";
@@ -38,8 +38,8 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
   }
 
   setupCard(options: NidavellirOptions) {
-    const age1 = age1Cards.filter((c) => options.players >= (cardsMinPlayers[c] ?? 0))
-    const age2 = age2Cards.filter((c) => options.players >= (cardsMinPlayers[c] ?? 0))
+    const age1 = this.getAge1Cards(options)
+    const age2 = this.getAge2Cards(options)
 
     // Age 1 Deck
     this.material(MaterialType.Card)
@@ -52,8 +52,18 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
     this.material(MaterialType.Card).location(LocationType.Age2Deck).shuffle()
 
     this.material(MaterialType.Card)
-      .createItem({ id: { back: CardDeck.Distinction, front: Card.BlacksmithDwarfKingsGreatArmorer }, location: { type: LocationType.DistinctionsDeck } })
+      .createItem({ id: { back: CardDeck.Distinction, front: Card.BlacksmithKingsGreatArmorer }, location: { type: LocationType.DistinctionsDeck } })
 
+  }
+
+  getAge1Cards(options: NidavellirOptions): Card[] {
+    const cardQuantities = options.players === 5? age1For5Players: age1ForMinus5Players
+    return dwarfCards.flatMap((c) => Array.from(Array(cardQuantities[c] ?? 1)).fill(c) )
+  }
+
+  getAge2Cards(options: NidavellirOptions): Card[] {
+    const cardQuantities = options.players === 5? age2For5Players: age2ForMinus5Players
+    return dwarfCards.flatMap((c) => Array.from(Array(cardQuantities[c] ?? 1)).fill(c) )
   }
 
   setupHeroes() {
