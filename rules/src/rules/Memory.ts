@@ -12,7 +12,7 @@ export enum Memory {
   Trade,
   Distinction,
   TransformBonus,
-  TransformedCoinLocation,
+  TransformedCoinItemPosition,
   Dagda,
   Effect,
 }

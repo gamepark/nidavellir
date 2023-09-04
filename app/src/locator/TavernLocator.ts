@@ -9,10 +9,14 @@ import { cardDescription } from "../material/DwarfCardDescription";
 
 export class TavernLocator extends GridLocator {
   delta = { x: 1, y: 1 }
-  columns = 3
 
-  getCoordinates(item: MaterialItem<PlayerId, LocationType>, _context: ItemContext<PlayerId, MaterialType, LocationType>): Coordinates {
-    const baseY = -29
+  getColumns(_item: MaterialItem, { rules }: ItemContext): number {
+    return Math.max(rules.players.length, 3)
+  }
+
+  getCoordinates(item: MaterialItem<PlayerId, LocationType>, { rules }: ItemContext<PlayerId, MaterialType, LocationType>): Coordinates {
+    const players = rules.players.length
+    const baseY = players > 3? -23: -29
     const cardHeight = cardDescription.getSize(item).height
     const tavernIndex = (item.location.id - 1)
     return {  x: -57, y: baseY + (cardHeight + this.delta.y) * tavernIndex, z: 0.1 }

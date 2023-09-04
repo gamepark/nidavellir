@@ -2,8 +2,8 @@ import { isEnumValue } from "@gamepark/rules-api"
 export enum DwarfType {
   Blacksmith = 1,
   Hunter,
-  Explorer,
   Miner,
+  Explorer,
   Warrior,
   Neutral
 }

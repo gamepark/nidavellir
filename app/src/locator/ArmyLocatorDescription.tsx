@@ -5,7 +5,7 @@ import { cardDescription } from "../material/DwarfCardDescription";
 import { css } from "@emotion/react";
 import { Coordinates, Location } from "@gamepark/rules-api";
 import { DwarfType, dwarfTypes } from "@gamepark/nidavellir/cards/DwarfType";
-import { playerBoardDescription } from "../material/PlayerBoardDescription";
+import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
 
 export class ArmyLocatorDescription extends LocationDescription {
   width = cardDescription.width + 0.4
@@ -16,13 +16,17 @@ export class ArmyLocatorDescription extends LocationDescription {
     return players.flatMap((player) => dwarfTypes.map((type) => ({ type: LocationType.Army, id: type,  player })))
   }
 
-  getCoordinates(location: Location, _context: MaterialContext): Coordinates {
-    const baseX = -58.40
-    const rightMargin = 1
-    const playerIndex = (location.player! - 1)
-    const playerX = (playerBoardDescription.width + (this.width * 6) + rightMargin) * playerIndex
-    const locationLeft = (location.id! - 1) * this.width
-    return { x: baseX + playerX + locationLeft, y: 22.77, z: 0 }
+  getCoordinates(location: Location, context: MaterialContext): Coordinates {
+    const {locators, material} = context
+    const playerBoardMaterial = material[MaterialType.PlayerBoard]
+    const playerBoard = playerBoardMaterial.getStaticItems(context).find((i) => i.location.player === location.player)!
+    const playerBoardPosition = locators[LocationType.Table].getPosition(playerBoard, { ...context, type: MaterialType.PlayerBoard, index: 0, displayIndex: 0 })
+    const playerX = playerBoardPosition.x!
+    const boardLeft = (playerBoardMaterial.getSize(playerBoard).width / 2) + (this.width / 2)
+    const locationLeft = boardLeft + (location.id! - 1) * this.width
+
+    const playerY = playerBoardPosition.y!
+    return { x: playerX + locationLeft, y: playerY + 1.77, z: 0 }
   }
 
   getExtraCss = (location: Location) =>

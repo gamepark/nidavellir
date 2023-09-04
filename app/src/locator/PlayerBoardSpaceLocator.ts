@@ -6,6 +6,7 @@ import { LocationType } from "@gamepark/nidavellir/material/LocationType";
 import { Location, MaterialItem, XYCoordinates } from "@gamepark/rules-api";
 import { PlayerBoardSpace } from "@gamepark/nidavellir/material/PlayerBoardSpace";
 import { PlayerBoardSpaceLocatorDescription } from "./PlayerBoardSpaceLocatorDescription";
+import { RuleId } from "@gamepark/nidavellir/rules/RuleId";
 
 export class PlayerBoardSpaceLocator extends ItemLocator<PlayerId, MaterialType, LocationType> {
   parentItemType = MaterialType.PlayerBoard
@@ -29,8 +30,9 @@ export class PlayerBoardSpaceLocator extends ItemLocator<PlayerId, MaterialType,
     }
   }
 
-  isHidden(item: MaterialItem<PlayerId, LocationType>, { type }: ItemContext): boolean {
-    return MaterialType.Coin === type && !item.rotation?.y
+  isHidden(item: MaterialItem<PlayerId, LocationType>, { type, rules, player }: ItemContext): boolean {
+    const isTransform = player && rules.game.rule?.id === RuleId.TransformCoin && rules.game.rule.player === player && player === item.location.player
+    return MaterialType.Coin === type && !item.rotation?.y && !isTransform
   }
 
   getRotation(_item: MaterialItem<PlayerId, LocationType>, context: ItemContext): number {

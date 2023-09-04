@@ -31,7 +31,6 @@ class ChooseCardRules extends PlayerTurnRule {
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move)) return []
 
-    //console.log(move, this.tavern)
     return new PlayerTurn(this.game, this.player).onChooseCard(move)
   }
 

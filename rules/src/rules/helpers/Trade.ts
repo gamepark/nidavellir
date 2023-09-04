@@ -1,4 +1,4 @@
-import { Material, MaterialRulesPart } from "@gamepark/rules-api";
+import { MaterialRulesPart } from "@gamepark/rules-api";
 import { MaterialType } from "../../material/MaterialType";
 import groupBy from "lodash/groupBy";
 import pickBy from "lodash/pickBy";
@@ -13,25 +13,14 @@ export class Trade extends MaterialRulesPart {
     return this.remind(Memory.Tavern)
   }
 
-  get tavernCoins(): Material {
+  get tavernCoins(): number[] {
     const tavern = this.tavern
-    const coinIndexes = this
+
+    return this
       .material(MaterialType.Coin)
       .location((location) => location.type === LocationType.PlayerBoard && location.id === tavern)
-      .filter((item) => {
-        const gem = this.material(MaterialType.Gem).player(item.location.player)
-        return !gem.length || gem.getItem()!.id !== Gem.Gem6;
-      })
+      .filter((item) => !this.material(MaterialType.Gem).player(item.location.player).id(Gem.Gem6).length)
       .getIndexes()
-      .map((index) => {
-        const item = this.material(MaterialType.Coin).getItem(index)!
-        const discardedCoin = this.remind<DiscardedCoin>(Memory.DiscardedCoin, item.location.player)
-        if (!discardedCoin) return index
-
-        return discardedCoin.index
-      })
-
-    return this.material(MaterialType.Coin).indexes(coinIndexes)
   }
 
   get exists(): boolean {
@@ -43,7 +32,12 @@ export class Trade extends MaterialRulesPart {
     const tavernCoins = this.tavernCoins
 
     // Group coins by values (to see tie)
-    const coinsByValue = groupBy(tavernCoins.getIndexes(), (c) => this.getCoinValue(c))
+    const coinsByValue = groupBy(tavernCoins, (index) => {
+      const item = this.material(MaterialType.Coin).getItem(index)!
+      const discardedCoin = this.remind<DiscardedCoin>(Memory.DiscardedCoin, item.location.player)
+      if (!discardedCoin || discardedCoin.tavern !== this.tavern) return this.getCoinValue(index)
+      return this.getCoinValue(discardedCoin.index)
+    })
 
     // Omit coin value with only one coin
     return pickBy(coinsByValue, (c) => c.length > 1)

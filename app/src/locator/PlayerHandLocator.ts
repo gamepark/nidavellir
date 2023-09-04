@@ -3,8 +3,6 @@ import { Location, MaterialItem } from '@gamepark/rules-api'
 import { PlayerId } from "@gamepark/nidavellir/player/Player";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
-import { playerBoardDescription } from "../material/PlayerBoardDescription";
-import { cardDescription } from "../material/DwarfCardDescription";
 import { Coins } from "@gamepark/nidavellir/coins/Coins";
 import orderBy from 'lodash/orderBy'
 
@@ -13,14 +11,14 @@ export class PlayerHandLocator extends HandLocator<PlayerId, MaterialType, Locat
     return item.location.player !== player && (type === MaterialType.Card || !item.rotation?.y)
   }
 
-  getCoordinates(location: Location<PlayerId, LocationType>, { type, index, rules }: ItemContext<PlayerId, MaterialType, LocationType>) {
-    const baseX = -46
-    const rightMargin = 1
-    const playerIndex = (location.player! - 1)
-    const cardWidth = cardDescription.width + 0.4
-    const playerX = (playerBoardDescription.width + (cardWidth * 6) + rightMargin) * playerIndex
-    const y = type === MaterialType.Coin? (8 - ((rules.material(type).getItem(index)!.rotation?.y ?? 0) * 2)): 6
-    return { x: baseX + playerX, y, z: 0 }
+  getCoordinates(location: Location<PlayerId, LocationType>, context: ItemContext<PlayerId, MaterialType, LocationType>) {
+    const {locators, material, type} = context
+    const playerBoardMaterial = material[MaterialType.PlayerBoard]
+    const playerBoard = playerBoardMaterial.getStaticItems(context).find((i) => i.location.player === location.player)!
+    const playerBoardPosition = locators[LocationType.Table].getPosition(playerBoard, { ...context, type: MaterialType.PlayerBoard, index: 0, displayIndex: 0 })
+    const playerX = playerBoardPosition.x!
+    const playerY = playerBoardPosition.y!
+    return { x: playerX + 20, y: playerY - (type === MaterialType.Coin? 12: 7), z: 0 }
   }
 
   getDeltaZ(_item: MaterialItem<PlayerId, LocationType>, _context: ItemContext<PlayerId, MaterialType, LocationType>): number {

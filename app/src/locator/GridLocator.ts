@@ -9,14 +9,19 @@ export class GridLocator extends LineLocator<PlayerId, MaterialType, LocationTyp
   coordinates = { x: 0, y: 0, z: 0 }
   columns = 2
 
+  getColumns(_item: MaterialItem, _context: ItemContext): number {
+    return this.columns
+  }
+
   getPosition(item: MaterialItem, context: ItemContext): Coordinates {
     const coordinates = this.getCoordinates(item, context)
     const index = this.getItemIndex(item, context)
-    const deltaX = (index % this.columns) * (this.delta?.x ?? 0) + (item.location.z ?? 0) * (this.delta?.z ?? 0)
-    const deltaY = Math.floor(index / this.columns) * (this.delta?.y ?? 0)
+    const columns = this.getColumns(item, context)
+    const deltaX = (index % columns) * (this.delta?.x ?? 0) + (item.location.z ?? 0) * (this.delta?.z ?? 0)
+    const deltaY = Math.floor(index / columns) * (this.delta?.y ?? 0)
 
-    const x = coordinates.x + ((index % this.columns) * context.material[context.type].getSize(item.id).width) + deltaX
-    const y = coordinates.y + (Math.floor(index / this.columns) * context.material[context.type].getSize(item.id).height) + deltaY
+    const x = coordinates.x + ((index % columns) * context.material[context.type].getSize(item.id).width) + deltaX
+    const y = coordinates.y + (Math.floor(index / columns) * context.material[context.type].getSize(item.id).height) + deltaY
 
     return { x, y, z: 0 }
   }

@@ -4,13 +4,20 @@ import { PlayerId } from "@gamepark/nidavellir/player/Player";
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
 import { cardDescription } from "../material/DwarfCardDescription";
-import { MaterialItem } from "@gamepark/rules-api";
+import { Coordinates, MaterialItem } from "@gamepark/rules-api";
 
 export class DistinctionDeckLocator extends LineLocator<PlayerId, MaterialType, LocationType> {
-  baseY = -29
-  coordinates = { x: 33, y: this.baseY, z: 0 }
 
-  getDelta(item: MaterialItem, _context: ItemContext) {
-    return { y: cardDescription.getSize(item.id).height - 2 }
+  getDelta(item: MaterialItem, { rules }: ItemContext) {
+    const players = rules.players.length
+    const y = cardDescription.getSize(item.id).height - (players > 3? 3: 2)
+    return { y }
+  }
+
+  getCoordinates(_item: MaterialItem<PlayerId, LocationType>, { rules }: ItemContext<PlayerId, MaterialType, LocationType>): Coordinates {
+    const players = rules.players.length
+    const y = players > 3? -24: -29
+    const x = players > 3? 57: 33
+    return { x, y, z: 0 }
   }
 }

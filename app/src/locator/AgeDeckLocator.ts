@@ -12,10 +12,11 @@ export class AgeDeckLocator extends DeckLocator<PlayerId, MaterialType, Location
   hidden = true
   limit = 10
 
-  getCoordinates(item: MaterialItem<PlayerId, LocationType>, _context: ItemContext<PlayerId, MaterialType, LocationType>): Coordinates {
+  getCoordinates(item: MaterialItem<PlayerId, LocationType>, { rules }: ItemContext<PlayerId, MaterialType, LocationType>): Coordinates {
     const back = item.id.back
-    const x = -73
-    const y = -29
+    const x = -74
+    const players = rules.players.length
+    const y = players > 3? -23: -29
     const deltaY = 1
     if (back === CardDeck.Age1) return { x, y, z: 0 }
     return { x, y: y + cardDescription.getSize(item.id).height + deltaY, z: 0 }

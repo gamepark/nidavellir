@@ -3,7 +3,6 @@ import { Distinction, distinctions } from "../../material/Distinction";
 import { Distinctions } from "../../cards/Distinctions";
 import { RuleId } from "../RuleId";
 import { DwarfType } from "../../cards/DwarfType";
-import { PlayerId } from "../../player/Player";
 import Army from "./Army";
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
@@ -56,23 +55,14 @@ export class TroopEvaluation extends MaterialRulesPart {
   }
 
   getPlayerWithMajority(type: DwarfType)  {
-    let majority: number = 0
-    let playersWithMajority: PlayerId[] = []
     for (const player of this.game.players) {
-      const ranks = new Army(this.game, player).countGradesOfType(type)
-      if (ranks > majority) {
-        majority = ranks
-        playersWithMajority = [player]
-      } else if (ranks === majority) {
-        playersWithMajority.push(player)
+      if (new Army(this.game, player).hasStrictMajorityOf(type)) {
+        return player
       }
     }
 
-    if (playersWithMajority.length > 1) return undefined
-
-    return playersWithMajority[0]
+    return undefined
   }
-
 }
 
 const DistinctionRuleId = {

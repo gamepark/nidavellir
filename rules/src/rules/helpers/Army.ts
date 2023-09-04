@@ -59,4 +59,39 @@ export default class Army extends MaterialRulesPart {
         .map((item) => Cards[item.id.front].grades?.[type]?.length ?? 0)
     )
   }
+
+  sumGradesOfType(type: DwarfType) {
+    return sum(
+      this.army
+        .filter((item) => item.location.id === type)
+        .getItems()
+        .flatMap((item) => Cards[item.id.front].grades?.[type] ?? [])
+    )
+  }
+
+  getPlayersWithMajority(type: DwarfType) {
+    let majority: number = 0
+    let playersWithMajority: PlayerId[] = []
+    for (const player of this.game.players) {
+      const ranks = this.countGradesOfType(type)
+      if (ranks > majority) {
+        majority = ranks
+        playersWithMajority = [player]
+      } else if (ranks === majority) {
+        playersWithMajority.push(player)
+      }
+    }
+
+    return playersWithMajority
+  }
+
+  hasStrictMajorityOf(type: DwarfType) {
+    const players = this.getPlayersWithMajority(type)
+    if (players.length > 1) return false
+    return players.includes(this.player)
+  }
+
+  hasMajorityOf(type: DwarfType) {
+    return this.getPlayersWithMajority(type).includes(this.player)
+  }
 }

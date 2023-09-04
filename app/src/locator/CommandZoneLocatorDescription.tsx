@@ -4,7 +4,7 @@ import { LocationDescription, MaterialContext } from "@gamepark/react-game";
 import { cardDescription } from "../material/DwarfCardDescription";
 import { css } from "@emotion/react";
 import { Coordinates, Location } from "@gamepark/rules-api";
-import { playerBoardDescription } from "../material/PlayerBoardDescription";
+import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
 
 export class CommandZoneLocatorDescription extends LocationDescription {
   width = cardDescription.width + 0.4
@@ -15,12 +15,16 @@ export class CommandZoneLocatorDescription extends LocationDescription {
     return players.map((player) => ({ type: LocationType.CommandZone, player }))
   }
 
-  getCoordinates(location: Location, _context: MaterialContext): Coordinates {
-    const baseX = -75
-    const rightMargin = 1
-    const playerIndex = (location.player! - 1)
-    const playerX = (playerBoardDescription.width + (this.width * 6) + rightMargin) * playerIndex
-    return { x: baseX + playerX, y: 22.45, z: 0 }
+  getCoordinates(location: Location, context: MaterialContext): Coordinates {
+    const {locators, material} = context
+    const playerBoardMaterial = material[MaterialType.PlayerBoard]
+    const playerBoard = playerBoardMaterial.getStaticItems(context).find((i) => i.location.player === location.player)!
+    const playerBoardPosition = locators[LocationType.Table].getPosition(playerBoard, { ...context, type: MaterialType.PlayerBoard, index: 0, displayIndex: 0 })
+    const playerX = playerBoardPosition.x!
+    const boardLeft = (playerBoardMaterial.getSize(playerBoard).width / 2) + (this.width / 2)
+    const locationLeft = -boardLeft
+    const playerY = playerBoardPosition.y!
+    return { x: playerX + locationLeft, y: playerY + 1.45, z: 0 }
   }
 
   getExtraCss = () => css`

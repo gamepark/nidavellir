@@ -1,4 +1,4 @@
-import { isMoveItemType, ItemMove, MaterialItem, MaterialMove } from "@gamepark/rules-api";
+import { isMoveItemType, ItemMove, ItemPosition, MaterialItem, MaterialMove } from "@gamepark/rules-api";
 import { MaterialType } from "../../material/MaterialType";
 import { CoinColor } from "../../coins/CoinDescription";
 import { LocationType } from "../../material/LocationType";
@@ -29,8 +29,8 @@ export class TransformCoinRules extends EffectRule {
   beforeItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.Coin)(move) && move.position.location?.type !== LocationType.Hand && move.position.location?.type !== LocationType.PlayerBoard) {
       const coin = this.material(MaterialType.Coin).getItem(move.itemIndex)!
-      this.memorize(Memory.TransformedCoinLocation, coin.location)
-      this.memorize(Memory.DiscardedCoin, { tavern: coin.location.x, index: move.itemIndex }, this.player)
+      this.memorize<ItemPosition>(Memory.TransformedCoinItemPosition, { location: coin.location, rotation: coin.rotation })
+      this.memorize(Memory.DiscardedCoin, { tavern: coin.location.id, index: move.itemIndex }, this.player)
     }
 
     return []
@@ -38,14 +38,14 @@ export class TransformCoinRules extends EffectRule {
 
   afterItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.Coin)(move) && move.position.location?.type !== LocationType.Hand && move.position.location?.type !== LocationType.PlayerBoard) {
-      const location = this.transformedCoinLocation
-      this.forget(Memory.TransformedCoinLocation)
+      const position = this.transformedCoinPosition
+      this.forget(Memory.TransformedCoinItemPosition)
       const moves: MaterialMove[] = new ExchangeCoin(this.game, this.material(MaterialType.Coin).index(move.itemIndex), this.additionalValue)
         .treasureCoin
-        .moveItems({ location })
+        .moveItems(position)
 
-      if (location.type === LocationType.Hand) {
-        moves.push(this.material(MaterialType.Coin).player(location.player).location(LocationType.Hand).shuffle())
+      if (position.location.type === LocationType.Hand) {
+        moves.push(this.material(MaterialType.Coin).player(position.location.player).location(LocationType.Hand).shuffle())
       }
 
       moves.push(...this.end)
@@ -55,8 +55,8 @@ export class TransformCoinRules extends EffectRule {
     return []
   }
 
-  get transformedCoinLocation() {
-    return this.remind(Memory.TransformedCoinLocation)
+  get transformedCoinPosition() {
+    return this.remind<ItemPosition>(Memory.TransformedCoinItemPosition)
   }
 
   get additionalValue() {

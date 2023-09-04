@@ -1,7 +1,5 @@
 import { LocationType } from '../material/LocationType'
 import keyBy from 'lodash/keyBy'
-import mapValues from 'lodash/mapValues'
-import orderBy from 'lodash/orderBy'
 import values from 'lodash/values'
 import { isMoveItemType, ItemMove, MaterialItem, MaterialMove, MaterialRulesPart } from "@gamepark/rules-api";
 import { Trade } from "./helpers/Trade";
@@ -19,20 +17,12 @@ class GemTradeRules extends MaterialRulesPart {
 
     const trading = new Trade(this.game).trades
 
-    // for each tie, order coins by value (to exchange it)
-    const orderedCoinsByGemValues = mapValues(trading, (values) => {
-      return orderBy(values, (v) => {
-        const player = this.material(MaterialType.Coin).getItem(v)!.location.player
-        return this.material(MaterialType.Gem).player(player).getItem()!.id;
-      })
-    })
-
     const moves = []
-    const keys = Object.keys(orderedCoinsByGemValues)
+    const keys = Object.keys(trading)
     for (const key of keys) {
       // If there is a tie (more than one player with same coin value
-      if (orderedCoinsByGemValues[key].length > 1) {
-        moves.push(...this.getGemExchangesMoves(orderedCoinsByGemValues[key], gems))
+      if (trading[key].length > 1) {
+        moves.push(...this.getGemExchangesMoves(trading[key], gems))
       }
     }
 

@@ -99,21 +99,21 @@ export default class PlayerTurn extends MaterialRulesPart {
     return this.remind(Memory.Tavern)
   }
 
-  get discardTavernMoves () {
-    const tavern = this.tavern
-    return this
-      .material(MaterialType.Card)
-      .location((location) => location.type === LocationType.Tavern && location.id === tavern)
-      .moveItems({ location: { type: LocationType.Discard }})
-  }
-
   get tavernCoin() {
-    const tavern = this.remind(Memory.Tavern)
-    return this
-      .material(MaterialType.Coin)
-      .location((location: Location) => location.type === LocationType.PlayerBoard && location.id === tavern)
+    const tavern = this.tavern
+    const coins = this.material(MaterialType.Coin);
+    const coin = coins
+      .location((location: Location) => location.type === LocationType.PlayerBoard)
+      .locationId(tavern)
       .player(this.player)
-      .getItem()!
+      .getItem()
+
+    const discardedCoin = this.remind<DiscardedCoin>(Memory.DiscardedCoin, this.player)
+    if (!coin && discardedCoin?.tavern === tavern) {
+      return coins.index(discardedCoin.index).getItem()!
+    }
+
+    return coin!
   }
 
   get goToTradeCoin() {

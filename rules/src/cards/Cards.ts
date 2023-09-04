@@ -218,57 +218,61 @@ export enum CardDeck {
 }
 
 export enum Card {
-  Warrior1 = 1, // Warrior grade 3
-  Warrior2, // Warrior grade 3
-  Warrior3, // Warrior grade 4
-  Warrior4, // Warrior grade 4
-  Warrior5, // Warrior grade 5
-  Warrior6,// Warrior grade 5
-  Warrior7,// Warrior grade 6
-  Warrior8,// Warrior grade 6
-  Warrior9,// Warrior grade 7
-  Warrior10,// Warrior grade 7
-  Warrior11,// Warrior grade 8
-  Warrior12,// Warrior grade 8
-  Warrior13,// Warrior grade 9
-  Warrior14,// Warrior grade 9
-  Warrior15,// Warrior grade 10
-  Warrior16,// Warrior grade 10
+  WarriorGrade3_1 = 1,
+  WarriorGrade3_2,
+  WarriorGrade4_1,
+  WarriorGrade4_2,
+  WarriorGrade5_1,
+  WarriorGrade5_2,
+  WarriorGrade6_1,
+  WarriorGrade6_2,
+  WarriorGrade7_1,
+  WarriorGrade7_2,
+  WarriorGrade8_1,
+  WarriorGrade8_2,
+  WarriorGrade9_1,
+  WarriorGrade9_2,
+  WarriorGrade10_1,
+  WarriorGrade10_2,
+
   Hunter1,
   Hunter2,
-  Miner1, // MIner 0 (tourné vers gauche)
-  Miner2, // Miner 0 (tourné vers droite)
-  Miner3, // Miner 1 (tourné vers la gauche)
-  Miner4, // Miner 1 (tourné vers la droite)
-  Miner5, // Miner 2(tourné vers gauche)
-  Miner6, // Miner 2(tourné vers la droite)
+
+  MinerGrade0_1,
+  MinerGrade0_2,
+  MinerGrade1_1,
+  MinerGrade1_2,
+  MinerGrade2_1,
+  MinerGrade2_2,
+
   Blacksmith1,
   Blacksmith2,
-  Explorer1, // Explorer 5
-  Explorer2, // Explorer 5
-  Explorer3, // Explorer 6
-  Explorer4, // Explorer 6
-  Explorer5, // Explorer 7
-  Explorer6, // Explorer 7
-  Explorer7, // Explorer 8
-  Explorer8, // Explorer 8
-  Explorer9, // Explorer 9
-  Explorer10, // Explorer 9
-  Explorer11, // Explorer 10
-  Explorer12, // Explorer 10
-  Explorer13, // Explorer 11
-  Explorer14, // Explorer 11
-  Explorer15, // Explorer 12
-  Explorer16, // Explorer 12
+
+  ExplorerGrade5_1,
+  ExplorerGrade5_2,
+  ExplorerGrade6_1,
+  ExplorerGrade6_2,
+  ExplorerGrade7_1,
+  ExplorerGrade7_2,
+  ExplorerGrade8_1,
+  ExplorerGrade8_2,
+  ExplorerGrade9_1,
+  ExplorerGrade9_2,
+  ExplorerGrade10_1,
+  ExplorerGrade10_2,
+  ExplorerGrade11_1,
+  ExplorerGrade11_2,
+  ExplorerGrade12_1,
+  ExplorerGrade12_2,
 
   RoyalOffering3,
   RoyalOffering5,
 
   // Special distinction blacksmith
-  BlacksmithKingsGreatArmorer = 500,
+  BlacksmithKingsGreatArmorer = 100,
 
-  // Heroes starts from 1000
-  Bonfur = 1000,
+  // Heroes starts from 500
+  Bonfur = 500,
   Aegur,
   Dagda,
   Aral,
@@ -292,48 +296,48 @@ export enum Card {
 }
 
 export const Cards: Record<Card, CardDescription> = {
-  [Card.Warrior1]: WarriorGrade3,
-  [Card.Warrior2]: WarriorGrade3,
-  [Card.Warrior3]: WarriorGrade4,
-  [Card.Warrior4]: WarriorGrade4,
-  [Card.Warrior5]: WarriorGrade5,
-  [Card.Warrior6]: WarriorGrade5,
-  [Card.Warrior7]: WarriorGrade6,
-  [Card.Warrior8]: WarriorGrade6,
-  [Card.Warrior9]: WarriorGrade7,
-  [Card.Warrior10]: WarriorGrade7,
-  [Card.Warrior11]: WarriorGrade8,
-  [Card.Warrior12]: WarriorGrade8,
-  [Card.Warrior13]: WarriorGrade9,
-  [Card.Warrior14]: WarriorGrade9,
-  [Card.Warrior15]: WarriorGrade10,
-  [Card.Warrior16]: WarriorGrade10,
+  [Card.WarriorGrade3_1]: WarriorGrade3,
+  [Card.WarriorGrade3_2]: WarriorGrade3,
+  [Card.WarriorGrade4_1]: WarriorGrade4,
+  [Card.WarriorGrade4_2]: WarriorGrade4,
+  [Card.WarriorGrade5_1]: WarriorGrade5,
+  [Card.WarriorGrade5_2]: WarriorGrade5,
+  [Card.WarriorGrade6_1]: WarriorGrade6,
+  [Card.WarriorGrade6_2]: WarriorGrade6,
+  [Card.WarriorGrade7_1]: WarriorGrade7,
+  [Card.WarriorGrade7_2]: WarriorGrade7,
+  [Card.WarriorGrade8_1]: WarriorGrade8,
+  [Card.WarriorGrade8_2]: WarriorGrade8,
+  [Card.WarriorGrade9_1]: WarriorGrade9,
+  [Card.WarriorGrade9_2]: WarriorGrade9,
+  [Card.WarriorGrade10_1]: WarriorGrade10,
+  [Card.WarriorGrade10_2]: WarriorGrade10,
   [Card.Hunter1]: Hunter,
   [Card.Hunter2]: Hunter,
-  [Card.Miner1]: MinerGrade0,
-  [Card.Miner2]: MinerGrade0,
-  [Card.Miner3]: MinerGrade1,
-  [Card.Miner4]: MinerGrade1,
-  [Card.Miner5]: MinerGrade2,
-  [Card.Miner6]: MinerGrade2,
+  [Card.MinerGrade0_1]: MinerGrade0,
+  [Card.MinerGrade0_2]: MinerGrade0,
+  [Card.MinerGrade1_1]: MinerGrade1,
+  [Card.MinerGrade1_2]: MinerGrade1,
+  [Card.MinerGrade2_1]: MinerGrade2,
+  [Card.MinerGrade2_2]: MinerGrade2,
   [Card.Blacksmith1]: Blacksmith,
   [Card.Blacksmith2]: Blacksmith,
-  [Card.Explorer1]: ExplorerGrade5,
-  [Card.Explorer2]: ExplorerGrade5,
-  [Card.Explorer3]: ExplorerGrade6,
-  [Card.Explorer4]: ExplorerGrade6,
-  [Card.Explorer5]: ExplorerGrade7,
-  [Card.Explorer6]: ExplorerGrade7,
-  [Card.Explorer7]: ExplorerGrade8,
-  [Card.Explorer8]: ExplorerGrade8,
-  [Card.Explorer9]: ExplorerGrade9,
-  [Card.Explorer10]: ExplorerGrade9,
-  [Card.Explorer11]: ExplorerGrade10,
-  [Card.Explorer12]: ExplorerGrade10,
-  [Card.Explorer13]: ExplorerGrade11,
-  [Card.Explorer14]: ExplorerGrade11,
-  [Card.Explorer15]: ExplorerGrade12,
-  [Card.Explorer16]: ExplorerGrade12,
+  [Card.ExplorerGrade5_1]: ExplorerGrade5,
+  [Card.ExplorerGrade5_2]: ExplorerGrade5,
+  [Card.ExplorerGrade6_1]: ExplorerGrade6,
+  [Card.ExplorerGrade6_2]: ExplorerGrade6,
+  [Card.ExplorerGrade7_1]: ExplorerGrade7,
+  [Card.ExplorerGrade7_2]: ExplorerGrade7,
+  [Card.ExplorerGrade8_1]: ExplorerGrade8,
+  [Card.ExplorerGrade8_2]: ExplorerGrade8,
+  [Card.ExplorerGrade9_1]: ExplorerGrade9,
+  [Card.ExplorerGrade9_2]: ExplorerGrade9,
+  [Card.ExplorerGrade10_1]: ExplorerGrade10,
+  [Card.ExplorerGrade10_2]: ExplorerGrade10,
+  [Card.ExplorerGrade11_1]: ExplorerGrade11,
+  [Card.ExplorerGrade11_2]: ExplorerGrade11,
+  [Card.ExplorerGrade12_1]: ExplorerGrade12,
+  [Card.ExplorerGrade12_2]: ExplorerGrade12,
   [Card.BlacksmithKingsGreatArmorer]: BlacksmithDwarfKingsGreatArmorer,
   [Card.RoyalOffering3]: RoyalOffering3,
   [Card.RoyalOffering5]: RoyalOffering5,
@@ -362,7 +366,7 @@ export const Cards: Record<Card, CardDescription> = {
 
 export const isHero = (card: Card) => card >= Card.Bonfur
 export const isSimpleDwarf = (card: Card) => card < Card.RoyalOffering3 || card === Card.BlacksmithKingsGreatArmorer
-export const isRoyalOffering = (card: Card) => card > Card.Explorer16 && card < Card.BlacksmithKingsGreatArmorer
+export const isRoyalOffering = (card: Card) => card > Card.ExplorerGrade12_2 && card < Card.BlacksmithKingsGreatArmorer
 
 export const cards = Object.values(Card).filter<Card>(isEnumValue)
 
