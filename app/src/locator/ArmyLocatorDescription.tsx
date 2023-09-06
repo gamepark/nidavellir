@@ -29,14 +29,15 @@ export class ArmyLocatorDescription extends LocationDescription {
     return { x: playerX + locationLeft, y: playerY + 1.77, z: 0 }
   }
 
-  getExtraCss = (location: Location) =>
-    css`
-      background-color: ${this.getBackground(location.id)};
-      border: 0.1em solid ${this.getBorderColor(location.id)};
+  getExtraCss = (location: Location) => {
+    const background = this.getBackground(location.id)
+    return css`
+      background: linear-gradient(180deg, ${background}60 0%, ${background}00 100%);
       border-radius: 0.3em;
-    `
+    `;
+  }
 
-  getBorderColor(type: DwarfType) {
+  getBackground(type: DwarfType) {
     switch (type) {
       case DwarfType.Blacksmith:
         return "#4c2c9f"
@@ -48,23 +49,6 @@ export class ArmyLocatorDescription extends LocationDescription {
         return "#f0782d"
       case DwarfType.Warrior:
         return "#8f3526"
-    }
-
-    return ""
-  }
-
-  getBackground(type: DwarfType) {
-    switch (type) {
-      case DwarfType.Blacksmith:
-        return "#a78aa380"
-      case DwarfType.Hunter:
-        return "#99a48780"
-      case DwarfType.Explorer:
-        return "#92c2d480"
-      case DwarfType.Miner:
-        return "#cfb08e80"
-      case DwarfType.Warrior:
-        return "#ae776980"
     }
 
     return ""

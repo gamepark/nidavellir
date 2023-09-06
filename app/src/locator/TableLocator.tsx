@@ -24,6 +24,7 @@ export class TableLocator extends ItemLocator {
     if (!player) return rules.players.indexOf(item.location.player!)
     if (player && player === item.location.player) return 0
     const remainingPlayers = rules.players.filter((p) => p !== player)
+    if (remainingPlayers.length === 1) return 2
     return remainingPlayers.indexOf(item.location.player!) + 1
   }
 

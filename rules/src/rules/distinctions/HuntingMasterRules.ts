@@ -15,9 +15,14 @@ class HuntingMasterRules extends DistinctionRules {
 
     if (existingExchangeCoin.length) {
       const troopEvaluation = new TroopEvaluation(this.game)
+      const coin = existingExchangeCoin.getItem()!
+      const position = {
+        location: coin.location,
+        rotation: coin.rotation
+      }
       moves.push(
         existingExchangeCoin.moveItem({ location: { type: LocationType.Discard } }),
-        this.material(MaterialType.Coin).id((id) => id === Coin.HuntingMasterCoin).moveItem({ location: existingExchangeCoin.getItem()!.location }),
+        this.material(MaterialType.Coin).id((id) => id === Coin.HuntingMasterCoin).moveItem(position),
         ...troopEvaluation.endDistinction
       )
     }

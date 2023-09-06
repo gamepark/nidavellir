@@ -1,7 +1,5 @@
-import { isMoveItemType, Location, Material, MaterialGame, MaterialItem, MaterialMove, MaterialRulesPart, MoveItem } from "@gamepark/rules-api";
+import { isMoveItemType, Location, MaterialGame, MaterialItem, MaterialMove, MaterialRulesPart, MoveItem } from "@gamepark/rules-api";
 import { DiscardedCoin, Effect, Memory, PreviousRule } from "../Memory";
-import orderBy from "lodash/orderBy";
-import { Coins } from "../../coins/Coins";
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
 import { PlayerId } from "../../player/Player";
@@ -10,8 +8,9 @@ import { isExchangeCoin } from "../../utils/coin.utils";
 import { Trade } from "./Trade";
 import { Tavern } from "./Tavern";
 import { Card, Cards, HeroesEffects, isDwarfDescription, isHero, isHeroDescription, isRoyalOfferingDescription } from "../../cards/Cards";
-import { DwarfType } from "../../cards/DwarfType";
+import { DwarfType, dwarfTypes } from "../../cards/DwarfType";
 import Army from "./Army";
+import { TurnOrder } from "./TurnOrder";
 
 export default class PlayerTurn extends MaterialRulesPart {
   private heroCount: number
@@ -24,10 +23,8 @@ export default class PlayerTurn extends MaterialRulesPart {
   }
 
   get endOfTurnMoves(): MaterialMove[] {
-    if (!this.isLastPlayer) return [this.rules().startPlayerTurn(RuleId.ChooseCard, this.nextPlayer)]
-
-    // TODO : only discard at 2 player and if there is one card left...
-    //const moves: MaterialMove[] = this.discardTavernMoves
+    const turnOrder = new TurnOrder(this.game, this.player  )
+    if (!turnOrder.isLastPlayer) return [this.rules().startPlayerTurn(RuleId.ChooseCard, turnOrder.nextPlayer)]
 
     if (this.game.rule?.id !== RuleId.GemTrade && new Trade(this.game).exists) {
       return [this.rules().startRule(RuleId.GemTrade)]
@@ -46,53 +43,12 @@ export default class PlayerTurn extends MaterialRulesPart {
   }
 
   get hasRecruitment() {
-    return this.remind(Memory.Recruitements)
+    return this.remind(Memory.Recruitments)
   }
 
   get goToRecruitment() {
     if (!this.hasRecruitment) return []
     return [this.rules().startPlayerTurn(RuleId.RecruitHero, this.player)]
-  }
-
-
-  get nextPlayer(): number {
-    const turnOrder = this.turnOrder
-
-    if (this.isLastPlayer) {
-      return turnOrder[0]
-    }
-
-    const activePlayerIndex = turnOrder.findIndex((id) => this.player === id)
-    return turnOrder[activePlayerIndex + 1]
-  }
-
-  get isLastPlayer() {
-    const turnOrder = this.turnOrder
-    return this.player === turnOrder[turnOrder.length - 1]
-  }
-
-  get turnOrder() {
-    const coins = this.tavernCoins
-
-    const orderedCoins = orderBy(
-      coins.getItems(),
-      [
-        (c) => this.getCoinValue(c),
-        (c) => {
-          return this.material(MaterialType.Gem).player(c.location.player).getItem()
-        }
-      ],
-      ['desc', 'desc']
-    )
-
-    return orderedCoins.map((c) => c.location.player!)
-  }
-
-  getCoinValue (coin: MaterialItem) {
-    const discardedCoin = this.remind<DiscardedCoin>(Memory.DiscardedCoin, coin.location.player)
-    if (!discardedCoin || discardedCoin.tavern !== this.tavern) return Coins[coin.id].value
-    const item = this.material(MaterialType.Coin).index(discardedCoin.index).getItem()!
-    return Coins[item.id].value
   }
 
   get tavern() {
@@ -128,13 +84,6 @@ export default class PlayerTurn extends MaterialRulesPart {
     return this.game.rule!.id === RuleId.TradeCoin
   }
 
-  get tavernCoins(): Material {
-    const tavern = this.tavern
-    return this
-      .material(MaterialType.Coin)
-      .location((location) => location.type === LocationType.PlayerBoard && location.id === tavern)
-  }
-
   get goToNextRules() {
     const moves = []
     const goToRecruitement = this.goToRecruitment
@@ -161,7 +110,6 @@ export default class PlayerTurn extends MaterialRulesPart {
     }
 
     moves.push(...this.endOfTurnMoves)
-
     return moves;
   }
 
@@ -183,6 +131,9 @@ export default class PlayerTurn extends MaterialRulesPart {
 
   onChooseCard(move: MoveItem) {
     const movedItem = this.material(MaterialType.Card).getItem(move.itemIndex)!
+    if (this.game.players.length === 2
+      && !this.material(MaterialType.Card).location(LocationType.Tavern).locationId(this.tavern).length
+    && move.position.location?.type === LocationType.Discard) return []
 
     this.applyEffect(movedItem)
 
@@ -215,7 +166,7 @@ export default class PlayerTurn extends MaterialRulesPart {
     const recruitHeroCount = this.computeRecruitHeroCount(move)
     if (recruitHeroCount > 0) {
       //const operation = (effect: Effect) => (!unshit ? player.effects.push(effect) : player.effects.unshift(effect))
-      this.memorize(Memory.Recruitements, recruitHeroCount)
+      this.memorize(Memory.Recruitments, recruitHeroCount)
     }
   }
 
@@ -223,7 +174,9 @@ export default class PlayerTurn extends MaterialRulesPart {
     if (!isMoveItemType(MaterialType.Card)(move) || move.position.location?.type !== LocationType.Army) return []
 
     const thrud = new Army(this.game, this.player).getCard(Card.Thrud)
-    if (!thrud.length || thrud.getIndex() === move.itemIndex) return []
+    if (!thrud.length
+      || thrud.getIndex() === move.itemIndex
+      || thrud.getItem()?.location?.id !== move.position.location.id) return []
 
     return [
       thrud.moveItem({ location: { type: LocationType.Hand, player: thrud.getItem()!.location.player } }),
@@ -268,18 +221,22 @@ export default class PlayerTurn extends MaterialRulesPart {
     return recruitmentCount
   }
 
-  getCardLocation(card: Card): Location {
+  getCardLocations(card: Card): Location[] {
     const description = Cards[card]
 
+    if (card === Card.Thrud) {
+      return dwarfTypes.map((type) => ({ type: LocationType.Army, id: type, player: this.player }))
+    }
+
     if (isHeroDescription(card, description) && description.type === DwarfType.Neutral) {
-      return { type: LocationType.CommandZone, player: this.player }
+      return [{ type: LocationType.CommandZone, player: this.player }]
     }
 
     if (isDwarfDescription(card, description) || isHeroDescription(card, description)) {
-      return { type: LocationType.Army, id: description.type, player: this.player }
+      return [{ type: LocationType.Army, id: description.type, player: this.player }]
     }
 
-    return { type: LocationType.Discard }
+    return [{ type: LocationType.Discard }]
   }
 
 }

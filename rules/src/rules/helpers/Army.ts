@@ -73,7 +73,8 @@ export default class Army extends MaterialRulesPart {
     let majority: number = 0
     let playersWithMajority: PlayerId[] = []
     for (const player of this.game.players) {
-      const ranks = this.countGradesOfType(type)
+      const army = new Army(this.game, player)
+      const ranks = army.countGradesOfType(type)
       if (ranks > majority) {
         majority = ranks
         playersWithMajority = [player]

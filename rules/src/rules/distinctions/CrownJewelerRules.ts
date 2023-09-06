@@ -1,4 +1,3 @@
-import { LocationType } from '../../material/LocationType'
 import { DistinctionRules } from "./DistinctionRules";
 import { MaterialType } from "../../material/MaterialType";
 import { Gem } from "../../material/Gem";
@@ -9,7 +8,7 @@ class CrownJewelerRules extends DistinctionRules {
     const moves = super.onRuleStart(move)
     const existingGem = this.material(MaterialType.Gem).player(this.player);
     moves.push(
-      existingGem.moveItem({ location: { type: LocationType.Discard } }),
+      existingGem.deleteItem(),
       this.material(MaterialType.Gem).id(Gem.Gem6).moveItem({ location: existingGem.getItem()!.location }),
       ...this.endDistinction
     )

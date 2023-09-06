@@ -20,12 +20,11 @@ export class TroopEvaluation extends MaterialRulesPart {
       if (Distinction.PioneerOfTheKingdom === d) return [this.rules().startRule(DistinctionRuleId[d])]
     }
 
-    // Must be set only once (here, it is set for each distinction
-    if (!this.material(MaterialType.Card).location(LocationType.Age1Deck).length) this.memorize(Memory.Age, 2)
     return [this.rules().startRule(RuleId.EnterDwarves)]
   }
 
   get startEvaluation() {
+    this.memorize(Memory.Age, 2)
     return this.endDistinction
   }
 

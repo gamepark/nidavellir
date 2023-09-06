@@ -8,7 +8,10 @@ export class NidavellirAnimations extends MaterialGameAnimations {
 
   override getDuration(move: MaterialMove, context: MaterialAnimationContext): number {
     if (isMoveItemType(MaterialType.Card)(move) && move.position.location?.type === LocationType.Tavern && context.step === AnimationStep.BEFORE_MOVE) return 0.4
-    if (isMoveItemType(MaterialType.Coin)(move) && move.position.location?.type === LocationType.Hand && context.step === AnimationStep.BEFORE_MOVE) return 0.4
+    if (isMoveItemType(MaterialType.Coin)(move)
+      && move.position.location?.type === LocationType.Hand
+      && context.game.items[move.itemType]![move.itemIndex].location.type === LocationType.PlayerBoard
+      && context.step === AnimationStep.BEFORE_MOVE) return 0.4
     return super.getDuration(move, context);
   }
 }

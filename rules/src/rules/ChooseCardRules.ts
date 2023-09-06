@@ -22,15 +22,24 @@ class ChooseCardRules extends PlayerTurnRule {
     const playerTurn = new PlayerTurn(this.game, this.player)
     const tavern = this.tavern
 
-    return this
+    const cards = this
       .material(MaterialType.Card)
-      .location((location) => location.type === LocationType.Tavern && location.id === tavern)
-      .moveItems((item) => ({ location: playerTurn.getCardLocation(item.id.front)}))
+      .location((location) => location.type === LocationType.Tavern && location.id === tavern);
+
+    const moves = []
+    for (const card of cards.getIndexes()) {
+      const locations = playerTurn.getCardLocations(cards.getItem(card)!.id.front)
+      moves.push(
+        ...locations.map((location) => cards.index(card).moveItem({ location }))
+      )
+    }
+
+    return moves;
   }
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move)) return []
-
+    // If the card was the last card in tavern for player. ignore it
     return new PlayerTurn(this.game, this.player).onChooseCard(move)
   }
 

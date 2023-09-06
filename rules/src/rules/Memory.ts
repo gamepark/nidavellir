@@ -5,7 +5,7 @@ import { DwarfType } from "../cards/DwarfType";
 export enum Memory {
   Tavern = 1,
   PreviousRule,
-  Recruitements,
+  Recruitments,
   DiscardedCoin,
   Age,
   Round,

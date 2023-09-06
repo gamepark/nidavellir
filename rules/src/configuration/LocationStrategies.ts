@@ -22,6 +22,9 @@ export const locationsStrategies = {
     [LocationType.Discard]: new PositiveSequenceStrategy(),
     [LocationType.DistinctionsDeck]: new PositiveSequenceStrategy(),
   },
+  [MaterialType.Gem]: {
+    [LocationType.PlayerBoard]: new PositiveSequenceStrategy()
+  },
   [MaterialType.Distinction]: {
     [LocationType.CommandZone]: new PositiveSequenceStrategy(),
     [LocationType.DistinctionsDeck]: new PositiveSequenceStrategy()

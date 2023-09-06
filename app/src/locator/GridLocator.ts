@@ -23,6 +23,6 @@ export class GridLocator extends LineLocator<PlayerId, MaterialType, LocationTyp
     const x = coordinates.x + ((index % columns) * context.material[context.type].getSize(item.id).width) + deltaX
     const y = coordinates.y + (Math.floor(index / columns) * context.material[context.type].getSize(item.id).height) + deltaY
 
-    return { x, y, z: 0 }
+    return { x, y, z: coordinates.z }
   }
 }

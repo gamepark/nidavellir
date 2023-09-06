@@ -44,11 +44,21 @@ class PioneerOfTheKingdomRules extends DistinctionRules {
 
     const playerTurn = new PlayerTurn(this.game, player)
 
-    return this
+    const cards = this
       .material(MaterialType.Card)
       .location(LocationType.Hand)
       .player(player)
-      .moveItems((item) => ({ location: playerTurn.getCardLocation(item.id.front) }))
+
+
+    const moves = []
+    for (const card of cards.getIndexes()) {
+      const locations = playerTurn.getCardLocations(cards.getItem(card)!.id.front)
+      moves.push(
+        ...locations.map((location) => cards.index(card).moveItem({ location }))
+      )
+    }
+
+    return moves;
   }
 
   afterItemMove(move: ItemMove) {

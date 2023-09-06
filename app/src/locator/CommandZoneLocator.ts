@@ -10,14 +10,15 @@ export class CommandZoneLocator extends LineLocator<PlayerId, MaterialType, Loca
   locationDescription = new CommandZoneLocatorDescription()
 
   getCoordinates(item: MaterialItem<PlayerId, LocationType>, context: ItemContext<PlayerId, MaterialType, LocationType>): Coordinates {
+    const { type } = context
     const locationCoordinates = this.locationDescription.getCoordinates(item.location, context)
     const locationTop = (0.5 * this.locationDescription.height)
-    const cardTop =  context.material[context.type].getSize(item.id).height * 0.5
-    const y = 0.2 + locationCoordinates.y - locationTop + cardTop
+    const cardTop =  context.material[type].getSize(item.id).height * 0.5
+    const y = 0.2 + locationCoordinates.y - locationTop + cardTop + (type === MaterialType.Distinction? 15: 0)
     return { x: locationCoordinates.x, y, z: 0.05}
   }
 
-  getDelta(_item: MaterialItem, context: ItemContext) {
-    return { y: 1.2, z: context.material[context.type].thickness}
+  getDelta(item: MaterialItem, context: ItemContext) {
+    return { y: 1.2, z: context.material[context.type].getThickness(item, context)}
   }
 }

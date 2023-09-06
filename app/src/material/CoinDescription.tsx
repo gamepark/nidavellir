@@ -2,6 +2,13 @@
 import Images from "../images/Images";
 import { RoundTokenDescription } from "@gamepark/react-game/dist/components/material/FlatMaterial/TokenDescription";
 import { Coin } from "@gamepark/nidavellir/material/Coin";
+import { ItemContext } from "@gamepark/react-game/dist/locators/ItemLocator";
+import { MaterialMove } from "@gamepark/rules-api/dist/material/moves/MaterialMove";
+import { isCustomMoveType } from "@gamepark/rules-api/dist/material/moves/CustomMove";
+import { CustomMoveType } from "@gamepark/nidavellir/moves/CustomMoveType";
+import { MaterialItem } from "@gamepark/rules-api/dist/material/items/MaterialItem";
+import { LocationType } from "@gamepark/nidavellir/material/LocationType";
+import { RuleId } from "@gamepark/nidavellir/rules/RuleId";
 
 export class CoinDescription extends RoundTokenDescription {
   diameter = 4
@@ -37,6 +44,16 @@ export class CoinDescription extends RoundTokenDescription {
   }
 
   rules = () => <p></p>
+
+  canDrag(move: MaterialMove, context: ItemContext): boolean {
+    const { index } = context
+    return super.canDrag(move, context) || (isCustomMoveType(CustomMoveType.TradeCoins)(move) && move.data.includes(index));
+  }
+
+  getLocations(item: MaterialItem, { rules, index }: ItemContext) {
+    if (item.id === undefined || rules.game.rule?.id !== RuleId.TradeCoin || item.location.type !== LocationType.Hand) return []
+    return [{ type: LocationType.Coin, parent: index }]
+  }
 }
 
 export const coinDescription = new CoinDescription()

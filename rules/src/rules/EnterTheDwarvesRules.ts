@@ -10,6 +10,7 @@ import { Card } from "../cards/Cards";
 
 class EnterTheDwarvesRules extends MaterialRulesPart {
   onRuleStart(): MaterialMove[] {
+    this.memorize(Memory.Round, (round) => round + 1)
     const moves = this.fillTavern
     for (const player of this.game.players) {
       moves.push(
@@ -47,11 +48,6 @@ class EnterTheDwarvesRules extends MaterialRulesPart {
       .indexes(drawnCards.splice(0, cardsByTavern))
       .moveItems({ location: { type: LocationType.Tavern, id: tavern }})
     )
-  }
-
-  onRuleEnd() {
-    this.memorize(Memory.Tavern, 1)
-    return []
   }
 
   get age () {

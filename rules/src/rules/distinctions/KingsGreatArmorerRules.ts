@@ -21,7 +21,10 @@ class KingsGreatArmorerRules extends DistinctionRules {
     if (!card.length) return this.endDistinction
 
     this.memorizeRule(this.player!)
-    moves.push(card.moveItem((item) => ({ location: playerTurn.getCardLocation(item.id.front) })))
+    const locations = playerTurn.getCardLocations(card.getItem()!.id.front)
+    for (const location of locations) {
+      moves.push(card.moveItem({ location }))
+    }
     return moves;
   }
 
@@ -29,7 +32,6 @@ class KingsGreatArmorerRules extends DistinctionRules {
     if (!isMoveItemType(MaterialType.Card)(move)) return []
 
     const moves = new PlayerTurn(this.game, this.player!).onChooseCard(move)
-
     if (!moves.length) return this.endDistinction
     return moves;
   }

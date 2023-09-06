@@ -13,6 +13,7 @@ import { PlayerHandLocator } from "./PlayerHandLocator";
 import { CommandZoneLocator } from "./CommandZoneLocator";
 import { ArmyLocator } from "./ArmyLocator";
 import { DiscardLocator } from "./DiscardLocator";
+import { CoinLocator } from "./CoinLocator";
 
 export const Locators: Record<LocationType, ItemLocator<PlayerId, MaterialType, LocationType>> = {
   [LocationType.Age1Deck]: new AgeDeckLocator(),
@@ -26,6 +27,7 @@ export const Locators: Record<LocationType, ItemLocator<PlayerId, MaterialType, 
   [LocationType.Discard]: new DiscardLocator(),
   [LocationType.Army]: new ArmyLocator(),
   [LocationType.CommandZone]: new CommandZoneLocator(),
-  [LocationType.Table]: new TableLocator()
+  [LocationType.Table]: new TableLocator(),
+  [LocationType.Coin]: new CoinLocator()
 
 }

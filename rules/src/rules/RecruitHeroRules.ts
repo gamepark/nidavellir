@@ -15,12 +15,22 @@ class RecruitHeroRules extends EffectRule {
   }
 
   getPlayerMoves() {
-    const chooseCard = new PlayerTurn(this.game, this.player)
-    return this
+    const playerTurn = new PlayerTurn(this.game, this.player)
+
+    const heroes = this
       .material(MaterialType.Card)
       .location(LocationType.HeroesDeck)
       .filter((item) => this.canBeRecruited(item))
-      .moveItems((item) => ({ location: chooseCard.getCardLocation(item.id.front) }))
+
+    const moves = []
+    for (const hero of heroes.getIndexes()) {
+      const locations = playerTurn.getCardLocations(heroes.getItem(hero)!.id.front)
+      moves.push(
+        ...locations.map((location) => heroes.index(hero).moveItem({ location }))
+      )
+    }
+
+    return moves;
   }
 
   beforeItemMove(move: ItemMove) {
@@ -28,11 +38,11 @@ class RecruitHeroRules extends EffectRule {
 
     const movedItem = this.material(MaterialType.Card).getItem(move.itemIndex)!
     if (isHero(movedItem.id.front) && movedItem.location.type !== LocationType.Army) {
-      const recruitements = this.remind(Memory.Recruitements)
+      const recruitements = this.remind(Memory.Recruitments)
       if (recruitements === 1) {
-        this.forget(Memory.Recruitements)
+        this.forget(Memory.Recruitments)
       } else {
-        this.memorize(Memory.Recruitements, recruitements - 1)
+        this.memorize(Memory.Recruitments, recruitements - 1)
       }
     }
 

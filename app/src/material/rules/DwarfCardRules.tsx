@@ -2,7 +2,7 @@
 import { MaterialRulesProps, PlayMoveButton, useGame, useLegalMove, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Cards, isHero, isRoyalOffering } from "@gamepark/nidavellir/cards/Cards";
 import { Trans, useTranslation } from "react-i18next";
-import { isMoveItemType, MoveItem } from "@gamepark/rules-api/dist/material/moves/items/MoveItem";
+import { isMoveItemType } from "@gamepark/rules-api/dist/material/moves/items/MoveItem";
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
 import { css } from "@emotion/react";
@@ -103,8 +103,8 @@ const HeroRules = (props: MaterialRulesProps) => {
       <CardLocationRule {...props} />
       <p><Trans defaults={`rule.hero.${item.id.front}`}><strong/></Trans></p>
       <ScoreRules {...props} />
-      {chooseHeroMoves.map((move: MoveItem) => (
-        <ColumnButton move={move} {...props} />
+      {chooseHeroMoves.map((move, index) => (
+        <ColumnButton key={index} move={move} {...props} />
       ))}
     </>
   )
@@ -157,17 +157,22 @@ const ScoreRules = (props: MaterialRulesProps) => {
     case LocationType.Army: {
       const score = new Score(game, item.location?.player!).get(item.location?.id)
       const itsMe = item.location?.player === me
-      return <p>
-        <hr/>
-        <Trans defaults={itsMe ? "rule.army.score.mine" : "rule.army.score"} values={{ type: t(`dwarf-card.class.${item.location?.id}`), score, player }}><strong/></Trans></p>
+      return (
+        <>
+          <hr/>
+          <p><Trans defaults={itsMe ? "rule.army.score.mine" : "rule.army.score"} values={{ type: t(`dwarf-card.class.${item.location?.id}`), score, player }}><strong/></Trans></p>
+        </>
+      )
     }
     case LocationType.CommandZone: {
       const score = new Score(game, item.location?.player!).get(item.location?.id)
       const itsMe = item.location?.player === me
-      return <>
-        <hr/>
-        <p><Trans defaults={itsMe ? "rule.command-zone.score.mine" : "rule.command-zone.score.score"} values={{ score, player }}><strong/></Trans></p>
-      </>
+      return (
+        <>
+          <hr/>
+          <p><Trans defaults={itsMe ? "rule.command-zone.score.mine" : "rule.command-zone.score.score"} values={{ score, player }}><strong/></Trans></p>
+        </>
+      )
 
     }
   }

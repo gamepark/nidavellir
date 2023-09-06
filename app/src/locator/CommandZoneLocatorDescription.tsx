@@ -28,8 +28,7 @@ export class CommandZoneLocatorDescription extends LocationDescription {
   }
 
   getExtraCss = () => css`
-    background-color: rgba(128, 128, 128, 0.8);
-    border: 0.1em solid black;
+    background: linear-gradient(180deg, rgba(128, 128, 128, 0.6) 0%, rgba(128, 128, 128, 0) 100%);
     border-radius: 0.3em;
   `
 }

@@ -18,8 +18,8 @@ export class ArmyLocator extends LineLocator<PlayerId, MaterialType, LocationTyp
     return { x: locationCoordinates.x, y, z: 0.05}
   }
 
-  getDelta(_item: MaterialItem, context: ItemContext) {
-    return { y: 1.2, z: context.material[context.type].thickness}
+  getDelta(item: MaterialItem, context: ItemContext) {
+    return { y: 1.2, z: context.material[context.type].getThickness(item, context)}
   }
 
   getItemIndex(item: MaterialItem<PlayerId, LocationType>, context: ItemContext<PlayerId, MaterialType, LocationType>): number {

@@ -28,7 +28,6 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
     this.setupTavern(options)
     this.setupPlayers(options)
 
-    this.memorize(Memory.Tavern, 1)
     this.memorize(Memory.Age, 1)
     this.memorize(Memory.Round, 1)
   }

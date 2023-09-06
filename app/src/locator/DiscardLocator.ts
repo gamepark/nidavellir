@@ -9,10 +9,11 @@ import { DiscardLocatorDescription } from "./DiscardLocatorDescription";
 
 export class DiscardLocator extends PileLocator<PlayerId, MaterialType, LocationType> {
   locationDescription = new DiscardLocatorDescription()
+  limit = 10
   getCoordinates(item: MaterialItem, context: ItemContext): Coordinates {
     const { type, material } = context
     const coordinates = this.locationDescription.getCoordinatesOfType(type, context)
-    return { ...coordinates, z: material[type].thickness * (item.location.x! + 1) }
+    return { ...coordinates, z: material[type].getThickness(item, context) * (item.location.x! + 1) }
   }
 
   getRadius(_item: MaterialItem<PlayerId, LocationType>, { type }: ItemContext<PlayerId, MaterialType, LocationType>): number {
@@ -21,5 +22,9 @@ export class DiscardLocator extends PileLocator<PlayerId, MaterialType, Location
 
   getMaxAngle(_item: MaterialItem, { type }: ItemContext): number {
     return type === MaterialType.Card ? 15: 0
+  }
+
+  getItemIndex(item: MaterialItem<PlayerId, LocationType>): number {
+    return -item.location.x!
   }
 }

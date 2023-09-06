@@ -1,14 +1,18 @@
 import { LocationType } from '../material/LocationType'
-import { isMoveItemType, ItemMove, MaterialMove, MaterialRulesPart } from "@gamepark/rules-api";
+import { isMoveItemType, ItemMove, MaterialMove, MaterialRulesPart, RuleMove, RuleStep } from "@gamepark/rules-api";
 import { Memory } from "./Memory";
 import { MaterialType } from "../material/MaterialType";
 import { Card } from "../cards/Cards";
 import { RuleId } from "./RuleId";
-import { Coins } from "../coins/Coins";
+import { TurnOrder } from "./helpers/TurnOrder";
 
 class BidRevelationRules extends MaterialRulesPart {
 
-  onRuleStart() {
+  onRuleStart(_move: RuleMove, previousRule?: RuleStep) {
+    if (previousRule?.id !== RuleId.UlineBid) {
+      this.nextTavern()
+    }
+
     return this.coinsToReveal.moveItems({ rotation: { y: 1 } })
   }
 
@@ -31,6 +35,7 @@ class BidRevelationRules extends MaterialRulesPart {
         if (!tavernCoin.length) return [this.rules().startPlayerTurn(RuleId.UlineBid, playerWithUline.location.player!)]
       }
 
+
       return this.moveToElvalandTurn
     }
 
@@ -41,19 +46,19 @@ class BidRevelationRules extends MaterialRulesPart {
     return this.remind(Memory.Tavern)
   }
 
-  get moveToElvalandTurn(): MaterialMove[] {
-    const nextPlayer = this
-      .material(MaterialType.Coin)
-      .location((location) => location.type === LocationType.PlayerBoard && location.id === this.tavern)
-      .maxBy((item) => Coins[item.id].value)
-      .getItem()
-
-    if (!nextPlayer) {
-      throw new Error("There is an error while searching the next player")
+  nextTavern() {
+    const tavern = this.tavern
+    if (!tavern || tavern === 3) {
+      this.memorize(Memory.Tavern, 1)
+      return
     }
 
+    this.memorize(Memory.Tavern, tavern + 1)
+  }
+
+  get moveToElvalandTurn(): MaterialMove[] {
     return [
-      this.rules().startPlayerTurn(RuleId.ChooseCard, nextPlayer.location.player!)
+      this.rules().startPlayerTurn(RuleId.ChooseCard, new TurnOrder(this.game).nextPlayer)
     ]
   }
 

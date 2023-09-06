@@ -11,15 +11,24 @@ export const MIN_DWARVES_PER_TAVERN = 3;
 export class Tavern extends MaterialRulesPart {
 
   get end(): MaterialMove[] {
+    const moves: MaterialMove[] = this.discardTavernMoves
     if (this.isEndOfAge) {
       const startYlud = this.startYlud
       if (startYlud.length) return startYlud
 
       if (this.age === 2) {
-        return this.moveThrudInCommandZone
+        const thrud = this.moveThrudInCommandZone
+        if (thrud.length) {
+          moves.push(...thrud)
+          return thrud
+        }
+
+        moves.push(this.rules().endGame())
+        return moves
       }
 
-      return new TroopEvaluation(this.game).startEvaluation
+      moves.push(...new TroopEvaluation(this.game).startEvaluation)
+      return moves
     }
 
     for (const p of this.game.players) {
@@ -28,12 +37,22 @@ export class Tavern extends MaterialRulesPart {
 
 
     if (this.tavern < PlayerBoardSpace.ShiningHorse) {
-      this.memorize(Memory.Tavern, (tavern) => tavern + 1)
-      return [this.rules().startRule(RuleId.BidRevelation)]
+      moves.push(this.rules().startRule(RuleId.BidRevelation))
     } else {
-      this.memorize(Memory.Round, (round) => round + 1)
-      return [this.rules().startRule(RuleId.EnterDwarves)]
+      moves.push(this.rules().startRule(RuleId.EnterDwarves))
     }
+
+    return moves
+  }
+
+  get discardTavernMoves () {
+    const cards = this
+      .material(MaterialType.Card)
+      .location(LocationType.Tavern)
+      .locationId(this.tavern)
+    if (this.game.players.length !== 2 || cards.length !== 1) return []
+
+    return cards.moveItems({ location: { type: LocationType.Discard }})
   }
 
   get startYlud() {
@@ -53,7 +72,7 @@ export class Tavern extends MaterialRulesPart {
       .id((id: Record<string, any>) => id.front === Card.Thrud)
       .player((player) => player !== undefined)
 
-    if (!thrud.length) return []
+    if (!thrud.length || thrud.location(LocationType.CommandZone).length) return []
     return thrud.moveItems((item) => ({ location: { type: LocationType.CommandZone, player: item.location.player }}))
   }
 
