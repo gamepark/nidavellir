@@ -1,5 +1,5 @@
 import { NidavellirOptionsSpec } from '@gamepark/nidavellir/NidavellirOptions'
-import NidavellirRules from '@gamepark/nidavellir/NidavellirRules'
+import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
 import { GameProvider, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'

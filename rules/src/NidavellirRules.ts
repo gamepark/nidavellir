@@ -7,8 +7,7 @@ import { rules } from "./configuration/RuleDefinitions";
 import { locationsStrategies } from "./configuration/LocationStrategies";
 import { Score } from "./rules/helpers/Score";
 
-
-export default class NidavellirRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
+export class NidavellirRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
   implements CompetitiveScore<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>
 {
 

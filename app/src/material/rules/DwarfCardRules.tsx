@@ -6,7 +6,7 @@ import { isMoveItemType, MaterialGame } from "@gamepark/rules-api";
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
 import { css } from "@emotion/react";
-import NidavellirRules from "@gamepark/nidavellir/NidavellirRules";
+import { NidavellirRules } from "@gamepark/nidavellir/NidavellirRules";
 import { ColumnButton, moveAction } from "./ColumnButton";
 import { Score } from "@gamepark/nidavellir/rules/helpers/Score";
 
