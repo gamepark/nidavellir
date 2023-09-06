@@ -9,7 +9,7 @@ export const PlayerPanels: FC = () => {
   return (
     <>
       {players.map((player, index) =>
-        <PlayerPanel key={player.id} playerId={player.id}css={panelPosition(index, players.length, isSpectator)} />
+        <PlayerPanel key={player.id} playerId={player.id} css={panelPosition(index, players.length, isSpectator)} />
       )}
     </>
   )
