@@ -14,9 +14,8 @@ import { Coin } from "@gamepark/nidavellir/material/Coin";
 
 export const CoinRules: FC<MaterialRulesProps> = (props) => {
   const { t } = useTranslation()
-  const { item, itemIndex } = props;
+  const { item } = props;
   const visible = item.id !== undefined
-  const placeCoins = useLegalMoves((move) => isMoveItemType(MaterialType.Coin)(move) && move.itemIndex === itemIndex && move.position.location?.type === LocationType.PlayerBoard)
   const exchange = visible && isExchangeCoin(item as MaterialItem)
   const huntingMaster = exchange && Coin.HuntingMasterCoin === item.id
   return (
@@ -26,7 +25,22 @@ export const CoinRules: FC<MaterialRulesProps> = (props) => {
       {visible && <p><Trans defaults="rule.coin.description" values={{ value: Coins[item.id].value, color: t(`rule.coin.color.${Coins[item.id].color}`)}}><strong/></Trans></p>}
       {exchange && <><hr /><p>{t('rule.coin.exchange-coin')}</p></>}
       {huntingMaster && <p>{t('rule.coin.hunting-master')}</p>}
-      {!!placeCoins.length && placeCoins.map((move) => <p key={JSON.stringify(move)} css={moveButton}><PlaceCoinButton move={move} {...props} /></p>)}
+      <PlaceCoinMoves {...props} />
+    </>
+  )
+}
+
+const PlaceCoinMoves: FC<MaterialRulesProps> = (props) => {
+  const { itemIndex } = props;
+  const placeCoins = useLegalMoves((move) => isMoveItemType(MaterialType.Coin)(move) && move.itemIndex === itemIndex && move.position.location?.type === LocationType.PlayerBoard)
+  if (!placeCoins.length) return null;
+
+  return (
+    <>
+      <hr />
+      <div css={buttonContainer}>
+        {placeCoins.map((move) => <PlaceCoinButton key={JSON.stringify(move)} move={move} {...props} />)}
+      </div>
     </>
   )
 }
@@ -59,9 +73,15 @@ const CoinLocationRule: FC<MaterialRulesProps> = (props) => {
   return null;
 }
 
-const moveButton = css`
-  margin: 0;
-  margin-bottom: 0.6em;
+const buttonContainer = css`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 0.5em;
+  margin-bottom: 1em;
+
+  > button {
+    text-align: left;
+  }
 `
 
 const norse = css`

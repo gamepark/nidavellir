@@ -9,6 +9,7 @@ import { css } from "@emotion/react";
 import { NidavellirRules } from "@gamepark/nidavellir/NidavellirRules";
 import { ColumnButton, moveAction } from "./ColumnButton";
 import { Score } from "@gamepark/nidavellir/rules/helpers/Score";
+import { FC } from "react";
 
 export const DwarfCardRules = (props: MaterialRulesProps) => {
   const { item } = props;
@@ -93,9 +94,8 @@ const RoyalOfferingRules = (props: MaterialRulesProps) => {
 }
 
 const HeroRules = (props: MaterialRulesProps) => {
-  const { item, itemIndex } = props;
+  const { item } = props;
   const rules = useRules<NidavellirRules>()!
-  const chooseHeroMoves = useLegalMoves((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && (move.position.location?.type === LocationType.Army || move.position.location?.type === LocationType.CommandZone))
   const play = usePlay()
   const previous = rules.material(MaterialType.Card).location((location: Location) => LocationType.HeroesDeck === location.type && location.x === item.location?.x! - 1)
   const next = rules.material(MaterialType.Card).location((location: Location) => LocationType.HeroesDeck === location.type && location.x === item.location?.x! + 1)
@@ -103,16 +103,29 @@ const HeroRules = (props: MaterialRulesProps) => {
   return (
     <>
       <h2 css={[title, norse, normal]}>
-        { !!previous.length && <div css={ navigation } onClick={ () => play(displayMaterialRules(MaterialType.Card, previous.getItem(), previous.getIndex()))}><span>&lt;</span></div> }
+        { !!previous.length && <div css={ navigation } onClick={ () => play(displayMaterialRules(MaterialType.Card, previous.getItem(), previous.getIndex()), {local: true})}><span>&lt;</span></div> }
         <Trans defaults={`hero.name.${item.id.front}`}><strong/></Trans>
-        { !!next.length && <div css={ navigation } onClick={ () => play(displayMaterialRules(MaterialType.Card, next.getItem(), next.getIndex()))}><span>&gt;</span></div> }
+        { !!next.length && <div css={ navigation } onClick={ () => play(displayMaterialRules(MaterialType.Card, next.getItem(), next.getIndex()), {local: true})}><span>&gt;</span></div> }
       </h2>
       <CardLocationRule {...props} />
       <p><Trans defaults={`rule.hero.${item.id.front}`}><strong/></Trans></p>
       <ScoreRules {...props} />
-      {chooseHeroMoves.map((move, index) => (
-        <ColumnButton key={index} move={move} {...props} />
-      ))}
+      <ChooseHeroMoves {...props} />
+    </>
+  )
+}
+
+const ChooseHeroMoves: FC<MaterialRulesProps> = (props) => {
+  const { itemIndex } = props;
+  const chooseHeroMoves = useLegalMoves((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && (move.position.location?.type === LocationType.Army || move.position.location?.type === LocationType.CommandZone))
+  if (!chooseHeroMoves.length) return null;
+
+  return (
+    <>
+      <hr />
+      <div css={buttonContainer}>
+        {chooseHeroMoves.map((move) => <ColumnButton key={JSON.stringify(move)} move={move} {...props} />)}
+      </div>
     </>
   )
 }
@@ -186,6 +199,17 @@ const ScoreRules = (props: MaterialRulesProps) => {
 
   return null;
 }
+
+const buttonContainer = css`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 0.5em;
+  margin-bottom: 1em;
+  
+  > button {
+    text-align: left;
+  }
+`
 
 const navigation = css`
   margin-left: 0.4em;
