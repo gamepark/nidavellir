@@ -165,7 +165,6 @@ export default class PlayerTurn extends MaterialRulesPart {
   mayRecruitNewHeroes(move: MaterialMove,) {
     const recruitHeroCount = this.computeRecruitHeroCount(move)
     if (recruitHeroCount > 0) {
-      //const operation = (effect: Effect) => (!unshit ? player.effects.push(effect) : player.effects.unshift(effect))
       this.memorize(Memory.Recruitments, recruitHeroCount)
     }
   }

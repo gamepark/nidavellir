@@ -7,6 +7,7 @@ import { MaterialMove, isCustomMoveType, MaterialItem } from "@gamepark/rules-ap
 import { CustomMoveType } from "@gamepark/nidavellir/moves/CustomMoveType";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
 import { RuleId } from "@gamepark/nidavellir/rules/RuleId";
+import { CoinRules } from "./rules/CoinRules";
 
 export class CoinDescription extends RoundTokenDescription {
   diameter = 4
@@ -41,7 +42,7 @@ export class CoinDescription extends RoundTokenDescription {
       [Coin.HuntingMasterCoin]: Images.GreenCoin,
   }
 
-  rules = () => <p></p>
+  rules = CoinRules
 
   canDrag(move: MaterialMove, context: ItemContext): boolean {
     const { index } = context

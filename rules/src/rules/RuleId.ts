@@ -22,10 +22,3 @@ export enum RuleId {
   Uline,
   Ylud
 }
-
-export const HeroWithActionRuleIds = [
-  RuleId.Grid,
-  RuleId.Uline,
-  RuleId.Dagda,
-  RuleId.Bonfur
-]

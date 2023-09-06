@@ -138,27 +138,3 @@ export const Grid: HeroDescription = {
     [DwarfType.Neutral]: [7],
   }
 };
-
-export const Heroes: HeroDescription[] = [
-  Bonfur,
-  Aegur,
-  Dagda,
-  Aral,
-  Kraal,
-  Tarah,
-  Lokdur,
-  Zoral,
-  Idunn,
-  Hourya,
-  Astrid,
-  DwergYmir,
-  DwergAesir,
-  DwergSigmir,
-  DwergJungir,
-  DwergBergelmir,
-  Thrud,
-  Ylud,
-  Skaa,
-  Uline,
-  Grid,
-];
