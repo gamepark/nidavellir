@@ -16,6 +16,7 @@
     "linkall": "yarn link react react-dom react-redux @dnd-kit/core @emotion/react react-i18next @gamepark/rules-api @gamepark/react-client @gamepark/react-game @apollo/client @types/react",
     "unlinkall": "yarn unlink react react-dom react-redux @dnd-kit/core @emotion/react react-i18next @gamepark/rules-api @gamepark/react-client @gamepark/react-game @apollo/client @types/react",
     "linkgp": "yarn link @gamepark/react-client @gamepark/rules-api @gamepark/react-game",
-    "unlinkgp": "yarn unlink @gamepark/react-client @gamepark/rules-api @gamepark/react-game"
+    "unlinkgp": "yarn unlink @gamepark/react-client @gamepark/rules-api @gamepark/react-game",
+    "deploy": "yarn build && rclone sync app/build nidavellir:nidavellir.game-park.com --progress --s3-acl=public-read"
   }
 }
