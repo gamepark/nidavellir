@@ -2,6 +2,7 @@
 import Images from "../images/Images";
 import { TokenDescription } from "@gamepark/react-game";
 import { Gem } from "@gamepark/nidavellir/material/Gem";
+import { GemRules } from "./rules/GemRules";
 
 export class GemDescription extends TokenDescription  {
   width = 5.2
@@ -15,7 +16,7 @@ export class GemDescription extends TokenDescription  {
     [Gem.Gem6]: Images.Gem6,
   }
 
-  rules = () => <p></p>
+  rules = GemRules
 }
 
 export const gemDescription = new GemDescription()
