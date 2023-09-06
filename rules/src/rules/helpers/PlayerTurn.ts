@@ -86,9 +86,9 @@ export default class PlayerTurn extends MaterialRulesPart {
 
   get goToNextRules() {
     const moves = []
-    const goToRecruitement = this.goToRecruitment
-    if (goToRecruitement.length) {
-      moves.push(...goToRecruitement)
+    const goToRecruitment = this.goToRecruitment
+    if (goToRecruitment.length) {
+      moves.push(...goToRecruitment)
       return moves
     }
 
