@@ -14,7 +14,10 @@ export class Tavern extends MaterialRulesPart {
     const moves: MaterialMove[] = this.discardTavernMoves
     if (this.isEndOfAge) {
       const startYlud = this.startYlud
-      if (startYlud.length) return startYlud
+      if (startYlud.length) {
+        moves.push(...startYlud)
+        return moves
+      }
 
       if (this.age === 2) {
         const thrud = this.moveThrudInCommandZone
