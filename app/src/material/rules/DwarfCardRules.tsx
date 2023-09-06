@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import { MaterialRulesProps, PlayMoveButton, useGame, useLegalMove, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { MaterialRulesProps, PlayMoveButton, useGame, useLegalMove, useLegalMoves, usePlay, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Cards, isHero, isRoyalOffering } from "@gamepark/nidavellir/cards/Cards";
 import { Trans, useTranslation } from "react-i18next";
-import { isMoveItemType, MaterialGame } from "@gamepark/rules-api";
+import { displayMaterialRules, isMoveItemType, Location, MaterialGame } from "@gamepark/rules-api";
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
 import { css } from "@emotion/react";
@@ -94,11 +94,19 @@ const RoyalOfferingRules = (props: MaterialRulesProps) => {
 
 const HeroRules = (props: MaterialRulesProps) => {
   const { item, itemIndex } = props;
+  const rules = useRules<NidavellirRules>()!
   const chooseHeroMoves = useLegalMoves((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && (move.position.location?.type === LocationType.Army || move.position.location?.type === LocationType.CommandZone))
+  const play = usePlay()
+  const previous = rules.material(MaterialType.Card).location((location: Location) => LocationType.HeroesDeck === location.type && location.x === item.location?.x! - 1)
+  const next = rules.material(MaterialType.Card).location((location: Location) => LocationType.HeroesDeck === location.type && location.x === item.location?.x! + 1)
 
   return (
     <>
-      <h2 css={[norse, normal]}><Trans defaults={`hero.name.${item.id.front}`}><strong/></Trans></h2>
+      <h2 css={[title, norse, normal]}>
+        { !!previous.length && <div css={ navigation } onClick={ () => play(displayMaterialRules(MaterialType.Card, previous.getItem(), previous.getIndex()))}><span>&lt;</span></div> }
+        <Trans defaults={`hero.name.${item.id.front}`}><strong/></Trans>
+        { !!next.length && <div css={ navigation } onClick={ () => play(displayMaterialRules(MaterialType.Card, next.getItem(), next.getIndex()))}><span>&gt;</span></div> }
+      </h2>
       <CardLocationRule {...props} />
       <p><Trans defaults={`rule.hero.${item.id.front}`}><strong/></Trans></p>
       <ScoreRules {...props} />
@@ -179,10 +187,33 @@ const ScoreRules = (props: MaterialRulesProps) => {
   return null;
 }
 
+const navigation = css`
+  margin-left: 0.4em;
+  margin-right: 0.4em;
+  padding-left: 0.4em;
+  padding-right: 0.4em;
+  border-radius: 0.2em;
+  border: 0.05em solid black;
+  box-sizing: border-box;
+  cursor: pointer;
+
+  &:hover,
+  &:active {
+    background-color: white;
+  }
+`
+
+
 const normal = css`
   font-weight: normal;
 `
 
 const norse = css`
   font-family: Norse, Arial, Serif
+`
+
+const title = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
