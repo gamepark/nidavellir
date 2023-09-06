@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import Images from "../images/Images";
-import { TokenDescription } from "@gamepark/react-game/dist/components/material/FlatMaterial/TokenDescription";
+import { TokenDescription } from "@gamepark/react-game";
 import { Gem } from "@gamepark/nidavellir/material/Gem";
 
 export class GemDescription extends TokenDescription  {

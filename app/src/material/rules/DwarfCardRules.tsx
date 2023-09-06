@@ -2,14 +2,13 @@
 import { MaterialRulesProps, PlayMoveButton, useGame, useLegalMove, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Cards, isHero, isRoyalOffering } from "@gamepark/nidavellir/cards/Cards";
 import { Trans, useTranslation } from "react-i18next";
-import { isMoveItemType } from "@gamepark/rules-api/dist/material/moves/items/MoveItem";
+import { isMoveItemType, MaterialGame } from "@gamepark/rules-api";
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
 import { css } from "@emotion/react";
 import NidavellirRules from "@gamepark/nidavellir/NidavellirRules";
 import { ColumnButton, moveAction } from "./ColumnButton";
 import { Score } from "@gamepark/nidavellir/rules/helpers/Score";
-import { MaterialGame } from "@gamepark/rules-api/dist/material/MaterialGame";
 
 export const DwarfCardRules = (props: MaterialRulesProps) => {
   const { item } = props;

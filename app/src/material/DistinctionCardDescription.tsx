@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import Images from "../images/Images";
-import { CardDescription } from "@gamepark/react-game/dist/components/material/FlatMaterial/CardDescription";
+import { CardDescription } from "@gamepark/react-game";
 import { Distinction } from "@gamepark/nidavellir/material/Distinction";
 
 export class DistinctionCardDescription extends CardDescription {

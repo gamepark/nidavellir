@@ -1,12 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import Images from "../images/Images";
-import { RoundTokenDescription } from "@gamepark/react-game/dist/components/material/FlatMaterial/TokenDescription";
+import { RoundTokenDescription } from "@gamepark/react-game";
 import { Coin } from "@gamepark/nidavellir/material/Coin";
-import { ItemContext } from "@gamepark/react-game/dist/locators/ItemLocator";
-import { MaterialMove } from "@gamepark/rules-api/dist/material/moves/MaterialMove";
-import { isCustomMoveType } from "@gamepark/rules-api/dist/material/moves/CustomMove";
+import { ItemContext } from "@gamepark/react-game";
+import { MaterialMove, isCustomMoveType, MaterialItem } from "@gamepark/rules-api";
 import { CustomMoveType } from "@gamepark/nidavellir/moves/CustomMoveType";
-import { MaterialItem } from "@gamepark/rules-api/dist/material/items/MaterialItem";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
 import { RuleId } from "@gamepark/nidavellir/rules/RuleId";
 

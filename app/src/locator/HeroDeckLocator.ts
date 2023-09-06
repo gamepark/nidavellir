@@ -1,11 +1,10 @@
 /** @jsxImportSource @emotion/react */
 import { GridLocator } from "./GridLocator";
-import { MaterialItem } from "@gamepark/rules-api/dist/material/items/MaterialItem";
+import { MaterialItem, Coordinates } from "@gamepark/rules-api";
 import { PlayerId } from "@gamepark/nidavellir/player/Player";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
-import { ItemContext } from "@gamepark/react-game/dist/locators/ItemLocator";
+import { ItemContext } from "@gamepark/react-game";
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
-import { Coordinates } from "@gamepark/rules-api/dist/material/location/Location";
 import { HeroDeckLocatorDescription } from "./HeroDeckLocatorDescription";
 
 export class HeroDeckLocator extends GridLocator {

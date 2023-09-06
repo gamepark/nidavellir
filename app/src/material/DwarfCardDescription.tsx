@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { Card, CardDeck } from "@gamepark/nidavellir/cards/Cards";
 import Images from "../images/Images";
-import { CardDescription } from "@gamepark/react-game/dist/components/material/FlatMaterial/CardDescription";
+import { CardDescription } from "@gamepark/react-game";
 import { DwarfCardRules } from "./rules/DwarfCardRules";
 
 export class DwarfCardDescription extends CardDescription {

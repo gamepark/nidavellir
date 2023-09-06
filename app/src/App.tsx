@@ -1,8 +1,7 @@
-import { useGame } from "@gamepark/react-game/dist/hooks/useGame";
 import { MaterialGame } from "@gamepark/rules-api";
 import { useEffect, useState } from "react";
 import { GameDisplay } from "./GameDisplay";
-import { LoadingScreen, MaterialHeader, MaterialImageLoader, Menu, FailuresDialog, FullscreenDialog } from "@gamepark/react-game";
+import { useGame, LoadingScreen, MaterialHeader, MaterialImageLoader, Menu, FailuresDialog, FullscreenDialog } from "@gamepark/react-game";
 import { RuleId } from "@gamepark/nidavellir/rules/RuleId";
 import { ReactJSXElement } from '@emotion/react/types/jsx-namespace'
 

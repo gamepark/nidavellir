@@ -4,9 +4,7 @@ import { useTranslation } from "react-i18next";
 import { DwarfType } from "@gamepark/nidavellir/cards/DwarfType";
 import Images from "../../images/Images";
 import { MoveItem } from "@gamepark/rules-api";
-import { MaterialRulesProps } from "@gamepark/react-game/dist/components/material/MaterialDescription";
-import { PlayMoveButton } from "@gamepark/react-game/dist/components/buttons/PlayMoveButton/PlayMoveButton";
-
+import { MaterialRulesProps, PlayMoveButton } from "@gamepark/react-game";
 
 type ColumnButtonProps = {
   move: MoveItem

@@ -2,7 +2,7 @@
 import { LocationDescription, MaterialContext } from "@gamepark/react-game";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
 import { css } from "@emotion/react";
-import { Location } from "@gamepark/rules-api/dist/material/location/Location";
+import { Location } from "@gamepark/rules-api";
 
 export class HeroDeckLocatorDescription extends LocationDescription {
   height = 28.5

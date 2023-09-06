@@ -3,8 +3,7 @@ import { ItemContext, PileLocator } from '@gamepark/react-game'
 import { PlayerId } from "@gamepark/nidavellir/player/Player";
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
-import { MaterialItem } from "@gamepark/rules-api/dist/material/items/MaterialItem";
-import { Coordinates } from "@gamepark/rules-api/dist/material/location/Location";
+import { MaterialItem, Coordinates } from "@gamepark/rules-api";
 import { DiscardLocatorDescription } from "./DiscardLocatorDescription";
 
 export class DiscardLocator extends PileLocator<PlayerId, MaterialType, LocationType> {

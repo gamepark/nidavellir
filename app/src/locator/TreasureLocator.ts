@@ -2,9 +2,8 @@
 import { GridLocator } from "./GridLocator";
 import { PlayerId } from "@gamepark/nidavellir/player/Player";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
-import { MaterialItem } from "@gamepark/rules-api/dist/material/items/MaterialItem";
-import { ItemContext } from "@gamepark/react-game/dist/locators/ItemLocator";
-import { Coordinates } from "@gamepark/rules-api/dist/material/location/Location";
+import { MaterialItem, Coordinates } from "@gamepark/rules-api";
+import { ItemContext } from "@gamepark/react-game";
 
 export class TreasureLocator extends GridLocator {
   delta = { x: 1, y: 0.5, z: 0.5 }

@@ -3,7 +3,7 @@ import { GridLocator } from "./GridLocator";
 import { Coordinates, MaterialItem } from "@gamepark/rules-api";
 import { PlayerId } from "@gamepark/nidavellir/player/Player";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
-import { ItemContext } from "@gamepark/react-game/dist/locators/ItemLocator";
+import { ItemContext } from "@gamepark/react-game";
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
 import { cardDescription } from "../material/DwarfCardDescription";
 import { TavernLocatorDescription } from "./TavernLocatorDescription";
