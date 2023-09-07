@@ -74,7 +74,7 @@ export default class PlayerTurn extends MaterialRulesPart {
   }
 
   get goToTradeCoin() {
-    if (this.isTradeCoin) return []
+    if (this.isTradeCoin || this.isYlud) return []
     const coin = this.tavernCoin
     if (!isExchangeCoin(coin)) return []
 
@@ -83,6 +83,10 @@ export default class PlayerTurn extends MaterialRulesPart {
 
   get isTradeCoin() {
     return this.game.rule!.id === RuleId.TradeCoin
+  }
+
+  get isYlud() {
+    return this.game.rule?.id === RuleId.Ylud
   }
 
   get goToNextRules() {
