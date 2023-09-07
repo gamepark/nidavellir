@@ -2,13 +2,14 @@
 import { GameTable, usePlayers } from '@gamepark/react-game'
 import { PlayerPanels } from "./player/PlayerPanels";
 import { css, Global } from "@emotion/react";
+import { pointerWithin } from '@dnd-kit/core'
 
 export const GameDisplay = () => {
   const players = usePlayers()
   if (!players.length) return null;
   const bigTable = players.length > 3
   return <>
-    <GameTable xMin={-79} xMax={62} yMin={bigTable ? -64: -34} yMax={34} margin={{ top: 7, left: 0, right: bigTable? 30: 0, bottom: 0 }}/>
+    <GameTable collisionAlgorithm={pointerWithin} xMin={-79} xMax={62} yMin={bigTable ? -64: -34} yMax={34} margin={{ top: 7, left: 0, right: bigTable? 30: 0, bottom: 0 }}/>
     <PlayerPanels/>
     <Global styles={style}/>
   </>

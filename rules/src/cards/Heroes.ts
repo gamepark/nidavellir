@@ -2,70 +2,70 @@ import { HeroDescription } from './HeroDescription';
 import { DwarfType } from './DwarfType';
 
 export const Bonfur: HeroDescription = {
-  type: DwarfType.Blacksmith,
+  types: DwarfType.Blacksmith,
   grades: {
     [DwarfType.Blacksmith]: [0, 0, 0],
   }
 };
 
 export const Aegur: HeroDescription = {
-  type: DwarfType.Blacksmith,
+  types: DwarfType.Blacksmith,
   grades: {
     [DwarfType.Blacksmith]: [0, 0],
   },
 };
 
 export const Dagda: HeroDescription = {
-  type: DwarfType.Hunter,
+  types: DwarfType.Hunter,
   grades: {
     [DwarfType.Hunter]: [0, 0, 0],
   }
 };
 
 export const Aral: HeroDescription = {
-  type: DwarfType.Hunter,
+  types: DwarfType.Hunter,
   grades: {
     [DwarfType.Hunter]: [0, 0],
   },
 };
 
 export const Kraal: HeroDescription = {
-  type: DwarfType.Warrior,
+  types: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [7, 0],
   },
 };
 
 export const Tarah: HeroDescription = {
-  type: DwarfType.Warrior,
+  types: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [14],
   },
 };
 
 export const Lokdur: HeroDescription = {
-  type: DwarfType.Miner,
+  types: DwarfType.Miner,
   grades: {
     [DwarfType.Miner]: [3],
   },
 };
 
 export const Zoral: HeroDescription = {
-  type: DwarfType.Miner,
+  types: DwarfType.Miner,
   grades: {
     [DwarfType.Miner]: [1, 0, 0],
   },
 };
 
 export const Idunn: HeroDescription = {
-  type: DwarfType.Explorer,
+  types: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [7],
   },
 };
 
 export const Hourya: HeroDescription = {
-  type: DwarfType.Explorer,
+  types: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [20],
   },
@@ -73,31 +73,31 @@ export const Hourya: HeroDescription = {
 };
 
 export const Astrid: HeroDescription = {
-  type: DwarfType.Neutral,
+  types: DwarfType.Neutral,
 };
 
 export const DwergYmir: HeroDescription = {
-  type: DwarfType.Neutral,
+  types: DwarfType.Neutral,
 };
 
 export const DwergAesir: HeroDescription = {
-  type: DwarfType.Neutral,
+  types: DwarfType.Neutral,
 };
 
 export const DwergSigmir: HeroDescription = {
-  type: DwarfType.Neutral,
+  types: DwarfType.Neutral,
 };
 
 export const DwergJungir: HeroDescription = {
-  type: DwarfType.Neutral,
+  types: DwarfType.Neutral,
 };
 
 export const DwergBergelmir: HeroDescription = {
-  type: DwarfType.Neutral,
+  types: DwarfType.Neutral,
 };
 
 export const Thrud: HeroDescription = {
-  type: DwarfType.Neutral,
+  types: DwarfType.Neutral,
   grades: {
     [DwarfType.Blacksmith]: [13],
     [DwarfType.Hunter]: [13],
@@ -108,7 +108,7 @@ export const Thrud: HeroDescription = {
 };
 
 export const Ylud: HeroDescription = {
-  type: DwarfType.Neutral,
+  types: DwarfType.Neutral,
   grades: {
     [DwarfType.Blacksmith]: [0],
     [DwarfType.Hunter]: [0],
@@ -119,21 +119,21 @@ export const Ylud: HeroDescription = {
 };
 
 export const Skaa: HeroDescription = {
-  type: DwarfType.Neutral,
+  types: DwarfType.Neutral,
   grades: {
     [DwarfType.Neutral]: [17],
   },
 };
 
 export const Uline: HeroDescription = {
-  type: DwarfType.Neutral,
+  types: DwarfType.Neutral,
   grades: {
     [DwarfType.Neutral]: [9],
   }
 };
 
 export const Grid: HeroDescription = {
-  type: DwarfType.Neutral,
+  types: DwarfType.Neutral,
   grades: {
     [DwarfType.Neutral]: [7],
   }

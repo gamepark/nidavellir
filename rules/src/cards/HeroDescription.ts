@@ -1,8 +1,5 @@
-import { DwarfType } from './DwarfType';
-import { Grades } from './Grades';
+import { DwarfDescription } from './DwarfDescription'
 
-export type HeroDescription = {
-  type: DwarfType;
-  grades?: Grades;
+export type HeroDescription = DwarfDescription & {
   minGrades?: number;
 };

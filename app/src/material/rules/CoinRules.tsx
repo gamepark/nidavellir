@@ -11,6 +11,9 @@ import { css } from "@emotion/react";
 import { isExchangeCoin } from "@gamepark/nidavellir/utils/coin.utils";
 import { MaterialItem } from "@gamepark/rules-api/dist/material/items/MaterialItem";
 import { Coin } from "@gamepark/nidavellir/material/Coin";
+import { isCustomMoveType } from '@gamepark/rules-api/dist/material/moves/CustomMove'
+import { CustomMoveType } from '@gamepark/nidavellir/moves/CustomMoveType'
+import { TradeCoinButton } from './TradeCoinButton'
 
 export const CoinRules: FC<MaterialRulesProps> = (props) => {
   const { t } = useTranslation()
@@ -26,6 +29,7 @@ export const CoinRules: FC<MaterialRulesProps> = (props) => {
       {exchange && <><hr /><p>{t('rule.coin.exchange-coin')}</p></>}
       {huntingMaster && <p>{t('rule.coin.hunting-master')}</p>}
       <PlaceCoinMoves {...props} />
+      <TradeCoinsMoves {...props} />
     </>
   )
 }
@@ -40,6 +44,21 @@ const PlaceCoinMoves: FC<MaterialRulesProps> = (props) => {
       <hr />
       <div css={buttonContainer}>
         {placeCoins.map((move) => <PlaceCoinButton key={JSON.stringify(move)} move={move} {...props} />)}
+      </div>
+    </>
+  )
+}
+
+const TradeCoinsMoves: FC<MaterialRulesProps> = (props) => {
+  const { itemIndex } = props;
+  const tradeCoins = useLegalMoves((move) => isCustomMoveType(CustomMoveType.TradeCoins)(move) && move.data.includes(itemIndex))
+  if (!tradeCoins.length) return null;
+
+  return (
+    <>
+      <hr />
+      <div css={buttonContainer}>
+        {tradeCoins.map((move) => <TradeCoinButton key={JSON.stringify(move)} move={move} {...props} />)}
       </div>
     </>
   )

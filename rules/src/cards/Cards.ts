@@ -29,55 +29,55 @@ import { isEnumValue } from "@gamepark/rules-api"
 import { RuleId } from "../rules/RuleId";
 
 export const WarriorGrade3: DwarfDescription = {
-  type: DwarfType.Warrior,
+  types: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [3],
   },
 };
 export const WarriorGrade4: DwarfDescription = {
-  type: DwarfType.Warrior,
+  types: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [4],
   },
 };
 
 export const WarriorGrade5: DwarfDescription = {
-  type: DwarfType.Warrior,
+  types: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [5],
   },
 };
 
 export const WarriorGrade6: DwarfDescription = {
-  type: DwarfType.Warrior,
+  types: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [6],
   },
 };
 
 export const WarriorGrade7: DwarfDescription = {
-  type: DwarfType.Warrior,
+  types: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [7],
   },
 };
 
 export const WarriorGrade8: DwarfDescription = {
-  type: DwarfType.Warrior,
+  types: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [8],
   },
 };
 
 export const WarriorGrade9: DwarfDescription = {
-  type: DwarfType.Warrior,
+  types: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [9],
   },
 };
 
 export const WarriorGrade10: DwarfDescription = {
-  type: DwarfType.Warrior,
+  types: DwarfType.Warrior,
   grades: {
     [DwarfType.Warrior]: [10],
   },
@@ -85,27 +85,27 @@ export const WarriorGrade10: DwarfDescription = {
 
 
 export const Hunter: DwarfDescription = {
-  type: DwarfType.Hunter,
+  types: DwarfType.Hunter,
   grades: {
     [DwarfType.Hunter]: [0],
   },
 };
 
 export const MinerGrade0: DwarfDescription = {
-  type: DwarfType.Miner,
+  types: DwarfType.Miner,
   grades: {
     [DwarfType.Miner]: [0],
   },
 };
 export const MinerGrade1: DwarfDescription = {
-  type: DwarfType.Miner,
+  types: DwarfType.Miner,
   grades: {
     [DwarfType.Miner]: [1],
   },
 };
 
 export const MinerGrade2: DwarfDescription = {
-  type: DwarfType.Miner,
+  types: DwarfType.Miner,
   grades: {
     [DwarfType.Miner]: [2],
   },
@@ -113,7 +113,7 @@ export const MinerGrade2: DwarfDescription = {
 
 
 export const Blacksmith: DwarfDescription = {
-  type: DwarfType.Blacksmith,
+  types: DwarfType.Blacksmith,
   grades: {
     [DwarfType.Blacksmith]: [0],
   },
@@ -139,56 +139,56 @@ export const Blacksmith: DwarfDescription = {
  */
 
 export const ExplorerGrade5: DwarfDescription = {
-  type: DwarfType.Explorer,
+  types: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [5],
   },
 };
 
 export const ExplorerGrade6: DwarfDescription = {
-  type: DwarfType.Explorer,
+  types: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [6],
   },
 };
 
 export const ExplorerGrade7: DwarfDescription = {
-  type: DwarfType.Explorer,
+  types: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [7],
   },
 };
 
 export const ExplorerGrade8: DwarfDescription = {
-  type: DwarfType.Explorer,
+  types: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [8],
   },
 };
 
 export const ExplorerGrade9: DwarfDescription = {
-  type: DwarfType.Explorer,
+  types: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [9],
   },
 };
 
 export const ExplorerGrade10: DwarfDescription = {
-  type: DwarfType.Explorer,
+  types: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [10],
   },
 };
 
 export const ExplorerGrade11: DwarfDescription = {
-  type: DwarfType.Explorer,
+  types: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [11],
   },
 };
 
 export const ExplorerGrade12: DwarfDescription = {
-  type: DwarfType.Explorer,
+  types: DwarfType.Explorer,
   grades: {
     [DwarfType.Explorer]: [12],
   },
@@ -203,7 +203,7 @@ export const RoyalOffering5: RoyalOfferingDescription = {
 };
 
 export const BlacksmithDwarfKingsGreatArmorer: DwarfDescription = {
-  type: DwarfType.Blacksmith,
+  types: DwarfType.Blacksmith,
   grades: {
     [DwarfType.Blacksmith]: [0, 0],
   },

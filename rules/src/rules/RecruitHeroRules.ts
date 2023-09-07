@@ -7,6 +7,7 @@ import PlayerTurn from "./helpers/PlayerTurn";
 import { EffectRule } from "./effect/EffectRule";
 import Army from "./helpers/Army";
 import { HeroDescription } from "../cards/HeroDescription";
+import { getTypes } from '../cards/DwarfDescription'
 
 class RecruitHeroRules extends EffectRule {
 
@@ -54,7 +55,8 @@ class RecruitHeroRules extends EffectRule {
     const description = Cards[id] as HeroDescription
     if (!description.minGrades) return true;
 
-    return new Army(this.game, this.player).countGradesOfType(description.type) >= description.minGrades
+    const army = new Army(this.game, this.player)
+    return getTypes(description).every((type) => army.countGradesOfType(type) >= description.minGrades!)
   }
 
   afterItemMove(move: ItemMove) {

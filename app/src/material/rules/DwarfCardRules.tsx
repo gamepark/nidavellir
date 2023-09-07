@@ -65,11 +65,21 @@ const CardRule = (props: MaterialRulesProps) => {
 const DwarfRules = (props: MaterialRulesProps) => {
   const { item, itemIndex } = props;
   const { t } = useTranslation()
+  const rules = useRules<NidavellirRules>()!
+  const play = usePlay()
+  const isRightLocation = (location: Location) => LocationType.Discard === location.type && item.location?.type === location.type
+  const previous = rules.material(MaterialType.Card).location((location) => isRightLocation(location) && location.x === item.location?.x! - 1)
+  const next = rules.material(MaterialType.Card).location((location) => isRightLocation(location) && location.x === item.location?.x! + 1)
+
   const dwarfClass = item.id.front ? Cards[item.id.front].type : undefined;
   const chooseDwarfCard = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.position.location?.type === LocationType.Army)
   return (
     <>
-      <h2 css={norse}>{t(`dwarf-card.class.${dwarfClass}`)}</h2>
+      <h2 css={[title, norse]}>
+        { !!previous.length && <div css={ navigation } onClick={ () => play(displayMaterialRules(MaterialType.Card, previous.getItem(), previous.getIndex()), {local: true})}><span>&lt;</span></div> }
+        {t(`dwarf-card.class.${dwarfClass}`)}
+        { !!next.length && <div css={ navigation } onClick={ () => play(displayMaterialRules(MaterialType.Card, next.getItem(), next.getIndex()), {local: true})}><span>&gt;</span></div> }
+      </h2>
       <CardLocationRule {...props} />
       {dwarfClass && <p><Trans defaults={`rule.dwarf-card.class.${dwarfClass}`}><strong/></Trans></p>}
       <ScoreRules {...props} />
@@ -81,10 +91,20 @@ const DwarfRules = (props: MaterialRulesProps) => {
 const RoyalOfferingRules = (props: MaterialRulesProps) => {
   const { item, itemIndex, closeDialog } = props;
   const { t } = useTranslation()
+  const rules = useRules<NidavellirRules>()!
+  const play = usePlay()
+  const isRightLocation = (location: Location) => LocationType.Discard === location.type && item.location?.type === location.type
+  const previous = rules.material(MaterialType.Card).location((location) => isRightLocation(location) && location.x === item.location?.x! - 1)
+  const next = rules.material(MaterialType.Card).location((location) => isRightLocation(location) && location.x === item.location?.x! + 1)
   const chooseRoyalOffering = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.position.location?.type === LocationType.Discard)
 
   return (
     <>
+      <h2 css={[title, norse]}>
+        { !!previous.length && <div css={ navigation } onClick={ () => play(displayMaterialRules(MaterialType.Card, previous.getItem(), previous.getIndex()), {local: true})}><span>&lt;</span></div> }
+        {t('royal-offering.name')}
+        { !!next.length && <div css={ navigation } onClick={ () => play(displayMaterialRules(MaterialType.Card, next.getItem(), next.getIndex()), {local: true})}><span>&gt;</span></div> }
+      </h2>
       <h2 css={norse}>{t('royal-offering.name')}</h2>
       <CardLocationRule {...props} />
       <p><Trans defaults="rule.royal-offering" values={{ additionalValue: Cards[item.id.front].bonus }}><strong/></Trans></p>
@@ -97,14 +117,15 @@ const HeroRules = (props: MaterialRulesProps) => {
   const { item } = props;
   const rules = useRules<NidavellirRules>()!
   const play = usePlay()
-  const previous = rules.material(MaterialType.Card).location((location: Location) => LocationType.HeroesDeck === location.type && location.x === item.location?.x! - 1)
-  const next = rules.material(MaterialType.Card).location((location: Location) => LocationType.HeroesDeck === location.type && location.x === item.location?.x! + 1)
+  const isRightLocation = (location: Location) => LocationType.HeroesDeck === location.type && item.location?.type === location.type
+  const previous = rules.material(MaterialType.Card).location((location) => isRightLocation(location) && location.x === item.location?.x! - 1)
+  const next = rules.material(MaterialType.Card).location((location) => isRightLocation(location) && location.x === item.location?.x! + 1)
 
   return (
     <>
       <h2 css={[title, norse, normal]}>
-        { !!previous.length && <div css={ navigation } onClick={ () => play(displayMaterialRules(MaterialType.Card, previous.getItem(), previous.getIndex()), {local: true})}><span>&lt;</span></div> }
-        <Trans defaults={`hero.name.${item.id.front}`}><strong/></Trans>
+        { !!previous.length && <div css={ [navigation, normal] } onClick={ () => play(displayMaterialRules(MaterialType.Card, previous.getItem(), previous.getIndex()), {local: true})}><span>&lt;</span></div> }
+        <Trans defaults={`hero.name.${item.id.front}`}><strong css={rightMargin}/></Trans>
         { !!next.length && <div css={ navigation } onClick={ () => play(displayMaterialRules(MaterialType.Card, next.getItem(), next.getIndex()), {local: true})}><span>&gt;</span></div> }
       </h2>
       <CardLocationRule {...props} />
@@ -211,6 +232,11 @@ const buttonContainer = css`
   }
 `
 
+
+const normal = css`
+  font-weight: normal;
+`
+
 const navigation = css`
   margin-left: 0.4em;
   margin-right: 0.4em;
@@ -220,16 +246,12 @@ const navigation = css`
   border: 0.05em solid black;
   box-sizing: border-box;
   cursor: pointer;
+  ${normal}
 
   &:hover,
   &:active {
     background-color: white;
   }
-`
-
-
-const normal = css`
-  font-weight: normal;
 `
 
 const norse = css`
@@ -240,4 +262,8 @@ const title = css`
   display: flex;
   justify-content: center;
   align-items: center;
+`
+
+const rightMargin = css`
+  margin-right: 0.1em
 `

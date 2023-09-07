@@ -11,6 +11,7 @@ import { Card, Cards, HeroesEffects, isDwarfDescription, isHero, isHeroDescripti
 import { DwarfType, dwarfTypes } from "../../cards/DwarfType";
 import Army from "./Army";
 import { TurnOrder } from "./TurnOrder";
+import { getTypes } from '../../cards/DwarfDescription'
 
 export default class PlayerTurn extends MaterialRulesPart {
   private heroCount: number
@@ -137,11 +138,11 @@ export default class PlayerTurn extends MaterialRulesPart {
 
     this.applyEffect(movedItem)
 
-    const yludMoves = this.mayMoveThrud(move)
+    const thrudMoves = this.mayMoveThrud(move)
     this.mayRecruitNewHeroes(move)
 
-    if (yludMoves.length) {
-      return yludMoves;
+    if (thrudMoves.length) {
+      return thrudMoves;
     }
 
     return this.goToNextRules
@@ -178,7 +179,6 @@ export default class PlayerTurn extends MaterialRulesPart {
       || thrud.getItem()?.location?.id !== move.position.location.id) return []
 
     return [
-      thrud.moveItem({ location: { type: LocationType.Hand, player: thrud.getItem()!.location.player } }),
       this.rules().startPlayerTurn(RuleId.Thrud, this.player)
     ]
   }
@@ -227,12 +227,12 @@ export default class PlayerTurn extends MaterialRulesPart {
       return dwarfTypes.map((type) => ({ type: LocationType.Army, id: type, player: this.player }))
     }
 
-    if (isHeroDescription(card, description) && description.type === DwarfType.Neutral) {
+    if (isHeroDescription(card, description) && getTypes(description).includes(DwarfType.Neutral)) {
       return [{ type: LocationType.CommandZone, player: this.player }]
     }
 
     if (isDwarfDescription(card, description) || isHeroDescription(card, description)) {
-      return [{ type: LocationType.Army, id: description.type, player: this.player }]
+      return getTypes(description).map((type) => ({ type: LocationType.Army, id: type, player: this.player }))
     }
 
     return [{ type: LocationType.Discard }]

@@ -53,7 +53,7 @@ export class Tavern extends MaterialRulesPart {
       .material(MaterialType.Card)
       .location(LocationType.Tavern)
       .locationId(this.tavern)
-    if (this.game.players.length !== 2 || cards.length !== 1) return []
+    if (!cards.length) return []
 
     return cards.moveItems({ location: { type: LocationType.Discard }})
   }

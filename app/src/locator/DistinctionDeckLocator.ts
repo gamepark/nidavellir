@@ -39,7 +39,7 @@ export class DistinctionDeckLocator extends LineLocator<PlayerId, MaterialType, 
       )
     }
 
-    if (type == MaterialType.Coin) {
+    if (type === MaterialType.Coin) {
       return this.getItemIndex(
         rules.material(MaterialType.Distinction).id(Distinction.HuntingMaster).getItem()!,
         { ...context, type: MaterialType.Distinction },
