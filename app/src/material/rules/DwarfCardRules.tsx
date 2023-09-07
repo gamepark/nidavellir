@@ -71,7 +71,7 @@ const DwarfRules = (props: MaterialRulesProps) => {
   const previous = rules.material(MaterialType.Card).location((location) => isRightLocation(location) && location.x === item.location?.x! - 1)
   const next = rules.material(MaterialType.Card).location((location) => isRightLocation(location) && location.x === item.location?.x! + 1)
 
-  const dwarfClass = item.id.front ? Cards[item.id.front].type : undefined;
+  const dwarfClass = item.id.front ? item.location?.id : undefined;
   const chooseDwarfCard = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.position.location?.type === LocationType.Army)
   return (
     <>

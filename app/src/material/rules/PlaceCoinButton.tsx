@@ -8,11 +8,11 @@ import { Tavern } from "@gamepark/nidavellir/material/Tavern";
 import { PlayerBoardSpace } from "@gamepark/nidavellir/material/PlayerBoardSpace";
 
 
-type ColumnButtonProps = {
+type PlaceCoinButtonProps = {
   move: MoveItem
 } & MaterialRulesProps
 
-export const  PlaceCoinButton = (props: ColumnButtonProps) => {
+export const  PlaceCoinButton = (props: PlaceCoinButtonProps) => {
   const { t } = useTranslation()
   const { move, closeDialog } = props;
   const icon = getSpaceIcon(move)

@@ -2,13 +2,13 @@ import { MaterialType } from '../../material/MaterialType'
 import { LocationType } from '../../material/LocationType'
 import { dwarfTypes } from '../../cards/DwarfDescription'
 import { Card } from '../../cards/Cards'
-import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule, RuleMove, RuleStep } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
 import PlayerTurn from '../helpers/PlayerTurn'
 import Army from '../helpers/Army'
 
 export class ThrudRules extends PlayerTurnRule {
 
-  onRuleStart<RuleId extends number>(_move: RuleMove<number, RuleId>, _previousRule?: RuleStep): MaterialMove<number, number, number>[] {
+  onRuleStart(): MaterialMove[] {
     return new Army(this.game, this.player)
       .getCard(Card.Thrud)
       .moveItems({ location: { type: LocationType.Hand, player: this.player } })
