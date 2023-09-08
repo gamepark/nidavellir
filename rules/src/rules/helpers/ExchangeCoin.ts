@@ -37,7 +37,7 @@ export class ExchangeCoin extends MaterialRulesPart {
     if (higherCoins.length) {
       return treasure.index(higherCoins[0])
     } else {
-      return treasure.index(lowerCoins[0])
+      return treasure.index(lowerCoins[lowerCoins.length - 1])
     }
   }
 
