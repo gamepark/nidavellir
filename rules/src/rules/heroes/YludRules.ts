@@ -5,6 +5,7 @@ import { LocationType } from "../../material/LocationType";
 import { dwarfTypes } from "../../cards/DwarfDescription";
 import PlayerTurn from "../helpers/PlayerTurn";
 import { EffectRule } from "../effect/EffectRule";
+import { Memory } from '../Memory'
 
 export class YludRules extends EffectRule {
 
@@ -15,6 +16,7 @@ export class YludRules extends EffectRule {
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move)) return []
+    this.memorize(Memory.YludPlayed, true)
     return new PlayerTurn(this.game, this.player).onChooseCard(move)
   }
 

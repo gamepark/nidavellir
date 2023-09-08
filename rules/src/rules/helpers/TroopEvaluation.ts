@@ -20,6 +20,8 @@ export class TroopEvaluation extends MaterialRulesPart {
       if (Distinction.PioneerOfTheKingdom === d) return [this.rules().startRule(DistinctionRuleId[d])]
     }
 
+    this.forget(Memory.EndOfAge)
+    this.forget(Memory.YludPlayed)
     return [this.rules().startRule(RuleId.EnterDwarves)]
   }
 

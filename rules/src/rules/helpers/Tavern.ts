@@ -13,6 +13,7 @@ export class Tavern extends MaterialRulesPart {
   get end(): MaterialMove[] {
     const moves: MaterialMove[] = this.discardTavernMoves
     if (this.isEndOfAge) {
+      this.memorize(Memory.EndOfAge, true)
       const startYlud = this.startYlud
       if (startYlud.length) {
         moves.push(...startYlud)
@@ -26,6 +27,7 @@ export class Tavern extends MaterialRulesPart {
           return thrud
         }
 
+        this.forget(Memory.EndOfAge)
         moves.push(this.rules().endGame())
         return moves
       }
@@ -59,6 +61,7 @@ export class Tavern extends MaterialRulesPart {
   }
 
   get startYlud() {
+    if(this.game.rule?.id === RuleId.Ylud || this.remind(Memory.YludPlayed)) return []
     const ylud = this
       .material(MaterialType.Card)
       .id((id: Record<string, any>) => id.front === Card.Ylud)

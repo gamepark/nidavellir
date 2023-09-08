@@ -74,11 +74,15 @@ export default class PlayerTurn extends MaterialRulesPart {
   }
 
   get goToTradeCoin() {
-    if (this.isTradeCoin || this.isYlud) return []
+    if (this.isTradeCoin || this.isEndOfAge) return []
     const coin = this.tavernCoin
     if (!isExchangeCoin(coin)) return []
 
     return [this.rules().startPlayerTurn(RuleId.TradeCoin, this.player)]
+  }
+
+  get isEndOfAge() {
+    return this.remind(Memory.EndOfAge)
   }
 
   get isTradeCoin() {

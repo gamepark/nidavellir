@@ -15,6 +15,8 @@ export enum Memory {
   TransformedCoinItemPosition,
   Dagda,
   Effect,
+  EndOfAge,
+    YludPlayed
 }
 
 export type PreviousRule = RuleStep
