@@ -1,15 +1,15 @@
-import { Material, MaterialGame, MaterialItem, MaterialRulesPart } from "@gamepark/rules-api"
-import orderBy from "lodash/orderBy";
-import { MaterialType } from "../../material/MaterialType";
-import { DiscardedCoin, Memory } from "../Memory";
-import { Coins } from "../../coins/Coins";
-import { LocationType } from "../../material/LocationType";
-import { PlayerId } from "../../player/Player";
+import { Material, MaterialGame, MaterialItem, MaterialRulesPart } from '@gamepark/rules-api'
+import orderBy from 'lodash/orderBy'
+import { MaterialType } from '../../material/MaterialType'
+import { DiscardedCoin, Memory } from '../Memory'
+import { Coins } from '../../coins/Coins'
+import { LocationType } from '../../material/LocationType'
+import { PlayerId } from '../../player/Player'
 
 export class TurnOrder extends MaterialRulesPart {
 
   constructor(game: MaterialGame, readonly player?: PlayerId) {
-    super(game);
+    super(game)
   }
 
 
@@ -36,18 +36,18 @@ export class TurnOrder extends MaterialRulesPart {
       coins.getItems(),
       [
         (c) => this.getCoinValue(c),
-        (c) => this.material(MaterialType.Gem).player(c.location.player).getItem()!.id
+        (c) => this.material(MaterialType.Gem).player(c.location.player).getItem()!.id,
       ],
-      ['desc', 'desc']
+      ['desc', 'desc'],
     )
 
     return orderedCoins.map((c) => c.location.player!)
   }
 
-  getCoinValue (coin: MaterialItem) {
+  getCoinValue(coin: MaterialItem) {
     const discardedCoin = this.remind<DiscardedCoin>(Memory.DiscardedCoin, coin.location.player)
     if (!discardedCoin || discardedCoin.tavern !== this.tavern) return Coins[coin.id].value
-    const item = this.material(MaterialType.Coin).index(discardedCoin.index).getItem()!
+    const item = this.material(MaterialType.Coin).getItem(discardedCoin.index)!
     return Coins[item.id].value
   }
 
@@ -57,6 +57,7 @@ export class TurnOrder extends MaterialRulesPart {
       .material(MaterialType.Coin)
       .location((location) => location.type === LocationType.PlayerBoard && location.id === tavern)
   }
+
   get tavern() {
     return this.remind(Memory.Tavern)
   }

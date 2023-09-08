@@ -24,7 +24,7 @@ export default class PlayerTurn extends MaterialRulesPart {
   }
 
   get endOfTurnMoves(): MaterialMove[] {
-    const turnOrder = new TurnOrder(this.game, this.player  )
+    const turnOrder = new TurnOrder(this.game, this.player)
     if (!turnOrder.isLastPlayer) return [this.rules().startPlayerTurn(RuleId.ChooseCard, turnOrder.nextPlayer)]
 
     if (this.game.rule?.id !== RuleId.GemTrade && new Trade(this.game).exists) {

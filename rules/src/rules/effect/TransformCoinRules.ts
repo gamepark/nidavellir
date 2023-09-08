@@ -37,19 +37,23 @@ export class TransformCoinRules extends EffectRule {
   }
 
   afterItemMove(move: ItemMove) {
-    if (isMoveItemType(MaterialType.Coin)(move) && move.position.location?.type !== LocationType.Hand && move.position.location?.type !== LocationType.PlayerBoard) {
-      const position = this.transformedCoinPosition
-      this.forget(Memory.TransformedCoinItemPosition)
-      const moves: MaterialMove[] = new ExchangeCoin(this.game, this.material(MaterialType.Coin).index(move.itemIndex), this.additionalValue)
-        .treasureCoin
-        .moveItems(position)
+    if (isMoveItemType(MaterialType.Coin)(move)) {
 
-      if (position.location.type === LocationType.Hand) {
-        moves.push(this.material(MaterialType.Coin).player(position.location.player).location(LocationType.Hand).shuffle())
+      if (move.position.location?.type !== LocationType.Hand && move.position.location?.type !== LocationType.PlayerBoard) {
+        const position = this.transformedCoinPosition
+        this.forget(Memory.TransformedCoinItemPosition)
+        const moves: MaterialMove[] = new ExchangeCoin(this.game, this.material(MaterialType.Coin).index(move.itemIndex), this.additionalValue)
+          .treasureCoin
+          .moveItems(position)
+
+        if (position.location.type === LocationType.Hand) {
+          moves.push(this.material(MaterialType.Coin).player(position.location.player).location(LocationType.Hand).shuffle())
+        }
+
+        return moves
       }
 
-      moves.push(...this.end)
-      return moves
+      return this.end;
     }
 
     return []

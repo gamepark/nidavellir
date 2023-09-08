@@ -13,7 +13,7 @@ export class ArmyLocatorDescription extends LocationDescription {
   alwaysVisible = true
 
   getLocations({ rules: { players } }: MaterialContext): Location[] {
-    return players.flatMap((player) => dwarfTypes.map((type) => ({ type: LocationType.Army, id: type,  player })))
+    return players.flatMap((player) => dwarfTypes.map((type) => ({ type: LocationType.Army, id: type, player })))
   }
 
   getCoordinates(location: Location, context: MaterialContext): Coordinates {

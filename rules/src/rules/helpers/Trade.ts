@@ -1,4 +1,4 @@
-import { MaterialRulesPart } from "@gamepark/rules-api";
+import { MaterialItem, MaterialRulesPart } from '@gamepark/rules-api'
 import { MaterialType } from "../../material/MaterialType";
 import groupBy from "lodash/groupBy";
 import pickBy from "lodash/pickBy";
@@ -34,17 +34,18 @@ export class Trade extends MaterialRulesPart {
     // Group coins by values (to see tie)
     const coinsByValue = groupBy(tavernCoins, (index) => {
       const item = this.material(MaterialType.Coin).getItem(index)!
-      const discardedCoin = this.remind<DiscardedCoin>(Memory.DiscardedCoin, item.location.player)
-      if (!discardedCoin || discardedCoin.tavern !== this.tavern) return this.getCoinValue(index)
-      return this.getCoinValue(discardedCoin.index)
+      return this.getCoinValue(item)
     })
 
     // Omit coin value with only one coin
     return pickBy(coinsByValue, (c) => c.length > 1)
   }
 
-  getCoinValue (index: number) {
-    const item = this.material(MaterialType.Coin).index(index).getItem()!
+
+  getCoinValue(coin: MaterialItem) {
+    const discardedCoin = this.remind<DiscardedCoin>(Memory.DiscardedCoin, coin.location.player)
+    if (!discardedCoin || discardedCoin.tavern !== this.tavern) return Coins[coin.id].value
+    const item = this.material(MaterialType.Coin).index(discardedCoin.index).getItem()!
     return Coins[item.id].value
   }
 }
