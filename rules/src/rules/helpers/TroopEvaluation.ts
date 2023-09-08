@@ -14,10 +14,10 @@ export class TroopEvaluation extends MaterialRulesPart {
     this.forget(Memory.PreviousRule)
     const remainingDistinctions = distinctions.slice(distinctions.indexOf(this.distinction) + 1)
     for (const d of remainingDistinctions) {
+      if (d === Distinction.PioneerOfTheKingdom) return [this.rules().startRule(DistinctionRuleId[d])]
       const description = Distinctions[d]
       const playerWithMajority = this.getPlayerWithMajority(description.majorityOf)
       if (playerWithMajority) return [this.rules().startPlayerTurn(DistinctionRuleId[d], playerWithMajority)]
-      if (Distinction.PioneerOfTheKingdom === d) return [this.rules().startRule(DistinctionRuleId[d])]
     }
 
     this.forget(Memory.EndOfAge)

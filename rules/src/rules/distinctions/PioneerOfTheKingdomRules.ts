@@ -3,13 +3,15 @@ import { isMoveItemType, ItemMove, MaterialMove, RuleMove } from "@gamepark/rule
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
 import PlayerTurn from "../helpers/PlayerTurn";
+import { PioneerOfTheKingdom } from '../../cards/Distinctions'
 
 
 class PioneerOfTheKingdomRules extends DistinctionRules {
 
   isTurnToPlay(playerId: number): boolean {
-    if (!this.player) return false;
-    return playerId === this.player
+    const player = this.player
+    if (!player) return false;
+    return playerId === player
   }
 
   onRuleStart(move: RuleMove): MaterialMove[] {
@@ -36,6 +38,10 @@ class PioneerOfTheKingdomRules extends DistinctionRules {
     }
 
     return moves;
+  }
+
+  get player() {
+    return this.getPlayerWithMajority(PioneerOfTheKingdom.majorityOf)
   }
 
   getLegalMoves(playerId: number): MaterialMove[] {
