@@ -1,85 +1,22 @@
-import { MaterialMove, MaterialRulesPart } from "@gamepark/rules-api";
-import { Memory } from "../Memory";
-import { RuleId } from "../RuleId";
-import { MaterialType } from "../../material/MaterialType";
-import { LocationType } from "../../material/LocationType";
-import { TroopEvaluation } from "./TroopEvaluation";
-import { Card } from "../../cards/Cards";
-import { PlayerBoardSpace } from "../../material/PlayerBoardSpace";
+import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
+import { Memory } from '../Memory'
+import { RuleId } from '../RuleId'
+import { MaterialType } from '../../material/MaterialType'
+import { LocationType } from '../../material/LocationType'
+import { PlayerBoardSpace } from '../../material/PlayerBoardSpace'
 
 export const MIN_DWARVES_PER_TAVERN = 3;
 export class Tavern extends MaterialRulesPart {
 
   get end(): MaterialMove[] {
-    const moves: MaterialMove[] = this.discardTavernMoves
     if (this.isEndOfAge) {
-      this.memorize(Memory.EndOfAge, true)
-      const startYlud = this.startYlud
-      if (startYlud.length) {
-        moves.push(...startYlud)
-        return moves
-      }
-
-      if (this.age === 2) {
-        const thrud = this.moveThrudInCommandZone
-        if (thrud.length) {
-          moves.push(...thrud)
-          return thrud
-        }
-
-        this.forget(Memory.EndOfAge)
-        moves.push(this.rules().endGame())
-        return moves
-      }
-
-      moves.push(...new TroopEvaluation(this.game).startEvaluation)
-      return moves
+      return [this.rules().startRule(RuleId.EndOfAge)]
     }
-
-    for (const p of this.game.players) {
-      this.forget(Memory.DiscardedCoin, p)
-    }
-
 
     if (this.tavern < PlayerBoardSpace.ShiningHorse) {
-      moves.push(this.rules().startRule(RuleId.BidRevelation))
-    } else {
-      moves.push(this.rules().startRule(RuleId.EnterDwarves))
+      return [this.rules().startRule(RuleId.BidRevelation)]
     }
-
-    return moves
-  }
-
-  get discardTavernMoves () {
-    const cards = this
-      .material(MaterialType.Card)
-      .location(LocationType.Tavern)
-      .locationId(this.tavern)
-    if (!cards.length) return []
-
-    return cards.moveItems({ location: { type: LocationType.Discard }})
-  }
-
-  get startYlud() {
-    if(this.game.rule?.id === RuleId.Ylud || this.remind(Memory.YludPlayed)) return []
-    const ylud = this
-      .material(MaterialType.Card)
-      .id((id: Record<string, any>) => id.front === Card.Ylud)
-      .player((player) => player !== undefined)
-      .getItem()
-
-    if (ylud) return [this.rules().startPlayerTurn(RuleId.Ylud, ylud.location.player!)]
-    return []
-  }
-
-  get moveThrudInCommandZone() {
-    const thrud = this
-      .material(MaterialType.Card)
-      .id((id: Record<string, any>) => id.front === Card.Thrud)
-      .player((player) => player !== undefined)
-
-    if (!thrud.length || thrud.location(LocationType.CommandZone).length) return []
-    return thrud.moveItems((item) => ({ location: { type: LocationType.CommandZone, player: item.location.player }}))
+    return [this.rules().startRule(RuleId.EnterDwarves)]
   }
 
   get isEndOfAge() {

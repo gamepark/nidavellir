@@ -47,4 +47,7 @@ const RulesHeaders: Record<RuleId, () => ReactJSXElement> = {
   [RuleId.Thrud]: () => <p></p>,
   [RuleId.Uline]: () => <p></p>,
   [RuleId.Ylud]: () => <p></p>,
+  [RuleId.EndOfTurn]: () => <p></p>,
+  [RuleId.EndOfAge]: () => <p></p>,
+  [RuleId.DrawCard]: () => <p></p>
 }

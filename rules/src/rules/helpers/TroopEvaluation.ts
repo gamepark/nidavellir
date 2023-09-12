@@ -11,7 +11,6 @@ import { Memory } from "../Memory";
 export class TroopEvaluation extends MaterialRulesPart {
 
   get endDistinction(): MaterialMove[] {
-    this.forget(Memory.PreviousRule)
     const remainingDistinctions = distinctions.slice(distinctions.indexOf(this.distinction) + 1)
     for (const d of remainingDistinctions) {
       if (d === Distinction.PioneerOfTheKingdom) return [this.rules().startRule(DistinctionRuleId[d])]
@@ -20,7 +19,6 @@ export class TroopEvaluation extends MaterialRulesPart {
       if (playerWithMajority) return [this.rules().startPlayerTurn(DistinctionRuleId[d], playerWithMajority)]
     }
 
-    this.forget(Memory.EndOfAge)
     this.forget(Memory.YludPlayed)
     return [this.rules().startRule(RuleId.EnterDwarves)]
   }

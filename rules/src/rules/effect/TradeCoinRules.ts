@@ -81,7 +81,6 @@ export class TradeCoinRules extends EffectRule {
     moves.push(newCoins.shuffle())
     moves.push(...this.end)
     return moves
-
   }
 
   get pouch() {

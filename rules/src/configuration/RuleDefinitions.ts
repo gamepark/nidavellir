@@ -20,6 +20,9 @@ import { GridRules } from "../rules/heroes/GridRules";
 import { ThrudRules } from "../rules/heroes/ThrudRules";
 import { UlineRules } from "../rules/heroes/UlineRules";
 import { YludRules } from "../rules/heroes/YludRules";
+import { EndOfTurnRules } from '../rules/EndOfTurnRules'
+import { EndOfAgeRules } from '../rules/EndOfAgeRules'
+import { DrawCardsRules } from '../rules/DrawCardsRules'
 
 
 export const rules: Record<RuleId, MaterialRulesPartCreator> = {
@@ -42,5 +45,8 @@ export const rules: Record<RuleId, MaterialRulesPartCreator> = {
     [RuleId.Grid]: GridRules,
     [RuleId.Thrud]: ThrudRules,
     [RuleId.Uline]: UlineRules,
-    [RuleId.Ylud]: YludRules
+    [RuleId.Ylud]: YludRules,
+    [RuleId.EndOfTurn]: EndOfTurnRules,
+    [RuleId.EndOfAge]: EndOfAgeRules,
+    [RuleId.DrawCard]: DrawCardsRules
 }

@@ -13,6 +13,7 @@ export enum RuleId {
   KingsGreatArmorer,
   PioneerOfTheKingdom,
   GemTrade,
+  EndOfTurn,
 
   // Heroes
   Bonfur,
@@ -20,5 +21,7 @@ export enum RuleId {
   Grid,
   Thrud,
   Uline,
-  Ylud
+  Ylud,
+  EndOfAge,
+  DrawCard
 }

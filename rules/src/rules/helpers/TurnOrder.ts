@@ -5,13 +5,13 @@ import { DiscardedCoin, Memory } from '../Memory'
 import { Coins } from '../../coins/Coins'
 import { LocationType } from '../../material/LocationType'
 import { PlayerId } from '../../player/Player'
+import { RuleId } from '../RuleId'
 
 export class TurnOrder extends MaterialRulesPart {
 
   constructor(game: MaterialGame, readonly player?: PlayerId) {
     super(game)
   }
-
 
   get nextPlayer(): number {
     const turnOrder = this.turnOrder
@@ -42,6 +42,10 @@ export class TurnOrder extends MaterialRulesPart {
     )
 
     return orderedCoins.map((c) => c.location.player!)
+  }
+
+  get goToNextPlayerMoves() {
+    return [this.rules().startPlayerTurn(RuleId.ChooseCard, this.nextPlayer)]
   }
 
   getCoinValue(coin: MaterialItem) {

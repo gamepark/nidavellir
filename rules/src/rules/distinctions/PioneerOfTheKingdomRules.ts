@@ -1,43 +1,39 @@
 import { DistinctionRules } from "./DistinctionRules";
-import { isMoveItemType, ItemMove, MaterialMove, RuleMove } from "@gamepark/rules-api";
+import { isMoveItemType, ItemMove, MaterialMove, RuleMove, RuleStep } from '@gamepark/rules-api'
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
 import PlayerTurn from "../helpers/PlayerTurn";
 import { PioneerOfTheKingdom } from '../../cards/Distinctions'
+import { RuleId } from '../RuleId'
+import { DrawCard, Memory } from '../Memory'
 
 
 class PioneerOfTheKingdomRules extends DistinctionRules {
 
-  isTurnToPlay(playerId: number): boolean {
-    const player = this.player
-    if (!player) return false;
-    return playerId === player
-  }
-
-  onRuleStart(move: RuleMove): MaterialMove[] {
-    const moves = super.onRuleStart(move);
-
-    const player = this.player
-    const ageCards = this.ageDeck
-      .sort(card => -card.location.x!)
-    if (!player) {
-      moves.push(
-        ...ageCards
-          .limit(1)
-          .moveItems({ location: { type: LocationType.Discard } })
-      )
-      moves.push(...this.endDistinction)
-    } else {
-      // In case player trigger recruitment or royal offering
-      if (this.cardsInHand?.length) return []
-      moves.push(
-        ...ageCards
-          .limit(3)
-          .moveItems({ location: { type: LocationType.Hand, player } })
-      )
+  onRuleStart(move: RuleMove, previousRule?: RuleStep): MaterialMove[] {
+    if (previousRule && !this.distinction) {
+      return this.endDistinction
     }
 
-    return moves;
+    const moves = super.onRuleStart(move)
+
+    const player = this.player
+    if (player) {
+      this.memorize<DrawCard>(Memory.DrawCard, { draw: 3, keep: 1, age: 2 })
+      return [this.rules().startPlayerTurn(RuleId.ChooseCard, player)]
+    }
+
+    const ageCards = this.ageDeck
+      .sort(card => -card.location.x!)
+
+    moves.push(
+      ...ageCards
+        .limit(1)
+        .moveItems({ location: { type: LocationType.Discard } }),
+    )
+    moves.push(...this.endDistinction)
+
+    return moves
   }
 
   get player() {
@@ -70,7 +66,7 @@ class PioneerOfTheKingdomRules extends DistinctionRules {
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move) || move.position.location?.type === LocationType.Hand) return []
     const player = this.player
-    if (!player) return this.endDistinction
+    if (!player) return []
 
     const moves = []
     if (move.position.location?.type === LocationType.Army) {

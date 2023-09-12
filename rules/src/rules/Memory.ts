@@ -10,16 +10,16 @@ export enum Memory {
   Age,
   Round,
   Trade,
-  Distinction,
   TransformBonus,
   TransformedCoinItemPosition,
   Dagda,
   Effect,
-  EndOfAge,
-    YludPlayed
+  YludPlayed,
+  DrawCard,
 }
 
 export type PreviousRule = RuleStep
+export type DrawCardPreviousRule = PreviousRule
 
 export type DiscardedCoin = {
   tavern: number
@@ -31,4 +31,10 @@ export type Effect = RuleId
 export type Dagda = {
   index: number;
   type: DwarfType
+}
+
+export type DrawCard = {
+  draw: number
+  keep: number,
+  age: number
 }

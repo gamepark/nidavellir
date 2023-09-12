@@ -7,6 +7,7 @@ import { DiscardedCoin, Memory } from "../Memory";
 import { Coins } from "../../coins/Coins";
 import isEmpty from "lodash/isEmpty";
 import { Gem } from "../../material/Gem";
+import { RuleId } from '../RuleId'
 
 export class Trade extends MaterialRulesPart {
   get tavern() {
@@ -41,6 +42,9 @@ export class Trade extends MaterialRulesPart {
     return pickBy(coinsByValue, (c) => c.length > 1)
   }
 
+  get goToGemExchangeMoves() {
+    return [this.rules().startRule(RuleId.GemTrade)]
+  }
 
   getCoinValue(coin: MaterialItem) {
     const discardedCoin = this.remind<DiscardedCoin>(Memory.DiscardedCoin, coin.location.player)

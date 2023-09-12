@@ -1,16 +1,15 @@
-import { isMoveItemType, Location, MaterialGame, MaterialItem, MaterialMove, MaterialRulesPart, MoveItem } from "@gamepark/rules-api";
-import { DiscardedCoin, Effect, Memory, PreviousRule } from "../Memory";
-import { MaterialType } from "../../material/MaterialType";
-import { LocationType } from "../../material/LocationType";
-import { PlayerId } from "../../player/Player";
-import { RuleId } from "../RuleId";
-import { isExchangeCoin } from "../../utils/coin.utils";
-import { Trade } from "./Trade";
-import { Tavern } from "./Tavern";
-import { Card, Cards, HeroesEffects, isDwarfDescription, isHero, isHeroDescription, isRoyalOfferingDescription } from "../../cards/Cards";
-import { DwarfType, dwarfTypes } from "../../cards/DwarfType";
-import Army from "./Army";
-import { TurnOrder } from "./TurnOrder";
+import { isMoveItemType, Location, MaterialGame, MaterialItem, MaterialMove, MaterialRulesPart, MoveItem } from '@gamepark/rules-api'
+import { Effect, Memory, PreviousRule } from '../Memory'
+import { MaterialType } from '../../material/MaterialType'
+import { LocationType } from '../../material/LocationType'
+import { PlayerId } from '../../player/Player'
+import { RuleId } from '../RuleId'
+import { Trade } from './Trade'
+import { Tavern } from './Tavern'
+import { Card, Cards, HeroesEffects, isDwarfDescription, isHero, isHeroDescription, isRoyalOfferingDescription } from '../../cards/Cards'
+import { DwarfType, dwarfTypes } from '../../cards/DwarfType'
+import Army from './Army'
+import { TurnOrder } from './TurnOrder'
 import { getTypes } from '../../cards/DwarfDescription'
 
 export default class PlayerTurn extends MaterialRulesPart {
@@ -25,13 +24,27 @@ export default class PlayerTurn extends MaterialRulesPart {
 
   get endOfTurnMoves(): MaterialMove[] {
     const turnOrder = new TurnOrder(this.game, this.player)
-    if (!turnOrder.isLastPlayer) return [this.rules().startPlayerTurn(RuleId.ChooseCard, turnOrder.nextPlayer)]
+    if (!turnOrder.isLastPlayer) return turnOrder.goToNextPlayerMoves
 
-    if (this.game.rule?.id !== RuleId.GemTrade && new Trade(this.game).exists) {
-      return [this.rules().startRule(RuleId.GemTrade)]
+    const moves: MaterialMove[] = this.discardTavernMoves
+    const trade = new Trade(this.game)
+    if (this.game.rule?.id !== RuleId.GemTrade && trade.exists) {
+      moves.push(...trade.goToGemExchangeMoves)
+      return moves
     }
 
-    return new Tavern(this.game).end
+    moves.push(...new Tavern(this.game).end)
+    return moves
+  }
+
+  get discardTavernMoves () {
+    const cards = this
+      .material(MaterialType.Card)
+      .location(LocationType.Tavern)
+      .locationId(this.tavern)
+    if (!cards.length) return []
+
+    return cards.moveItems({ location: { type: LocationType.Discard }})
   }
 
   get effect() {
@@ -56,44 +69,7 @@ export default class PlayerTurn extends MaterialRulesPart {
     return this.remind(Memory.Tavern)
   }
 
-  get tavernCoin() {
-    const tavern = this.tavern
-    const coins = this.material(MaterialType.Coin);
-    const coin = coins
-      .location((location: Location) => location.type === LocationType.PlayerBoard)
-      .locationId(tavern)
-      .player(this.player)
-      .getItem()
-
-    const discardedCoin = this.remind<DiscardedCoin>(Memory.DiscardedCoin, this.player)
-    if (!coin && discardedCoin?.tavern === tavern) {
-      return coins.index(discardedCoin.index).getItem()!
-    }
-
-    return coin!
-  }
-
-  get goToTradeCoin() {
-    if (this.isTradeCoin || this.isEndOfAge) return []
-    const coin = this.tavernCoin
-    if (!isExchangeCoin(coin)) return []
-
-    return [this.rules().startPlayerTurn(RuleId.TradeCoin, this.player)]
-  }
-
-  get isEndOfAge() {
-    return this.remind(Memory.EndOfAge)
-  }
-
-  get isTradeCoin() {
-    return this.game.rule!.id === RuleId.TradeCoin
-  }
-
-  get isYlud() {
-    return this.game.rule?.id === RuleId.Ylud
-  }
-
-  get goToNextRules() {
+  get nextRules() {
     const moves = []
     const goToRecruitment = this.goToRecruitment
     if (goToRecruitment.length) {
@@ -112,14 +88,7 @@ export default class PlayerTurn extends MaterialRulesPart {
       return moves;
     }
 
-    const goToTradeCoin = this.goToTradeCoin
-    if (goToTradeCoin.length) {
-      moves.push(...goToTradeCoin)
-      return moves;
-    }
-
-    moves.push(...this.endOfTurnMoves)
-    return moves;
+    return [this.rules().startPlayerTurn(RuleId.EndOfTurn, this.player)];
   }
 
   get moveToPreviousRule() {
@@ -140,6 +109,7 @@ export default class PlayerTurn extends MaterialRulesPart {
 
   onChooseCard(move: MoveItem) {
     const movedItem = this.material(MaterialType.Card).getItem(move.itemIndex)!
+
     if (this.game.players.length === 2
       && !this.material(MaterialType.Card).location(LocationType.Tavern).locationId(this.tavern).length
     && move.position.location?.type === LocationType.Discard) return []
@@ -153,7 +123,7 @@ export default class PlayerTurn extends MaterialRulesPart {
       return thrudMoves;
     }
 
-    return this.goToNextRules
+    return this.nextRules
   }
 
   applyEffect (item: MaterialItem) {
