@@ -1,80 +1,52 @@
-export class PlayerPanelTaverns {}
-// /** @jsxImportSource @emotion/react */
-// import {css, keyframes} from '@emotion/react'
-// import {FC, Fragment, useMemo} from 'react'
-// import {Tavern} from '../../material/tavern/Tavern'
-// import {CoinToken} from '../../material/coin/CoinToken'
-// import keyBy from 'lodash/keyBy'
-// import {getCoinOnPlayerBoard, isOnPlayerBoard} from '@gamepark/nidavellir/utils/location.utils'
-// import {OnPlayerBoard} from '@gamepark/nidavellir/state/CommonLocations'
-// import GameView from '@gamepark/nidavellir/state/view/GameView'
-// import {Player} from '@gamepark/nidavellir/state/Player'
-//
-// type PlayerPanelTavernsProps = {
-//   game: GameView;
-//   player: Player;
-// };
-//
-// const PlayerPanelTaverns: FC<PlayerPanelTavernsProps> = (props) => {
-//   const {game, player} = props
-//   const coins = useMemo(
-//     () =>
-//       keyBy(
-//         getCoinOnPlayerBoard(game, player.id).filter((c) => isOnPlayerBoard(c.location) && (c.location.index || 0) < 3),
-//         (c) => (c.location as OnPlayerBoard).index ?? 0
-//       ),
-//     [game.coins]
-//   )
-//
-//   return (
-//     <div>
-//       {[0, 1, 2].map((index) => {
-//         return (
-//           <Fragment key={index}>
-//             <Tavern tavern={index} css={tavern(index)}/>
-//             {!!coins[index] && (
-//               <div css={tokenContainer(index)}>
-//                 <CoinToken coin={coins[index]} css={tokenInPanel}/>
-//               </div>
-//             )}
-//           </Fragment>
-//         )
-//       })}
-//     </div>
-//   )
-// }
-//
-// const tavern = (index: number) => css`
-//   position: absolute;
-//   top: 7.2em;
-//   left: ${index * 8.5 + 0.5}em;
-//   height: 7em;
-//   width: 7em;
-// `
-//
-// const tokenInPanel = css`
-//   height: 5em;
-//   width: 5em;
-//   pointer-events: none;
-// `
-//
-// const animateBid = keyframes`
-//   from {
-//     opacity: 0;
-//   }
-//   to {
-//     opacity: 1;
-//   }
-// `
-//
-// const tokenContainer = (index: number) => css`
-//   z-index: 10;
-//   position: absolute;
-//   top: 10em;
-//   left: ${index * 8.5 + 3.5}em;
-//   height: 6em;
-//   width: 6em;
-//   animation: ${animateBid} 1s ease-in-out forwards;
-// `
-//
-// export {PlayerPanelTaverns}
+import { useRules } from '@gamepark/react-game/dist/hooks/useRules'
+/** @jsxImportSource @emotion/react */
+import { css } from '@emotion/react'
+import { FC, Fragment, useMemo } from 'react'
+import { Player } from '@gamepark/react-client'
+import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
+import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
+import { LocationType } from '@gamepark/nidavellir/material/LocationType'
+import { PlayerBoardSpace } from '@gamepark/nidavellir/material/PlayerBoardSpace'
+import { MaterialComponent } from '@gamepark/react-game/dist/components/material/MaterialComponent'
+import { Tavern, taverns } from '@gamepark/nidavellir/material/Tavern'
+import { PlayerPanelTavernIcon } from './PlayerPanelTavernIcon'
+
+type PlayerPanelTavernsProps = {
+  player: Player;
+};
+
+const PlayerPanelTaverns: FC<PlayerPanelTavernsProps> = (props) => {
+  const {player} = props
+  const rules = useRules<NidavellirRules>()!
+  const coins = useMemo(() => rules.material(MaterialType.Coin).location((location) => location.type === LocationType.PlayerBoard && location.player === player.id &&  location.id < PlayerBoardSpace.Pouch1), [rules.game])
+  const getTavernCoin = (tavern: Tavern) => coins.filter((item) => item.location.id === tavern)
+
+  return (
+    <div>
+      {taverns.map((tavern, index) => {
+        return (
+          <Fragment key={tavern}>
+            <PlayerPanelTavernIcon tavern={tavern} />
+            {!!getTavernCoin(tavern) && (
+              <div css={tokenContainer(index)}>
+                <MaterialComponent css={mini} type={MaterialType.Coin} itemId={getTavernCoin(tavern).getItem()!.id}/>
+              </div>
+            )}
+          </Fragment>
+        )
+      })}
+    </div>
+  )
+}
+
+const mini = css`
+  font-size: 1em;
+`
+
+const tokenContainer = (tavern: Tavern) => css`
+  position: absolute;
+  top: 8.8em;
+  left: ${(tavern - 1) * 9 + 12}em;
+`
+
+export {PlayerPanelTaverns}

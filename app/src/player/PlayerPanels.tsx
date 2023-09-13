@@ -1,7 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import { PlayerPanel, usePlayerId, usePlayers } from "@gamepark/react-game";
-import { FC } from "react";
-import { css } from "@emotion/react";
+import { usePlayerId, usePlayers } from '@gamepark/react-game'
+import { FC } from 'react'
+import { css } from '@emotion/react'
+import { NidavellirPlayerPanel } from './panel/NidavellirPlayerPanel'
 
 export const PlayerPanels: FC = () => {
   const players = usePlayers({ sortFromMe: true })
@@ -9,7 +10,7 @@ export const PlayerPanels: FC = () => {
   return (
     <>
       {players.map((player, index) =>
-        <PlayerPanel key={player.id} playerId={player.id} css={panelPosition(index, players.length, isSpectator)} />
+        <NidavellirPlayerPanel key={player.id} player={player} css={panelPosition(index, players.length, isSpectator)} />
       )}
     </>
   )
