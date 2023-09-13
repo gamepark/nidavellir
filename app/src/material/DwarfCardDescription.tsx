@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import { Card, CardDeck } from "@gamepark/nidavellir/cards/Cards";
-import Images from "../images/Images";
-import { CardDescription } from "@gamepark/react-game";
-import { DwarfCardRules } from "./rules/DwarfCardRules";
+import { Card, CardDeck } from '@gamepark/nidavellir/cards/Cards'
+import Images from '../images/Images'
+import { CardDescription } from '@gamepark/react-game'
+import { DwarfCardRules } from './rules/DwarfCardRules'
 
 export class DwarfCardDescription extends CardDescription {
   width = 5.4
@@ -11,7 +11,8 @@ export class DwarfCardDescription extends CardDescription {
 
   backImages = {
     [CardDeck.Age1]: Images.Age1Back,
-    [CardDeck.Age2]: Images.Age2Back
+    [CardDeck.Age2]: Images.Age2Back,
+    [CardDeck.Hero]: Images.HeroBack
   }
 
   images = {

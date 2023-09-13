@@ -9,7 +9,7 @@ export class HeroDeckLocatorDescription extends LocationDescription {
   width = 46.5
   alwaysVisible = true
   location = { type: LocationType.HeroesDeck }
-  extraCss = css`background: #FAEBD780; border-radius: 0.5em`
+  extraCss = css`background: #FAEBD780; border-radius: 0.5em; pointer-events: none`
   coordinates = { x: 4.2, y: -14, z: 0}
 
   getCoordinates(_location: Location, { rules }: MaterialContext) {

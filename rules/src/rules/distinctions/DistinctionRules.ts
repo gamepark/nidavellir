@@ -9,7 +9,7 @@ export class DistinctionRules extends TroopEvaluation {
     super(game);
   }
 
-  onRuleStart(_move: RuleMove, _previousRule?: RuleStep): MaterialMove[] {
+    onRuleStart(_move: RuleMove, _previousRule?: RuleStep): MaterialMove[] {
     const ruleId = this.ruleId
     if (_previousRule?.id === ruleId) return []
 

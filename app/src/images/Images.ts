@@ -104,6 +104,7 @@ import Thrud from './cards/heroes/Thrud.jpg'
 import Uline from './cards/heroes/Uline.jpg'
 import Ylud from './cards/heroes/Ylud.jpg'
 import Zoral from './cards/heroes/Zoral.jpg'
+import HeroBack from './cards/heroes/back.jpg'
 
 import CrownJeweler from './cards/distinction/CrownJeweler.jpg'
 import HuntingMaster from './cards/distinction/HuntingMaster.jpg'
@@ -278,7 +279,8 @@ const Images = {
   ScoreItemMiner,
   ScoreItemWarrior,
   ScoreItemNeutral,
-  ScoreItemRemaining
+  ScoreItemRemaining,
+  HeroBack
 }
 
 export default Images

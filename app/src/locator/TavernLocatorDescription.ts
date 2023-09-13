@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import { LocationDescription, MaterialContext } from "@gamepark/react-game";
-import { LocationType } from "@gamepark/nidavellir/material/LocationType";
-import { css } from "@emotion/react";
-import { Location } from "@gamepark/rules-api";
-import { Tavern } from "@gamepark/nidavellir/material/Tavern";
-import Images from "../images/Images";
+import { LocationDescription, MaterialContext } from '@gamepark/react-game'
+import { LocationType } from '@gamepark/nidavellir/material/LocationType'
+import { css } from '@emotion/react'
+import { Location } from '@gamepark/rules-api'
+import { Tavern } from '@gamepark/nidavellir/material/Tavern'
+import Images from '../images/Images'
+import { PlayerBoardSpaceRules } from './rules/PlayerBoardSpaceRules'
 
 export class TavernLocatorDescription extends LocationDescription {
   alwaysVisible = true
@@ -82,17 +83,17 @@ export class TavernLocatorDescription extends LocationDescription {
   getEmblemSize(location: Location) {
     switch (location.id) {
       case Tavern.LaughingGoblin:
-        return { height: 8, width: 8 };
+        return { height: 4, width: 4 };
       case Tavern.DancingDragon:
-        return { height: 8, width: 8 };
+        return { height: 4, width: 4 };
       case Tavern.ShiningHorse:
       default:
-        return { height: 8, width: 8 };
+        return { height: 4, width: 4 };
     }
   }
 
   getExtraCss(location: Location<number, number>, _context: MaterialContext<number, number, number>) {
-    if (!location.id) return css`background: #FAEBD780; border-radius: 0.5em`
+    if (!location.id) return css`background: #FAEBD780; border-radius: 0.5em; pointer-events: none`
 
     let image;
     switch (location.id) {
@@ -110,6 +111,22 @@ export class TavernLocatorDescription extends LocationDescription {
     return css`
       background: url(${image}) no-repeat;
       background-size: cover;
+      height: 8em;
+      width: 8em;
     `
   }
+
+  getRulesImage(location: Location) {
+    switch (location.id) {
+      case Tavern.LaughingGoblin:
+        return Images.LaughingGoblin
+      case Tavern.DancingDragon:
+        return Images.DancingDragon
+      case Tavern.ShiningHorse:
+      default:
+        return Images.ShiningHorse
+    }
+  }
+
+  rules = PlayerBoardSpaceRules
 }

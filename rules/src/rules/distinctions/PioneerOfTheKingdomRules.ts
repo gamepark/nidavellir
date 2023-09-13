@@ -1,8 +1,8 @@
-import { DistinctionRules } from "./DistinctionRules";
-import { isMoveItemType, ItemMove, MaterialMove, RuleMove, RuleStep } from '@gamepark/rules-api'
-import { MaterialType } from "../../material/MaterialType";
-import { LocationType } from "../../material/LocationType";
-import PlayerTurn from "../helpers/PlayerTurn";
+import { DistinctionRules } from './DistinctionRules'
+import { isMoveItemType, ItemMove, MaterialMove, RuleMove } from '@gamepark/rules-api'
+import { MaterialType } from '../../material/MaterialType'
+import { LocationType } from '../../material/LocationType'
+import PlayerTurn from '../helpers/PlayerTurn'
 import { PioneerOfTheKingdom } from '../../cards/Distinctions'
 import { RuleId } from '../RuleId'
 import { DrawCard, Memory } from '../Memory'
@@ -10,17 +10,21 @@ import { DrawCard, Memory } from '../Memory'
 
 class PioneerOfTheKingdomRules extends DistinctionRules {
 
-  onRuleStart(move: RuleMove, previousRule?: RuleStep): MaterialMove[] {
-    if (previousRule && !this.distinction) {
-      return this.endDistinction
+  onRuleStart(move: RuleMove): MaterialMove[] {
+    if (this.previousRule && this.previousRule.id === this.ruleId) {
+      const moves =  super.onRuleStart(move);
+      moves.push(...this.endDistinction)
+      return moves
     }
 
     const moves = super.onRuleStart(move)
 
     const player = this.player
     if (player) {
+      this.memorizeRule(player)
       this.memorize<DrawCard>(Memory.DrawCard, { draw: 3, keep: 1, age: 2 })
-      return [this.rules().startPlayerTurn(RuleId.ChooseCard, player)]
+      moves.push(this.rules().startPlayerTurn(RuleId.DrawCard, player))
+      return moves
     }
 
     const ageCards = this.ageDeck

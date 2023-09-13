@@ -9,6 +9,7 @@ export class DrawCardsRules extends EffectRule {
   onRuleStart(): MaterialMove[] {
     const { draw } = this.drawCard
     return this.ageDeck
+      .sort((item) => -item.location.x!)
       .limit(draw)
       .moveItems({ location: { type: LocationType.Hand, player: this.player } })
   }
@@ -35,7 +36,9 @@ export class DrawCardsRules extends EffectRule {
 
 
   afterItemMove(move: ItemMove) {
-    if (!isMoveItemType(MaterialType.Card)(move) || move.position.location?.type === LocationType.Hand) return []
+    if (!isMoveItemType(MaterialType.Card)(move)
+      || move.position.location?.type === LocationType.Hand
+      || move.position.location?.type === this.deck) return []
 
     const moves = []
     if (this.cardsInHand?.length === (this.drawCard.draw - this.drawCard.keep)) {
@@ -65,8 +68,9 @@ export class DrawCardsRules extends EffectRule {
   }
 
   onRuleEnd() {
+    const shuffle = this.ageDeck.shuffle()
     this.forget(Memory.DrawCard)
-    return [this.ageDeck.shuffle()]
+    return [shuffle]
   }
 
   get drawCard() {
