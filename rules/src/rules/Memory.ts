@@ -19,7 +19,6 @@ export enum Memory {
 }
 
 export type PreviousRule = RuleStep
-export type DrawCardPreviousRule = PreviousRule
 
 export type DiscardedCoin = {
   tavern: number

@@ -27,9 +27,9 @@ const PlayerPanelTaverns: FC<PlayerPanelTavernsProps> = (props) => {
         return (
           <Fragment key={tavern}>
             <PlayerPanelTavernIcon tavern={tavern} />
-            {!!getTavernCoin(tavern) && (
+            {!!getTavernCoin(tavern).length && (
               <div css={tokenContainer(index)}>
-                <MaterialComponent css={mini} type={MaterialType.Coin} itemId={getTavernCoin(tavern).getItem()!.id}/>
+                <MaterialComponent css={mini(getTavernCoin(tavern).getItem()?.id)} type={MaterialType.Coin} itemId={getTavernCoin(tavern).getItem()!.id}/>
               </div>
             )}
           </Fragment>
@@ -39,8 +39,9 @@ const PlayerPanelTaverns: FC<PlayerPanelTavernsProps> = (props) => {
   )
 }
 
-const mini = css`
+const mini = (id?: number) => css`
   font-size: 1em;
+  transform: rotateY(${id === undefined? '180deg': '0'});
 `
 
 const tokenContainer = (tavern: Tavern) => css`

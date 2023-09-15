@@ -9,7 +9,11 @@ export abstract class EffectRule extends PlayerTurnRule {
   }
 
   get end() {
-    if (this.remind<Effect>(Memory.Effect) === this.game.rule?.id) this.forget(Memory.Effect)
-    return new PlayerTurn(this.game, this.player).endOfTurnMoves
+    if (this.effect === this.game.rule?.id) this.forget(Memory.Effect)
+    return new PlayerTurn(this.game, this.player).nextRules
+  }
+
+  get effect() {
+    return this.remind<Effect>(Memory.Effect)
   }
 }
