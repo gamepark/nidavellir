@@ -5,18 +5,25 @@ import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
 import translations from './translations.json'
-import { NidavellirSetup } from "@gamepark/nidavellir/NidavellirSetup";
-import { material } from "./material/Material";
-import { Locators } from "./locator/Locators";
-import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
-import { NidavellirAnimations } from "./animation/NidavellirAnimation";
+import { NidavellirSetup } from '@gamepark/nidavellir/NidavellirSetup'
+import { material } from './material/Material'
+import { Locators } from './locator/Locators'
+import { NidavellirAnimations } from './animation/NidavellirAnimation'
+import { Tutorial } from './tutorial/Tutorial'
 
 setupTranslation(translations, { debug: false })
 
 ReactDOM.render(
   <StrictMode>
-    <GameProvider game="nidavellir" GameSetup={NidavellirSetup} Rules={NidavellirRules} optionsSpec={NidavellirOptionsSpec}
-                  material={material as Record<MaterialType, any>} locators={Locators} animations={new NidavellirAnimations()}>
+    <GameProvider game="nidavellir"
+                  GameSetup={NidavellirSetup}
+                  Rules={NidavellirRules}
+                  optionsSpec={NidavellirOptionsSpec}
+                  material={material}
+                  locators={Locators}
+                  tutorial={new Tutorial()}
+                  animations={new NidavellirAnimations()}
+    >
       <App/>
     </GameProvider>
   </StrictMode>,
