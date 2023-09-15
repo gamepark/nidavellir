@@ -8,6 +8,7 @@ import { FC } from 'react'
 import { useLegalMove } from '@gamepark/react-game/dist/hooks/useLegalMoves'
 import { isEndPlayerTurn } from '@gamepark/rules-api/dist/material/moves/rules/EndPlayerTurn'
 import { PlayMoveButton } from '@gamepark/react-game/dist/components/buttons/PlayMoveButton/PlayMoveButton'
+import { UndoButton } from '@gamepark/react-game/dist/components/menus/UndoButton/UndoButton'
 
 export const BidHeader = () => {
   const { t } = useTranslation()
@@ -16,7 +17,7 @@ export const BidHeader = () => {
   const passMove = useLegalMove(isEndPlayerTurn)
 
   if (passMove) {
-    return <Trans defaults="header.bid.pass"><PlayMoveButton auto={15} move={passMove}/></Trans>
+    return <Trans defaults="header.bid.pass"><PlayMoveButton auto={15} move={passMove}/><UndoButton /></Trans>
   }
 
   if (players.length === 1) {

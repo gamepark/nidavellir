@@ -1,14 +1,15 @@
-import { CustomMove, isCustomMoveType, ItemPosition } from "@gamepark/rules-api";
-import { MaterialType } from "../../material/MaterialType";
-import { LocationType } from "../../material/LocationType";
-import maxBy from "lodash/maxBy";
-import { Coins } from "../../coins/Coins";
-import { CoinColor } from "../../coins/CoinDescription";
-import { ExchangeCoin } from "../helpers/ExchangeCoin";
-import { CustomMoveType } from "../../moves/CustomMoveType";
-import { EffectRule } from "./EffectRule";
-import { Card } from "../../cards/Cards";
-import { PlayerBoardSpace } from "../../material/PlayerBoardSpace";
+import { CustomMove, isCustomMoveType, ItemPosition } from '@gamepark/rules-api'
+import { MaterialType } from '../../material/MaterialType'
+import { LocationType } from '../../material/LocationType'
+import maxBy from 'lodash/maxBy'
+import { Coins } from '../../coins/Coins'
+import { CoinColor } from '../../coins/CoinDescription'
+import { ExchangeCoin } from '../helpers/ExchangeCoin'
+import { CustomMoveType } from '../../moves/CustomMoveType'
+import { EffectRule } from './EffectRule'
+import { Card } from '../../cards/Cards'
+import { PlayerBoardSpace } from '../../material/PlayerBoardSpace'
+import PlayerTurn from '../helpers/PlayerTurn'
 
 export class TradeCoinRules extends EffectRule {
 
@@ -81,6 +82,10 @@ export class TradeCoinRules extends EffectRule {
     moves.push(newCoins.shuffle())
     moves.push(...this.end)
     return moves
+  }
+
+  get nextRules() {
+    return new PlayerTurn(this.game, this.player).endOfTurnMoves
   }
 
   get pouch() {

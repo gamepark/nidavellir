@@ -8,8 +8,12 @@ export abstract class EffectRule extends PlayerTurnRule {
     return [];
   }
 
-  get end() {
+  get end(): MaterialMove[] {
     if (this.effect === this.game.rule?.id) this.forget(Memory.Effect)
+    return this.nextRules
+  }
+
+  get nextRules(): MaterialMove[] {
     return new PlayerTurn(this.game, this.player).nextRules
   }
 
