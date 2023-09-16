@@ -1,14 +1,9 @@
 import { Trans, useTranslation } from 'react-i18next'
-import { useRules } from '@gamepark/react-game/dist/hooks/useRules'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
-import { usePlayerName } from '@gamepark/react-game/dist/hooks/usePlayerName'
 import { PlayerId } from '@gamepark/nidavellir/player/Player'
-import { usePlayerId } from '@gamepark/react-game/dist/hooks/usePlayerId'
 import { FC } from 'react'
-import { useLegalMove } from '@gamepark/react-game/dist/hooks/useLegalMoves'
-import { isEndPlayerTurn } from '@gamepark/rules-api/dist/material/moves/rules/EndPlayerTurn'
-import { PlayMoveButton } from '@gamepark/react-game/dist/components/buttons/PlayMoveButton/PlayMoveButton'
-import { UndoButton } from '@gamepark/react-game/dist/components/menus/UndoButton/UndoButton'
+import { isEndPlayerTurn } from '@gamepark/rules-api'
+import { PlayMoveButton, UndoMovesButton, useLegalMove, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 
 export const BidHeader = () => {
   const { t } = useTranslation()
@@ -17,7 +12,10 @@ export const BidHeader = () => {
   const passMove = useLegalMove(isEndPlayerTurn)
 
   if (passMove) {
-    return <Trans defaults="header.bid.pass"><PlayMoveButton auto={15} move={passMove}/><UndoButton /></Trans>
+    return <Trans defaults="header.bid.pass">
+      <PlayMoveButton auto={15} move={passMove}/>
+      <UndoMovesButton moves={1} />
+    </Trans>
   }
 
   if (players.length === 1) {

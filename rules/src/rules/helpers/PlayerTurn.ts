@@ -69,7 +69,7 @@ export default class PlayerTurn extends MaterialRulesPart {
     return this.remind(Memory.Tavern)
   }
 
-  get effectRules() {
+  get effectMoves() {
     const moves = []
     const goToRecruitment = this.goToRecruitment
     if (goToRecruitment.length) {
@@ -126,7 +126,7 @@ export default class PlayerTurn extends MaterialRulesPart {
       return thrudMoves;
     }
 
-    return this.effectRules
+    return this.effectMoves
   }
 
   applyEffect (item: MaterialItem) {

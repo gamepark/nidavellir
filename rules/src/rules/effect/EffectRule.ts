@@ -14,7 +14,7 @@ export abstract class EffectRule extends PlayerTurnRule {
   }
 
   get nextRules(): MaterialMove[] {
-    return new PlayerTurn(this.game, this.player).effectRules
+    return new PlayerTurn(this.game, this.player).effectMoves
   }
 
   get effect() {

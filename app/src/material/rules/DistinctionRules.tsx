@@ -8,9 +8,8 @@ import { Distinction } from '@gamepark/nidavellir/material/Distinction'
 import Images from '../../images/Images'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
-import { MaterialItem } from '@gamepark/rules-api/dist/material/items/MaterialItem'
+import { MaterialItem, displayMaterialRules } from '@gamepark/rules-api'
 import { isSameLocation } from './DwarfCardRules'
-import { displayMaterialRules } from '@gamepark/rules-api/dist/material/moves/local/DisplayRules'
 
 export const DistinctionRules: FC<MaterialRulesProps> = (props) => {
   const { t } = useTranslation()

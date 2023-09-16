@@ -1,5 +1,5 @@
-import { useRules } from '@gamepark/react-game/dist/hooks/useRules'
 /** @jsxImportSource @emotion/react */
+import { useRules, MaterialComponent } from '@gamepark/react-game'
 import { css } from '@emotion/react'
 import { FC, Fragment, useMemo } from 'react'
 import { Player } from '@gamepark/react-client'
@@ -7,7 +7,6 @@ import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { PlayerBoardSpace } from '@gamepark/nidavellir/material/PlayerBoardSpace'
-import { MaterialComponent } from '@gamepark/react-game/dist/components/material/MaterialComponent'
 import { Tavern, taverns } from '@gamepark/nidavellir/material/Tavern'
 import { PlayerPanelTavernIcon } from './PlayerPanelTavernIcon'
 

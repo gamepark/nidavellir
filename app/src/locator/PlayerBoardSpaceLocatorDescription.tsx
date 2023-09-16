@@ -2,7 +2,7 @@
 import { LocationDescription } from '@gamepark/react-game'
 import { coinDescription } from '../material/CoinDescription'
 import { PlayerBoardSpaceRules } from './rules/PlayerBoardSpaceRules'
-import { Location } from '@gamepark/rules-api/dist/material/location/Location'
+import { Location } from '@gamepark/rules-api'
 import Images from '../images/Images'
 import { PlayerBoardSpace } from '@gamepark/nidavellir/material/PlayerBoardSpace'
 

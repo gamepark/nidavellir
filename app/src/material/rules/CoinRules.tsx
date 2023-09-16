@@ -5,13 +5,11 @@ import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
 import { FC } from "react";
 import { Coins } from "@gamepark/nidavellir/coins/Coins";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
-import { isMoveItemType } from "@gamepark/rules-api/dist/material/moves/items/MoveItem";
 import { PlaceCoinButton } from "./PlaceCoinButton";
 import { css } from "@emotion/react";
 import { isExchangeCoin } from "@gamepark/nidavellir/utils/coin.utils";
-import { MaterialItem } from "@gamepark/rules-api/dist/material/items/MaterialItem";
+import { MaterialItem, isCustomMoveType, isMoveItemType } from "@gamepark/rules-api";
 import { Coin } from "@gamepark/nidavellir/material/Coin";
-import { isCustomMoveType } from '@gamepark/rules-api/dist/material/moves/CustomMove'
 import { CustomMoveType } from '@gamepark/nidavellir/moves/CustomMoveType'
 import { TradeCoinButton } from './TradeCoinButton'
 

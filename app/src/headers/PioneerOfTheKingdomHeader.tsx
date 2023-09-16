@@ -1,8 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import { useRules } from '@gamepark/react-game/dist/hooks/useRules'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
-import { usePlayerId } from '@gamepark/react-game/dist/hooks/usePlayerId'
-import { usePlayerName } from '@gamepark/react-game/dist/hooks/usePlayerName'
+import { usePlayerName, usePlayerId, useRules } from '@gamepark/react-game'
 
 export const PioneerOfTheKingdomHeader = () => {
   const rules = useRules<NidavellirRules>()!

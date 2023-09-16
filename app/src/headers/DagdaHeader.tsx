@@ -1,8 +1,6 @@
 import { useTranslation } from 'react-i18next'
-import { useRules } from '@gamepark/react-game/dist/hooks/useRules'
+import { useRules, usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
-import { usePlayerId } from '@gamepark/react-game/dist/hooks/usePlayerId'
-import { usePlayerName } from '@gamepark/react-game/dist/hooks/usePlayerName'
 import { Dagda, Memory } from '@gamepark/nidavellir/rules/Memory'
 
 export const DagdaHeader = () => {

@@ -6,7 +6,7 @@ import { PlayerBoardSpace } from '@gamepark/nidavellir/material/PlayerBoardSpace
 import { Trans, useTranslation } from 'react-i18next'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
-import { isMoveItemType, MoveItem } from '@gamepark/rules-api/dist/material/moves/items/MoveItem'
+import { isMoveItemType, MoveItem } from '@gamepark/rules-api'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
 import { greyBackground } from '../../material/rules/ColumnButton'
 
