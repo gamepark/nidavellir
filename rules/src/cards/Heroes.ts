@@ -100,6 +100,11 @@ export const Thrud: HeroDescription = {
   types: DwarfType.Neutral,
   grades: {
     [DwarfType.Neutral]: [13],
+    [DwarfType.Blacksmith]: [13],
+    [DwarfType.Hunter]: [13],
+    [DwarfType.Explorer]: [13],
+    [DwarfType.Warrior]: [13],
+    [DwarfType.Miner]: [13],
   },
 };
 
