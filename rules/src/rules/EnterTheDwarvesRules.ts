@@ -10,6 +10,7 @@ import { Card } from "../cards/Cards";
 
 class EnterTheDwarvesRules extends MaterialRulesPart {
   onRuleStart(): MaterialMove[] {
+    this.game.players.forEach((p) => this.forget(Memory.DiscardedCoin, p))
     this.memorize(Memory.Round, (round) => round + 1)
     const moves = this.fillTavern
     for (const player of this.game.players) {

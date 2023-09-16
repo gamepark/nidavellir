@@ -9,11 +9,6 @@ import { TroopEvaluation } from './helpers/TroopEvaluation'
 export class EndOfAgeRules extends MaterialRulesPart {
 
   onRuleStart(): MaterialMove[] {
-
-    for (const p of this.game.players) {
-      this.forget(Memory.DiscardedCoin, p)
-    }
-
     const startYlud = this.startYlud
     if (startYlud.length) {
       return startYlud
@@ -44,6 +39,7 @@ export class EndOfAgeRules extends MaterialRulesPart {
       .player((player) => player !== undefined)
       .getItem()
 
+    console.log("???", this.game.rule)
     this.memorize<PreviousRule>(Memory.PreviousRule, this.game.rule!)
     if (ylud) return [this.rules().startPlayerTurn(RuleId.Ylud, ylud.location.player!)]
     return []
