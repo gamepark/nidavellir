@@ -1,10 +1,21 @@
-import { isMoveItemType, ItemMove, PlayerTurnRule } from "@gamepark/rules-api";
-import { MaterialType } from "../material/MaterialType";
-import { LocationType } from "../material/LocationType";
-import { Memory } from "./Memory";
-import PlayerTurn from "./helpers/PlayerTurn";
+import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import { MaterialType } from '../material/MaterialType'
+import { LocationType } from '../material/LocationType'
+import { Memory, PreviousRule } from './Memory'
+import PlayerTurn from './helpers/PlayerTurn'
 
-class ChooseCardRules extends PlayerTurnRule {
+class ElavalandTurnRules extends PlayerTurnRule {
+
+  onRuleStart(): MaterialMove[] {
+    const previousRule = this.remind<PreviousRule>(Memory.PreviousRule)
+    if (this.game.rule?.id === previousRule?.id) {
+      this.forget(Memory.PreviousRule)
+      return new PlayerTurn(this.game, this.player).goToEndOfTurn
+    }
+
+    return []
+  }
+
   getAutomaticMoves() {
     const moves = this.chooseCardMoves
     if (moves.length === 1) {
@@ -40,7 +51,15 @@ class ChooseCardRules extends PlayerTurnRule {
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move)) return []
     // If the card was the last card in tavern for player. ignore it
-    return new PlayerTurn(this.game, this.player).onChooseCard(move)
+    const playerTurn = new PlayerTurn(this.game, this.player)
+    const choiceConsequences = playerTurn.onChooseCard(move)
+
+    if (choiceConsequences.length) {
+      this.memorize<PreviousRule>(Memory.PreviousRule, this.game.rule!)
+      return choiceConsequences
+    }
+
+    return playerTurn.goToEndOfTurn
   }
 
   get tavern() {
@@ -49,4 +68,4 @@ class ChooseCardRules extends PlayerTurnRule {
 
 }
 
-export { ChooseCardRules }
+export { ElavalandTurnRules }

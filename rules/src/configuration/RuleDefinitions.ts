@@ -5,7 +5,7 @@ import { MaterialRulesPartCreator } from "@gamepark/rules-api";
 import { UlineBidRules } from "../rules/UlineBidRules";
 import { BidRevelationRules } from "../rules/BidRevelationRules";
 import { TradeCoinRules } from "../rules/effect/TradeCoinRules";
-import { ChooseCardRules } from "../rules/ChooseCardRules";
+import { ElavalandTurnRules } from "../rules/ElavalandTurnRules";
 import { RecruitHeroRules } from "../rules/RecruitHeroRules";
 import { TransformCoinRules } from "../rules/effect/TransformCoinRules";
 import { KingsHandRules } from "../rules/distinctions/KingsHandRules";
@@ -30,7 +30,7 @@ export const rules: Record<RuleId, MaterialRulesPartCreator> = {
     [RuleId.Bids]: BidsRules,
     [RuleId.BidRevelation]: BidRevelationRules,
     [RuleId.UlineBid]: UlineBidRules,
-    [RuleId.ChooseCard]: ChooseCardRules,
+    [RuleId.ElvalandTurn]: ElavalandTurnRules,
     [RuleId.RecruitHero]: RecruitHeroRules,
     [RuleId.TradeCoin]: TradeCoinRules,
     [RuleId.TransformCoin]: TransformCoinRules,

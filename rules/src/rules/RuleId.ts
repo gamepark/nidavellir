@@ -3,7 +3,7 @@ export enum RuleId {
   Bids,
   BidRevelation,
   UlineBid,
-  ChooseCard,
+  ElvalandTurn,
   RecruitHero,
   TradeCoin,
   TransformCoin,

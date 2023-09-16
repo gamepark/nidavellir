@@ -6,7 +6,11 @@ import { DistinctionRules } from "./DistinctionRules";
 class KingsHandRules extends DistinctionRules {
 
   onRuleStart(move: RuleMove, previousRules?: RuleStep) {
-    if (previousRules?.id === RuleId.TransformCoin) return this.endDistinction
+    const consequences = super.onRuleStart(move)
+    if (previousRules?.id === RuleId.TransformCoin) {
+      consequences.push(...this.endDistinction)
+      return consequences
+    }
 
     const moves = super.onRuleStart(move)
     if (!isStartPlayerTurn(move)) return moves

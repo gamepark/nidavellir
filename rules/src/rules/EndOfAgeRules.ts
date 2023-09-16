@@ -39,7 +39,6 @@ export class EndOfAgeRules extends MaterialRulesPart {
       .player((player) => player !== undefined)
       .getItem()
 
-    console.log("???", this.game.rule)
     this.memorize<PreviousRule>(Memory.PreviousRule, this.game.rule!)
     if (ylud) return [this.rules().startPlayerTurn(RuleId.Ylud, ylud.location.player!)]
     return []

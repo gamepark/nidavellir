@@ -58,7 +58,7 @@ class BidRevelationRules extends MaterialRulesPart {
 
   get moveToElvalandTurn(): MaterialMove[] {
     return [
-      this.rules().startPlayerTurn(RuleId.ChooseCard, new TurnOrder(this.game).nextPlayer)
+      this.rules().startPlayerTurn(RuleId.ElvalandTurn, new TurnOrder(this.game).nextPlayer)
     ]
   }
 

@@ -69,7 +69,7 @@ export default class PlayerTurn extends MaterialRulesPart {
     return this.remind(Memory.Tavern)
   }
 
-  get nextRules() {
+  get effectRules() {
     const moves = []
     const goToRecruitment = this.goToRecruitment
     if (goToRecruitment.length) {
@@ -88,9 +88,12 @@ export default class PlayerTurn extends MaterialRulesPart {
       return moves;
     }
 
-    return [this.rules().startPlayerTurn(RuleId.EndOfTurn, this.player)];
+    return []
   }
 
+  get goToEndOfTurn() {
+    return [this.rules().startPlayerTurn(RuleId.EndOfTurn, this.player)];
+  }
   get moveToPreviousRule() {
     if (!this.previousRule) return []
     const previousRule = this.previousRule;
@@ -107,7 +110,7 @@ export default class PlayerTurn extends MaterialRulesPart {
   }
 
 
-  onChooseCard(move: MoveItem) {
+    onChooseCard(move: MoveItem) {
     const movedItem = this.material(MaterialType.Card).getItem(move.itemIndex)!
 
     if (this.game.players.length === 2
@@ -123,7 +126,7 @@ export default class PlayerTurn extends MaterialRulesPart {
       return thrudMoves;
     }
 
-    return this.nextRules
+    return this.effectRules
   }
 
   applyEffect (item: MaterialItem) {

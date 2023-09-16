@@ -5,7 +5,7 @@ import { Memory } from '@gamepark/nidavellir/rules/Memory'
 import { usePlayerId } from '@gamepark/react-game/dist/hooks/usePlayerId'
 import { usePlayerName } from '@gamepark/react-game/dist/hooks/usePlayerName'
 
-export const ChooseCardHeader = () => {
+export const ElvalandTurnHeader = () => {
   const rules = useRules<NidavellirRules>()!
   const tavern = rules.remind(Memory.Tavern)
   const player = rules.getActivePlayer()

@@ -81,11 +81,10 @@ class PioneerOfTheKingdomRules extends DistinctionRules {
         moves.push(this.ageDeck.shuffle())
       }
 
-      this.memorizeRule(player)
-
       const chooseCardMoves = new PlayerTurn(this.game, player).onChooseCard(move)
 
       if (chooseCardMoves.length) {
+        this.memorizeRule(player)
         moves.push(...chooseCardMoves)
       }
 

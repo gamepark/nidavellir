@@ -7,7 +7,7 @@ import { EnterDwarvesHeader } from './headers/EnterDwarvesHeader'
 import { BidHeader } from './headers/BidHeader'
 import { BidRevelationHeader } from './headers/BidRevelationHeader'
 import { UlineBidHeader } from './headers/UlineBidHeader'
-import { ChooseCardHeader } from './headers/ChooseCardHeader'
+import { ElvalandTurnHeader } from './headers/ElvalandTurnHeader'
 import { RecruitHeroHeader } from './headers/RecruitHeroHeader'
 import { GemTradeHeader } from './headers/GemTradeHeader'
 import { TradeCoinHeader } from './headers/TradeCoinHeader'
@@ -50,7 +50,7 @@ const RulesHeaders: Record<RuleId, FC> = {
   [RuleId.Bids]: BidHeader,
   [RuleId.BidRevelation]: BidRevelationHeader,
   [RuleId.UlineBid]: UlineBidHeader,
-  [RuleId.ChooseCard]: ChooseCardHeader,
+  [RuleId.ElvalandTurn]: ElvalandTurnHeader,
   [RuleId.RecruitHero]: RecruitHeroHeader,
   [RuleId.TradeCoin]: TradeCoinHeader,
   [RuleId.TransformCoin]: TransformCoinHeader,
