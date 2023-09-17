@@ -1,12 +1,12 @@
-import { isMoveItemType, ItemMove, ItemPosition, MaterialItem, MaterialMove } from "@gamepark/rules-api";
-import { MaterialType } from "../../material/MaterialType";
-import { CoinColor } from "../../coins/CoinDescription";
-import { LocationType } from "../../material/LocationType";
-import { Coins } from "../../coins/Coins";
-import { ExchangeCoin } from "../helpers/ExchangeCoin";
-import { Memory, PreviousRule } from '../Memory'
-import { EffectRule } from "./EffectRule";
-import { isExchangeCoin } from "../../utils/coin.utils";
+import { isMoveItemType, ItemMove, ItemPosition, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { MaterialType } from '../../material/MaterialType'
+import { CoinColor } from '../../coins/CoinDescription'
+import { LocationType } from '../../material/LocationType'
+import { Coins } from '../../coins/Coins'
+import { ExchangeCoin } from '../helpers/ExchangeCoin'
+import { Memory } from '../Memory'
+import { EffectRule } from './EffectRule'
+import { isExchangeCoin } from '../../utils/coin.utils'
 
 export class TransformCoinRules extends EffectRule {
 
@@ -53,29 +53,10 @@ export class TransformCoinRules extends EffectRule {
         return moves
       }
 
-      if (this.previousRule) {
-        return this.getMoveToPreviousRule
-      }
-
       return this.end;
     }
 
     return []
-  }
-
-  get previousRule () {
-    return this.remind<PreviousRule>(Memory.PreviousRule)
-  }
-
-  get getMoveToPreviousRule() {
-    if (!this.previousRule) return []
-    const previousRule = this.previousRule;
-    if (previousRule.id === this.ruleId || !previousRule?.player) return []
-    return [this.rules().startPlayerTurn(previousRule.id, this.player)]
-  }
-
-  get ruleId() {
-    return this.game.rule?.id
   }
 
   get transformedCoinPosition() {

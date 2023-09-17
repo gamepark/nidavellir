@@ -9,6 +9,10 @@ import { TroopEvaluation } from './helpers/TroopEvaluation'
 export class EndOfAgeRules extends MaterialRulesPart {
 
   onRuleStart(): MaterialMove[] {
+    if (this.previousRule?.id === this.game.rule!.id) {
+      this.forget(Memory.PreviousRule)
+    }
+
     const startYlud = this.startYlud
     if (startYlud.length) {
       return startYlud
@@ -16,11 +20,13 @@ export class EndOfAgeRules extends MaterialRulesPart {
 
     if (this.age === 2) {
       const thrud = this.moveThrudInCommandZone
+      const moves = []
       if (thrud.length) {
-        return thrud
+        moves.push(...thrud)
       }
 
-      return [this.rules().endGame()]
+      moves.push(this.rules().endGame())
+      return moves;
     }
 
 
@@ -39,9 +45,8 @@ export class EndOfAgeRules extends MaterialRulesPart {
       .player((player) => player !== undefined)
       .getItem()
 
-    this.memorize<PreviousRule>(Memory.PreviousRule, this.game.rule!)
-    if (ylud) return [this.rules().startPlayerTurn(RuleId.Ylud, ylud.location.player!)]
-    return []
+    if (!ylud) return []
+    return [this.rules().startPlayerTurn(RuleId.Ylud, ylud.location.player!)]
   }
 
   get moveThrudInCommandZone() {
@@ -52,5 +57,9 @@ export class EndOfAgeRules extends MaterialRulesPart {
 
     if (!thrud.length || thrud.location(LocationType.CommandZone).length) return []
     return thrud.moveItems((item) => ({ location: { type: LocationType.CommandZone, player: item.location.player } }))
+  }
+
+  get previousRule() {
+    return this.remind<PreviousRule>(Memory.PreviousRule)
   }
 }

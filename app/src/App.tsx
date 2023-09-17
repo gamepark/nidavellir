@@ -23,6 +23,7 @@ import { DrawCardHeader } from './headers/DrawCardHeader'
 import { ThrudHeader } from './headers/ThrudHeader'
 import { UlineHeader } from './headers/UlineHeader'
 import { YludHeader } from './headers/YludHeader'
+import { GameOverHeader } from './headers/GameOverHeader'
 
 export default function App() {
   const game = useGame<MaterialGame>()
@@ -36,7 +37,7 @@ export default function App() {
     <>
       <GameDisplay/>
       <LoadingScreen display={loading} author="Serge Laget" artist="Jean Marie Minguez" publisher="Grrre Games" developer="Game Park"/>
-      <MaterialHeader rulesStepsHeaders={RulesHeaders} GameOver={() => <p />} loading={loading}/>
+      <MaterialHeader rulesStepsHeaders={RulesHeaders} GameOver={GameOverHeader} loading={loading}/>
       <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)}/>
       <Menu/>
       <FailuresDialog/>

@@ -50,6 +50,12 @@ class ElavalandTurnRules extends PlayerTurnRule {
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move)) return []
+    const cardsInTavern = this
+      .material(MaterialType.Card)
+      .location(LocationType.Tavern)
+      .locationId(this.tavern)
+
+    if (this.game.players.length === 2 && !cardsInTavern.length) return []
     // If the card was the last card in tavern for player. ignore it
     const playerTurn = new PlayerTurn(this.game, this.player)
     const choiceConsequences = playerTurn.onChooseCard(move)

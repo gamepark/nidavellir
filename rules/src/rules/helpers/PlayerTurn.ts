@@ -112,11 +112,6 @@ export default class PlayerTurn extends MaterialRulesPart {
 
     onChooseCard(move: MoveItem) {
     const movedItem = this.material(MaterialType.Card).getItem(move.itemIndex)!
-
-    if (this.game.players.length === 2
-      && !this.material(MaterialType.Card).location(LocationType.Tavern).locationId(this.tavern).length
-    && move.position.location?.type === LocationType.Discard) return []
-
     this.applyEffect(movedItem)
 
     const thrudMoves = this.mayMoveThrud(move)

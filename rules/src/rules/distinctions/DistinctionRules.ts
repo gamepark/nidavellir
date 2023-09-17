@@ -35,7 +35,6 @@ export class DistinctionRules extends TroopEvaluation {
   }
 
   memorizeRule(player: PlayerId) {
-    console.trace("Here", this.game.rule)
     this.memorize<PreviousRule>(Memory.PreviousRule, { id: this.game.rule!.id, player })
   }
 }

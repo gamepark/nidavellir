@@ -13,7 +13,7 @@ export const BidHeader = () => {
 
   if (passMove) {
     return <Trans defaults="header.bid.pass">
-      <PlayMoveButton auto={15} move={passMove}/>
+      <PlayMoveButton auto={5} move={passMove}/>
       <UndoMovesButton moves={1} />
     </Trans>
   }

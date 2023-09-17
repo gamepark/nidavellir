@@ -46,7 +46,6 @@ const getDistinctionNavigation = (rules: NidavellirRules, item: Partial<Material
     .filter((other) => isSameLocation(item, other))
 
   const indexes = cards.getIndexes()
-  console.log(indexes)
   const previous = cards.index(indexes[indexes.indexOf(itemIndex!) - 1])
   const next = cards.index(indexes[indexes.indexOf(itemIndex!) + 1])
   return { previous, next }
