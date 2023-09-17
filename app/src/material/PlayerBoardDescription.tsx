@@ -4,6 +4,7 @@ import { BoardDescription, MaterialContext } from '@gamepark/react-game'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import { tokenSpaces } from "@gamepark/nidavellir/material/PlayerBoardSpace";
+import { PlayerBoardRule } from './rules/PlayerBoardRules'
 
 class PlayerBoardDescription extends BoardDescription {
   image = board
@@ -18,7 +19,7 @@ class PlayerBoardDescription extends BoardDescription {
     return tokenSpaces.map<Location>((space) => ({ id: space, type: LocationType.PlayerBoard, player: item.location.player  }))
   }
 
-  rules = () => <p></p>
+  rules = PlayerBoardRule
 }
 
 export const playerBoardDescription = new PlayerBoardDescription()
