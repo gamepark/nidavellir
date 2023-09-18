@@ -1,21 +1,21 @@
-import { MaterialGameSetup, MaterialMove } from "@gamepark/rules-api";
-import { PlayerId } from "./player/Player";
-import { MaterialType } from "./material/MaterialType";
-import { LocationType } from "./material/LocationType";
-import { NidavellirOptions } from "./NidavellirOptions";
-import shuffle from "lodash/shuffle";
-import { bronzeCoins, Coin, goldCoins } from "./material/Coin";
-import { lessThan4PlayersTreasure, moreThan3PlayersTreasure } from "./configuration/CoinPerPlayers";
-import { baseGems, Gem } from "./material/Gem";
-import { RuleId } from "./rules/RuleId";
-import { distinctions } from "./material/Distinction";
-import { Card, CardDeck, dwarfCards, heroCards } from "./cards/Cards";
-import { age1For5Players, age1ForMinus5Players, age2For5Players, age2ForMinus5Players } from "./configuration/CardsMinPlayers";
-import { MIN_DWARVES_PER_TAVERN } from "./rules/helpers/Tavern";
-import { locationsStrategies } from "./configuration/LocationStrategies";
-import { taverns } from "./material/Tavern";
-import { PlayerBoardSpace } from "./material/PlayerBoardSpace";
-import { Memory } from "./rules/Memory";
+import { MaterialGameSetup, MaterialMove } from '@gamepark/rules-api'
+import { PlayerId } from './player/Player'
+import { MaterialType } from './material/MaterialType'
+import { LocationType } from './material/LocationType'
+import { NidavellirOptions } from './NidavellirOptions'
+import shuffle from 'lodash/shuffle'
+import { bronzeCoins, Coin, goldCoins } from './material/Coin'
+import { lessThan4PlayersTreasure, moreThan3PlayersTreasure } from './configuration/CoinPerPlayers'
+import { baseGems, Gem } from './material/Gem'
+import { RuleId } from './rules/RuleId'
+import { distinctions } from './material/Distinction'
+import { Card, CardDeck, dwarfCards, heroCards } from './cards/Cards'
+import { age1For5Players, age1ForMinus5Players, age2For5Players, age2ForMinus5Players } from './configuration/CardsMinPlayers'
+import { MIN_DWARVES_PER_TAVERN } from './rules/helpers/Tavern'
+import { locationsStrategies } from './configuration/LocationStrategies'
+import { taverns } from './material/Tavern'
+import { PlayerBoardSpace } from './material/PlayerBoardSpace'
+import { Memory } from './rules/Memory'
 
 export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, LocationType, NidavellirOptions> {
   locationsStrategies = locationsStrategies
@@ -94,7 +94,7 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
   }
 
   setupPlayers(options: NidavellirOptions) {
-    const gems = shuffle(baseGems)
+    const gems = shuffle(baseGems.slice(-options.players))
     for (let index = 0; index < options.players; index++) {
       const playerId = index + 1
       this.setupPlayer(playerId, gems[index])
