@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { MaterialRulesProps, PlayMoveButton, useGame, useLegalMove, useLegalMoves, usePlay, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
-import { CardDeck, Cards, isHero, isRoyalOffering } from '@gamepark/nidavellir/cards/Cards'
+import { Card, CardDeck, Cards, isHero, isRoyalOffering } from '@gamepark/nidavellir/cards/Cards'
 import { Trans, useTranslation } from 'react-i18next'
 import { displayMaterialRules, isMoveItemType, MaterialGame, MaterialItem } from '@gamepark/rules-api'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
@@ -134,11 +134,19 @@ const HeroRules = (props: MaterialRulesProps) => {
             <div css={navigation} onClick={() => play(displayMaterialRules(MaterialType.Card, next.getItem(), next.getIndex()), { local: true })}><span>&gt;</span></div>}
       </h2>
       <CardLocationRule {...props} />
-      {visible && <p><Trans defaults={`rule.hero.${item.id.front}`}><strong/></Trans></p>}
+      {visible && <p><Trans defaults={`rule.hero.${item.id.front}`} values={getValues(item.id.front)}><strong/></Trans></p>}
       {visible && <ScoreRules {...props} />}
       <ChooseHeroMoves {...props} />
     </>
   )
+}
+
+const getValues = (card: Card) => {
+  if (card === Card.Grid) {
+    return { additionalValue: 7 }
+  }
+
+  return undefined
 }
 
 const ChooseHeroMoves: FC<MaterialRulesProps> = (props) => {
