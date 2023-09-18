@@ -71,7 +71,6 @@ const DwarfRules = (props: MaterialRulesProps) => {
 
   const { previous, next } = getCardNavigation(rules, item, itemIndex!)
 
-
   // TODO: can be multiple type
   const type = item.id.front ? getTypes(Cards[item.id.front])?.[0] : undefined
   const dwarfClass = type ?? item.location?.id
