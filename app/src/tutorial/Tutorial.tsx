@@ -10,6 +10,7 @@ import { PlayerBoardSpace } from '@gamepark/nidavellir/material/PlayerBoardSpace
 import { isEndPlayerTurn } from '@gamepark/rules-api/dist/material/moves/rules/EndPlayerTurn'
 import { Card } from '@gamepark/nidavellir/cards/Cards'
 import { TutorialSetup } from './TutorialSetup'
+import { DwarfType } from '@gamepark/nidavellir/cards/DwarfType'
 
 const me = 1;
 const opponent = 2
@@ -220,11 +221,15 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         position: { x: 0, y: 10 },
         text: () => <Trans defaults="tuto.hunter.me"><strong/><em/></Trans>
       },
-      focus: (game) => this.material(game, MaterialType.Card)
-        .location(LocationType.Tavern)
-        .id((id: any) => id.front === Card.Hunter1)
-    },
-    {
+      focus: (game) => [
+        this.material(game, MaterialType.Card)
+          .location(LocationType.Tavern)
+          .id((id: any) => id.front === Card.Hunter1),
+        this.location(LocationType.Army)
+          .player(me)
+          .id(DwarfType.Hunter)
+
+      ],
       move: {
         player: me,
         filter: (move, game) =>
@@ -254,11 +259,14 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         position: { x: 0, y: 30 },
         text: () => <Trans defaults="tuto.miner.me"><strong/><em/></Trans>
       },
-      focus: (game) => this.material(game, MaterialType.Card)
-        .location(LocationType.Tavern)
-        .id((id: any) => id.front === Card.MinerGrade0_1)
-    },
-    {
+      focus: (game) => [
+        this.material(game, MaterialType.Card)
+          .location(LocationType.Tavern)
+          .id((id: any) => id.front === Card.MinerGrade0_1),
+        this.location(LocationType.Army)
+          .player(me)
+          .id(DwarfType.Miner)
+      ],
       move: {
         player: me,
         filter: (move, game) =>
@@ -302,9 +310,13 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         position: { x: 0, y: 30 },
         text: () => <Trans defaults="tuto.royal-offering.me"><strong/><em/></Trans>
       },
-      focus: (game) => this.material(game, MaterialType.Card)
+      focus: (game) => [
+        this.material(game, MaterialType.Card)
         .location(LocationType.Tavern)
         .id((id: any) => id.front === Card.RoyalOffering3),
+        this.location(LocationType.Discard)
+          .id(MaterialType.Card)
+      ],
       move: {
         player: me,
         filter: (move, game) =>
@@ -436,9 +448,12 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         position: { x: 0, y: 20 },
         text: () => <Trans defaults="tuto.blacksmith.me"><strong/><em/></Trans>
       },
-      focus: (game) => this.material(game, MaterialType.Card).location(LocationType.Tavern).id((id: any) => id.front === Card.Blacksmith1)
-    },
-    {
+      focus: (game) => [
+        this.material(game, MaterialType.Card).location(LocationType.Tavern).id((id: any) => id.front === Card.Blacksmith1),
+        this.location(LocationType.Army)
+          .player(me)
+          .id(DwarfType.Blacksmith)
+      ],
       move: {
         player: me,
         filter: (move, game) =>
@@ -466,12 +481,25 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
+        position: { x: 0, y: 20 },
+        text: () => <Trans defaults="tuto.gem"><strong/><em/></Trans>
+      },
+      focus: (game) => [
+        this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.DancingDragon),
+        this.material(game, MaterialType.Gem).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.Gem),
+      ]
+    },
+    {
+      popup: {
         position: { x: 0, y: 30 },
         text: () => <Trans defaults="tuto.warrior.me"><strong/><em/></Trans>
       },
-      focus: (game) => this.material(game, MaterialType.Card).location(LocationType.Tavern).id((id: any) => id.front === Card.WarriorGrade4_1)
-    },
-    {
+      focus: (game) => [
+        this.material(game, MaterialType.Card).location(LocationType.Tavern).id((id: any) => id.front === Card.WarriorGrade4_1),
+        this.location(LocationType.Army)
+          .player(me)
+          .id(DwarfType.Warrior)
+      ],
       move: {
         player: me,
         filter: (move, game) =>
@@ -500,9 +528,12 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         position: { x: 0, y: 30 },
         text: () => <Trans defaults="tuto.explorer.me"><strong/><em/></Trans>
       },
-      focus: (game) => this.material(game, MaterialType.Card).location(LocationType.Tavern).id((id: any) => id.front === Card.ExplorerGrade11_1)
-    },
-    {
+      focus: (game) => [
+        this.material(game, MaterialType.Card).location(LocationType.Tavern).id((id: any) => id.front === Card.ExplorerGrade11_1),
+        this.location(LocationType.Army)
+          .player(me)
+          .id(DwarfType.Explorer)
+      ],
       move: {
         player: me,
         filter: (move, game) =>
@@ -536,9 +567,12 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         position: { x: 0, y: 15 },
         text: () => <Trans defaults="tuto.aral"><strong/><em/></Trans>
       },
-      focus: (game) => this.material(game, MaterialType.Card).location(LocationType.HeroesDeck).id((id: any) => id.front === Card.Aral)
-    },
-    {
+      focus: (game) =>[
+        this.material(game, MaterialType.Card).location(LocationType.HeroesDeck).id((id: any) => id.front === Card.Aral),
+        this.location(LocationType.Army)
+          .player(me)
+          .id(DwarfType.Hunter)
+      ],
       move: {
         player: me,
         filter: (move, game) =>
