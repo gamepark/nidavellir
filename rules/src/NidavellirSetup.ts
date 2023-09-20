@@ -37,13 +37,8 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
   }
 
   setupCard(options: NidavellirOptions) {
-    const age1 = this.getAge1Cards(options)
+    this.createAge1Deck(options)
     const age2 = this.getAge2Cards(options)
-
-    // Age 1 Deck
-    this.material(MaterialType.Card)
-      .createItems(age1.map((front) => ({ id: { back: CardDeck.Age1, front }, location: { type: LocationType.Age1Deck } })))
-    this.material(MaterialType.Card).location(LocationType.Age1Deck).shuffle()
 
     // Age 2 Deck
     this.material(MaterialType.Card)
@@ -53,6 +48,14 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
     this.material(MaterialType.Card)
       .createItem({ id: { back: CardDeck.Distinction, front: Card.BlacksmithKingsGreatArmorer }, location: { type: LocationType.DistinctionsDeck } })
 
+  }
+
+  createAge1Deck(options: NidavellirOptions) {
+    const age1 = this.getAge1Cards(options)
+    // Age 1 Deck
+    this.material(MaterialType.Card)
+      .createItems(age1.map((front) => ({ id: { back: CardDeck.Age1, front }, location: { type: LocationType.Age1Deck } })))
+    this.material(MaterialType.Card).location(LocationType.Age1Deck).shuffle()
   }
 
   getAge1Cards(options: NidavellirOptions): Card[] {
@@ -93,8 +96,12 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
     )
   }
 
+  getGems(options: NidavellirOptions) {
+    return shuffle(baseGems.slice(-options.players))
+  }
+
   setupPlayers(options: NidavellirOptions) {
-    const gems = shuffle(baseGems.slice(-options.players))
+    const gems = this.getGems(options)
     for (let index = 0; index < options.players; index++) {
       const playerId = index + 1
       this.setupPlayer(playerId, gems[index])

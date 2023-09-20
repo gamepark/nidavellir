@@ -15,7 +15,6 @@ class BidsRules extends SimultaneousRule<PlayerId, MaterialType, LocationType> {
         const playerCoins = this.material(MaterialType.Coin).player(player)
         const coinsInHand = playerCoins.location(LocationType.Hand)
         if (!coinsInHand.length) return [this.rules().endPlayerTurn(player)]
-
         return new Bid(this.game, player).combinations
     }
 
