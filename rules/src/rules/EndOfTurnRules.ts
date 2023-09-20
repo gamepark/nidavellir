@@ -16,7 +16,7 @@ export class EndOfTurnRules extends PlayerTurnRule {
 
     const coin = this.tavernCoin
     if (isExchangeCoin(coin)) {
-      return [this.rules().startPlayerTurn(RuleId.TradeCoin, this.player)]
+      return [this.rules().startRule(RuleId.TradeCoin)]
     }
 
     return new PlayerTurn(this.game, this.player).endOfTurnMoves
