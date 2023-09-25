@@ -1,6 +1,6 @@
 import { NidavellirSetup } from '@gamepark/nidavellir/NidavellirSetup'
 import { NidavellirOptions } from '@gamepark/nidavellir/NidavellirOptions'
-import { Card } from '@gamepark/nidavellir/cards/Cards'
+import { Card, CardId } from '@gamepark/nidavellir/cards/Cards'
 import { MaterialMove } from '@gamepark/rules-api/dist/material/moves/MaterialMove'
 import { taverns } from '@gamepark/nidavellir/material/Tavern'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
@@ -27,7 +27,7 @@ export class TutorialSetup extends NidavellirSetup {
       this
         .material(MaterialType.Card)
         .location(LocationType.Age1Deck)
-        .id((id: any) => id.front === c)
+        .id<CardId>(id => id.front === c)
         .moveItem({ location: { type: LocationType.Age1Deck } })
     ))
   }
@@ -35,7 +35,7 @@ export class TutorialSetup extends NidavellirSetup {
   setupTavern(_options: NidavellirOptions): MaterialMove[] {
     return taverns.flatMap((tavern, index) => this.tavernCard[index].map(c => {
         return this.material(MaterialType.Card)
-          .id((id: any) => id.front === c)
+          .id<CardId>(id => id.front === c)
           .moveItem({ location: { type: LocationType.Tavern, id: tavern } })
       })
     )

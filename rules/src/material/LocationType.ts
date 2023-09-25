@@ -11,5 +11,6 @@ export enum LocationType {
   Army,
   CommandZone,
   Table,
-  Coin
+  Coin,
+  Grade
 }

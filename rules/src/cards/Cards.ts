@@ -386,3 +386,8 @@ export const HeroesEffects: Partial<Record<Card, RuleId>> = {
   [Card.Dagda]: RuleId.Dagda,
   [Card.Bonfur]: RuleId.Bonfur
 }
+
+export type CardId = {
+  back: CardDeck,
+  front?: Card
+}

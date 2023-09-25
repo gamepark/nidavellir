@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import { LocationDescription, MaterialContext } from '@gamepark/react-game'
+import { ItemContext, LocationDescription } from '@gamepark/react-game'
 import { css } from '@emotion/react'
 import { isCustomMoveType, Location, MaterialMove } from '@gamepark/rules-api'
-import { coinDescription } from "../material/CoinDescription";
-import { CustomMoveType } from "@gamepark/nidavellir/moves/CustomMoveType";
+import { coinDescription } from '../material/CoinDescription'
+import { CustomMoveType } from '@gamepark/nidavellir/moves/CustomMoveType'
 
 export class CoinLocationDescription extends LocationDescription {
   width = coinDescription.diameter
@@ -14,7 +14,7 @@ export class CoinLocationDescription extends LocationDescription {
     border-radius: inherit;
   `
 
-  canDrop(move: MaterialMove, location: Location, context: MaterialContext) {
+  canDrop(move: MaterialMove, location: Location, context: ItemContext) {
     if (isCustomMoveType(CustomMoveType.TradeCoins)(move)) {
       return move.data && move.data.includes(location.parent)
     }
