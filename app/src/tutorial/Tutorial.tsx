@@ -96,6 +96,13 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => <Trans defaults="tuto.coin.other"><strong/><em/></Trans>
       },
+      focus: (game) =>
+        [
+          { type: MaterialType.PlayerBoard, item: { id: opponent, location: { id: opponent, type: LocationType.Table, player: opponent } } },
+          this.material(game, MaterialType.Coin).player(opponent),
+        ],
+    },
+    {
       move: {
         player: opponent,
         filter: (move, game) => isMoveItemType(MaterialType.Coin)(move)
