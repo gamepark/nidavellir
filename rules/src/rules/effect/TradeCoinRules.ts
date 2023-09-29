@@ -63,7 +63,7 @@ export class TradeCoinRules extends EffectRule {
     const coin = Coins[maximumCoinItem.id]
 
     const moves = []
-    const destination: Partial<ItemPosition> = { location: { type: coin.color === CoinColor.Bronze ? LocationType.Discard : LocationType.Treasure } }
+    const destination: Partial<ItemPosition> = coin.color === CoinColor.Bronze? { location: { type: LocationType.Discard, id: MaterialType.Coin }}: { location: { type : LocationType.Treasure }}
     const tradedPosition = {
       location: maximumCoinItem.location,
       rotation: maximumCoinItem.rotation

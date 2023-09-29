@@ -22,7 +22,8 @@ export class TransformCoinRules extends EffectRule {
       .filter((item) => !isExchangeCoin(item))
       .moveItems((item: MaterialItem) => {
         const coin = Coins[item.id]
-        return { location: { type: coin.color === CoinColor.Bronze ? LocationType.Discard : LocationType.Treasure } }
+        if (coin.color === CoinColor.Bronze) return { location: { type: LocationType.Discard, id: MaterialType.Coin } }
+        return { location: { type: LocationType.Treasure } }
       })
   }
 
