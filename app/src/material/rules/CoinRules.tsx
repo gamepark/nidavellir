@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { MaterialRulesProps, useLegalMoves, usePlayerId, usePlayerName } from "@gamepark/react-game";
+import { MaterialRulesProps, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Trans, useTranslation } from "react-i18next";
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
 import { FC } from "react";
@@ -12,6 +12,9 @@ import { MaterialItem, isCustomMoveType, isMoveItemType } from "@gamepark/rules-
 import { Coin } from "@gamepark/nidavellir/material/Coin";
 import { CustomMoveType } from '@gamepark/nidavellir/moves/CustomMoveType'
 import { TradeCoinButton } from './TradeCoinButton'
+import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
+import { RuleId } from '@gamepark/nidavellir/rules/RuleId'
+import { TransformCoinButton } from './TransformCoinButton'
 
 export const CoinRules: FC<MaterialRulesProps> = (props) => {
   const { t } = useTranslation()
@@ -28,6 +31,7 @@ export const CoinRules: FC<MaterialRulesProps> = (props) => {
       {huntingMaster && <p>{t('rule.coin.hunting-master')}</p>}
       <PlaceCoinMoves {...props} />
       <TradeCoinsMoves {...props} />
+      <TransformCoinsMoves {...props} />
     </>
   )
 }
@@ -57,6 +61,21 @@ const TradeCoinsMoves: FC<MaterialRulesProps> = (props) => {
       <hr />
       <div css={buttonContainer}>
         {tradeCoins.map((move) => <TradeCoinButton key={JSON.stringify(move)} move={move} {...props} />)}
+      </div>
+    </>
+  )
+}
+
+const TransformCoinsMoves: FC<MaterialRulesProps> = (props) => {
+  const rules = useRules<NidavellirRules>()!
+  const transformCoins = useLegalMoves((move) => rules.game.rule?.id === RuleId.TransformCoin && isMoveItemType(MaterialType.Coin)(move) && (move.position.location?.type === LocationType.Discard || move.position.location?.type === LocationType.Treasure))
+  if (!transformCoins.length) return null
+
+  return (
+    <>
+      <hr />
+      <div css={buttonContainer}>
+        {transformCoins.map((move) => <TransformCoinButton key={JSON.stringify(move)} move={move} {...props} />)}
       </div>
     </>
   )

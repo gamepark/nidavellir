@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { ItemContext, LocationDescription } from '@gamepark/react-game'
+import { LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { css } from '@emotion/react'
 import { isCustomMoveType, Location, MaterialMove } from '@gamepark/rules-api'
 import { coinDescription } from '../material/CoinDescription'
@@ -14,11 +14,11 @@ export class CoinLocationDescription extends LocationDescription {
     border-radius: inherit;
   `
 
-  canDrop(move: MaterialMove, location: Location, context: ItemContext) {
+  protected isMoveToLocation(move: MaterialMove, location: Location, context: MaterialContext) {
     if (isCustomMoveType(CustomMoveType.TradeCoins)(move)) {
       return move.data && move.data.includes(location.parent)
     }
 
-    return super.canDrop(move, location, context)
+    return super.isMoveToLocation(move, location, context)
   }
 }

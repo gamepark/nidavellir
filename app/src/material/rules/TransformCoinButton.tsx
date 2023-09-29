@@ -1,29 +1,27 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Trans } from 'react-i18next'
-import { CustomMove } from '@gamepark/rules-api'
+import { MoveItem } from '@gamepark/rules-api'
 import { MaterialComponent, MaterialRulesProps, PlayMoveButton, useRules } from '@gamepark/react-game'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { ExchangeCoin } from '@gamepark/nidavellir/rules/helpers/ExchangeCoin'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
+import { Memory } from '@gamepark/nidavellir/rules/Memory'
 
 
-type TradeCoinButtonProps = {
-  move: CustomMove
+type TransformCoinButtonProps = {
+  move: MoveItem
 } & MaterialRulesProps
 
-export const  TradeCoinButton = (props: TradeCoinButtonProps) => {
+export const TransformCoinButton = (props: TransformCoinButtonProps) => {
   const { move, closeDialog } = props;
   const rules = useRules<NidavellirRules>()!
-  const coins = rules.material(MaterialType.Coin)
-  const treasureCoin = new ExchangeCoin(rules.game, coins.indexes(move.data)).treasureCoin
+  const treasureCoin = new ExchangeCoin(rules.game, rules.material(MaterialType.Coin).index(move.itemIndex), rules.remind(Memory.TransformBonus)).treasureCoin
   return (
     <PlayMoveButton move={move} css={moveAction} onPlay={closeDialog}>
       <Trans
-        defaults="coin.moves.trade-coins"
+        defaults="coin.moves.transform-coins"
         components={[
-          <MaterialComponent css={mini} type={MaterialType.Coin} itemId={coins.getItem(move.data[0])!.id} />,
-          <MaterialComponent css={mini} type={MaterialType.Coin} itemId={coins.getItem(move.data[1])!.id} />,
           <MaterialComponent css={mini} type={MaterialType.Coin} itemId={treasureCoin.getItem()!.id} />,
         ]}
       />
