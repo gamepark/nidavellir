@@ -13,7 +13,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.0",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@gamepark/avataaars": "^2.2.0",
-    "@gamepark/react-game": "~6.8.0",
+    "@gamepark/react-game": "~6.8.1",
     "@gamepark/rules-api": "~6.8.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^12.0.0",

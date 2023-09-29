@@ -1,7 +1,7 @@
 import { NidavellirSetup } from '@gamepark/nidavellir/NidavellirSetup'
 import { NidavellirOptions } from '@gamepark/nidavellir/NidavellirOptions'
 import { Card, CardId } from '@gamepark/nidavellir/cards/Cards'
-import { MaterialMove } from '@gamepark/rules-api/dist/material/moves/MaterialMove'
+import { MaterialMove } from '@gamepark/rules-api'
 import { taverns } from '@gamepark/nidavellir/material/Tavern'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
@@ -17,7 +17,7 @@ export class TutorialSetup extends NidavellirSetup {
   secondRoundTavernCard = [
     [Card.MinerGrade2_1, Card.ExplorerGrade11_1, Card.Hunter2],
     [Card.WarriorGrade4_1, Card.MinerGrade0_2, Card.Blacksmith2],
-    [Card.WarriorGrade6_1, Card.Blacksmith1, Card.Hunter1],
+    [Card.WarriorGrade6_1, Card.Blacksmith1, Card.Hunter1]
   ]
 
   setupMaterial(options: NidavellirOptions) {
