@@ -33,7 +33,7 @@ class PioneerOfTheKingdomRules extends DistinctionRules {
     moves.push(
       ...ageCards
         .limit(1)
-        .moveItems({ location: { type: LocationType.Discard } }),
+        .moveItems({ location: { type: LocationType.Discard, id: MaterialType.Card } }),
     )
     moves.push(...this.endDistinction)
 

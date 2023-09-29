@@ -19,7 +19,7 @@ class HuntingMasterRules extends DistinctionRules {
         rotation: coin.rotation
       }
       moves.push(
-        existingExchangeCoin.moveItem({ location: { type: LocationType.Discard } }),
+        existingExchangeCoin.moveItem({ location: { type: LocationType.Discard, id: MaterialType.Coin } }),
         this.material(MaterialType.Coin).id((id) => id === Coin.HuntingMasterCoin).moveItem(position),
         ...this.endDistinction
       )

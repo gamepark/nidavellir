@@ -44,7 +44,7 @@ export default class PlayerTurn extends MaterialRulesPart {
       .locationId(this.tavern)
     if (!cards.length) return []
 
-    return cards.moveItems({ location: { type: LocationType.Discard }})
+    return cards.moveItems({ location: { type: LocationType.Discard, id: MaterialType.Card }})
   }
 
   get effect() {
@@ -212,7 +212,7 @@ export default class PlayerTurn extends MaterialRulesPart {
       return getTypes(description).map((type) => ({ type: LocationType.Army, id: type, player: this.player }))
     }
 
-    return [{ type: LocationType.Discard }]
+    return [{ type: LocationType.Discard, id: MaterialType.Card }]
   }
 
 }

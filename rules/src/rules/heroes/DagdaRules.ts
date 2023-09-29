@@ -21,7 +21,7 @@ export class DagdaRules extends EffectRule {
         army
           .location((location) => location.id === type)
           .maxBy((item) => item.location.x!)
-          .moveItems({ location: { type: LocationType.Discard } })
+          .moveItems({ location: { type: LocationType.Discard, id: MaterialType.Card } })
       )
   }
 
