@@ -3,12 +3,11 @@ import { MaterialRulesProps, usePlay, useRules } from '@gamepark/react-game'
 import { Trans, useTranslation } from 'react-i18next'
 import { FC } from 'react'
 import { css } from '@emotion/react'
-import { Gem } from '@gamepark/nidavellir/material/Gem'
 import { Distinction } from '@gamepark/nidavellir/material/Distinction'
 import Images from '../../images/Images'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
-import { MaterialItem, displayMaterialRules } from '@gamepark/rules-api'
+import { displayMaterialRules, MaterialItem } from '@gamepark/rules-api'
 import { isSameLocation } from './DwarfCardRules'
 
 export const DistinctionRules: FC<MaterialRulesProps> = (props) => {
@@ -16,7 +15,6 @@ export const DistinctionRules: FC<MaterialRulesProps> = (props) => {
   const { item, itemIndex } = props
   const play = usePlay()
   const rules = useRules<NidavellirRules>()!
-  const special = item.id === Gem.Gem6
   const { previous, next } = getDistinctionNavigation(rules, item, itemIndex!)
 
   return (
@@ -29,12 +27,9 @@ export const DistinctionRules: FC<MaterialRulesProps> = (props) => {
         </Trans>
         { !!next.length && <div css={ navigation } onClick={ () => play(displayMaterialRules(MaterialType.Distinction, next.getItem(), next.getIndex()), {local: true})}><span>&gt;</span></div> }
       </h2>
-      <h2 css={[title, norse, normal]}>
-      </h2>
+      <p>{t('rule.end-age-1')}</p>
+      <hr />
       <p>{t(`rule.distinction.${item.id}`)}</p>
-      {special && <>
-          <hr/>
-          <p>{t('rule.gem.crown-jeweler')}</p></>}
     </>
   )
 }
