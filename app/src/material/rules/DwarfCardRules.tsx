@@ -136,7 +136,7 @@ const HeroRules = (props: MaterialRulesProps) => {
       </h2>
       <CardLocationRule {...props} />
       <p>{t('rule.recruitment')}</p>
-      <hr />
+      <hr/>
       {visible && <p><Trans defaults={`rule.hero.${item.id.front}`} values={getValues(item.id.front)}><strong/></Trans></p>}
       {visible && <ScoreRules {...props} />}
       <ChooseHeroMoves {...props} />
@@ -214,6 +214,7 @@ const ScoreRules = (props: MaterialRulesProps) => {
     case LocationType.Army: {
       const score = new Score(game, item.location?.player!).get(item.location?.id)
       const itsMe = item.location?.player === me
+      if (item.id.front === Card.Thrud) return null
       return (
         <>
           <hr/>

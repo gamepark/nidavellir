@@ -22,8 +22,8 @@ export default class Army extends MaterialRulesPart {
     return this.army.getItem(index)
   }
 
-  getCardGradesCount(card: MaterialItem, type: DwarfType) {
-    if (card.location.id !== type) return 0
+  getCardGradesCount(card: MaterialItem, type: DwarfType, includeThrud?: boolean) {
+    if (card.location.id !== type || (includeThrud && card.id.front === Card.Thrud)) return 0
 
     const cardId = card.id.front
     const description = Cards[cardId]
@@ -42,7 +42,7 @@ export default class Army extends MaterialRulesPart {
     let grades = 0
     for (const other of cardsInColumn.getItems()) {
       if (other.location.x! < card.location.x!) {
-        grades += this.getCardGradesCount(other, type)
+        grades += this.getCardGradesCount(other, type, true)
         continue
       }
       return grades
@@ -51,19 +51,19 @@ export default class Army extends MaterialRulesPart {
     return grades
   }
 
-  countGradesOfType(type: DwarfType) {
+  countGradesOfType(type: DwarfType, includeThrud?: boolean) {
     return sum(
       this.army
-        .filter((item) => item.location.id === type)
+        .filter((item) => item.location.id === type && (includeThrud || item.id.front !== Card.Thrud))
         .getItems()
         .map((item) => Cards[item.id.front].grades?.[type]?.length ?? 0)
     )
   }
 
-  sumGradesOfType(type: DwarfType) {
+  sumGradesOfType(type: DwarfType, includeThrud?: boolean) {
     return sum(
       this.army
-        .filter((item) => item.location.id === type)
+        .filter((item) => item.location.id === type && (includeThrud || item.id.front !== Card.Thrud))
         .getItems()
         .flatMap((item) => Cards[item.id.front].grades?.[type] ?? [])
     )
@@ -74,7 +74,7 @@ export default class Army extends MaterialRulesPart {
     let playersWithMajority: PlayerId[] = []
     for (const player of this.game.players) {
       const army = new Army(this.game, player)
-      const ranks = army.countGradesOfType(type)
+      const ranks = army.countGradesOfType(type, true)
       if (ranks > majority) {
         majority = ranks
         playersWithMajority = [player]

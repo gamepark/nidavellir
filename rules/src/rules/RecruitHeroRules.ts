@@ -56,7 +56,7 @@ class RecruitHeroRules extends EffectRule {
     if (!description.minGrades) return true;
 
     const army = new Army(this.game, this.player)
-    return getTypes(description).every((type) => army.countGradesOfType(type) >= description.minGrades!)
+    return getTypes(description).every((type) => army.countGradesOfType(type, true) >= description.minGrades!)
   }
 
   afterItemMove(move: ItemMove) {

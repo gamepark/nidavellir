@@ -165,19 +165,19 @@ export default class PlayerTurn extends MaterialRulesPart {
     if (!isMoveItemType(MaterialType.Card)(move) || move.position.location?.type !== LocationType.Army) return 0;
     const card = army.getItem(move.itemIndex)!
     const gradesByTypes = {
-      [DwarfType.Blacksmith]: army.countGradesOfType(DwarfType.Blacksmith),
-      [DwarfType.Hunter]: army.countGradesOfType(DwarfType.Hunter),
-      [DwarfType.Warrior]: army.countGradesOfType(DwarfType.Warrior),
-      [DwarfType.Explorer]: army.countGradesOfType(DwarfType.Explorer),
-      [DwarfType.Miner]: army.countGradesOfType(DwarfType.Miner)
+      [DwarfType.Blacksmith]: army.countGradesOfType(DwarfType.Blacksmith, true),
+      [DwarfType.Hunter]: army.countGradesOfType(DwarfType.Hunter, true),
+      [DwarfType.Warrior]: army.countGradesOfType(DwarfType.Warrior, true),
+      [DwarfType.Explorer]: army.countGradesOfType(DwarfType.Explorer, true),
+      [DwarfType.Miner]: army.countGradesOfType(DwarfType.Miner, true)
     }
 
     const minGradesBeforeCard = Math.min(
-      gradesByTypes[DwarfType.Blacksmith] - army.getCardGradesCount(card, DwarfType.Blacksmith),
-      gradesByTypes[DwarfType.Hunter] - army.getCardGradesCount(card, DwarfType.Hunter),
-      gradesByTypes[DwarfType.Warrior] - army.getCardGradesCount(card, DwarfType.Warrior),
-      gradesByTypes[DwarfType.Explorer] - army.getCardGradesCount(card, DwarfType.Explorer),
-      gradesByTypes[DwarfType.Miner] - army.getCardGradesCount(card, DwarfType.Miner)
+      gradesByTypes[DwarfType.Blacksmith] - army.getCardGradesCount(card, DwarfType.Blacksmith, true),
+      gradesByTypes[DwarfType.Hunter] - army.getCardGradesCount(card, DwarfType.Hunter, true),
+      gradesByTypes[DwarfType.Warrior] - army.getCardGradesCount(card, DwarfType.Warrior, true),
+      gradesByTypes[DwarfType.Explorer] - army.getCardGradesCount(card, DwarfType.Explorer, true),
+      gradesByTypes[DwarfType.Miner] - army.getCardGradesCount(card, DwarfType.Miner, true)
     )
 
     const minGradesAfterCard = Math.min(
