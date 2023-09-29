@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import { MaterialRulesProps, PlayMoveButton, useGame, useLegalMove, useLegalMoves, usePlay, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
-import { Card, CardDeck, Cards, isHero, isRoyalOffering } from '@gamepark/nidavellir/cards/Cards'
+import { MaterialRulesProps, PlayMoveButton, useLegalMove, useLegalMoves, usePlay, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { Card, CardDeck, Cards, isHero, isRoyalOffering, isSimpleDwarf } from '@gamepark/nidavellir/cards/Cards'
 import { Trans, useTranslation } from 'react-i18next'
-import { displayMaterialRules, isMoveItemType, MaterialGame, MaterialItem } from '@gamepark/rules-api'
+import { displayMaterialRules, isMoveItemType, MaterialItem } from '@gamepark/rules-api'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { css } from '@emotion/react'
@@ -207,7 +207,8 @@ const CardLocationRule = (props: MaterialRulesProps) => {
 const ScoreRules = (props: MaterialRulesProps) => {
   const { item } = props
   const { t } = useTranslation()
-  const game = useGame<MaterialGame>()!
+  const rules = useRules<NidavellirRules>()!
+  const game = rules.game
   const me = usePlayerId()
   const player = usePlayerName(item.location?.player)
   switch (item.location?.type) {
@@ -218,7 +219,16 @@ const ScoreRules = (props: MaterialRulesProps) => {
       return (
         <>
           <hr/>
-          <p><Trans defaults={itsMe ? 'rule.army.score.mine' : 'rule.army.score'} values={{ type: t(`dwarf-card.class.${item.location?.id}`), score, player }}><strong/></Trans></p>
+          <p>{t(itsMe ? `rule.army.score.mine.${item.location.id}` : `rule.army.score.${item.location.id}`, {
+            score,
+            player,
+            number: rules.material(MaterialType.Card)
+              .location(LocationType.Army)
+              .locationId(item.location.id)
+              .player(item.location?.player)
+              .filter((item) => isSimpleDwarf(item.id.front)).length
+            })}
+          </p>
         </>
       )
     }
