@@ -118,6 +118,7 @@ const RoyalOfferingRules = (props: MaterialRulesProps) => {
 }
 
 const HeroRules = (props: MaterialRulesProps) => {
+  const { t } = useTranslation()
   const { item, itemIndex } = props
   const rules = useRules<NidavellirRules>()!
   const play = usePlay()
@@ -134,6 +135,8 @@ const HeroRules = (props: MaterialRulesProps) => {
             <div css={navigation} onClick={() => play(displayMaterialRules(MaterialType.Card, next.getItem(), next.getIndex()), { local: true })}><span>&gt;</span></div>}
       </h2>
       <CardLocationRule {...props} />
+      <p>{t('rule.recruitment')}</p>
+      <hr />
       {visible && <p><Trans defaults={`rule.hero.${item.id.front}`} values={getValues(item.id.front)}><strong/></Trans></p>}
       {visible && <ScoreRules {...props} />}
       <ChooseHeroMoves {...props} />
