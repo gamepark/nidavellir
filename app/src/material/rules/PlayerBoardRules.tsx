@@ -2,7 +2,8 @@
 import { MaterialRulesProps, usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { FC } from 'react'
 import { css } from '@emotion/react'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
+import Images from '../../images/Images'
 
 export const PlayerBoardRule: FC<MaterialRulesProps> = (props) => {
   const { item } = props
@@ -13,10 +14,26 @@ export const PlayerBoardRule: FC<MaterialRulesProps> = (props) => {
   return (
     <>
       <h2 css={norse}>{t(me? 'rule.playerboard.name.me': 'rule.playerboard.name', { player: name })}</h2>
-      <p>{t('rule.playerboard.text')}</p>
+      <p>
+        <Trans defaults="rule.playerboard.text">
+          <div css={icon(Images.HunterIcon)} />
+          <div css={icon(Images.BlacksmithIcon)} />
+        </Trans>
+      </p>
     </>
   )
 }
+
+const icon = (image: string) => css`
+  height: 1.2em;
+  width: 1.2em;
+  background-image: url(${image});
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+  transform: translateY(0.3em);
+`
 
 const norse = css`
   font-family: Norse, Arial, Serif
