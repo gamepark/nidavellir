@@ -20,12 +20,12 @@ export const DistinctionRules: FC<MaterialRulesProps> = (props) => {
   return (
     <>
       <h2 css={[title, norse, normal]}>
-        { !!previous.length && <div css={ [navigation, normal] } onClick={ () => play(displayMaterialRules(MaterialType.Distinction, previous.getItem(), previous.getIndex()), {local: true})}><span>&lt;</span></div> }
+        { !!previous.length && <div css={ [navigation, normal, previousNav] } onClick={ () => play(displayMaterialRules(MaterialType.Distinction, previous.getItem(), previous.getIndex()), {local: true})}><span>&lt;</span></div> }
         <Trans defaults={`distinction.name.${item.id}`}>
           <strong/>
           <div css={iconStyle(getIcon(item.id))} />
         </Trans>
-        { !!next.length && <div css={ navigation } onClick={ () => play(displayMaterialRules(MaterialType.Distinction, next.getItem(), next.getIndex()), {local: true})}><span>&gt;</span></div> }
+        { !!next.length && <div css={ [navigation, nextNav] } onClick={ () => play(displayMaterialRules(MaterialType.Distinction, next.getItem(), next.getIndex()), {local: true})}><span>&gt;</span></div> }
       </h2>
       <p>{t('rule.end-age-1')}</p>
       <hr />
@@ -66,6 +66,7 @@ const title = css`
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-top: 0.1em;
 `
 
 const normal = css`
@@ -96,6 +97,18 @@ const navigation = css`
   &:active {
     background-color: white;
   }
+`
+
+const previousNav = css`
+  position: absolute;
+  left: 3em;
+  top: 0.05em;
+`
+
+const nextNav = css`
+  position: absolute;
+  right: 3em;
+  top: 0.05em;
 `
 
 const norse = css`
