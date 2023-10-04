@@ -156,6 +156,32 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       move: {
         player: opponent,
+        filter: (move, game) => isMoveItemType(MaterialType.Coin)(move)
+          && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin3).player(opponent).getIndex()
+          && move.position.location?.id === PlayerBoardSpace.Pouch1
+      },
+      focus: (game) =>
+        [
+          { type: MaterialType.PlayerBoard, item: { id: opponent, location: { id: opponent, type: LocationType.Table, player: opponent } } },
+          this.material(game, MaterialType.Coin).player(opponent)
+        ]
+    },
+    {
+      move: {
+        player: opponent,
+        filter: (move, game) => isMoveItemType(MaterialType.Coin)(move)
+          && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin4).player(opponent).getIndex()
+          && move.position.location?.id === PlayerBoardSpace.Pouch2
+      },
+      focus: (game) =>
+        [
+          { type: MaterialType.PlayerBoard, item: { id: opponent, location: { id: opponent, type: LocationType.Table, player: opponent } } },
+          this.material(game, MaterialType.Coin).player(opponent)
+        ]
+    },
+    {
+      move: {
+        player: opponent,
         filter: (move) => isEndPlayerTurn(move) && move.player === opponent
       }
     },
@@ -166,9 +192,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       },
       focus: (game) => [
         this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.ShiningHorse),
-        this.material(game, MaterialType.Coin).id(Coin.Coin2).player(me),
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.Pouch1),
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.Pouch2)
+        this.material(game, MaterialType.Coin).id(Coin.Coin2).player(me)
       ],
       move: {
         filter: (move, game) =>
@@ -179,13 +203,35 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        position: { x: 30, y: 20 },
-        text: () => <Trans defaults="tuto.pouch"><strong/><em/></Trans>
+        position: { x: 5, y: 0 },
+        text: () => <Trans defaults="tuto.coin" values={{ coin: 5 }}><strong/><em/></Trans>
       },
-      focus: (game) => this
-        .material(game, MaterialType.Coin)
-        .player(me)
-        .location((location) => location.type === LocationType.PlayerBoard && location.id > PlayerBoardSpace.ShiningHorse)
+      focus: (game) => [
+        this.material(game, MaterialType.Coin).id(Coin.Coin5).player(me),
+        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.Pouch1)
+      ],
+      move: {
+        filter: (move, game) =>
+          isMoveItemType(MaterialType.Coin)(move)
+          && move.position.location?.id === PlayerBoardSpace.Pouch1
+          && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin5).player(me).getIndex()
+      }
+    },
+    {
+      popup: {
+        position: { x: 5, y: 0 },
+        text: () => <Trans defaults="tuto.coin" values={{ coin: 3 }}><strong/><em/></Trans>
+      },
+      focus: (game) => [
+        this.material(game, MaterialType.Coin).id(Coin.Coin3).player(me),
+        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.Pouch2)
+      ],
+      move: {
+        filter: (move, game) =>
+          isMoveItemType(MaterialType.Coin)(move)
+          && move.position.location?.id === PlayerBoardSpace.Pouch2
+          && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin3).player(me).getIndex()
+      }
     },
     {
       popup: {
@@ -417,6 +463,38 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }
     },
     {
+      popup: {
+        position: { x: 5, y: 20 },
+        text: () => <Trans defaults="tuto.coin" values={{ coin: 0 }}><strong/><em/></Trans>
+      },
+      focus: (game) => [
+        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.Pouch1),
+        this.material(game, MaterialType.Coin).location(LocationType.Hand).id(Coin.Coin0).player(me)
+      ],
+      move: {
+        filter: (move, game) =>
+          isMoveItemType(MaterialType.Coin)(move)
+          && move.position.location?.id === PlayerBoardSpace.Pouch1
+          && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin0).player(me).getIndex()
+      }
+    },
+    {
+      popup: {
+        position: { x: 5, y: 20 },
+        text: () => <Trans defaults="tuto.coin" values={{ coin: 4 }}><strong/><em/></Trans>
+      },
+      focus: (game) => [
+        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.Pouch2),
+        this.material(game, MaterialType.Coin).location(LocationType.Hand).id(Coin.Coin4).player(me)
+      ],
+      move: {
+        filter: (move, game) =>
+          isMoveItemType(MaterialType.Coin)(move)
+          && move.position.location?.id === PlayerBoardSpace.Pouch2
+          && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin4).player(me).getIndex()
+      }
+    },
+    {
       move: {
         player: me,
         filter: (move) => isEndPlayerTurn(move) && move.player === me
@@ -449,6 +527,24 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           isMoveItemType(MaterialType.Coin)(move)
           && move.position.location?.id === PlayerBoardSpace.ShiningHorse
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.GoldCoin7).player(opponent).getIndex()
+      }
+    },
+    {
+      move: {
+        player: opponent,
+        filter: (move, game) =>
+          isMoveItemType(MaterialType.Coin)(move)
+          && move.position.location?.id === PlayerBoardSpace.Pouch1
+          && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin2).player(opponent).getIndex()
+      }
+    },
+    {
+      move: {
+        player: opponent,
+        filter: (move, game) =>
+          isMoveItemType(MaterialType.Coin)(move)
+          && move.position.location?.id === PlayerBoardSpace.Pouch2
+          && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin0).player(opponent).getIndex()
       }
     },
     {
