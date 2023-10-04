@@ -1,14 +1,14 @@
-import { Material, MaterialGame, MaterialRulesPart } from "@gamepark/rules-api";
-import sum from "lodash/sum";
-import { PlayerId } from "../../player/Player";
-import Army from "./Army";
-import { DwarfType } from "../../cards/DwarfType";
-import { Card, Cards } from "../../cards/Cards";
-import sumBy from "lodash/sumBy";
-import { Coins } from "../../coins/Coins";
-import maxBy from "lodash/maxBy";
-import { MaterialType } from "../../material/MaterialType";
-import { LocationType } from "../../material/LocationType";
+import { Material, MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
+import sum from 'lodash/sum'
+import { PlayerId } from '../../player/Player'
+import Army from './Army'
+import { DwarfType } from '../../cards/DwarfType'
+import { Card, Cards } from '../../cards/Cards'
+import sumBy from 'lodash/sumBy'
+import { Coins } from '../../coins/Coins'
+import maxBy from 'lodash/maxBy'
+import { MaterialType } from '../../material/MaterialType'
+import { LocationType } from '../../material/LocationType'
 
 export class Score extends MaterialRulesPart {
   private army: Army;
@@ -69,7 +69,7 @@ export class Score extends MaterialRulesPart {
 
   get warrior() {
     const gradeScore = this.army.sumGradesOfType(DwarfType.Warrior)
-    if (this.army.hasMajorityOf(DwarfType.Warrior)) {
+    if (this.army.hasMajorityOf(DwarfType.Warrior) && this.army.getCardOfType(DwarfType.Warrior).length) {
       return gradeScore + this.maximumCoinValue
     }
     return gradeScore
