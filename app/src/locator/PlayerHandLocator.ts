@@ -5,8 +5,10 @@ import { LocationType } from "@gamepark/nidavellir/material/LocationType";
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
 import { Coins } from "@gamepark/nidavellir/coins/Coins";
 import orderBy from 'lodash/orderBy'
+import { PlayerHandDescription } from './PlayerHandDescription'
 
 export class PlayerHandLocator extends HandLocator<PlayerId, MaterialType, LocationType> {
+  locationDescription = new PlayerHandDescription()
   isHidden(item: MaterialItem<PlayerId, LocationType>, { type, player }: ItemContext<PlayerId, MaterialType, LocationType>): boolean {
     return item.location.player !== player && (type === MaterialType.Card || !item.rotation?.y)
   }

@@ -5,10 +5,10 @@ import { PlayerId } from "@gamepark/nidavellir/player/Player";
 import { LocationType } from "@gamepark/nidavellir/material/LocationType";
 import { ItemContext } from "@gamepark/react-game";
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
-import { HeroDeckLocatorDescription } from "./HeroDeckLocatorDescription";
+import { HeroDeckDescription } from "./HeroDeckDescription";
 
 export class HeroDeckLocator extends GridLocator {
-  locationDescription = new HeroDeckLocatorDescription()
+  locationDescription = new HeroDeckDescription()
   delta = { x: 1, y: 1 }
   columns = 7
 

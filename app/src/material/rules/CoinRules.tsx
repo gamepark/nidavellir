@@ -38,7 +38,7 @@ export const CoinRules: FC<MaterialRulesProps> = (props) => {
 
 const PlaceCoinMoves: FC<MaterialRulesProps> = (props) => {
   const { itemIndex } = props;
-  const placeCoins = useLegalMoves((move) => isMoveItemType(MaterialType.Coin)(move) && move.itemIndex === itemIndex && move.position.location?.type === LocationType.PlayerBoard)
+  const placeCoins = useLegalMoves((move) => isMoveItemType(MaterialType.Coin)(move) && move.itemIndex === itemIndex && (move.position.location?.type === LocationType.PlayerBoard || move.position.location?.type === LocationType.Hand))
   if (!placeCoins.length) return null;
 
   return (

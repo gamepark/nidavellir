@@ -10,6 +10,7 @@ import { material } from './material/Material'
 import { Locators } from './locator/Locators'
 import { NidavellirAnimations } from './animation/NidavellirAnimation'
 import { Tutorial } from './tutorial/Tutorial'
+import { ai } from './tutorial/TutorialAi'
 
 setupTranslation(translations, { debug: false })
 
@@ -23,6 +24,7 @@ ReactDOM.render(
                   locators={Locators}
                   tutorial={new Tutorial()}
                   animations={new NidavellirAnimations()}
+                  ai={ai}
     >
       <App/>
     </GameProvider>
