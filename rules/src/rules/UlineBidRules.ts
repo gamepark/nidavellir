@@ -6,8 +6,9 @@ import { Memory } from "./Memory";
 
 class UlineBidRules extends PlayerTurnRule {
 
-  getPlayerMoves(): MaterialMove<number, number, number>[] {
-    return new Bid(this.game, this.player).combinations.filter((move) => isMoveItem(move) && move.position.location?.id === this.tavern)
+  getPlayerMoves(): MaterialMove[] {
+    return new Bid(this.game, this.player, true).combinations
+      .filter((move) => isMoveItem(move) && move.position.location?.id === this.tavern)
   }
 
   afterItemMove(move: ItemMove) {
