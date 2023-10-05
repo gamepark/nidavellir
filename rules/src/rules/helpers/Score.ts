@@ -69,10 +69,15 @@ export class Score extends MaterialRulesPart {
 
   get warrior() {
     const gradeScore = this.army.sumGradesOfType(DwarfType.Warrior)
+    return gradeScore + this.warriorMajority
+  }
+
+  get warriorMajority() {
     if (this.army.hasMajorityOf(DwarfType.Warrior) && this.army.getCardOfType(DwarfType.Warrior).length) {
-      return gradeScore + this.maximumCoinValue
+      return this.maximumCoinValue
     }
-    return gradeScore
+
+    return 0
   }
 
   get coinsTotal() {
@@ -84,14 +89,19 @@ export class Score extends MaterialRulesPart {
     return sumBy(coins, (c) => Coins[c.id!].value)
   }
 
-  get maximumCoinValue() {
+  get maximumCoin() {
     const coins = this.coins
     if (coins.some((item) => !item.id)) {
-      return 0
+      return
     }
 
-    const maximumCoin = maxBy(coins, (c) => Coins[c.id!].value)!
-    return Coins[maximumCoin.id!].value
+    return maxBy(coins, (c) => Coins[c.id!].value)!
+  }
+
+  get maximumCoinValue() {
+    const maxCoin = this.maximumCoin
+    if (!maxCoin) return 0
+    return Coins[maxCoin.id!].value
   }
 
   get coins() {

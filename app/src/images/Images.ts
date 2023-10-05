@@ -25,6 +25,7 @@ import Gold22 from './coins/22-gold.jpg'
 import Gold23 from './coins/23-gold.jpg'
 import Gold24 from './coins/24-gold.jpg'
 import Gold25 from './coins/25-gold.jpg'
+import ClearCoin from './coins/clear-coin.jpg'
 import GreenCoin from './coins/green.jpg'
 import TokenBack from './coins/back.jpg'
 
@@ -172,6 +173,7 @@ const Images = {
   Gold23,
   Gold24,
   Gold25,
+  ClearCoin,
   TokenBack,
   PlayerBoard,
   Age1Back,
