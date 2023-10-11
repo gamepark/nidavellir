@@ -1,6 +1,6 @@
 import { LocationType } from '../material/LocationType'
 import { PlayerId } from '../player/Player'
-import { MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
+import { isMoveItemType, ItemMove, MaterialMove, SimultaneousRule } from '@gamepark/rules-api'
 import { MaterialType } from '../material/MaterialType'
 import { RuleId } from './RuleId'
 import Bid from './helpers/Bid'
@@ -20,6 +20,26 @@ class BidsRules extends SimultaneousRule<PlayerId, MaterialType, LocationType> {
         )
 
         return moves;
+    }
+
+    beforeItemMove(move: ItemMove) {
+        if (!isMoveItemType(MaterialType.Coin)(move)) return []
+        const coin = this.material(MaterialType.Coin).index(move.itemIndex)
+        if (move.position.location?.type === LocationType.PlayerBoard) {
+            const item = coin.getItem()!
+            const coinsOnBoard = this
+              .material(MaterialType.Coin)
+              .player(move.position.location?.player!)
+              .location(LocationType.PlayerBoard)
+
+            const existingCoin = coinsOnBoard.location((location) => location.id === move.position.location!.id)
+            if (existingCoin.length) {
+                return [existingCoin.moveItem({ location: item.location, rotation: item.rotation })]
+            }
+        }
+
+        return []
+
     }
 
     getMovesAfterPlayersDone() {

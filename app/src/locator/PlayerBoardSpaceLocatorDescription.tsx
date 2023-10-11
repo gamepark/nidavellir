@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { LocationDescription } from '@gamepark/react-game'
+import { LocationContext, LocationDescription } from '@gamepark/react-game'
 import { coinDescription } from '../material/CoinDescription'
 import { PlayerBoardSpaceRules } from './rules/PlayerBoardSpaceRules'
 import { Location } from '@gamepark/rules-api'
@@ -11,6 +11,11 @@ export class PlayerBoardSpaceLocatorDescription extends LocationDescription {
   ratio = 1
   borderRadius = this.width / 2
   alwaysVisible = true
+
+  getCoordinates(_location: Location, { canDrop }: LocationContext) {
+    if (canDrop) return  { x: 0, y: 0, z: 10}
+    return  { x: 0, y: 0, z: 0}
+  }
 
   rules = PlayerBoardSpaceRules
 

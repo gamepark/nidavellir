@@ -3,6 +3,7 @@ import { PlayerId } from '../../player/Player'
 import { MaterialType } from '../../material/MaterialType'
 import { LocationType } from '../../material/LocationType'
 import { tokenSpaces } from '../../material/PlayerBoardSpace'
+import equal from 'fast-deep-equal'
 
 export default class Bid extends MaterialRulesPart {
 
@@ -12,12 +13,13 @@ export default class Bid extends MaterialRulesPart {
 
   get combinations() {
     const playerCoins = this.material(MaterialType.Coin).player(this.player)
-    const coinsOnBoard = playerCoins.location(LocationType.PlayerBoard)
     const placableCoins = playerCoins.location(({ type }) => type === LocationType.Hand || (!this.disableBoardCoins && type === LocationType.PlayerBoard))
 
     return tokenSpaces.flatMap((id) => {
-      if (coinsOnBoard.location((location) => location.id === id).length) return []
-      return placableCoins.moveItems({ location: { type: LocationType.PlayerBoard, id, player: this.player } })
+      const location = { type: LocationType.PlayerBoard, id, player: this.player }
+      return placableCoins
+        .filter((item) => !equal(item.location, location))
+        .moveItems({ location })
     })
   }
 }
