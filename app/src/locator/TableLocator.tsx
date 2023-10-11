@@ -37,3 +37,5 @@ export class TableLocator extends ItemLocator {
     return { x: baseX + playerX, y: index < 3 ? 21 : -49, z: 0.1 }
   }
 }
+
+export const tableLocator = new TableLocator()

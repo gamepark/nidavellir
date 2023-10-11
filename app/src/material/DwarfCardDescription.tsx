@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
 import { Card, CardDeck } from '@gamepark/nidavellir/cards/Cards'
-import Images from '../images/Images'
 import { CardDescription } from '@gamepark/react-game'
+import Images from '../images/Images'
 import { DwarfCardRules } from './rules/DwarfCardRules'
 
 export class DwarfCardDescription extends CardDescription {
   width = 5.4
-  ratio = 54 / 80
+  height = 8
   borderRadius = 0.3
 
   backImages = {
@@ -88,7 +88,7 @@ export class DwarfCardDescription extends CardDescription {
     [Card.Ylud]: Images.Ylud,
     [Card.Skaa]: Images.Skaa,
     [Card.Uline]: Images.Uline,
-    [Card.Grid]: Images.Grid,
+    [Card.Grid]: Images.Grid
   }
 
   rules = DwarfCardRules

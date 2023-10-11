@@ -1,10 +1,11 @@
 /** @jsxImportSource @emotion/react */
+import { LocationType } from '@gamepark/nidavellir/material/LocationType'
+import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
+import { PlayerId } from '@gamepark/nidavellir/player/Player'
 import { ItemContext, LineLocator } from '@gamepark/react-game'
-import { PlayerId } from "@gamepark/nidavellir/player/Player";
-import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
-import { LocationType } from "@gamepark/nidavellir/material/LocationType";
-import { Coordinates, MaterialItem } from "@gamepark/rules-api";
-import { CommandZoneLocatorDescription } from "./CommandZoneLocatorDescription";
+import { Coordinates, MaterialItem } from '@gamepark/rules-api'
+import { cardDescription } from '../material/DwarfCardDescription'
+import { CommandZoneLocatorDescription } from './CommandZoneLocatorDescription'
 
 export class CommandZoneLocator extends LineLocator<PlayerId, MaterialType, LocationType> {
   locationDescription = new CommandZoneLocatorDescription()
@@ -13,12 +14,12 @@ export class CommandZoneLocator extends LineLocator<PlayerId, MaterialType, Loca
     const { type } = context
     const locationCoordinates = this.locationDescription.getCoordinates(item.location, context)
     const locationTop = (0.5 * this.locationDescription.height)
-    const cardTop =  context.material[type].getSize(item.id).height * 0.5
-    const y = 0.2 + locationCoordinates.y - locationTop + cardTop + (type === MaterialType.Distinction? 15: 0)
-    return { x: locationCoordinates.x, y, z: 0.05}
+    const cardTop = cardDescription.height * 0.5
+    const y = 0.2 + locationCoordinates.y - locationTop + cardTop + (type === MaterialType.Distinction ? 15 : 0)
+    return { x: locationCoordinates.x, y, z: 0.05 }
   }
 
-  getDelta(item: MaterialItem, context: ItemContext) {
-    return { y: 1.2, z: context.material[context.type].getThickness(item, context)}
+  getDelta() {
+    return { y: 1.2, z: cardDescription.thickness }
   }
 }

@@ -1,26 +1,28 @@
 /** @jsxImportSource @emotion/react */
+import { LocationType } from '@gamepark/nidavellir/material/LocationType'
+import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
+import { PlayerId } from '@gamepark/nidavellir/player/Player'
 import { ItemContext, PileLocator } from '@gamepark/react-game'
-import { PlayerId } from "@gamepark/nidavellir/player/Player";
-import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
-import { LocationType } from "@gamepark/nidavellir/material/LocationType";
-import { MaterialItem, Coordinates } from "@gamepark/rules-api";
-import { DiscardLocatorDescription } from "./DiscardLocatorDescription";
+import { Coordinates, MaterialItem } from '@gamepark/rules-api'
+import { cardDescription } from '../material/DwarfCardDescription'
+import { DiscardLocatorDescription } from './DiscardLocatorDescription'
 
 export class DiscardLocator extends PileLocator<PlayerId, MaterialType, LocationType> {
   locationDescription = new DiscardLocatorDescription()
   limit = 10
+
   getCoordinates(item: MaterialItem, context: ItemContext): Coordinates {
-    const { type, material } = context
+    const { type } = context
     const coordinates = this.locationDescription.getCoordinatesOfType(type, context)
-    return { ...coordinates, z: material[type].getThickness(item, context) * (item.location.x! + 1) }
+    return { ...coordinates, z: cardDescription.thickness * (item.location.x! + 1) }
   }
 
   getRadius(_item: MaterialItem<PlayerId, LocationType>, { type }: ItemContext<PlayerId, MaterialType, LocationType>): number {
-    return type === MaterialType.Coin ? 1.7: 0
+    return type === MaterialType.Coin ? 1.7 : 0
   }
 
   getMaxAngle(_item: MaterialItem, { type }: ItemContext): number {
-    return type === MaterialType.Card ? 15: 0
+    return type === MaterialType.Card ? 15 : 0
   }
 
   getItemIndex(item: MaterialItem<PlayerId, LocationType>): number {

@@ -1,20 +1,20 @@
-import { ItemLocator } from '@gamepark/react-game'
-import { PlayerId } from '@gamepark/nidavellir/player/Player'
-import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
+import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
+import { PlayerId } from '@gamepark/nidavellir/player/Player'
+import { ItemLocator } from '@gamepark/react-game'
 import { AgeDeckLocator } from './AgeDeckLocator'
+import { ArmyLocator } from './ArmyLocator'
+import { CoinLocator } from './CoinLocator'
+import { CommandZoneLocator } from './CommandZoneLocator'
+import { DiscardLocator } from './DiscardLocator'
 import { DistinctionDeckLocator } from './DistinctionDeckLocator'
+import { GradeLocator } from './GradeLocator'
 import { HeroDeckLocator } from './HeroDeckLocator'
+import { PlayerBoardSpaceLocator } from './PlayerBoardSpaceLocator'
+import { PlayerHandLocator } from './PlayerHandLocator'
+import { tableLocator } from './TableLocator'
 import { TavernLocator } from './TavernLocator'
 import { TreasureLocator } from './TreasureLocator'
-import { PlayerBoardSpaceLocator } from './PlayerBoardSpaceLocator'
-import { TableLocator } from './TableLocator'
-import { PlayerHandLocator } from './PlayerHandLocator'
-import { CommandZoneLocator } from './CommandZoneLocator'
-import { ArmyLocator } from './ArmyLocator'
-import { DiscardLocator } from './DiscardLocator'
-import { CoinLocator } from './CoinLocator'
-import { GradeLocator } from './GradeLocator'
 
 export const Locators: Record<LocationType, ItemLocator<PlayerId, MaterialType, LocationType>> = {
   [LocationType.Age1Deck]: new AgeDeckLocator(),
@@ -28,7 +28,7 @@ export const Locators: Record<LocationType, ItemLocator<PlayerId, MaterialType, 
   [LocationType.Discard]: new DiscardLocator(),
   [LocationType.Army]: new ArmyLocator(),
   [LocationType.CommandZone]: new CommandZoneLocator(),
-  [LocationType.Table]: new TableLocator(),
+  [LocationType.Table]: tableLocator,
   [LocationType.Coin]: new CoinLocator(),
   [LocationType.Grade]: new GradeLocator()
 
