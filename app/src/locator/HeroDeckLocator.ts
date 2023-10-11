@@ -12,6 +12,8 @@ export class HeroDeckLocator extends GridLocator {
   locationDescription = new HeroDeckDescription()
   delta = { x: 1, y: 1 }
   columns = 7
+  itemWidth = cardDescription.width
+  itemHeight = cardDescription.height
 
   getCoordinates(_item: MaterialItem<PlayerId, LocationType>, { rules }: ItemContext<PlayerId, MaterialType, LocationType>): Coordinates {
     const players = rules.players.length

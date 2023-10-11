@@ -11,6 +11,8 @@ import { TavernLocatorDescription } from './TavernLocatorDescription'
 export class TavernLocator extends GridLocator {
   locationDescription = new TavernLocatorDescription()
   delta = { x: 1, y: 1 }
+  itemWidth = cardDescription.width
+  itemHeight = cardDescription.height
 
   getColumns(_item: MaterialItem, { rules }: ItemContext): number {
     return Math.max(rules.players.length, 3)
