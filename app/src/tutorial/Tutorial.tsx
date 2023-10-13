@@ -4,7 +4,7 @@ import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { PlayerId } from '@gamepark/nidavellir/player/Player'
 import { Trans } from 'react-i18next'
-import { isEndPlayerTurn, isMoveItemType } from '@gamepark/rules-api'
+import { isMoveItemType } from '@gamepark/rules-api'
 import { Coin } from '@gamepark/nidavellir/material/Coin'
 import { PlayerBoardSpace } from '@gamepark/nidavellir/material/PlayerBoardSpace'
 import { Card, CardId } from '@gamepark/nidavellir/cards/Cards'
@@ -17,7 +17,7 @@ const me = 1
 const opponent = 2
 
 export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationType> {
-  version = 2
+  version = 3
   options = { players: 2 }
   setup = new TutorialSetup()
 
@@ -180,12 +180,6 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         ]
     },
     {
-      move: {
-        player: opponent,
-        filter: (move) => isEndPlayerTurn(move) && move.player === opponent
-      }
-    },
-    {
       popup: {
         position: { x: 5, y: 0 },
         text: () => <Trans defaults="tuto.coin" values={{ coin: 2 }}><strong/><em/></Trans>
@@ -240,16 +234,6 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       focus: (game) => [
         this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.LaughingGoblin)
       ]
-    },
-    {
-      move: {
-        player: me,
-        filter: (move) => isEndPlayerTurn(move) && move.player === me
-      },
-      focus: (game) => this
-        .material(game, MaterialType.Coin)
-        .location(LocationType.PlayerBoard)
-        .locationId(PlayerBoardSpace.LaughingGoblin)
     },
     {
       popup: {
@@ -496,13 +480,6 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       move: {
-        player: me,
-        filter: (move) => isEndPlayerTurn(move) && move.player === me
-      }
-    },
-
-    {
-      move: {
         player: opponent,
         filter: (move, game) =>
           isMoveItemType(MaterialType.Coin)(move)
@@ -545,12 +522,6 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           isMoveItemType(MaterialType.Coin)(move)
           && move.position.location?.id === PlayerBoardSpace.Pouch2
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin0).player(opponent).getIndex()
-      }
-    },
-    {
-      move: {
-        player: opponent,
-        filter: (move) => isEndPlayerTurn(move) && move.player === opponent
       }
     },
     {

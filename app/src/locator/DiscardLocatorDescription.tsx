@@ -2,7 +2,6 @@
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { ComponentSize, LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { cardDescription } from '../material/DwarfCardDescription'
-import { css } from '@emotion/react'
 import { Location } from '@gamepark/rules-api'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 
@@ -30,9 +29,4 @@ export class DiscardLocatorDescription extends LocationDescription {
     return { x: -74, y: rules.players.length > 3? -5: -11, z: 20 }
 
   }
-
-  getExtraCss = (location: Location) => css`
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: ${location.id === MaterialType.Coin ? 5 : 0.3}em;
-  `
 }

@@ -11,9 +11,6 @@ class BidsRules extends SimultaneousRule<PlayerId, MaterialType, LocationType> {
     getLegalMoves(player: PlayerId): MaterialMove[] {
         if (!this.isTurnToPlay(player)) return []
 
-        const playerCoins = this.material(MaterialType.Coin).player(player)
-        const coinsInHand = playerCoins.location(LocationType.Hand)
-        if (!coinsInHand.length) return [this.rules().endPlayerTurn(player)]
         const moves = new Bid(this.game, player).combinations
         moves.push(
           ...this.material(MaterialType.Coin).location(LocationType.PlayerBoard).player(player).moveItems({ location: { type: LocationType.Hand, player }})
@@ -40,6 +37,15 @@ class BidsRules extends SimultaneousRule<PlayerId, MaterialType, LocationType> {
 
         return []
 
+    }
+
+    afterItemMove(move: ItemMove) {
+        if (!isMoveItemType(MaterialType.Coin)(move)) return []
+        const player = this.material(MaterialType.Coin).index(move.itemIndex).getItem()!.location.player!
+        const playerCoins = this.material(MaterialType.Coin).player(player)
+        const coinsInHand = playerCoins.location(LocationType.Hand)
+        if (coinsInHand.length) return []
+        return [this.rules().endPlayerTurn(player)]
     }
 
     getMovesAfterPlayersDone() {
