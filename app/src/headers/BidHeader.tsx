@@ -1,36 +1,29 @@
-import { Trans, useTranslation } from 'react-i18next'
+import { LocationType } from '@gamepark/nidavellir/material/LocationType'
+import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
+import { PlayerBoardSpace, tokenSpaces } from '@gamepark/nidavellir/material/PlayerBoardSpace'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
 import { PlayerId } from '@gamepark/nidavellir/player/Player'
-import { FC } from 'react'
+import { PlayMoveButton, usePlay, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { MaterialMove } from '@gamepark/rules-api'
-import { PlayMoveButton, UndoMovesButton, usePlay, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
-import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
-import { LocationType } from '@gamepark/nidavellir/material/LocationType'
-import { PlayerBoardSpace, tokenSpaces } from '@gamepark/nidavellir/material/PlayerBoardSpace'
+import { FC } from 'react'
+import { Trans, useTranslation } from 'react-i18next'
 
 export const BidHeader = () => {
   const { t } = useTranslation()
   const play = usePlay()
   const rules = useRules<NidavellirRules>()!
   const player = usePlayerId()
-  const players = rules.game.rule?.players ?? [];
+  const players = rules.game.rule?.players ?? []
   const lastMoves = getLastMoves(rules, player)
 
   if (lastMoves.length) {
-    const first = lastMoves.shift()
-    const playRemainingMoves = () => {
-      if (!lastMoves.length) return
-
-      play(lastMoves[0])
-    }
-    return <Trans defaults="header.bid.pass">
-      <PlayMoveButton move={first} onPlay={playRemainingMoves}/>
-      <UndoMovesButton moves={1} />
+    return <Trans defaults="header.bid.pass" values={{ coins: lastMoves.length }}>
+      <PlayMoveButton move={lastMoves[0]} onPlay={() => lastMoves.length > 1 && play(lastMoves[1])}/>
     </Trans>
   }
 
   if (players.length === 1) {
-    return <LastBidPlayer player={players[0]} />
+    return <LastBidPlayer player={players[0]}/>
   }
 
 
@@ -55,7 +48,7 @@ const getLastMoves = (rules: NidavellirRules, player?: PlayerId) => {
       const index = indexes[i]
 
       moves.push(
-        coinsInHand.index(index).moveItem({ location: { type: LocationType.PlayerBoard, player, id: availableBidSpaces[i] }})
+        coinsInHand.index(index).moveItem({ location: { type: LocationType.PlayerBoard, player, id: availableBidSpaces[i] } })
       )
     }
   }
