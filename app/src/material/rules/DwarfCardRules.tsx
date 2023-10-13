@@ -11,6 +11,7 @@ import { ColumnButton, moveAction } from './ColumnButton'
 import { Score } from '@gamepark/nidavellir/rules/helpers/Score'
 import { FC } from 'react'
 import { getTypes } from '@gamepark/nidavellir/cards/DwarfDescription'
+import { Memory } from '@gamepark/nidavellir/rules/Memory'
 
 export const DwarfCardRules = (props: MaterialRulesProps) => {
   const { item } = props
@@ -28,12 +29,15 @@ const AgeDeckRule = (props: MaterialRulesProps) => {
   const { item } = props
   const rules = useRules<NidavellirRules>()!
   const age = item.location?.type === LocationType.Age1Deck ? 1 : 2
+  const currentAge = rules.remind(Memory.Age)
   const players = rules.players.length
   const { t } = useTranslation()
+  const started = currentAge >= age
+  const isAgeEnded = currentAge > age
   return (
     <>
       <h2 css={norse}>{t('rule.age-deck', { age })}</h2>
-      <p><Trans defaults="rules.age-deck.purpose" values={{
+      <p><Trans defaults="rule.age-deck.purpose" values={{
         players,
         age,
         drawnCards: (players === 2 ? 3 : players) * 3,
@@ -41,11 +45,16 @@ const AgeDeckRule = (props: MaterialRulesProps) => {
         round: players < 4 ? 4 : 3,
       }}><strong/></Trans></p>
       <hr/>
-      <p><Trans defaults="rules.age-deck.remaining" values={{
+      <p><Trans defaults="rule.age-deck.remaining" values={{
         remaining: rules.material(MaterialType.Card).location(item.location!.type).length,
       }}>
         <strong/>
       </Trans></p>
+      <p>
+        { !started && (<Trans defaults="rule.age-deck.not-started" values={{ age }} />)}
+        { started && (<Trans defaults="rule.age-deck.round" values={{ round: getRemainingRound(rules), totalRound: getRoundPerAge(rules) }} />)}
+        { isAgeEnded && (<Trans defaults="rule.age-deck.ended" />)}
+      </p>
     </>
   )
 }
@@ -258,6 +267,26 @@ const getCardNavigation = (rules: NidavellirRules, item: Partial<MaterialItem>, 
   const previous = cards.index(indexes[indexes.indexOf(itemIndex!) - 1])
   const next = cards.index(indexes[indexes.indexOf(itemIndex!) + 1])
   return { previous, next }
+}
+
+const getRoundPerAge = (rule: NidavellirRules) => {
+  const playerCount = rule.game.players.length
+  if (playerCount <= 3) {
+    return 4
+  }
+
+  return 3
+}
+
+const getRemainingRound = (rule: NidavellirRules) => {
+  const playerCount = rule.game.players.length
+  const round = rule.remind(Memory.Round)
+  const age = rule.remind(Memory.Age)
+  if (playerCount <= 3) {
+    return age * getRoundPerAge(rule) - round + 1
+  }
+
+  return age * getRoundPerAge(rule) - round + 1
 }
 
 export const isSameLocation = (item: Partial<MaterialItem>, other: MaterialItem) => {

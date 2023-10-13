@@ -35,7 +35,6 @@ class BidRevelationRules extends MaterialRulesPart {
         if (!tavernCoin.length) return [this.rules().startPlayerTurn(RuleId.UlineBid, playerWithUline.location.player!)]
       }
 
-
       return this.moveToElvalandTurn
     }
 
