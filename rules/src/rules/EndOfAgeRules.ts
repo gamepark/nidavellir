@@ -25,6 +25,13 @@ export class EndOfAgeRules extends MaterialRulesPart {
         moves.push(...thrud)
       }
 
+      moves.push(
+        ...this
+          .material(MaterialType.Coin)
+          .location(({ type }) => type === LocationType.Hand || type === LocationType.PlayerBoard)
+          .rotation((rotation) => !rotation?.y)
+          .moveItems({ rotation: { y: 1 }})
+      )
       moves.push(this.rules().endGame())
       return moves;
     }
