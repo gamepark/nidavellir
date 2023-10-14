@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { MaterialRulesProps, PlayMoveButton, useLegalMove, useLegalMoves, usePlay, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
-import { Card, CardDeck, Cards, isHero, isRoyalOffering, isSimpleDwarf } from '@gamepark/nidavellir/cards/Cards'
+import { MaterialRulesProps, PlayMoveButton, useLegalMoves, usePlay, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { Card, CardDeck, Cards, isHero, isRoyalOffering } from '@gamepark/nidavellir/cards/Cards'
 import { Trans, useTranslation } from 'react-i18next'
 import { displayMaterialRules, isMoveItemType, MaterialItem } from '@gamepark/rules-api'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
@@ -12,6 +12,7 @@ import { Score } from '@gamepark/nidavellir/rules/helpers/Score'
 import { FC } from 'react'
 import { getTypes } from '@gamepark/nidavellir/cards/DwarfDescription'
 import { Memory } from '@gamepark/nidavellir/rules/Memory'
+import { DwarfType } from '@gamepark/nidavellir/cards/DwarfType'
 
 export const DwarfCardRules = (props: MaterialRulesProps) => {
   const { item } = props
@@ -73,7 +74,7 @@ const CardRule = (props: MaterialRulesProps) => {
 }
 
 const DwarfRules = (props: MaterialRulesProps) => {
-  const { item, itemIndex } = props
+  const { item, itemIndex, closeDialog } = props
   const { t } = useTranslation()
   const rules = useRules<NidavellirRules>()!
   const play = usePlay()
@@ -83,7 +84,10 @@ const DwarfRules = (props: MaterialRulesProps) => {
   // TODO: can be multiple type
   const type = item.id.front ? getTypes(Cards[item.id.front])?.[0] : undefined
   const dwarfClass = type ?? item.location?.id
-  const chooseDwarfCard = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.position.location?.type === LocationType.Army)
+  const legalMoves = useLegalMoves()
+  const chooseDwarfCard = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.position.location?.type === LocationType.Army)
+  const discard = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.position.location?.type === LocationType.Discard)
+
   return (
     <>
       <h2 css={[title, norse]}>
@@ -97,6 +101,7 @@ const DwarfRules = (props: MaterialRulesProps) => {
       {dwarfClass && <p><Trans defaults={`rule.dwarf-card.class.${dwarfClass}`}><strong/></Trans></p>}
       <ScoreRules {...props} />
       {chooseDwarfCard && <ColumnButton move={chooseDwarfCard} {...props} />}
+      {discard && <PlayMoveButton move={discard} onPlay={closeDialog} css={moveAction()}>{t('rule.card.moves.discard')}</PlayMoveButton>}
     </>
   )
 }
@@ -108,8 +113,8 @@ const RoyalOfferingRules = (props: MaterialRulesProps) => {
   const play = usePlay()
 
   const { previous, next } = getCardNavigation(rules, item, itemIndex!)
-  const chooseRoyalOffering = useLegalMove((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.position.location?.type === LocationType.Discard)
-
+  const legalMoves = useLegalMoves()
+  const discard = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.position.location?.type === LocationType.Discard)
   return (
     <>
       <h2 css={[title, norse]}>
@@ -121,7 +126,7 @@ const RoyalOfferingRules = (props: MaterialRulesProps) => {
       </h2>
       <CardLocationRule {...props} />
       <p><Trans defaults="rule.royal-offering" values={{ additionalValue: Cards[item.id.front].bonus }}><strong/></Trans></p>
-      {chooseRoyalOffering && <PlayMoveButton move={chooseRoyalOffering} onPlay={closeDialog} css={moveAction()}>{t('rule.card.moves.royal-offering')}</PlayMoveButton>}
+      {discard && <PlayMoveButton move={discard} onPlay={closeDialog} css={moveAction()}>{t('rule.card.moves.royal-offering')}</PlayMoveButton>}
     </>
   )
 }
@@ -235,7 +240,7 @@ const ScoreRules = (props: MaterialRulesProps) => {
               .location(LocationType.Army)
               .locationId(item.location.id)
               .player(item.location?.player)
-              .filter((item) => isSimpleDwarf(item.id.front)).length
+              .filter((item) => !getTypes(Cards[item.id.front]).includes(DwarfType.Neutral)).length
             })}
           </p>
         </>
