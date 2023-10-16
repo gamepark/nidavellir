@@ -1,24 +1,25 @@
 import { MaterialGameSetup, MaterialMove } from '@gamepark/rules-api'
-import { PlayerId } from './player/Player'
-import { MaterialType } from './material/MaterialType'
-import { LocationType } from './material/LocationType'
-import { NidavellirOptions } from './NidavellirOptions'
 import shuffle from 'lodash/shuffle'
-import { bronzeCoins, Coin, goldCoins } from './material/Coin'
-import { lessThan4PlayersTreasure, moreThan3PlayersTreasure } from './configuration/CoinPerPlayers'
-import { baseGems, Gem } from './material/Gem'
-import { RuleId } from './rules/RuleId'
-import { distinctions } from './material/Distinction'
 import { Card, CardDeck, dwarfCards, heroCards } from './cards/Cards'
 import { age1For5Players, age1ForMinus5Players, age2For5Players, age2ForMinus5Players } from './configuration/CardsMinPlayers'
-import { MIN_DWARVES_PER_TAVERN } from './rules/helpers/Tavern'
-import { locationsStrategies } from './configuration/LocationStrategies'
-import { taverns } from './material/Tavern'
+import { lessThan4PlayersTreasure, moreThan3PlayersTreasure } from './configuration/CoinPerPlayers'
+import { bronzeCoins, Coin, goldCoins } from './material/Coin'
+import { distinctions } from './material/Distinction'
+import { baseGems, Gem } from './material/Gem'
+import { LocationType } from './material/LocationType'
+import { MaterialType } from './material/MaterialType'
 import { PlayerBoardSpace } from './material/PlayerBoardSpace'
+import { taverns } from './material/Tavern'
+import { NidavellirOptions } from './NidavellirOptions'
+import { NidavellirRules } from './NidavellirRules'
+import { PlayerId } from './player/Player'
+import { MIN_DWARVES_PER_TAVERN } from './rules/helpers/Tavern'
 import { Memory } from './rules/Memory'
+import { RuleId } from './rules/RuleId'
 
 export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, LocationType, NidavellirOptions> {
-  locationsStrategies = locationsStrategies
+  Rules = NidavellirRules
+
   setupMaterial(options: NidavellirOptions): void {
     this.setupDistinctionGem()
     this.setupDistinctions()
@@ -30,10 +31,6 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
 
     this.memorize(Memory.Age, 1)
     this.memorize(Memory.Round, 1)
-  }
-
-  start(_options: NidavellirOptions) {
-    return { id: RuleId.Bids, players: this.players }
   }
 
   setupCard(options: NidavellirOptions) {
@@ -59,13 +56,13 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
   }
 
   getAge1Cards(options: NidavellirOptions): Card[] {
-    const cardQuantities = options.players === 5? age1For5Players: age1ForMinus5Players
-    return dwarfCards.flatMap((c) => Array.from(Array(cardQuantities[c] ?? 1)).fill(c) )
+    const cardQuantities = options.players === 5 ? age1For5Players : age1ForMinus5Players
+    return dwarfCards.flatMap((c) => Array.from(Array(cardQuantities[c] ?? 1)).fill(c))
   }
 
   getAge2Cards(options: NidavellirOptions): Card[] {
-    const cardQuantities = options.players === 5? age2For5Players: age2ForMinus5Players
-    return dwarfCards.flatMap((c) => Array.from(Array(cardQuantities[c] ?? 1)).fill(c) )
+    const cardQuantities = options.players === 5 ? age2For5Players : age2ForMinus5Players
+    return dwarfCards.flatMap((c) => Array.from(Array(cardQuantities[c] ?? 1)).fill(c))
   }
 
   setupHeroes() {
@@ -78,7 +75,7 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
     const goldCoinQuantities = options.players <= 3 ? lessThan4PlayersTreasure : moreThan3PlayersTreasure
     this.material(MaterialType.Coin)
       .createItems(
-        goldCoins.flatMap((id,) =>
+        goldCoins.flatMap((id) =>
           Array.from(Array(goldCoinQuantities[id] ?? 1)).map(() => ({ id, location: { type: LocationType.Treasure } }))
         )
       )
@@ -125,8 +122,11 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
 
     return taverns.flatMap((tavern) => this.material(MaterialType.Card)
       .indexes(drawnCards.splice(0, cardsByTavern))
-      .moveItems({ location: { type: LocationType.Tavern, id: tavern }})
+      .moveItems({ location: { type: LocationType.Tavern, id: tavern } })
     )
   }
 
+  start() {
+    this.startSimultaneousRule(RuleId.Bids)
+  }
 }
