@@ -17,7 +17,7 @@
     "prepublishOnly": "tsc"
   },
   "peerDependencies": {
-    "@gamepark/rules-api": ">=6.9"
+    "@gamepark/rules-api": ">=6.10"
   },
   "devDependencies": {
     "@gamepark/rules-api": "~6.10.0",
