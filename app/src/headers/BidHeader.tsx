@@ -48,7 +48,7 @@ const getLastMoves = (rules: NidavellirRules, player?: PlayerId) => {
       const index = indexes[i]
 
       moves.push(
-        coinsInHand.index(index).moveItem({ location: { type: LocationType.PlayerBoard, player, id: availableBidSpaces[i] } })
+        coinsInHand.index(index).moveItem({ type: LocationType.PlayerBoard, player, id: availableBidSpaces[i] })
       )
     }
   }

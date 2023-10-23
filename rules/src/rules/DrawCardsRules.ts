@@ -1,9 +1,9 @@
 import { isMoveItemType, ItemMove, MaterialMove } from '@gamepark/rules-api'
-import { DrawCard, Memory } from './Memory'
-import { MaterialType } from '../material/MaterialType'
 import { LocationType } from '../material/LocationType'
-import PlayerTurn from './helpers/PlayerTurn'
+import { MaterialType } from '../material/MaterialType'
 import { EffectRule } from './effect/EffectRule'
+import PlayerTurn from './helpers/PlayerTurn'
+import { DrawCard, Memory } from './Memory'
 
 export class DrawCardsRules extends EffectRule {
   onRuleStart(): MaterialMove[] {
@@ -11,7 +11,7 @@ export class DrawCardsRules extends EffectRule {
     return this.ageDeck
       .sort((item) => -item.location.x!)
       .limit(draw)
-      .moveItems({ location: { type: LocationType.Hand, player: this.player } })
+      .moveItems({ type: LocationType.Hand, player: this.player })
   }
 
   getPlayerMoves(): MaterialMove<number, number, number>[] {
@@ -27,7 +27,7 @@ export class DrawCardsRules extends EffectRule {
     for (const card of cards.getIndexes()) {
       const locations = playerTurn.getCardLocations(cards.getItem(card)!.id.front)
       moves.push(
-        ...locations.map((location) => cards.index(card).moveItem({ location })),
+        ...locations.map(location => cards.index(card).moveItem(location))
       )
     }
 
@@ -37,12 +37,12 @@ export class DrawCardsRules extends EffectRule {
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move)
-      || move.position.location?.type === LocationType.Hand
-      || move.position.location?.type === this.deck) return []
+      || move.location.type === LocationType.Hand
+      || move.location.type === this.deck) return []
 
     const moves = []
     if (this.cardsInHand?.length === (this.drawCard.draw - this.drawCard.keep)) {
-      moves.push(...this.cardsInHand.moveItems({ location: { type: this.deck } }))
+      moves.push(...this.cardsInHand.moveItems({ type: this.deck }))
     }
 
     const chooseCardMoves = new PlayerTurn(this.game, this.player).onChooseCard(move)
@@ -52,7 +52,6 @@ export class DrawCardsRules extends EffectRule {
 
     return moves
   }
-
 
 
   get cardsInHand() {

@@ -13,7 +13,7 @@ export class PlayerHandLocator extends HandLocator<PlayerId, MaterialType, Locat
   locationDescription = new PlayerHandDescription()
 
   isHidden(item: MaterialItem<PlayerId, LocationType>, { type, player }: ItemContext<PlayerId, MaterialType, LocationType>): boolean {
-    return item.location.player !== player && (type === MaterialType.Card || !item.rotation?.y)
+    return item.location.player !== player && (type === MaterialType.Card || !item.location.rotation)
   }
 
   getCoordinates(location: Location<PlayerId, LocationType>, context: ItemContext<PlayerId, MaterialType, LocationType>) {

@@ -1,8 +1,8 @@
-import { LocationType } from '../../material/LocationType'
-import { DistinctionRules } from './DistinctionRules'
-import { MaterialType } from '../../material/MaterialType'
-import { Coin } from '../../material/Coin'
 import { RuleMove } from '@gamepark/rules-api'
+import { Coin } from '../../material/Coin'
+import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
+import { DistinctionRules } from './DistinctionRules'
 
 class HuntingMasterRules extends DistinctionRules {
   onRuleStart(move: RuleMove) {
@@ -14,13 +14,9 @@ class HuntingMasterRules extends DistinctionRules {
 
     if (existingExchangeCoin.length) {
       const coin = existingExchangeCoin.getItem()!
-      const position = {
-        location: coin.location,
-        rotation: coin.rotation
-      }
       moves.push(
-        existingExchangeCoin.moveItem({ location: { type: LocationType.Discard, id: MaterialType.Coin } }),
-        this.material(MaterialType.Coin).id((id) => id === Coin.HuntingMasterCoin).moveItem(position),
+        existingExchangeCoin.moveItem({ type: LocationType.Discard, id: MaterialType.Coin }),
+        this.material(MaterialType.Coin).id((id) => id === Coin.HuntingMasterCoin).moveItem(coin.location),
         ...this.endDistinction
       )
     }

@@ -1,11 +1,11 @@
-import { NidavellirSetup } from '@gamepark/nidavellir/NidavellirSetup'
-import { NidavellirOptions } from '@gamepark/nidavellir/NidavellirOptions'
 import { Card, CardId } from '@gamepark/nidavellir/cards/Cards'
-import { MaterialMove } from '@gamepark/rules-api'
-import { taverns } from '@gamepark/nidavellir/material/Tavern'
-import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
-import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { Gem } from '@gamepark/nidavellir/material/Gem'
+import { LocationType } from '@gamepark/nidavellir/material/LocationType'
+import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
+import { taverns } from '@gamepark/nidavellir/material/Tavern'
+import { NidavellirOptions } from '@gamepark/nidavellir/NidavellirOptions'
+import { NidavellirSetup } from '@gamepark/nidavellir/NidavellirSetup'
+import { MaterialMove } from '@gamepark/rules-api'
 
 export class TutorialSetup extends NidavellirSetup {
   tavernCard = [
@@ -28,7 +28,7 @@ export class TutorialSetup extends NidavellirSetup {
         .material(MaterialType.Card)
         .location(LocationType.Age1Deck)
         .id<CardId>(id => id.front === c)
-        .moveItem({ location: { type: LocationType.Age1Deck } })
+        .moveItem({ type: LocationType.Age1Deck })
     ))
   }
 
@@ -36,7 +36,7 @@ export class TutorialSetup extends NidavellirSetup {
     return taverns.flatMap((tavern, index) => this.tavernCard[index].map(c => {
         return this.material(MaterialType.Card)
           .id<CardId>(id => id.front === c)
-          .moveItem({ location: { type: LocationType.Tavern, id: tavern } })
+          .moveItem({ type: LocationType.Tavern, id: tavern })
       })
     )
   }

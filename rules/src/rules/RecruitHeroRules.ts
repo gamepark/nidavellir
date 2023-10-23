@@ -1,13 +1,13 @@
-import { isMoveItemType, ItemMove, MaterialItem, RuleMove } from "@gamepark/rules-api";
-import { MaterialType } from "../material/MaterialType";
-import { LocationType } from "../material/LocationType";
-import { Cards, isHero } from "../cards/Cards";
-import { Memory } from "./Memory";
-import PlayerTurn from "./helpers/PlayerTurn";
-import { EffectRule } from "./effect/EffectRule";
-import Army from "./helpers/Army";
-import { HeroDescription } from "../cards/HeroDescription";
+import { isMoveItemType, ItemMove, MaterialItem, RuleMove } from '@gamepark/rules-api'
+import { Cards, isHero } from '../cards/Cards'
 import { getTypes } from '../cards/DwarfDescription'
+import { HeroDescription } from '../cards/HeroDescription'
+import { LocationType } from '../material/LocationType'
+import { MaterialType } from '../material/MaterialType'
+import { EffectRule } from './effect/EffectRule'
+import Army from './helpers/Army'
+import PlayerTurn from './helpers/PlayerTurn'
+import { Memory } from './Memory'
 
 class RecruitHeroRules extends EffectRule {
 
@@ -27,11 +27,11 @@ class RecruitHeroRules extends EffectRule {
     for (const hero of heroes.getIndexes()) {
       const locations = playerTurn.getCardLocations(heroes.getItem(hero)!.id.front)
       moves.push(
-        ...locations.map((location) => heroes.index(hero).moveItem({ location }))
+        ...locations.map((location) => heroes.index(hero).moveItem(location))
       )
     }
 
-    return moves;
+    return moves
   }
 
   beforeItemMove(move: ItemMove) {
@@ -50,10 +50,10 @@ class RecruitHeroRules extends EffectRule {
     return []
   }
 
-  canBeRecruited (item: MaterialItem): boolean {
+  canBeRecruited(item: MaterialItem): boolean {
     const id = item.id.front
     const description = Cards[id] as HeroDescription
-    if (!description.minGrades) return true;
+    if (!description.minGrades) return true
 
     const army = new Army(this.game, this.player)
     return getTypes(description).every((type) => army.countGradesOfType(type, true) >= description.minGrades!)

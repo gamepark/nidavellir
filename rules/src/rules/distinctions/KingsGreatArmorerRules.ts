@@ -1,15 +1,15 @@
-import { MaterialType } from "../../material/MaterialType";
-import { isMoveItemType, ItemMove, MaterialMove, RuleMove } from "@gamepark/rules-api"
-import { DistinctionRules } from "./DistinctionRules";
-import { LocationType } from "../../material/LocationType";
-import { Card } from "../../cards/Cards";
-import PlayerTurn from "../helpers/PlayerTurn";
+import { isMoveItemType, ItemMove, MaterialMove, RuleMove } from '@gamepark/rules-api'
+import { Card } from '../../cards/Cards'
+import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
+import PlayerTurn from '../helpers/PlayerTurn'
+import { DistinctionRules } from './DistinctionRules'
 
 
 class KingsGreatArmorerRules extends DistinctionRules {
 
   onRuleStart(move: RuleMove): MaterialMove[] {
-    const moves = super.onRuleStart(move);
+    const moves = super.onRuleStart(move)
     const playerTurn = new PlayerTurn(this.game, this.player!)
 
     const card = this
@@ -22,9 +22,9 @@ class KingsGreatArmorerRules extends DistinctionRules {
 
     const locations = playerTurn.getCardLocations(card.getItem()!.id.front)
     for (const location of locations) {
-      moves.push(card.moveItem({ location }))
+      moves.push(card.moveItem(location))
     }
-    return moves;
+    return moves
   }
 
   afterItemMove(move: ItemMove): any[] {
@@ -36,8 +36,8 @@ class KingsGreatArmorerRules extends DistinctionRules {
     }
 
     this.memorizeRule(this.player!)
-    return moves;
+    return moves
   }
 }
 
-export { KingsGreatArmorerRules };
+export { KingsGreatArmorerRules }

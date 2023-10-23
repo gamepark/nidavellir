@@ -1,8 +1,8 @@
 import { isMoveItemType, ItemMove, MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
-import { MaterialType } from '../material/MaterialType'
 import { LocationType } from '../material/LocationType'
-import { Memory, PreviousRule } from './Memory'
+import { MaterialType } from '../material/MaterialType'
 import PlayerTurn from './helpers/PlayerTurn'
+import { Memory, PreviousRule } from './Memory'
 
 class ElavalandTurnRules extends PlayerTurnRule {
 
@@ -22,11 +22,11 @@ class ElavalandTurnRules extends PlayerTurnRule {
       return moves
     }
 
-    return [];
+    return []
   }
 
   getPlayerMoves() {
-    return this.chooseCardMoves;
+    return this.chooseCardMoves
   }
 
   get chooseCardMoves() {
@@ -35,17 +35,17 @@ class ElavalandTurnRules extends PlayerTurnRule {
 
     const cards = this
       .material(MaterialType.Card)
-      .location((location) => location.type === LocationType.Tavern && location.id === tavern);
+      .location((location) => location.type === LocationType.Tavern && location.id === tavern)
 
     const moves = []
     for (const card of cards.getIndexes()) {
       const locations = playerTurn.getCardLocations(cards.getItem(card)!.id.front)
       moves.push(
-        ...locations.map((location) => cards.index(card).moveItem({ location }))
+        ...locations.map((location) => cards.index(card).moveItem(location))
       )
     }
 
-    return moves;
+    return moves
   }
 
   afterItemMove(move: ItemMove) {

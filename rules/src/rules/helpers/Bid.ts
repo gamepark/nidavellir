@@ -1,9 +1,9 @@
 import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
-import { PlayerId } from '../../player/Player'
-import { MaterialType } from '../../material/MaterialType'
-import { LocationType } from '../../material/LocationType'
-import { tokenSpaces } from '../../material/PlayerBoardSpace'
 import equal from 'fast-deep-equal'
+import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
+import { tokenSpaces } from '../../material/PlayerBoardSpace'
+import { PlayerId } from '../../player/Player'
 
 export default class Bid extends MaterialRulesPart {
 
@@ -19,7 +19,7 @@ export default class Bid extends MaterialRulesPart {
       const location = { type: LocationType.PlayerBoard, id, player: this.player }
       return placableCoins
         .filter((item) => !equal(item.location, location))
-        .moveItems({ location })
+        .moveItems(location)
     })
   }
 }

@@ -17,10 +17,10 @@
     "prepublishOnly": "tsc"
   },
   "peerDependencies": {
-    "@gamepark/rules-api": ">=6.10"
+    "@gamepark/rules-api": ">=6.11"
   },
   "devDependencies": {
-    "@gamepark/rules-api": "~6.10.0",
+    "@gamepark/rules-api": "~6.11.0",
     "i18next": "^22.0.3"
   }
 }

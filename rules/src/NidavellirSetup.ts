@@ -122,7 +122,7 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
 
     return taverns.flatMap((tavern) => this.material(MaterialType.Card)
       .indexes(drawnCards.splice(0, cardsByTavern))
-      .moveItems({ location: { type: LocationType.Tavern, id: tavern } })
+      .moveItems({ type: LocationType.Tavern, id: tavern })
     )
   }
 

@@ -1,10 +1,10 @@
 import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
-import { RuleId } from './RuleId'
-import { MaterialType } from '../material/MaterialType'
-import { LocationType } from '../material/LocationType'
-import { Memory, PreviousRule } from './Memory'
 import { Card } from '../cards/Cards'
+import { LocationType } from '../material/LocationType'
+import { MaterialType } from '../material/MaterialType'
 import { TroopEvaluation } from './helpers/TroopEvaluation'
+import { Memory, PreviousRule } from './Memory'
+import { RuleId } from './RuleId'
 
 export class EndOfAgeRules extends MaterialRulesPart {
 
@@ -28,12 +28,11 @@ export class EndOfAgeRules extends MaterialRulesPart {
       moves.push(
         ...this
           .material(MaterialType.Coin)
-          .location(({ type }) => type === LocationType.Hand || type === LocationType.PlayerBoard)
-          .rotation((rotation) => !rotation?.y)
-          .moveItems({ rotation: { y: 1 }})
+          .location(location => (location.type === LocationType.Hand || location.type === LocationType.PlayerBoard) && !location.rotation)
+          .rotateItems(true)
       )
       moves.push(this.rules().endGame())
-      return moves;
+      return moves
     }
 
 
@@ -63,7 +62,7 @@ export class EndOfAgeRules extends MaterialRulesPart {
       .player((player) => player !== undefined)
 
     if (!thrud.length || thrud.location(LocationType.CommandZone).length) return []
-    return thrud.moveItems((item) => ({ location: { type: LocationType.CommandZone, player: item.location.player } }))
+    return thrud.moveItems(item => ({ type: LocationType.CommandZone, player: item.location.player }))
   }
 
   get previousRule() {

@@ -11,7 +11,7 @@ export enum Memory {
   Round,
   Trade,
   TransformBonus,
-  TransformedCoinItemPosition,
+  TransformedCoinItemLocation,
   Dagda,
   Effect,
   YludPlayed,

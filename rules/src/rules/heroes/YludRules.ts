@@ -1,10 +1,10 @@
-import { MaterialType } from "../../material/MaterialType";
 import { isMoveItemType, ItemMove, MaterialMove, RuleMove, RuleStep } from '@gamepark/rules-api'
-import { Card } from "../../cards/Cards";
-import { LocationType } from "../../material/LocationType";
-import { dwarfTypes } from "../../cards/DwarfDescription";
-import PlayerTurn from "../helpers/PlayerTurn";
-import { EffectRule } from "../effect/EffectRule";
+import { Card } from '../../cards/Cards'
+import { dwarfTypes } from '../../cards/DwarfDescription'
+import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
+import { EffectRule } from '../effect/EffectRule'
+import PlayerTurn from '../helpers/PlayerTurn'
 import { Memory, PreviousRule } from '../Memory'
 
 export class YludRules extends EffectRule {
@@ -18,7 +18,7 @@ export class YludRules extends EffectRule {
     const ylud = this.ylud
     return dwarfTypes
       .filter((type) => type !== ylud.getItem()!.location.id)
-      .map((type) => ylud.moveItem({ location: { type: LocationType.Army, id: type, player: this.player } }))
+      .map((type) => ylud.moveItem({ type: LocationType.Army, id: type, player: this.player }))
   }
 
   afterItemMove(move: ItemMove) {

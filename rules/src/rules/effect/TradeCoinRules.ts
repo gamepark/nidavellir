@@ -1,15 +1,15 @@
-import { CustomMove, isCustomMoveType, ItemPosition } from '@gamepark/rules-api'
-import { MaterialType } from '../../material/MaterialType'
-import { LocationType } from '../../material/LocationType'
+import { CustomMove, isCustomMoveType, Location } from '@gamepark/rules-api'
 import maxBy from 'lodash/maxBy'
-import { Coins } from '../../coins/Coins'
-import { CoinColor } from '../../coins/CoinDescription'
-import { ExchangeCoin } from '../helpers/ExchangeCoin'
-import { CustomMoveType } from '../../moves/CustomMoveType'
-import { EffectRule } from './EffectRule'
 import { Card } from '../../cards/Cards'
+import { CoinColor } from '../../coins/CoinDescription'
+import { Coins } from '../../coins/Coins'
+import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
 import { PlayerBoardSpace } from '../../material/PlayerBoardSpace'
+import { CustomMoveType } from '../../moves/CustomMoveType'
+import { ExchangeCoin } from '../helpers/ExchangeCoin'
 import PlayerTurn from '../helpers/PlayerTurn'
+import { EffectRule } from './EffectRule'
 
 export class TradeCoinRules extends EffectRule {
 
@@ -48,37 +48,36 @@ export class TradeCoinRules extends EffectRule {
     const hiddenCoins = this
       .material(MaterialType.Coin)
       .indexes(move.data)
-      .rotation((rotation) => !rotation?.y)
+      .rotation(rotation => !rotation)
 
     if (hiddenCoins.length) {
       return [
-        ...hiddenCoins.moveItems({ rotation: { y: 1 }}),
+        ...hiddenCoins.rotateItems(true),
         move
       ]
     }
     const tradedCoinsIndexes: number[] = move.data
     const tradedCoins = this.material(MaterialType.Coin).indexes(tradedCoinsIndexes)
     const maximumCoin = maxBy(tradedCoinsIndexes, (c) => Coins[tradedCoins.getItem(c)!.id].value)!
-    const maximumCoinItem = tradedCoins.getItem(maximumCoin)!;
+    const maximumCoinItem = tradedCoins.getItem(maximumCoin)!
     const coin = Coins[maximumCoinItem.id]
 
     const moves = []
-    const destination: Partial<ItemPosition> = coin.color === CoinColor.Bronze? { location: { type: LocationType.Discard, id: MaterialType.Coin }}: { location: { type : LocationType.Treasure }}
-    const tradedPosition = {
-      location: maximumCoinItem.location,
-      rotation: maximumCoinItem.rotation
-    }
+    const location: Location = coin.color === CoinColor.Bronze ? {
+      type: LocationType.Discard,
+      id: MaterialType.Coin
+    } : { type: LocationType.Treasure }
 
     const exchangedCoin = tradedCoins.index(maximumCoin)
-    moves.push(exchangedCoin.moveItem(destination))
+    moves.push(exchangedCoin.moveItem(location))
 
     const treasureCoin = new ExchangeCoin(this.game, tradedCoins).treasureCoin
 
     const notTradedCoinIndex = tradedCoinsIndexes.find((index) => index !== maximumCoin)!
     const newCoins = this.material(MaterialType.Coin).indexes([notTradedCoinIndex, treasureCoin.getIndex()])
 
-    moves.push(treasureCoin.moveItem(tradedPosition))
-    moves.push(...newCoins.moveItems({ rotation : {} }))
+    moves.push(treasureCoin.moveItem(maximumCoinItem.location))
+    moves.push(...newCoins.rotateItems(false))
     moves.push(newCoins.shuffle())
     moves.push(...this.end)
     return moves

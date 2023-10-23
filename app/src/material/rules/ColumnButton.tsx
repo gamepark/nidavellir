@@ -23,7 +23,7 @@ export const ColumnButton = (props: ColumnButtonProps) => {
 }
 
 const getToColumnText = (move: MoveItem) => {
-  switch (move.position.location?.id) {
+  switch (move.location.id) {
     case DwarfType.Blacksmith:
       return 'rule.card.moves.blacksmith';
     case DwarfType.Hunter:
@@ -40,7 +40,7 @@ const getToColumnText = (move: MoveItem) => {
 };
 
 const getDwarfIcon = (move: MoveItem) => {
-  switch (move.position.location?.id) {
+  switch (move.location.id) {
     case DwarfType.Blacksmith:
       return Images.BlacksmithIcon;
     case DwarfType.Hunter:

@@ -1,16 +1,16 @@
 import { isMoveItemType, Location, MaterialGame, MaterialItem, MaterialMove, MaterialRulesPart, MoveItem } from '@gamepark/rules-api'
-import { Effect, Memory, PreviousRule } from '../Memory'
-import { MaterialType } from '../../material/MaterialType'
-import { LocationType } from '../../material/LocationType'
-import { PlayerId } from '../../player/Player'
-import { RuleId } from '../RuleId'
-import { Trade } from './Trade'
-import { Tavern } from './Tavern'
 import { Card, Cards, HeroesEffects, isDwarfDescription, isHero, isHeroDescription, isRoyalOfferingDescription } from '../../cards/Cards'
-import { DwarfType, dwarfTypes } from '../../cards/DwarfType'
-import Army from './Army'
-import { TurnOrder } from './TurnOrder'
 import { getTypes } from '../../cards/DwarfDescription'
+import { DwarfType, dwarfTypes } from '../../cards/DwarfType'
+import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
+import { PlayerId } from '../../player/Player'
+import { Effect, Memory, PreviousRule } from '../Memory'
+import { RuleId } from '../RuleId'
+import Army from './Army'
+import { Tavern } from './Tavern'
+import { Trade } from './Trade'
+import { TurnOrder } from './TurnOrder'
 
 export default class PlayerTurn extends MaterialRulesPart {
   private heroCount: number
@@ -37,14 +37,14 @@ export default class PlayerTurn extends MaterialRulesPart {
     return moves
   }
 
-  get discardTavernMoves () {
+  get discardTavernMoves() {
     const cards = this
       .material(MaterialType.Card)
       .location(LocationType.Tavern)
       .locationId(this.tavern)
     if (!cards.length) return []
 
-    return cards.moveItems({ location: { type: LocationType.Discard, id: MaterialType.Card }})
+    return cards.moveItems({ type: LocationType.Discard, id: MaterialType.Card })
   }
 
   get effect() {
@@ -80,24 +80,24 @@ export default class PlayerTurn extends MaterialRulesPart {
     const effectMoves = this.goToEffect
     if (effectMoves.length) {
       moves.push(...effectMoves)
-      return moves;
+      return moves
     }
 
     if (this.previousRule) {
       moves.push(...this.moveToPreviousRule)
-      return moves;
+      return moves
     }
 
     return []
   }
 
   get goToEndOfTurn() {
-    return [this.rules().startRule(RuleId.EndOfTurn)];
+    return [this.rules().startRule(RuleId.EndOfTurn)]
   }
 
   get moveToPreviousRule() {
     if (!this.previousRule) return []
-    const previousRule = this.previousRule;
+    const previousRule = this.previousRule
     if (previousRule.id === this.ruleId || !previousRule?.player) return []
     return [this.rules().startRule(previousRule.id)]
   }
@@ -106,12 +106,12 @@ export default class PlayerTurn extends MaterialRulesPart {
     return this.game.rule?.id
   }
 
-  get previousRule () {
+  get previousRule() {
     return this.remind<PreviousRule>(Memory.PreviousRule)
   }
 
 
-    onChooseCard(move: MoveItem) {
+  onChooseCard(move: MoveItem) {
     const movedItem = this.material(MaterialType.Card).getItem(move.itemIndex)!
     this.applyEffect(movedItem)
 
@@ -119,13 +119,13 @@ export default class PlayerTurn extends MaterialRulesPart {
     this.mayRecruitNewHeroes(move)
 
     if (thrudMoves.length) {
-      return thrudMoves;
+      return thrudMoves
     }
 
     return this.effectMoves
   }
 
-  applyEffect (item: MaterialItem) {
+  applyEffect(item: MaterialItem) {
     const cardId = item.id.front
     const description = Cards[cardId]
 
@@ -140,7 +140,7 @@ export default class PlayerTurn extends MaterialRulesPart {
     }
   }
 
-  mayRecruitNewHeroes(move: MaterialMove,) {
+  mayRecruitNewHeroes(move: MaterialMove) {
     const recruitHeroCount = this.computeRecruitHeroCount(move)
     if (recruitHeroCount > 0) {
       this.memorize(Memory.Recruitments, recruitHeroCount)
@@ -148,12 +148,12 @@ export default class PlayerTurn extends MaterialRulesPart {
   }
 
   mayMoveThrud(move: MaterialMove): MaterialMove[] {
-    if (!isMoveItemType(MaterialType.Card)(move) || move.position.location?.type !== LocationType.Army) return []
+    if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.Army) return []
 
     const thrud = new Army(this.game, this.player).getCard(Card.Thrud)
     if (!thrud.length
       || thrud.getIndex() === move.itemIndex
-      || thrud.getItem()?.location?.id !== move.position.location.id) return []
+      || thrud.getItem()?.location?.id !== move.location.id) return []
 
     return [
       this.rules().startRule(RuleId.Thrud)
@@ -162,7 +162,7 @@ export default class PlayerTurn extends MaterialRulesPart {
 
   computeRecruitHeroCount(move: MaterialMove): number {
     const army = new Army(this.game, this.player)
-    if (!isMoveItemType(MaterialType.Card)(move) || move.position.location?.type !== LocationType.Army) return 0;
+    if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.Army) return 0
     const card = army.getItem(move.itemIndex)!
     const gradesByTypes = {
       [DwarfType.Blacksmith]: army.countGradesOfType(DwarfType.Blacksmith, true),

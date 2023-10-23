@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
+import { LocationType } from '@gamepark/nidavellir/material/LocationType'
+import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
+import { PlayerBoardSpace } from '@gamepark/nidavellir/material/PlayerBoardSpace'
+import { PlayerId } from '@gamepark/nidavellir/player/Player'
+import { RuleId } from '@gamepark/nidavellir/rules/RuleId'
 import { ItemContext, ItemLocator, MaterialContext } from '@gamepark/react-game'
-import { PlayerId } from "@gamepark/nidavellir/player/Player";
-import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
-import { LocationType } from "@gamepark/nidavellir/material/LocationType";
-import { Location, MaterialItem, XYCoordinates } from "@gamepark/rules-api";
-import { PlayerBoardSpace } from "@gamepark/nidavellir/material/PlayerBoardSpace";
-import { PlayerBoardSpaceLocatorDescription } from "./PlayerBoardSpaceLocatorDescription";
-import { RuleId } from "@gamepark/nidavellir/rules/RuleId";
+import { Location, MaterialItem, XYCoordinates } from '@gamepark/rules-api'
+import { PlayerBoardSpaceLocatorDescription } from './PlayerBoardSpaceLocatorDescription'
 
 export class PlayerBoardSpaceLocator extends ItemLocator<PlayerId, MaterialType, LocationType> {
   parentItemType = MaterialType.PlayerBoard
@@ -15,7 +15,7 @@ export class PlayerBoardSpaceLocator extends ItemLocator<PlayerId, MaterialType,
   getPositionOnParent(_location: Location<PlayerId, LocationType>, _context: MaterialContext<PlayerId, MaterialType, LocationType>): XYCoordinates {
     switch (_location.id) {
       case PlayerBoardSpace.LaughingGoblin:
-        return { x: 39, y:18 }
+        return { x: 39, y: 18 }
       case PlayerBoardSpace.DancingDragon:
         return { x: 32.2, y: 41.9 }
       case PlayerBoardSpace.ShiningHorse:
@@ -26,17 +26,17 @@ export class PlayerBoardSpaceLocator extends ItemLocator<PlayerId, MaterialType,
         return { x: 48.9, y: 104.9 }
       case PlayerBoardSpace.Gem:
       default:
-        return { x: 39.5, y: -15.1  }
+        return { x: 39.5, y: -15.1 }
     }
   }
 
   isHidden(item: MaterialItem<PlayerId, LocationType>, { type, rules, player }: ItemContext): boolean {
     const isTransform = player && rules.game.rule?.id === RuleId.TransformCoin && rules.game.rule.player === player && player === item.location.player
-    return MaterialType.Coin === type && !item.rotation?.y && !isTransform
+    return MaterialType.Coin === type && !item.location.rotation && !isTransform
   }
 
   getRotation(_item: MaterialItem<PlayerId, LocationType>, context: ItemContext): number {
-    return context.type === MaterialType.Gem? 180: 0
+    return context.type === MaterialType.Gem ? 180 : 0
   }
 
   getParentItemId(location: Location<PlayerId, LocationType>): number | undefined {

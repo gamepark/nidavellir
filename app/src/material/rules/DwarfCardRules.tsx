@@ -85,8 +85,8 @@ const DwarfRules = (props: MaterialRulesProps) => {
   const type = item.id.front ? getTypes(Cards[item.id.front])?.[0] : undefined
   const dwarfClass = type ?? item.location?.id
   const legalMoves = useLegalMoves()
-  const chooseDwarfCard = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.position.location?.type === LocationType.Army)
-  const discard = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.position.location?.type === LocationType.Discard)
+  const chooseDwarfCard = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Army)
+  const discard = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Discard)
 
   return (
     <>
@@ -114,7 +114,7 @@ const RoyalOfferingRules = (props: MaterialRulesProps) => {
 
   const { previous, next } = getCardNavigation(rules, item, itemIndex!)
   const legalMoves = useLegalMoves()
-  const discard = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.position.location?.type === LocationType.Discard)
+  const discard = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Discard)
   return (
     <>
       <h2 css={[title, norse]}>
@@ -168,7 +168,7 @@ const getValues = (card: Card) => {
 
 const ChooseHeroMoves: FC<MaterialRulesProps> = (props) => {
   const { itemIndex } = props
-  const chooseHeroMoves = useLegalMoves((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && (move.position.location?.type === LocationType.Army || move.position.location?.type === LocationType.CommandZone))
+  const chooseHeroMoves = useLegalMoves((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && (move.location.type === LocationType.Army || move.location.type === LocationType.CommandZone))
   if (!chooseHeroMoves.length) return null
 
   return (
@@ -344,7 +344,7 @@ const navigation = css`
 `
 
 const norse = css`
-  font-family: Norse, Arial, Serif
+  font-family: Norse, Arial, serif
 `
 
 const title = css`

@@ -1,18 +1,18 @@
-import { DistinctionRules } from './DistinctionRules'
 import { isMoveItemType, ItemMove, MaterialMove, RuleMove } from '@gamepark/rules-api'
-import { MaterialType } from '../../material/MaterialType'
-import { LocationType } from '../../material/LocationType'
-import PlayerTurn from '../helpers/PlayerTurn'
 import { PioneerOfTheKingdom } from '../../cards/Distinctions'
-import { RuleId } from '../RuleId'
+import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
+import PlayerTurn from '../helpers/PlayerTurn'
 import { DrawCard, Memory } from '../Memory'
+import { RuleId } from '../RuleId'
+import { DistinctionRules } from './DistinctionRules'
 
 
 class PioneerOfTheKingdomRules extends DistinctionRules {
 
   onRuleStart(move: RuleMove): MaterialMove[] {
     if (this.previousRule && this.previousRule.id === this.ruleId) {
-      const moves =  super.onRuleStart(move);
+      const moves = super.onRuleStart(move)
       moves.push(...this.endDistinction)
       return moves
     }
@@ -33,7 +33,7 @@ class PioneerOfTheKingdomRules extends DistinctionRules {
     moves.push(
       ...ageCards
         .limit(1)
-        .moveItems({ location: { type: LocationType.Discard, id: MaterialType.Card } }),
+        .moveItems({ type: LocationType.Discard, id: MaterialType.Card })
     )
     moves.push(...this.endDistinction)
 
@@ -60,24 +60,24 @@ class PioneerOfTheKingdomRules extends DistinctionRules {
     for (const card of cards.getIndexes()) {
       const locations = playerTurn.getCardLocations(cards.getItem(card)!.id.front)
       moves.push(
-        ...locations.map((location) => cards.index(card).moveItem({ location }))
+        ...locations.map((location) => cards.index(card).moveItem(location))
       )
     }
 
-    return moves;
+    return moves
   }
 
   afterItemMove(move: ItemMove) {
-    if (!isMoveItemType(MaterialType.Card)(move) || move.position.location?.type === LocationType.Hand) return []
+    if (!isMoveItemType(MaterialType.Card)(move) || move.location.type === LocationType.Hand) return []
     const player = this.player
     if (!player) return []
 
     const moves = []
-    if (move.position.location?.type === LocationType.Army) {
+    if (move.location.type === LocationType.Army) {
       const cardInHands = this.cardsInHand
       if (!cardInHands?.length) return this.endDistinction
       if (cardInHands.length === 2) {
-        moves.push(...cardInHands.moveItems({ location: { type: LocationType.Age2Deck } }))
+        moves.push(...cardInHands.moveItems({ type: LocationType.Age2Deck }))
         moves.push(this.ageDeck.shuffle())
       }
 

@@ -38,7 +38,7 @@ export const CoinRules: FC<MaterialRulesProps> = (props) => {
 
 const PlaceCoinMoves: FC<MaterialRulesProps> = (props) => {
   const { itemIndex } = props;
-  const placeCoins = useLegalMoves((move) => isMoveItemType(MaterialType.Coin)(move) && move.itemIndex === itemIndex && (move.position.location?.type === LocationType.PlayerBoard || move.position.location?.type === LocationType.Hand))
+  const placeCoins = useLegalMoves((move) => isMoveItemType(MaterialType.Coin)(move) && move.itemIndex === itemIndex && (move.location.type === LocationType.PlayerBoard || move.location.type === LocationType.Hand))
   if (!placeCoins.length) return null;
 
   return (
@@ -68,7 +68,7 @@ const TradeCoinsMoves: FC<MaterialRulesProps> = (props) => {
 
 const TransformCoinsMoves: FC<MaterialRulesProps> = (props) => {
   const rules = useRules<NidavellirRules>()!
-  const transformCoins = useLegalMoves((move) => rules.game.rule?.id === RuleId.TransformCoin && isMoveItemType(MaterialType.Coin)(move) && (move.position.location?.type === LocationType.Discard || move.position.location?.type === LocationType.Treasure))
+  const transformCoins = useLegalMoves((move) => rules.game.rule?.id === RuleId.TransformCoin && isMoveItemType(MaterialType.Coin)(move) && (move.location.type === LocationType.Discard || move.location.type === LocationType.Treasure))
   if (!transformCoins.length) return null
 
   return (
@@ -121,5 +121,5 @@ const buttonContainer = css`
 `
 
 const norse = css`
-  font-family: Norse, Arial, Serif
+  font-family: Norse, Arial, serif
 `

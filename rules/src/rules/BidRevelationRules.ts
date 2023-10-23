@@ -1,10 +1,10 @@
+import { isMoveItemType, ItemMove, MaterialMove, MaterialRulesPart, RuleMove, RuleStep } from '@gamepark/rules-api'
+import { Card } from '../cards/Cards'
 import { LocationType } from '../material/LocationType'
-import { isMoveItemType, ItemMove, MaterialMove, MaterialRulesPart, RuleMove, RuleStep } from "@gamepark/rules-api";
-import { Memory } from "./Memory";
-import { MaterialType } from "../material/MaterialType";
-import { Card } from "../cards/Cards";
-import { RuleId } from "./RuleId";
-import { TurnOrder } from "./helpers/TurnOrder";
+import { MaterialType } from '../material/MaterialType'
+import { TurnOrder } from './helpers/TurnOrder'
+import { Memory } from './Memory'
+import { RuleId } from './RuleId'
 
 class BidRevelationRules extends MaterialRulesPart {
 
@@ -13,7 +13,7 @@ class BidRevelationRules extends MaterialRulesPart {
       this.nextTavern()
     }
 
-    return this.coinsToReveal.moveItems({ rotation: { y: 1 } })
+    return this.coinsToReveal.rotateItems(true)
   }
 
   afterItemMove(move: ItemMove) {
@@ -64,9 +64,8 @@ class BidRevelationRules extends MaterialRulesPart {
   get coinsToReveal() {
     return this
       .material(MaterialType.Coin)
-      .location((location) => location.type === LocationType.PlayerBoard && location.id === this.tavern)
-      .rotation((rotation) => !rotation?.y)
+      .location(location => location.type === LocationType.PlayerBoard && location.id === this.tavern && !location.rotation)
   }
 }
 
-export {BidRevelationRules}
+export { BidRevelationRules }

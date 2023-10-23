@@ -1,12 +1,12 @@
-import { LocationType } from '../material/LocationType'
+import { isMoveItemType, ItemMove, MaterialItem, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
 import keyBy from 'lodash/keyBy'
 import values from 'lodash/values'
-import { isMoveItemType, ItemMove, MaterialItem, MaterialMove, MaterialRulesPart } from "@gamepark/rules-api";
-import { Trade } from "./helpers/Trade";
-import { Memory } from "./Memory";
-import { MaterialType } from "../material/MaterialType";
-import { Tavern } from "./helpers/Tavern";
-import { PlayerBoardSpace } from "../material/PlayerBoardSpace";
+import { LocationType } from '../material/LocationType'
+import { MaterialType } from '../material/MaterialType'
+import { PlayerBoardSpace } from '../material/PlayerBoardSpace'
+import { Tavern } from './helpers/Tavern'
+import { Trade } from './helpers/Trade'
+import { Memory } from './Memory'
 
 class GemTradeRules extends MaterialRulesPart {
   onRuleStart() {
@@ -49,14 +49,15 @@ class GemTradeRules extends MaterialRulesPart {
     return reversed.flatMap((coin, index) => {
       const item = this.material(MaterialType.Coin).getItem(coin)!
       const newPlayer = item.location.player!
-      return this.material(MaterialType.Gem).id(gemByPlayer[players[index]].id).moveItems({ location: { type: LocationType.PlayerBoard, id: PlayerBoardSpace.Gem, player: newPlayer }})
+      return this.material(MaterialType.Gem).id(gemByPlayer[players[index]].id)
+        .moveItems({ type: LocationType.PlayerBoard, id: PlayerBoardSpace.Gem, player: newPlayer })
     })
   }
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Gem)(move)) return []
 
-    this.memorize(Memory.Trade, true, move.position.location?.player)
+    this.memorize(Memory.Trade, true, move.location.player)
     if (!this.allTraded) return []
 
     this.forget(Memory.Trade)

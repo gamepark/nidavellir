@@ -25,7 +25,7 @@ export const PlayerBoardSpaceRules: FC<LocationRulesProps> = (props) => {
 const PlaceCoinMoves: FC<LocationRulesProps> = (props) => {
   const { location } = props;
   const rules = useRules<NidavellirRules>()!
-  const placeCoins = useLegalMoves<MoveItem>((move) => isMoveItemType(MaterialType.Coin)(move) && move.position.location?.type === LocationType.PlayerBoard && move.position.location.id === location.id)
+  const placeCoins = useLegalMoves<MoveItem>((move) => isMoveItemType(MaterialType.Coin)(move) && move.location.type === LocationType.PlayerBoard && move.location.id === location.id)
   if (!placeCoins.length) return null;
 
   return (
@@ -115,5 +115,5 @@ export const moveAction = css`
 `
 
 const norse = css`
-  font-family: Norse, Arial, Serif
+  font-family: Norse, Arial, serif
 `

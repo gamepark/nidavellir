@@ -11,7 +11,7 @@ class UlineBidRules extends PlayerTurnRule {
     return new Bid(this.game, this.player, true).combinations
       .filter((move) => {
         if(!isMoveItemType(MaterialType.Coin)(move)) return false
-        if (move.position.location?.id !== this.tavern) return false
+        if (move.location.id !== this.tavern) return false
         const item = this.material(MaterialType.Coin).getItem(move.itemIndex)!
         return item.location.type !== LocationType.PlayerBoard;
 

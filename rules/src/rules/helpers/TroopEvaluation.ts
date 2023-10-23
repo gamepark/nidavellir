@@ -1,12 +1,12 @@
-import { MaterialMove, MaterialRulesPart } from "@gamepark/rules-api";
-import { Distinction, distinctions } from "../../material/Distinction";
-import { Distinctions } from "../../cards/Distinctions";
-import { RuleId } from "../RuleId";
-import { DwarfType } from "../../cards/DwarfType";
-import Army from "./Army";
-import { MaterialType } from "../../material/MaterialType";
-import { LocationType } from "../../material/LocationType";
-import { Memory } from "../Memory";
+import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
+import { Distinctions } from '../../cards/Distinctions'
+import { DwarfType } from '../../cards/DwarfType'
+import { Distinction, distinctions } from '../../material/Distinction'
+import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
+import { Memory } from '../Memory'
+import { RuleId } from '../RuleId'
+import Army from './Army'
 
 export class TroopEvaluation extends MaterialRulesPart {
 
@@ -31,15 +31,15 @@ export class TroopEvaluation extends MaterialRulesPart {
   get distinction() {
     switch (this.game.rule?.id) {
       case RuleId.HuntingMaster:
-        return Distinction.HuntingMaster;
+        return Distinction.HuntingMaster
       case RuleId.CrownJeweler:
-        return Distinction.CrownJeweler;
+        return Distinction.CrownJeweler
       case RuleId.KingsGreatArmorer:
-        return Distinction.KingsGreatArmorer;
+        return Distinction.KingsGreatArmorer
       case RuleId.PioneerOfTheKingdom:
         return Distinction.PioneerOfTheKingdom
       case RuleId.KingsHand:
-        return Distinction.KingsHand;
+        return Distinction.KingsHand
       default:
         return 0
     }
@@ -50,10 +50,10 @@ export class TroopEvaluation extends MaterialRulesPart {
   }
 
   get giveDistinctionToPlayer() {
-    return this.material(MaterialType.Distinction).id(this.distinction).moveItems({ location: { type: LocationType.CommandZone, player: this.player } })
+    return this.material(MaterialType.Distinction).id(this.distinction).moveItems({ type: LocationType.CommandZone, player: this.player })
   }
 
-  getPlayerWithMajority(type: DwarfType)  {
+  getPlayerWithMajority(type: DwarfType) {
     for (const player of this.game.players) {
       if (new Army(this.game, player).hasStrictMajorityOf(type)) {
         return player
@@ -69,5 +69,5 @@ const DistinctionRuleId = {
   [Distinction.HuntingMaster]: RuleId.HuntingMaster,
   [Distinction.CrownJeweler]: RuleId.CrownJeweler,
   [Distinction.KingsGreatArmorer]: RuleId.KingsGreatArmorer,
-  [Distinction.PioneerOfTheKingdom]: RuleId.PioneerOfTheKingdom,
+  [Distinction.PioneerOfTheKingdom]: RuleId.PioneerOfTheKingdom
 }

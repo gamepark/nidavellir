@@ -26,11 +26,11 @@ export const  PlaceCoinButton = (props: PlaceCoinButtonProps) => {
 }
 
 const getToColumnText = (move: MoveItem) => {
-  if (move.position.location?.type === LocationType.Hand) {
+  if (move.location.type === LocationType.Hand) {
     return  'rule.coin.moves.hand';
   }
 
-  switch (move.position.location?.id) {
+  switch (move.location.id) {
     case Tavern.LaughingGoblin:
       return  'rule.coin.moves.laughing-goblin';
     case Tavern.DancingDragon:
@@ -46,9 +46,9 @@ const getToColumnText = (move: MoveItem) => {
 };
 
 const getSpaceIcon = (move: MoveItem) => {
-  if (move.position.location?.type === LocationType.Hand) return
+  if (move.location.type === LocationType.Hand) return
 
-  switch (move.position.location?.id) {
+  switch (move.location.id) {
     case PlayerBoardSpace.LaughingGoblin:
       return Images.LaughingGoblinIcon;
     case PlayerBoardSpace.DancingDragon:
