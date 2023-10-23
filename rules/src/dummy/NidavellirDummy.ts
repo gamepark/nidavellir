@@ -3,6 +3,7 @@ import { Dummy, isMoveItemType, MaterialGame, MaterialMove } from '@gamepark/rul
 import { MaterialType } from '../material/MaterialType'
 import { LocationType } from '../material/LocationType'
 import { NidavellirRules } from '../NidavellirRules'
+import { RuleId } from '../rules/RuleId'
 
 export class NidavellirDummy extends Dummy<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId> {
 
@@ -12,10 +13,13 @@ export class NidavellirDummy extends Dummy<MaterialGame<PlayerId, MaterialType, 
 
   getLegalMoves(game: MaterialGame<PlayerId, MaterialType, LocationType>, player: PlayerId): MaterialMove<PlayerId, MaterialType, LocationType>[] {
     const rules = new NidavellirRules(game)
-    return super.getLegalMoves(game, player).filter((move: MaterialMove) => {
+    const legalMoves = super.getLegalMoves(game, player)
+    if (rules.game.rule?.id === RuleId.UlineBid || rules.game.rule?.id === RuleId.Bids) return legalMoves
+
+    return legalMoves.filter((move: MaterialMove) => {
       if (!isMoveItemType(MaterialType.Coin)(move) || !move.location) return true
       const item = rules.material(MaterialType.Coin).getItem(move.itemIndex)!
-      if (move.location.type === LocationType.Hand) return false
+      if (move.location?.type === LocationType.Hand) return false
       const itemOnTarget = rules
         .material(MaterialType.Coin)
         .location(move.location.type)
@@ -23,8 +27,8 @@ export class NidavellirDummy extends Dummy<MaterialGame<PlayerId, MaterialType, 
         .player(move.location.player)
 
       if (itemOnTarget.length) return false
-      return !(move.location.type === LocationType.PlayerBoard && item.location.type === LocationType.PlayerBoard);
-
+      if (move.location?.type === LocationType.PlayerBoard && item.location.type === LocationType.PlayerBoard) return false
+      return true
     })
   }
 }
