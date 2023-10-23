@@ -1,11 +1,11 @@
-import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
-import { Card } from '../cards/Cards'
 import { LocationType } from '../material/LocationType'
-import { MaterialType } from '../material/MaterialType'
-import { taverns } from '../material/Tavern'
-import { MIN_DWARVES_PER_TAVERN } from './helpers/Tavern'
-import { Memory } from './Memory'
-import { RuleId } from './RuleId'
+import { MaterialMove, MaterialRulesPart } from "@gamepark/rules-api";
+import { MaterialType } from "../material/MaterialType";
+import { RuleId } from "./RuleId";
+import { MIN_DWARVES_PER_TAVERN } from "./helpers/Tavern";
+import { taverns } from "../material/Tavern";
+import { Memory } from "./Memory";
+import { Card } from "../cards/Cards";
 
 
 class EnterTheDwarvesRules extends MaterialRulesPart {
@@ -14,11 +14,12 @@ class EnterTheDwarvesRules extends MaterialRulesPart {
     this.memorize(Memory.Round, (round) => round + 1)
     const moves = this.fillTavern
     for (const player of this.game.players) {
+      const coins = this.material(MaterialType.Coin).player(player)
       moves.push(
-        ...this.material(MaterialType.Coin)
-          .player(player)
+        ...coins
           .location((location) => LocationType.Hand !== location.type)
-          .moveItems({ type: LocationType.Hand, player })
+          .moveItems({ type: LocationType.Hand, player }),
+        coins.shuffle()
       )
     }
 
@@ -40,7 +41,7 @@ class EnterTheDwarvesRules extends MaterialRulesPart {
   get fillTavern(): MaterialMove[] {
     const cardsByTavern = Math.max(MIN_DWARVES_PER_TAVERN, this.game.players.length)
     const drawnCards = this.material(MaterialType.Card)
-      .location((location) => this.age === 1 ? LocationType.Age1Deck === location.type : LocationType.Age2Deck === location.type)
+      .location((location) => this.age === 1? LocationType.Age1Deck === location.type: LocationType.Age2Deck === location.type)
       .sort(card => -card.location.x!)
       .limit(cardsByTavern * 3)
       .getIndexes()
@@ -51,7 +52,7 @@ class EnterTheDwarvesRules extends MaterialRulesPart {
     )
   }
 
-  get age() {
+  get age () {
     return this.remind(Memory.Age)
   }
 }
