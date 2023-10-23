@@ -74,10 +74,12 @@ export class TradeCoinRules extends EffectRule {
     const treasureCoin = new ExchangeCoin(this.game, tradedCoins).treasureCoin
 
     const notTradedCoinIndex = tradedCoinsIndexes.find((index) => index !== maximumCoin)!
+    const notTradedCoin = this.material(MaterialType.Coin).index(notTradedCoinIndex)
     const newCoins = this.material(MaterialType.Coin).indexes([notTradedCoinIndex, treasureCoin.getIndex()])
 
     moves.push(treasureCoin.moveItem(maximumCoinItem.location))
-    moves.push(...newCoins.rotateItems(false))
+    moves.push(treasureCoin.moveItem({ ...maximumCoinItem.location, rotation: false }))
+    moves.push(notTradedCoin.rotateItem(false))
     moves.push(newCoins.shuffle())
     moves.push(...this.end)
     return moves
