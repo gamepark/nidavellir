@@ -12,6 +12,10 @@ export class PlayerBoardSpaceLocator extends ItemLocator<PlayerId, MaterialType,
   parentItemType = MaterialType.PlayerBoard
   locationDescription = new PlayerBoardSpaceLocatorDescription()
 
+  getPosition() {
+    return { x: 0, y: 0, z: 1 }
+  }
+
   getPositionOnParent(_location: Location<PlayerId, LocationType>, _context: MaterialContext<PlayerId, MaterialType, LocationType>): XYCoordinates {
     switch (_location.id) {
       case PlayerBoardSpace.LaughingGoblin:
