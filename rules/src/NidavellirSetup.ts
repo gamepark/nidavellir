@@ -1,6 +1,6 @@
-import { MaterialGameSetup, MaterialMove } from '@gamepark/rules-api'
+import { listingToList, MaterialGameSetup, MaterialMove } from '@gamepark/rules-api'
 import shuffle from 'lodash/shuffle'
-import { Card, CardDeck, dwarfCards, heroCards } from './cards/Cards'
+import { Card, CardDeck, heroCards } from './cards/Cards'
 import { age1For5Players, age1ForMinus5Players, age2For5Players, age2ForMinus5Players } from './configuration/CardsMinPlayers'
 import { lessThan4PlayersTreasure, moreThan3PlayersTreasure } from './configuration/CoinPerPlayers'
 import { bronzeCoins, Coin, goldCoins } from './material/Coin'
@@ -35,13 +35,7 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
 
   setupCard(options: NidavellirOptions) {
     this.createAge1Deck(options)
-    const age2 = this.getAge2Cards(options)
-
-    // Age 2 Deck
-    this.material(MaterialType.Card)
-      .createItems(age2.map((front) => ({ id: { back: CardDeck.Age2, front }, location: { type: LocationType.Age2Deck } })))
-    this.material(MaterialType.Card).location(LocationType.Age2Deck).shuffle()
-
+    this.createAge2Deck(options)
     this.material(MaterialType.Card)
       .createItem({ id: { back: CardDeck.Distinction, front: Card.BlacksmithKingsGreatArmorer }, location: { type: LocationType.DistinctionsDeck } })
 
@@ -55,14 +49,22 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
     this.material(MaterialType.Card).location(LocationType.Age1Deck).shuffle()
   }
 
+  createAge2Deck(options: NidavellirOptions) {
+    const age2 = this.getAge2Cards(options)
+
+    this.material(MaterialType.Card)
+      .createItems(age2.map((front) => ({ id: { back: CardDeck.Age2, front }, location: { type: LocationType.Age2Deck } })))
+    this.material(MaterialType.Card).location(LocationType.Age2Deck).shuffle()
+  }
+
   getAge1Cards(options: NidavellirOptions): Card[] {
     const cardQuantities = options.players === 5 ? age1For5Players : age1ForMinus5Players
-    return dwarfCards.flatMap((c) => Array.from(Array(cardQuantities[c] ?? 1)).fill(c))
+    return listingToList(cardQuantities)
   }
 
   getAge2Cards(options: NidavellirOptions): Card[] {
     const cardQuantities = options.players === 5 ? age2For5Players : age2ForMinus5Players
-    return dwarfCards.flatMap((c) => Array.from(Array(cardQuantities[c] ?? 1)).fill(c))
+    return listingToList(cardQuantities)
   }
 
   setupHeroes() {
