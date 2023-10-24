@@ -24,7 +24,7 @@ export const PlayerDialog: FC<PlayerDialogProps> = ({ close, player }) => {
   const rules = useRules<NidavellirRules>()!
   const name = usePlayerName(player)
   const score = new Score(rules.game, player)
-  const maxCoin = score.maximumCoin
+  const maxCoin = score.warriorMajority
   const army = new Army(rules.game, player)
   return (
     <RulesDialog open close={close}>
@@ -74,7 +74,7 @@ export const PlayerDialog: FC<PlayerDialogProps> = ({ close, player }) => {
           {!!maxCoin && <PlayerDialogIndicator
               width={2.1}
               image={coinDescription.images[maxCoin.id]} // Get the max coin image
-              value={t('player.dialog.score.max-coin.value', { player: name, score: score.maximumCoinValue })}
+              value={t('player.dialog.score.max-coin.value', { player: name, score: score.warriorMajority })}
               description={t('player.dialog.score.max-coin.reason')}
           />}
           <PlayerDialogIndicator
@@ -82,42 +82,12 @@ export const PlayerDialog: FC<PlayerDialogProps> = ({ close, player }) => {
             image={Images.CommandIcon}
             value={t('player.dialog.score.neutral.value', { player: name, score: score.neutral })}
           />
-          {<PlayerDialogIndicator
+          <PlayerDialogIndicator
             width={2.1}
               image={Images.ClearCoin} // Get the max coin image
               value={t('player.dialog.score.additional.value', { player: name, score: score.coinsTotal })}
               description={t('player.dialog.score.sum-coin.reason')}
-          />}
-          {/*<PlayerDialogIndicator*/}
-          {/*  ratio={ticketDescription.width / ticketDescription.height}*/}
-          {/*  width={3}*/}
-          {/*  image={ticket}*/}
-          {/*  value={t('player.dialog.ticket.value', {*/}
-          {/*    player: name,*/}
-          {/*    tickets: rules ? countPlayerTickets(rules, player) : 0*/}
-          {/*  })}*/}
-          {/*  shadow*/}
-          {/*/>*/}
-          {/*<PlayerDialogIndicator*/}
-          {/*  image={hand}*/}
-          {/*  width={3}*/}
-          {/*  value={t('player.dialog.card.value', {*/}
-          {/*    player: name,*/}
-          {/*    cards: rules?.material(MaterialType.Card).location(LocationType.Hand).player(player).length*/}
-          {/*  })}*/}
-          {/*  shadow*/}
-          {/*/>*/}
-          {/*<PlayerDialogIndicator*/}
-          {/*  image={playerTokensDescription.images[player]}*/}
-          {/*  width={3}*/}
-          {/*  radius={3}*/}
-          {/*  value={t('player.dialog.token.value', {*/}
-          {/*    player: name,*/}
-          {/*    tokens: rules?.material(MaterialType.Token).location(LocationType.Place).id(player).length*/}
-          {/*  })}*/}
-          {/*  shadow*/}
-          {/*/>*/}
-
+          />
         </div>
       </div>
     </RulesDialog>
