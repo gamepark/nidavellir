@@ -9,22 +9,23 @@ export class TableLocator extends ItemLocator {
   getPosition(item: MaterialItem, context: ItemContext) {
     const { rules } = context
     const index = this.getBoardIndex(item, context)
-    if (rules.players.length < 4) {
-      return this.getPositionForIndex(index)
+    switch (rules.players.length) {
+      case 2:
+        return this.getPositionForIndex([0, 2][index])
+      case 3:
+        return this.getPositionForIndex(index)
+      case 4:
+        return this.getPositionForIndex([0, 3, 5, 2][index])
+      default:
+        return this.getPositionForIndex([0, 3, 4, 5, 2][index])
     }
-
-    if (rules.players.length === 4) {
-      return this.getPositionForIndex([0, 3, 5, 2][index])
-    }
-
-    return this.getPositionForIndex([0, 3, 4, 5, 2][index])
   }
 
   getBoardIndex(item: MaterialItem, { player, rules }: ItemContext) {
     if (!player) return rules.players.indexOf(item.location.player!)
     if (player && player === item.location.player) return 0
     const remainingPlayers = rules.players.filter((p) => p !== player)
-    if (remainingPlayers.length === 1) return 2
+    if (remainingPlayers.length === 1) return 1
     return remainingPlayers.indexOf(item.location.player!) + 1
   }
 
