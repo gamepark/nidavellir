@@ -93,7 +93,7 @@ const DwarfRules = (props: MaterialRulesProps) => {
       <h2 css={[title, norse]}>
         {!!previous.length &&
             <div css={[navigation, previousNav]} onClick={() => play(displayMaterialRules(MaterialType.Card, previous.getItem(), previous.getIndex()), { local: true })}><span>&lt;</span></div>}
-        {t(`dwarf-card.class.${dwarfClass}`)}
+        <span css={css`flex: 1`}>{t(`dwarf-card.class.${dwarfClass}`)}</span>
         {!!next.length &&
             <div css={[navigation, nextNav]} onClick={() => play(displayMaterialRules(MaterialType.Card, next.getItem(), next.getIndex()), { local: true })}><span>&gt;</span></div>}
       </h2>
@@ -120,7 +120,7 @@ const RoyalOfferingRules = (props: MaterialRulesProps) => {
       <h2 css={[title, norse]}>
         {!!previous.length &&
             <div css={[navigation, previousNav]} onClick={() => play(displayMaterialRules(MaterialType.Card, previous.getItem(), previous.getIndex()), { local: true })}><span>&lt;</span></div>}
-        {t('royal-offering.name')}
+        <span css={css`flex: 1`}>{t('royal-offering.name')}</span>
         {!!next.length &&
             <div css={[navigation, nextNav]} onClick={() => play(displayMaterialRules(MaterialType.Card, next.getItem(), next.getIndex()), { local: true })}><span>&gt;</span></div>}
       </h2>
@@ -144,7 +144,7 @@ const HeroRules = (props: MaterialRulesProps) => {
         {!!previous.length &&
             <div css={[navigation, previousNav, normal]} onClick={() => play(displayMaterialRules(MaterialType.Card, previous.getItem(), previous.getIndex()), { local: true })}>
                 <span>&lt;</span></div>}
-        <Trans defaults={visible ? `hero.name.${item.id.front}` : 'hero.name'}><strong css={rightMargin}/></Trans>
+        <span css={css`flex: 1`}><Trans defaults={visible ? `hero.name.${item.id.front}` : 'hero.name'}><strong css={rightMargin}/></Trans></span>
         {!!next.length &&
             <div css={[navigation, nextNav]} onClick={() => play(displayMaterialRules(MaterialType.Card, next.getItem(), next.getIndex()), { local: true })}><span>&gt;</span></div>}
       </h2>
@@ -315,20 +315,12 @@ const normal = css`
 `
 
 const previousNav = css`
-  position: absolute;
-  left: 3em;
-  top: 0.05em;
 `
 
 const nextNav = css`
-  position: absolute;
-  right: 3em;
-  top: 0.05em;
 `
 
 const navigation = css`
-  margin-left: 0.4em;
-  margin-right: 0.4em;
   padding-left: 0.4em;
   padding-right: 0.4em;
   border-radius: 0.2em;
