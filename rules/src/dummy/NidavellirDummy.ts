@@ -14,7 +14,7 @@ export class NidavellirDummy extends Dummy<MaterialGame<PlayerId, MaterialType, 
   getLegalMoves(game: MaterialGame<PlayerId, MaterialType, LocationType>, player: PlayerId): MaterialMove<PlayerId, MaterialType, LocationType>[] {
     const rules = new NidavellirRules(game)
     const legalMoves = super.getLegalMoves(game, player)
-    if (rules.game.rule?.id === RuleId.UlineBid || rules.game.rule?.id === RuleId.Bids) return legalMoves
+    if (rules.game.rule?.id !== RuleId.UlineBid && rules.game.rule?.id !== RuleId.Bids) return legalMoves
 
     return legalMoves.filter((move: MaterialMove) => {
       if (!isMoveItemType(MaterialType.Coin)(move) || !move.location) return true
