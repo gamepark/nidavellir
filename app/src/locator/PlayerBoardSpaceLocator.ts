@@ -39,7 +39,7 @@ export class PlayerBoardSpaceLocator extends ItemLocator<PlayerId, MaterialType,
     return MaterialType.Coin === type && !item.location.rotation && !isTransform
   }
 
-  getRotation(_item: MaterialItem<PlayerId, LocationType>, context: ItemContext): number {
+  getRotateZ(_item: MaterialItem<PlayerId, LocationType>, context: ItemContext): number {
     return context.type === MaterialType.Gem ? 180 : 0
   }
 
