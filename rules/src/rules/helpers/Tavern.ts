@@ -9,6 +9,7 @@ export const MIN_DWARVES_PER_TAVERN = 3;
 export class Tavern extends MaterialRulesPart {
 
   get end(): MaterialMove[] {
+    this.game.players.forEach((p) => this.forget(Memory.DiscardedCoin, p))
     if (this.isEndOfAge) {
       return [this.rules().startRule(RuleId.EndOfAge)]
     }

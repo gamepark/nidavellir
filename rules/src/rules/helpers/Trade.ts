@@ -49,7 +49,6 @@ export class Trade extends MaterialRulesPart {
   getCoinValue(coin: MaterialItem) {
     const discardedCoin = this.remind<DiscardedCoin>(Memory.DiscardedCoin, coin.location.player)
     if (!discardedCoin || discardedCoin.tavern !== this.tavern) return Coins[coin.id].value
-    const item = this.material(MaterialType.Coin).index(discardedCoin.index).getItem()!
-    return Coins[item.id].value
+    return Coins[discardedCoin.id].value
   }
 }

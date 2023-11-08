@@ -1,13 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import Images from "../images/Images";
-import { RoundTokenDescription } from "@gamepark/react-game";
-import { Coin } from "@gamepark/nidavellir/material/Coin";
-import { ItemContext } from "@gamepark/react-game";
-import { MaterialMove, isCustomMoveType, MaterialItem } from "@gamepark/rules-api";
-import { CustomMoveType } from "@gamepark/nidavellir/moves/CustomMoveType";
-import { LocationType } from "@gamepark/nidavellir/material/LocationType";
-import { RuleId } from "@gamepark/nidavellir/rules/RuleId";
-import { CoinRules } from "./rules/CoinRules";
+import Images from '../images/Images'
+import { ItemContext, RoundTokenDescription } from '@gamepark/react-game'
+import { Coin } from '@gamepark/nidavellir/material/Coin'
+import { isCustomMoveType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import { CustomMoveType } from '@gamepark/nidavellir/moves/CustomMoveType'
+import { LocationType } from '@gamepark/nidavellir/material/LocationType'
+import { RuleId } from '@gamepark/nidavellir/rules/RuleId'
+import { CoinRules } from './rules/CoinRules'
 
 export class CoinDescription extends RoundTokenDescription {
   diameter = 4
@@ -52,6 +51,10 @@ export class CoinDescription extends RoundTokenDescription {
   getLocations(item: MaterialItem, { rules, index }: ItemContext) {
     if (item.id === undefined || rules.game.rule?.id !== RuleId.TradeCoin || item.location.type !== LocationType.Hand) return []
     return [{ type: LocationType.Coin, parent: index }]
+  }
+
+  getRotation(): string {
+    return ''
   }
 }
 

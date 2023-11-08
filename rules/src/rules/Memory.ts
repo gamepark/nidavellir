@@ -22,7 +22,7 @@ export type PreviousRule = RuleStep
 
 export type DiscardedCoin = {
   tavern: number
-  index: number
+  id: number
 }
 
 export type Effect = RuleId

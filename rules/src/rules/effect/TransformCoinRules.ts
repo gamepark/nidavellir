@@ -31,10 +31,21 @@ export class TransformCoinRules extends EffectRule {
     if (isMoveItemType(MaterialType.Coin)(move) && move.location.type !== LocationType.Hand && move.location.type !== LocationType.PlayerBoard) {
       const coin = this.material(MaterialType.Coin).getItem(move.itemIndex)!
       this.memorize(Memory.TransformedCoinItemLocation, coin.location)
-      this.memorize(Memory.DiscardedCoin, { tavern: coin.location.id, index: move.itemIndex }, this.player)
+
+      if (!this.previousRule && this.tavern === coin.location.id) {
+        this.memorize(Memory.DiscardedCoin, { tavern: coin.location.id, id: coin.id }, this.player)
+      }
     }
 
     return []
+  }
+
+  get tavern() {
+    return this.remind(Memory.Tavern)
+  }
+
+  get previousRule() {
+    return this.remind(Memory.PreviousRule)
   }
 
   afterItemMove(move: ItemMove) {

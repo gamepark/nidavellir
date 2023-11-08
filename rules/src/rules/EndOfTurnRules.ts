@@ -3,7 +3,7 @@ import { RuleId } from './RuleId'
 import { isExchangeCoin } from '../utils/coin.utils'
 import { MaterialType } from '../material/MaterialType'
 import { LocationType } from '../material/LocationType'
-import { DiscardedCoin, Memory } from './Memory'
+import { Memory } from './Memory'
 import PlayerTurn from './helpers/PlayerTurn'
 
 export class EndOfTurnRules extends PlayerTurnRule {
@@ -30,11 +30,6 @@ export class EndOfTurnRules extends PlayerTurnRule {
       .locationId(tavern)
       .player(this.player)
       .getItem()
-
-    const discardedCoin = this.remind<DiscardedCoin>(Memory.DiscardedCoin, this.player)
-    if (!coin && discardedCoin?.tavern === tavern) {
-      return coins.index(discardedCoin.index).getItem()!
-    }
 
     return coin!
   }
