@@ -4,11 +4,11 @@ import { useTranslation } from "react-i18next";
 import { DwarfType } from "@gamepark/nidavellir/cards/DwarfType";
 import Images from "../../images/Images";
 import { MoveItem } from "@gamepark/rules-api";
-import { MaterialRulesProps, PlayMoveButton } from "@gamepark/react-game";
+import { MaterialHelpProps, PlayMoveButton } from "@gamepark/react-game";
 
 type ColumnButtonProps = {
   move: MoveItem
-} & MaterialRulesProps
+} & MaterialHelpProps
 
 export const ColumnButton = (props: ColumnButtonProps) => {
   const { t } = useTranslation()

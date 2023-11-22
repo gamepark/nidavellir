@@ -17,9 +17,9 @@ export class PlayerBoardSpaceLocatorDescription extends LocationDescription {
     return  { x: 0, y: 0, z: 0}
   }
 
-  rules = PlayerBoardSpaceRules
+  help = PlayerBoardSpaceRules
 
-  getRulesImage(location: Location) {
+  getHelpImage(location: Location) {
     switch (location.id) {
       case PlayerBoardSpace.LaughingGoblin:
         return Images.LaughingGoblin

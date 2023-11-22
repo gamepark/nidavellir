@@ -19,7 +19,6 @@ import { RuleId } from './rules/RuleId'
 
 export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, LocationType, NidavellirOptions> {
   Rules = NidavellirRules
-
   setupMaterial(options: NidavellirOptions): void {
     this.setupDistinctionGem()
     this.setupDistinctions()

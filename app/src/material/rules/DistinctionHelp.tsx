@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { MaterialRulesProps, usePlay, useRules } from '@gamepark/react-game'
+import { MaterialHelpProps, usePlay, useRules } from '@gamepark/react-game'
 import { Trans, useTranslation } from 'react-i18next'
 import { FC } from 'react'
 import { css } from '@emotion/react'
@@ -7,10 +7,10 @@ import { Distinction } from '@gamepark/nidavellir/material/Distinction'
 import Images from '../../images/Images'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
-import { displayMaterialRules, MaterialItem } from '@gamepark/rules-api'
-import { isSameLocation } from './DwarfCardRules'
+import { displayMaterialHelp, MaterialItem } from '@gamepark/rules-api'
+import { isSameLocation } from './DwarfCardHelp'
 
-export const DistinctionRules: FC<MaterialRulesProps> = (props) => {
+export const DistinctionHelp: FC<MaterialHelpProps> = (props) => {
   const { t } = useTranslation()
   const { item, itemIndex } = props
   const play = usePlay()
@@ -20,12 +20,12 @@ export const DistinctionRules: FC<MaterialRulesProps> = (props) => {
   return (
     <>
       <h2 css={[title, norse, normal]}>
-        { !!previous.length && <div css={ [navigation, normal, previousNav] } onClick={ () => play(displayMaterialRules(MaterialType.Distinction, previous.getItem(), previous.getIndex()), {local: true})}><span>&lt;</span></div> }
+        { !!previous.length && <div css={ [navigation, normal, previousNav] } onClick={ () => play(displayMaterialHelp(MaterialType.Distinction, previous.getItem(), previous.getIndex()), {local: true})}><span>&lt;</span></div> }
         <Trans defaults={`distinction.name.${item.id}`}>
           <strong/>
           <div css={iconStyle(getIcon(item.id))} />
         </Trans>
-        { !!next.length && <div css={ [navigation, nextNav] } onClick={ () => play(displayMaterialRules(MaterialType.Distinction, next.getItem(), next.getIndex()), {local: true})}><span>&gt;</span></div> }
+        { !!next.length && <div css={ [navigation, nextNav] } onClick={ () => play(displayMaterialHelp(MaterialType.Distinction, next.getItem(), next.getIndex()), {local: true})}><span>&gt;</span></div> }
       </h2>
       <p>{t('rule.end-age-1')}</p>
       <hr />

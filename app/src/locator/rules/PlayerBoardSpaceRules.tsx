@@ -1,16 +1,16 @@
 /** @jsxImportSource @emotion/react */
-import { LocationRulesProps, MaterialComponent, MaterialRulesProps, PlayMoveButton, useLegalMoves, useRules } from '@gamepark/react-game'
-import { FC } from 'react'
 import { css } from '@emotion/react'
-import { PlayerBoardSpace } from '@gamepark/nidavellir/material/PlayerBoardSpace'
-import { Trans, useTranslation } from 'react-i18next'
-import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
-import { isMoveItemType, MoveItem } from '@gamepark/rules-api'
+import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
+import { PlayerBoardSpace } from '@gamepark/nidavellir/material/PlayerBoardSpace'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
+import { LocationHelpProps, MaterialComponent, MaterialHelpProps, PlayMoveButton, useLegalMoves, useRules } from '@gamepark/react-game'
+import { isMoveItemType, MoveItem } from '@gamepark/rules-api'
+import { FC } from 'react'
+import { Trans, useTranslation } from 'react-i18next'
 import { greyBackground } from '../../material/rules/ColumnButton'
 
-export const PlayerBoardSpaceRules: FC<LocationRulesProps> = (props) => {
+export const PlayerBoardSpaceRules: FC<LocationHelpProps> = (props) => {
   const { location } = props
   const { t } = useTranslation()
   return (
@@ -22,7 +22,7 @@ export const PlayerBoardSpaceRules: FC<LocationRulesProps> = (props) => {
   )
 }
 
-const PlaceCoinMoves: FC<LocationRulesProps> = (props) => {
+const PlaceCoinMoves: FC<LocationHelpProps> = (props) => {
   const { location } = props;
   const rules = useRules<NidavellirRules>()!
   const placeCoins = useLegalMoves<MoveItem>((move) => isMoveItemType(MaterialType.Coin)(move) && move.location.type === LocationType.PlayerBoard && move.location.id === location.id)
@@ -43,7 +43,7 @@ const PlaceCoinMoves: FC<LocationRulesProps> = (props) => {
 
 type PlaceCoinHereButtonProps = {
   move: MoveItem
-} & MaterialRulesProps
+} & MaterialHelpProps
 
 export const PlaceCoinHereButton = (props: PlaceCoinHereButtonProps) => {
   const { move, item, closeDialog } = props;

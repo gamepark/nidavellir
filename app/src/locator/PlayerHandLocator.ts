@@ -12,10 +12,6 @@ import { tableLocator } from './TableLocator'
 export class PlayerHandLocator extends HandLocator<PlayerId, MaterialType, LocationType> {
   locationDescription = new PlayerHandDescription()
 
-  isHidden(item: MaterialItem<PlayerId, LocationType>, { type, player }: ItemContext<PlayerId, MaterialType, LocationType>): boolean {
-    return item.location.player !== player && (type === MaterialType.Card || !item.location.rotation)
-  }
-
   getCoordinates(location: Location<PlayerId, LocationType>, context: ItemContext<PlayerId, MaterialType, LocationType>) {
     const { rules, type } = context
     const playerBoard = playerBoardDescription.getStaticItems(context).find((i) => i.location.player === location.player)!

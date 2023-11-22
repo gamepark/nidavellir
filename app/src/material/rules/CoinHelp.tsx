@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { MaterialRulesProps, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { MaterialHelpProps, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Trans, useTranslation } from "react-i18next";
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
 import { FC } from "react";
@@ -16,7 +16,7 @@ import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
 import { RuleId } from '@gamepark/nidavellir/rules/RuleId'
 import { TransformCoinButton } from './TransformCoinButton'
 
-export const CoinRules: FC<MaterialRulesProps> = (props) => {
+export const CoinHelp: FC<MaterialHelpProps> = (props) => {
   const { t } = useTranslation()
   const { item } = props;
   const visible = item.id !== undefined
@@ -36,7 +36,7 @@ export const CoinRules: FC<MaterialRulesProps> = (props) => {
   )
 }
 
-const PlaceCoinMoves: FC<MaterialRulesProps> = (props) => {
+const PlaceCoinMoves: FC<MaterialHelpProps> = (props) => {
   const { itemIndex } = props;
   const placeCoins = useLegalMoves((move) => isMoveItemType(MaterialType.Coin)(move) && move.itemIndex === itemIndex && (move.location.type === LocationType.PlayerBoard || move.location.type === LocationType.Hand))
   if (!placeCoins.length) return null;
@@ -51,7 +51,7 @@ const PlaceCoinMoves: FC<MaterialRulesProps> = (props) => {
   )
 }
 
-const TradeCoinsMoves: FC<MaterialRulesProps> = (props) => {
+const TradeCoinsMoves: FC<MaterialHelpProps> = (props) => {
   const { itemIndex } = props;
   const tradeCoins = useLegalMoves((move) => isCustomMoveType(CustomMoveType.TradeCoins)(move) && move.data.includes(itemIndex))
   if (!tradeCoins.length) return null;
@@ -66,7 +66,7 @@ const TradeCoinsMoves: FC<MaterialRulesProps> = (props) => {
   )
 }
 
-const TransformCoinsMoves: FC<MaterialRulesProps> = (props) => {
+const TransformCoinsMoves: FC<MaterialHelpProps> = (props) => {
   const rules = useRules<NidavellirRules>()!
   const transformCoins = useLegalMoves((move) => rules.game.rule?.id === RuleId.TransformCoin && isMoveItemType(MaterialType.Coin)(move) && (move.location.type === LocationType.Discard || move.location.type === LocationType.Treasure))
   if (!transformCoins.length) return null
@@ -81,7 +81,7 @@ const TransformCoinsMoves: FC<MaterialRulesProps> = (props) => {
   )
 }
 
-const CoinLocationRule: FC<MaterialRulesProps> = (props) => {
+const CoinLocationRule: FC<MaterialHelpProps> = (props) => {
   const { item } = props
   const location = item.location
   const { t } = useTranslation()

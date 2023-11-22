@@ -1,12 +1,13 @@
 /** @jsxImportSource @emotion/react */
-import Images from '../images/Images'
-import { ItemContext, RoundTokenDescription } from '@gamepark/react-game'
 import { Coin } from '@gamepark/nidavellir/material/Coin'
-import { isCustomMoveType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
-import { CustomMoveType } from '@gamepark/nidavellir/moves/CustomMoveType'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
+import { CustomMoveType } from '@gamepark/nidavellir/moves/CustomMoveType'
+import { PlayerId } from '@gamepark/nidavellir/player/Player'
 import { RuleId } from '@gamepark/nidavellir/rules/RuleId'
-import { CoinRules } from './rules/CoinRules'
+import { ItemContext, RoundTokenDescription } from '@gamepark/react-game'
+import { isCustomMoveType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
+import Images from '../images/Images'
+import { CoinHelp } from './rules/CoinHelp'
 
 export class CoinDescription extends RoundTokenDescription {
   diameter = 4
@@ -41,7 +42,7 @@ export class CoinDescription extends RoundTokenDescription {
       [Coin.HuntingMasterCoin]: Images.GreenCoin,
   }
 
-  rules = CoinRules
+  help = CoinHelp
 
   canDrag(move: MaterialMove, context: ItemContext): boolean {
     const { index } = context
@@ -53,8 +54,10 @@ export class CoinDescription extends RoundTokenDescription {
     return [{ type: LocationType.Coin, parent: index }]
   }
 
-  getRotation(): string {
-    return ''
+  isFlipped(item: MaterialItem<PlayerId, LocationType>, context: ItemContext): boolean {
+    const { rules, player } = context
+    const isTransform = player && rules.game.rule?.id === RuleId.TransformCoin && rules.game.rule.player === player && player === item.location.player
+    return (super.isFlipped(item, context) && !isTransform) || (item.location.type === LocationType.PlayerBoard && !item.location.rotation)
   }
 }
 

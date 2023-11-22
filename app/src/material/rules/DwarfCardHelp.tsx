@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import { MaterialRulesProps, PlayMoveButton, useLegalMoves, usePlay, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { MaterialHelpProps, PlayMoveButton, useLegalMoves, usePlay, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Card, CardDeck, Cards, isHero, isRoyalOffering } from '@gamepark/nidavellir/cards/Cards'
 import { Trans, useTranslation } from 'react-i18next'
-import { displayMaterialRules, isMoveItemType, MaterialItem } from '@gamepark/rules-api'
+import { displayMaterialHelp, isMoveItemType, MaterialItem } from '@gamepark/rules-api'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { css } from '@emotion/react'
@@ -14,7 +14,7 @@ import { getTypes } from '@gamepark/nidavellir/cards/DwarfDescription'
 import { Memory } from '@gamepark/nidavellir/rules/Memory'
 import { DwarfType } from '@gamepark/nidavellir/cards/DwarfType'
 
-export const DwarfCardRules = (props: MaterialRulesProps) => {
+export const DwarfCardHelp = (props: MaterialHelpProps) => {
   const { item } = props
   const deck = item.location?.type === LocationType.Age1Deck || item.location?.type === LocationType.Age2Deck
   if (deck) {
@@ -26,7 +26,7 @@ export const DwarfCardRules = (props: MaterialRulesProps) => {
   </>
 }
 
-const AgeDeckRule = (props: MaterialRulesProps) => {
+const AgeDeckRule = (props: MaterialHelpProps) => {
   const { item } = props
   const rules = useRules<NidavellirRules>()!
   const age = item.location?.type === LocationType.Age1Deck ? 1 : 2
@@ -60,7 +60,7 @@ const AgeDeckRule = (props: MaterialRulesProps) => {
   )
 }
 
-const CardRule = (props: MaterialRulesProps) => {
+const CardRule = (props: MaterialHelpProps) => {
   const { item } = props
   if (isRoyalOffering(item.id.front)) {
     return <RoyalOfferingRules {...props} />
@@ -73,7 +73,7 @@ const CardRule = (props: MaterialRulesProps) => {
   return <DwarfRules {...props} />
 }
 
-const DwarfRules = (props: MaterialRulesProps) => {
+const DwarfRules = (props: MaterialHelpProps) => {
   const { item, itemIndex, closeDialog } = props
   const { t } = useTranslation()
   const rules = useRules<NidavellirRules>()!
@@ -92,10 +92,10 @@ const DwarfRules = (props: MaterialRulesProps) => {
     <>
       <h2 css={[title, norse]}>
         {!!previous.length &&
-            <div css={[navigation, previousNav]} onClick={() => play(displayMaterialRules(MaterialType.Card, previous.getItem(), previous.getIndex()), { local: true })}><span>&lt;</span></div>}
+            <div css={[navigation, previousNav]} onClick={() => play(displayMaterialHelp(MaterialType.Card, previous.getItem(), previous.getIndex()), { local: true })}><span>&lt;</span></div>}
         <span css={css`flex: 1`}>{t(`dwarf-card.class.${dwarfClass}`)}</span>
         {!!next.length &&
-            <div css={[navigation, nextNav]} onClick={() => play(displayMaterialRules(MaterialType.Card, next.getItem(), next.getIndex()), { local: true })}><span>&gt;</span></div>}
+            <div css={[navigation, nextNav]} onClick={() => play(displayMaterialHelp(MaterialType.Card, next.getItem(), next.getIndex()), { local: true })}><span>&gt;</span></div>}
       </h2>
       <CardLocationRule {...props} />
       {dwarfClass && <p><Trans defaults={`rule.dwarf-card.class.${dwarfClass}`}><strong/></Trans></p>}
@@ -106,7 +106,7 @@ const DwarfRules = (props: MaterialRulesProps) => {
   )
 }
 
-const RoyalOfferingRules = (props: MaterialRulesProps) => {
+const RoyalOfferingRules = (props: MaterialHelpProps) => {
   const { item, itemIndex, closeDialog } = props
   const { t } = useTranslation()
   const rules = useRules<NidavellirRules>()!
@@ -119,10 +119,10 @@ const RoyalOfferingRules = (props: MaterialRulesProps) => {
     <>
       <h2 css={[title, norse]}>
         {!!previous.length &&
-            <div css={[navigation, previousNav]} onClick={() => play(displayMaterialRules(MaterialType.Card, previous.getItem(), previous.getIndex()), { local: true })}><span>&lt;</span></div>}
+            <div css={[navigation, previousNav]} onClick={() => play(displayMaterialHelp(MaterialType.Card, previous.getItem(), previous.getIndex()), { local: true })}><span>&lt;</span></div>}
         <span css={css`flex: 1`}>{t('royal-offering.name')}</span>
         {!!next.length &&
-            <div css={[navigation, nextNav]} onClick={() => play(displayMaterialRules(MaterialType.Card, next.getItem(), next.getIndex()), { local: true })}><span>&gt;</span></div>}
+            <div css={[navigation, nextNav]} onClick={() => play(displayMaterialHelp(MaterialType.Card, next.getItem(), next.getIndex()), { local: true })}><span>&gt;</span></div>}
       </h2>
       <CardLocationRule {...props} />
       <p><Trans defaults="rule.royal-offering" values={{ additionalValue: Cards[item.id.front].bonus }}><strong/></Trans></p>
@@ -131,7 +131,7 @@ const RoyalOfferingRules = (props: MaterialRulesProps) => {
   )
 }
 
-const HeroRules = (props: MaterialRulesProps) => {
+const HeroRules = (props: MaterialHelpProps) => {
   const { t } = useTranslation()
   const { item, itemIndex } = props
   const rules = useRules<NidavellirRules>()!
@@ -142,11 +142,11 @@ const HeroRules = (props: MaterialRulesProps) => {
     <>
       <h2 css={[title, norse, normal]}>
         {!!previous.length &&
-            <div css={[navigation, previousNav, normal]} onClick={() => play(displayMaterialRules(MaterialType.Card, previous.getItem(), previous.getIndex()), { local: true })}>
+            <div css={[navigation, previousNav, normal]} onClick={() => play(displayMaterialHelp(MaterialType.Card, previous.getItem(), previous.getIndex()), { local: true })}>
                 <span>&lt;</span></div>}
         <span css={css`flex: 1`}><Trans defaults={visible ? `hero.name.${item.id.front}` : 'hero.name'}><strong css={rightMargin}/></Trans></span>
         {!!next.length &&
-            <div css={[navigation, nextNav]} onClick={() => play(displayMaterialRules(MaterialType.Card, next.getItem(), next.getIndex()), { local: true })}><span>&gt;</span></div>}
+            <div css={[navigation, nextNav]} onClick={() => play(displayMaterialHelp(MaterialType.Card, next.getItem(), next.getIndex()), { local: true })}><span>&gt;</span></div>}
       </h2>
       <CardLocationRule {...props} />
       <p>{t('rule.recruitment')}</p>
@@ -166,7 +166,7 @@ const getValues = (card: Card) => {
   return undefined
 }
 
-const ChooseHeroMoves: FC<MaterialRulesProps> = (props) => {
+const ChooseHeroMoves: FC<MaterialHelpProps> = (props) => {
   const { itemIndex } = props
   const chooseHeroMoves = useLegalMoves((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && (move.location.type === LocationType.Army || move.location.type === LocationType.CommandZone))
   if (!chooseHeroMoves.length) return null
@@ -181,7 +181,7 @@ const ChooseHeroMoves: FC<MaterialRulesProps> = (props) => {
   )
 }
 
-const CardLocationRule = (props: MaterialRulesProps) => {
+const CardLocationRule = (props: MaterialHelpProps) => {
   const { item } = props
   const location = item.location
   const { t } = useTranslation()
@@ -218,7 +218,7 @@ const CardLocationRule = (props: MaterialRulesProps) => {
   return null
 }
 
-const ScoreRules = (props: MaterialRulesProps) => {
+const ScoreRules = (props: MaterialHelpProps) => {
   const { item } = props
   const { t } = useTranslation()
   const rules = useRules<NidavellirRules>()!

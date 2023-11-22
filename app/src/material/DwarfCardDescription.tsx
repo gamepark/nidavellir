@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { Card, CardDeck } from '@gamepark/nidavellir/cards/Cards'
 import { CardDescription } from '@gamepark/react-game'
-import { DwarfCardRules  } from './rules/DwarfCardRules'
+import { DwarfCardHelp  } from './rules/DwarfCardHelp'
 import Blacksmith1 from '../images/cards/age-card/blacksmith/Blacksmith1.jpg'
 import Blacksmith2 from '../images/cards/age-card/blacksmith/Blacksmith2.jpg'
 import BlacksmithKingsGreatArmorer from '../images/cards/age-card/blacksmith/BlacksmithKingsGreatArmorer.jpg'
@@ -155,7 +155,7 @@ export class DwarfCardDescription extends CardDescription {
     [Card.Grid]: Grid
   }
 
-  rules = DwarfCardRules
+  help = DwarfCardHelp
 }
 
 export const cardDescription = new DwarfCardDescription()

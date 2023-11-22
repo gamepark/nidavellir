@@ -1,8 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import Images from "../images/Images";
-import { TokenDescription } from "@gamepark/react-game";
-import { Gem } from "@gamepark/nidavellir/material/Gem";
-import { GemRules } from "./rules/GemRules";
+import { Gem } from '@gamepark/nidavellir/material/Gem'
+import { LocationType } from '@gamepark/nidavellir/material/LocationType'
+import { PlayerId } from '@gamepark/nidavellir/player/Player'
+import { TokenDescription } from '@gamepark/react-game'
+import { MaterialItem } from '@gamepark/rules-api'
+import Images from '../images/Images'
+import { GemHelp } from './rules/GemHelp'
 
 export class GemDescription extends TokenDescription  {
   width = 5.2
@@ -16,7 +19,11 @@ export class GemDescription extends TokenDescription  {
     [Gem.Gem6]: Images.Gem6,
   }
 
-  rules = GemRules
+  getRotateZ(_item: MaterialItem<PlayerId, LocationType>): number {
+    return 180
+  }
+
+  help = GemHelp
 }
 
 export const gemDescription = new GemDescription()

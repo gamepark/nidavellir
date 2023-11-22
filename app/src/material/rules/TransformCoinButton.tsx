@@ -2,7 +2,7 @@
 import { css } from '@emotion/react'
 import { Trans } from 'react-i18next'
 import { MoveItem } from '@gamepark/rules-api'
-import { MaterialComponent, MaterialRulesProps, PlayMoveButton, useRules } from '@gamepark/react-game'
+import { MaterialComponent, MaterialHelpProps, PlayMoveButton, useRules } from '@gamepark/react-game'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { ExchangeCoin } from '@gamepark/nidavellir/rules/helpers/ExchangeCoin'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
@@ -11,7 +11,7 @@ import { Memory } from '@gamepark/nidavellir/rules/Memory'
 
 type TransformCoinButtonProps = {
   move: MoveItem
-} & MaterialRulesProps
+} & MaterialHelpProps
 
 export const TransformCoinButton = (props: TransformCoinButtonProps) => {
   const { move, closeDialog } = props;

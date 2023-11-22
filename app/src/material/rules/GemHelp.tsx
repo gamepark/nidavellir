@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import { MaterialRulesProps } from "@gamepark/react-game";
+import { MaterialHelpProps } from "@gamepark/react-game";
 import { Trans, useTranslation } from 'react-i18next'
 import { FC } from "react";
 import { css } from "@emotion/react";
 import { Gem } from "@gamepark/nidavellir/material/Gem";
 
-export const GemRules: FC<MaterialRulesProps> = (props) => {
+export const GemHelp: FC<MaterialHelpProps> = (props) => {
   const { t } = useTranslation()
   const { item } = props;
   const special = item.id === Gem.Gem6

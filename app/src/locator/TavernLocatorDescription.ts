@@ -116,7 +116,7 @@ export class TavernLocatorDescription extends LocationDescription {
     `
   }
 
-  getRulesImage(location: Location) {
+  getHelpImage(location: Location) {
     switch (location.id) {
       case Tavern.LaughingGoblin:
         return Images.LaughingGoblin
@@ -128,5 +128,5 @@ export class TavernLocatorDescription extends LocationDescription {
     }
   }
 
-  rules = PlayerBoardSpaceRules
+  help = PlayerBoardSpaceRules
 }

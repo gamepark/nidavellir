@@ -9,7 +9,6 @@ import { cardDescription } from '../material/DwarfCardDescription'
 
 export class AgeDeckLocator extends DeckLocator<PlayerId, MaterialType, LocationType> {
   delta = { x: -0.05, y: -0.05, z: 0.1 }
-  hidden = true
   limit = 10
 
   getCoordinates(item: MaterialItem<PlayerId, LocationType>, { rules }: ItemContext<PlayerId, MaterialType, LocationType>): Coordinates {

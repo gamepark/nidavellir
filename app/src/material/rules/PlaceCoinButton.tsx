@@ -3,7 +3,7 @@ import { css } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import Images from "../../images/Images";
 import { MoveItem } from "@gamepark/rules-api";
-import { MaterialRulesProps, PlayMoveButton } from "@gamepark/react-game";
+import { MaterialHelpProps, PlayMoveButton } from "@gamepark/react-game";
 import { Tavern } from "@gamepark/nidavellir/material/Tavern";
 import { PlayerBoardSpace } from "@gamepark/nidavellir/material/PlayerBoardSpace";
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
@@ -11,7 +11,7 @@ import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 
 type PlaceCoinButtonProps = {
   move: MoveItem
-} & MaterialRulesProps
+} & MaterialHelpProps
 
 export const  PlaceCoinButton = (props: PlaceCoinButtonProps) => {
   const { t } = useTranslation()

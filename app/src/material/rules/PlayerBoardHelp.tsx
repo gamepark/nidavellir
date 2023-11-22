@@ -1,11 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import { MaterialRulesProps, usePlayerId, usePlayerName } from '@gamepark/react-game'
+import { MaterialHelpProps, usePlayerId, usePlayerName } from '@gamepark/react-game'
 import { FC } from 'react'
 import { css } from '@emotion/react'
 import { Trans, useTranslation } from 'react-i18next'
 import Images from '../../images/Images'
 
-export const PlayerBoardRule: FC<MaterialRulesProps> = (props) => {
+export const PlayerBoardHelp: FC<MaterialHelpProps> = (props) => {
   const { item } = props
   const player = usePlayerId()
   const me = player && item.location!.player === player

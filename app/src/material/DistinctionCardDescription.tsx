@@ -2,7 +2,7 @@
 import Images from "../images/Images";
 import { CardDescription } from "@gamepark/react-game";
 import { Distinction } from "@gamepark/nidavellir/material/Distinction";
-import { DistinctionRules } from "./rules/DistinctionRules";
+import { DistinctionHelp } from "./rules/DistinctionHelp";
 
 export class DistinctionCardDescription extends CardDescription {
   width = 5.4
@@ -17,7 +17,7 @@ export class DistinctionCardDescription extends CardDescription {
     [Distinction.PioneerOfTheKingdom]: Images.PioneerOfTheKingdom
   }
 
-  rules = DistinctionRules
+  help = DistinctionHelp
 }
 
 export const distinctionDescription = new DistinctionCardDescription()
