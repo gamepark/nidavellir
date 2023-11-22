@@ -2,7 +2,6 @@
 import { Coin } from '@gamepark/nidavellir/material/Coin'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { CustomMoveType } from '@gamepark/nidavellir/moves/CustomMoveType'
-import { PlayerId } from '@gamepark/nidavellir/player/Player'
 import { RuleId } from '@gamepark/nidavellir/rules/RuleId'
 import { ItemContext, RoundTokenDescription } from '@gamepark/react-game'
 import { isCustomMoveType, MaterialItem, MaterialMove } from '@gamepark/rules-api'
@@ -52,12 +51,6 @@ export class CoinDescription extends RoundTokenDescription {
   getLocations(item: MaterialItem, { rules, index }: ItemContext) {
     if (item.id === undefined || rules.game.rule?.id !== RuleId.TradeCoin || item.location.type !== LocationType.Hand) return []
     return [{ type: LocationType.Coin, parent: index }]
-  }
-
-  isFlipped(item: MaterialItem<PlayerId, LocationType>, context: ItemContext): boolean {
-    const { rules, player } = context
-    const isTransform = player && rules.game.rule?.id === RuleId.TransformCoin && rules.game.rule.player === player && player === item.location.player
-    return (super.isFlipped(item, context) && !isTransform) || (item.location.type === LocationType.PlayerBoard && !item.location.rotation)
   }
 }
 
