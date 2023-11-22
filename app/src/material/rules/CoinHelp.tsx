@@ -69,11 +69,12 @@ const TradeCoinsMoves: FC<MaterialHelpProps> = (props) => {
 const TransformCoinsMoves: FC<MaterialHelpProps> = (props) => {
   const rules = useRules<NidavellirRules>()!
   const transformCoins = useLegalMoves((move) =>
-    rules.game.rule?.id === RuleId.TransformCoin &&
+    (rules.game.rule?.id === RuleId.TransformCoin || rules.game.rule?.id === RuleId.Grid) &&
     isMoveItemType(MaterialType.Coin)(move)
     && (move.location.type === LocationType.Discard || move.location.type === LocationType.Treasure)
     && move.itemIndex === props.itemIndex
   )
+
   if (!transformCoins.length) return null
 
   return (
