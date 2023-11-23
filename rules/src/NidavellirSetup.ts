@@ -110,7 +110,8 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
     this.material(MaterialType.Coin).createItems(bronzeCoins.map((id) => ({ id, location: { type: LocationType.Hand, player } })))
     this.material(MaterialType.Coin).player(player).shuffle()
     this.material(MaterialType.Gem).createItem({ id: gem, location: { type: LocationType.PlayerBoard, player, id: PlayerBoardSpace.Gem } })
-
+    this.memorize(Memory.TotalCoinValue, 14, player)
+    this.memorize(Memory.MaxCoinValue, 5, player)
   }
 
   setupTavern(options: NidavellirOptions): MaterialMove[] {

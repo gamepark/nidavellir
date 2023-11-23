@@ -1,14 +1,12 @@
 import { Material, MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
 import sum from 'lodash/sum'
-import { PlayerId } from '../../player/Player'
-import Army from './Army'
-import { DwarfType } from '../../cards/DwarfType'
 import { Card, Cards } from '../../cards/Cards'
-import sumBy from 'lodash/sumBy'
-import { Coins } from '../../coins/Coins'
-import maxBy from 'lodash/maxBy'
-import { MaterialType } from '../../material/MaterialType'
+import { DwarfType } from '../../cards/DwarfType'
 import { LocationType } from '../../material/LocationType'
+import { MaterialType } from '../../material/MaterialType'
+import { PlayerId } from '../../player/Player'
+import { Memory } from '../Memory'
+import Army from './Army'
 
 export class Score extends MaterialRulesPart {
   private army: Army;
@@ -81,27 +79,11 @@ export class Score extends MaterialRulesPart {
   }
 
   get coinsTotal() {
-    const coins = this.coins
-    if (coins.some((item) => !item.id)) {
-      return 0
-    }
-
-    return sumBy(coins, (c) => Coins[c.id!].value)
-  }
-
-  get maximumCoin() {
-    const coins = this.coins
-    if (coins.some((item) => !item.id)) {
-      return
-    }
-
-    return maxBy(coins, (c) => Coins[c.id!].value)!
+    return this.remind(Memory.TotalCoinValue, this.player)
   }
 
   get maximumCoinValue() {
-    const maxCoin = this.maximumCoin
-    if (!maxCoin) return 0
-    return Coins[maxCoin.id!].value
+    return this.remind(Memory.MaxCoinValue, this.player)
   }
 
   get coins() {

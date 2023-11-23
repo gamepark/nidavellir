@@ -1,12 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import { FC, HTMLAttributes } from 'react'
-import { Player } from '@gamepark/react-client'
-import { PlayerPanelCounter } from './PlayerPanelCounter'
-import { faStar } from '@fortawesome/free-solid-svg-icons'
-import { PlayerPanelTaverns } from './PlayerPanelTaverns'
-import { PlayerPanel, usePlayerTime, useRules } from '@gamepark/react-game'
-import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
 import { css } from '@emotion/react'
+import { faStar } from '@fortawesome/free-solid-svg-icons'
+import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
+import { Player } from '@gamepark/react-client'
+import { PlayerPanel, usePlayerTime, useRules } from '@gamepark/react-game'
+import { FC, HTMLAttributes } from 'react'
+import { PlayerPanelCounter } from './PlayerPanelCounter'
+import { PlayerPanelTaverns } from './PlayerPanelTaverns'
 
 type NidavellirPlayerPanelProps = {
   player: Player

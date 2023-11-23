@@ -16,6 +16,8 @@ export enum Memory {
   Effect,
   YludPlayed,
   DrawCard,
+  TotalCoinValue,
+  MaxCoinValue
 }
 
 export type PreviousRule = RuleStep

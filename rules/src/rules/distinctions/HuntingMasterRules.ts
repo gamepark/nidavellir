@@ -2,6 +2,7 @@ import { RuleMove } from '@gamepark/rules-api'
 import { Coin } from '../../material/Coin'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
+import { Memory } from '../Memory'
 import { DistinctionRules } from './DistinctionRules'
 
 class HuntingMasterRules extends DistinctionRules {
@@ -21,7 +22,12 @@ class HuntingMasterRules extends DistinctionRules {
       )
     }
 
+    this.saveCoins()
     return moves
+  }
+
+  saveCoins() {
+    this.memorize(Memory.TotalCoinValue, (total) => total + 3, this.player)
   }
 }
 

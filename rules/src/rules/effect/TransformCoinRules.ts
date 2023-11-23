@@ -40,6 +40,14 @@ export class TransformCoinRules extends EffectRule {
     return []
   }
 
+
+  saveCoins(oldCoin: MaterialItem, newCoin: MaterialItem) {
+    const oldCoinValue = Coins[oldCoin.id].value
+    const newCoinValue = Coins[newCoin.id].value
+    this.memorize(Memory.MaxCoinValue, (maximumCoin = 0) => newCoinValue > maximumCoin? newCoinValue: maximumCoin, this.player)
+    this.memorize(Memory.TotalCoinValue, (total = 0) => total - oldCoinValue + newCoinValue, this.player)
+  }
+
   get tavern() {
     return this.remind(Memory.Tavern)
   }
@@ -54,9 +62,10 @@ export class TransformCoinRules extends EffectRule {
       if (move.location.type !== LocationType.Hand && move.location.type !== LocationType.PlayerBoard) {
         const location = this.transformedCoinLocation
         this.forget(Memory.TransformedCoinItemLocation)
-        const moves: MaterialMove[] = new ExchangeCoin(this.game, this.material(MaterialType.Coin).index(move.itemIndex), this.additionalValue)
-          .treasureCoin
-          .moveItems(location)
+        const oldCoin =  this.material(MaterialType.Coin).index(move.itemIndex)
+        const newCoin = new ExchangeCoin(this.game, oldCoin, this.additionalValue).treasureCoin
+        const moves: MaterialMove[] = newCoin.moveItems(location)
+        this.saveCoins(oldCoin.getItem()!, newCoin.getItem()!)
 
         if (location.type === LocationType.Hand) {
           moves.push(this.material(MaterialType.Coin).player(location.player).location(LocationType.Hand).shuffle())

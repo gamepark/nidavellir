@@ -1,4 +1,4 @@
-import { CustomMove, isCustomMoveType, Location } from '@gamepark/rules-api'
+import { CustomMove, isCustomMoveType, Location, Material } from '@gamepark/rules-api'
 import maxBy from 'lodash/maxBy'
 import { Card } from '../../cards/Cards'
 import { CoinColor } from '../../coins/CoinDescription'
@@ -9,6 +9,7 @@ import { PlayerBoardSpace } from '../../material/PlayerBoardSpace'
 import { CustomMoveType } from '../../moves/CustomMoveType'
 import { ExchangeCoin } from '../helpers/ExchangeCoin'
 import PlayerTurn from '../helpers/PlayerTurn'
+import { Memory } from '../Memory'
 import { EffectRule } from './EffectRule'
 
 export class TradeCoinRules extends EffectRule {
@@ -82,7 +83,15 @@ export class TradeCoinRules extends EffectRule {
     moves.push(notTradedCoin.rotateItem(false))
     moves.push(newCoins.shuffle())
     moves.push(...this.end)
+    this.saveCoins(treasureCoin, exchangedCoin)
     return moves
+  }
+
+  saveCoins(treasureCoin: Material, exchangedCoin: Material) {
+    const treasureCoinValue = Coins[treasureCoin.getItem()!.id].value
+    const exchangedCoinValue = Coins[exchangedCoin.getItem()!.id].value
+    this.memorize(Memory.MaxCoinValue, (maximumCoin = 0) => treasureCoinValue > maximumCoin? treasureCoinValue: maximumCoin, this.player)
+    this.memorize(Memory.TotalCoinValue, (total = 0) => total - exchangedCoinValue + treasureCoinValue, this.player)
   }
 
   get nextRules() {
