@@ -1,17 +1,18 @@
 /** @jsxImportSource @emotion/react */
-import { FC } from 'react'
-import { Avatar, RulesDialog, usePlayerName, useRules } from '@gamepark/react-game'
-import { useTranslation } from 'react-i18next'
 import { css } from '@emotion/react'
 import { faStar } from '@fortawesome/free-solid-svg-icons/faStar'
-import { PlayerDialogIndicator } from './PlayerDialogIndicator'
-import { PlayerId } from '@gamepark/nidavellir/player/Player'
-import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
-import Images from '../../images/Images'
-import { Score } from '@gamepark/nidavellir/rules/helpers/Score'
-import { coinDescription } from '../../material/CoinDescription'
-import Army from '@gamepark/nidavellir/rules/helpers/Army'
 import { DwarfType } from '@gamepark/nidavellir/cards/DwarfType'
+import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
+import { PlayerId } from '@gamepark/nidavellir/player/Player'
+import Army from '@gamepark/nidavellir/rules/helpers/Army'
+import { Score } from '@gamepark/nidavellir/rules/helpers/Score'
+import { Memory } from '@gamepark/nidavellir/rules/Memory'
+import { Avatar, RulesDialog, usePlayerName, useRules } from '@gamepark/react-game'
+import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
+import Images from '../../images/Images'
+import { coinDescription } from '../../material/CoinDescription'
+import { PlayerDialogIndicator } from './PlayerDialogIndicator'
 
 type PlayerDialogProps = {
   player: PlayerId
@@ -24,7 +25,7 @@ export const PlayerDialog: FC<PlayerDialogProps> = ({ close, player }) => {
   const rules = useRules<NidavellirRules>()!
   const name = usePlayerName(player)
   const score = new Score(rules.game, player)
-  const maxCoin = score.warriorMajority
+  const maxCoin = rules.remind(Memory.MaxCoinId, player)
   const army = new Army(rules.game, player)
   return (
     <RulesDialog open close={close}>
@@ -71,9 +72,9 @@ export const PlayerDialog: FC<PlayerDialogProps> = ({ close, player }) => {
             value={t('player.dialog.score.warrior.value', { player: name, score: score.warrior - score.warriorMajority })}
             description={t('player.dialog.score.sum-ranks-value')}
           />
-          {!!maxCoin && <PlayerDialogIndicator
+          {!!maxCoin && !!army.getCardOfType(DwarfType.Warrior).length && <PlayerDialogIndicator
               width={2.1}
-              image={coinDescription.images[maxCoin.id]} // Get the max coin image
+              image={coinDescription.images[maxCoin]} // Get the max coin image
               value={t('player.dialog.score.max-coin.value', { player: name, score: score.warriorMajority })}
               description={t('player.dialog.score.max-coin.reason')}
           />}

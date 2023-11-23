@@ -2,6 +2,7 @@ import { Material, MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
 import sum from 'lodash/sum'
 import { Card, Cards } from '../../cards/Cards'
 import { DwarfType } from '../../cards/DwarfType'
+import { Coins } from '../../coins/Coins'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { PlayerId } from '../../player/Player'
@@ -83,7 +84,7 @@ export class Score extends MaterialRulesPart {
   }
 
   get maximumCoinValue() {
-    return this.remind(Memory.MaxCoinValue, this.player)
+    return Coins[this.remind(Memory.MaxCoinId, this.player)].value
   }
 
   get coins() {

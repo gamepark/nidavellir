@@ -44,7 +44,7 @@ export class TransformCoinRules extends EffectRule {
   saveCoins(oldCoin: MaterialItem, newCoin: MaterialItem) {
     const oldCoinValue = Coins[oldCoin.id].value
     const newCoinValue = Coins[newCoin.id].value
-    this.memorize(Memory.MaxCoinValue, (maximumCoin = 0) => newCoinValue > maximumCoin? newCoinValue: maximumCoin, this.player)
+    this.memorize(Memory.MaxCoinId, (maximumCoin) => newCoinValue > Coins[maximumCoin].value? newCoin.id: maximumCoin, this.player)
     this.memorize(Memory.TotalCoinValue, (total = 0) => total - oldCoinValue + newCoinValue, this.player)
   }
 
