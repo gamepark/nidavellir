@@ -44,7 +44,7 @@ const PlaceCoinMoves: FC<MaterialHelpProps> = (props) => {
   return (
     <>
       <hr />
-      <div css={buttonContainer}>
+      <div css={buttonContainer(placeCoins.length === 1? 1: 2)}>
         {placeCoins.map((move) => <PlaceCoinButton key={JSON.stringify(move)} move={move} {...props} />)}
       </div>
     </>
@@ -59,7 +59,7 @@ const TradeCoinsMoves: FC<MaterialHelpProps> = (props) => {
   return (
     <>
       <hr />
-      <div css={buttonContainer}>
+      <div css={buttonContainer(tradeCoins.length === 1? 1: 2)}>
         {tradeCoins.map((move) => <TradeCoinButton key={JSON.stringify(move)} move={move} {...props} />)}
       </div>
     </>
@@ -80,7 +80,7 @@ const TransformCoinsMoves: FC<MaterialHelpProps> = (props) => {
   return (
     <>
       <hr />
-      <div css={buttonContainer}>
+      <div css={buttonContainer(transformCoins.length === 1? 1: 2)}>
         {transformCoins.map((move) => <TransformCoinButton key={JSON.stringify(move)} move={move} {...props} />)}
       </div>
     </>
@@ -115,9 +115,9 @@ const CoinLocationRule: FC<MaterialHelpProps> = (props) => {
   return null;
 }
 
-const buttonContainer = css`
+const buttonContainer = (columns: number = 2) => css`
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(${columns}, 1fr);
   grid-gap: 0.5em;
   margin-bottom: 1em;
 

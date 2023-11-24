@@ -1,49 +1,28 @@
 /** @jsxImportSource @emotion/react */
-import { MaterialHelpProps, usePlay, useRules } from '@gamepark/react-game'
-import { Trans, useTranslation } from 'react-i18next'
-import { FC } from 'react'
 import { css } from '@emotion/react'
 import { Distinction } from '@gamepark/nidavellir/material/Distinction'
+import { MaterialHelpProps } from '@gamepark/react-game'
+import { FC } from 'react'
+import { Trans, useTranslation } from 'react-i18next'
 import Images from '../../images/Images'
-import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
-import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
-import { displayMaterialHelp, MaterialItem } from '@gamepark/rules-api'
-import { isSameLocation } from './DwarfCardHelp'
 
 export const DistinctionHelp: FC<MaterialHelpProps> = (props) => {
   const { t } = useTranslation()
-  const { item, itemIndex } = props
-  const play = usePlay()
-  const rules = useRules<NidavellirRules>()!
-  const { previous, next } = getDistinctionNavigation(rules, item, itemIndex!)
+  const { item } = props
 
   return (
     <>
       <h2 css={[title, norse, normal]}>
-        { !!previous.length && <div css={ [navigation, normal, previousNav] } onClick={ () => play(displayMaterialHelp(MaterialType.Distinction, previous.getItem(), previous.getIndex()), {local: true})}><span>&lt;</span></div> }
         <Trans defaults={`distinction.name.${item.id}`}>
           <strong/>
           <div css={iconStyle(getIcon(item.id))} />
         </Trans>
-        { !!next.length && <div css={ [navigation, nextNav] } onClick={ () => play(displayMaterialHelp(MaterialType.Distinction, next.getItem(), next.getIndex()), {local: true})}><span>&gt;</span></div> }
       </h2>
       <p>{t('rule.end-age-1')}</p>
       <hr />
       <p>{t(`rule.distinction.${item.id}`)}</p>
     </>
   )
-}
-
-
-const getDistinctionNavigation = (rules: NidavellirRules, item: Partial<MaterialItem>, itemIndex: number) => {
-  const cards = rules.material(MaterialType.Distinction)
-    .sort((item) => item.location.x!)
-    .filter((other) => isSameLocation(item, other))
-
-  const indexes = cards.getIndexes()
-  const previous = cards.index(indexes[indexes.indexOf(itemIndex!) - 1])
-  const next = cards.index(indexes[indexes.indexOf(itemIndex!) + 1])
-  return { previous, next }
 }
 
 const getIcon = (distinction: Distinction) => {
@@ -80,35 +59,6 @@ const iconStyle = (icon: any) => css`
   background-image: url(${icon});
   background-size: cover;
   margin-left: 0.2em;
-`
-
-const navigation = css`
-  margin-left: 0.4em;
-  margin-right: 0.4em;
-  padding-left: 0.4em;
-  padding-right: 0.4em;
-  border-radius: 0.2em;
-  border: 0.05em solid black;
-  box-sizing: border-box;
-  cursor: pointer;
-  ${normal}
-
-  &:hover,
-  &:active {
-    background-color: white;
-  }
-`
-
-const previousNav = css`
-  position: absolute;
-  left: 3em;
-  top: 0.05em;
-`
-
-const nextNav = css`
-  position: absolute;
-  right: 3em;
-  top: 0.05em;
 `
 
 const norse = css`

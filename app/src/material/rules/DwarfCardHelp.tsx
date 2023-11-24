@@ -1,18 +1,18 @@
 /** @jsxImportSource @emotion/react */
-import { MaterialHelpProps, PlayMoveButton, useLegalMoves, usePlay, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
-import { Card, CardDeck, Cards, isHero, isRoyalOffering } from '@gamepark/nidavellir/cards/Cards'
-import { Trans, useTranslation } from 'react-i18next'
-import { displayMaterialHelp, isMoveItemType, MaterialItem } from '@gamepark/rules-api'
-import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
-import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { css } from '@emotion/react'
-import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
-import { ColumnButton, moveAction } from './ColumnButton'
-import { Score } from '@gamepark/nidavellir/rules/helpers/Score'
-import { FC } from 'react'
+import { Card, CardDeck, Cards, isHero, isRoyalOffering } from '@gamepark/nidavellir/cards/Cards'
 import { getTypes } from '@gamepark/nidavellir/cards/DwarfDescription'
-import { Memory } from '@gamepark/nidavellir/rules/Memory'
 import { DwarfType } from '@gamepark/nidavellir/cards/DwarfType'
+import { LocationType } from '@gamepark/nidavellir/material/LocationType'
+import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
+import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
+import { Score } from '@gamepark/nidavellir/rules/helpers/Score'
+import { Memory } from '@gamepark/nidavellir/rules/Memory'
+import { MaterialHelpProps, PlayMoveButton, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
+import { isMoveItemType, MaterialItem } from '@gamepark/rules-api'
+import { FC } from 'react'
+import { Trans, useTranslation } from 'react-i18next'
+import { ColumnButton, moveAction } from './ColumnButton'
 
 export const DwarfCardHelp = (props: MaterialHelpProps) => {
   const { item } = props
@@ -76,10 +76,6 @@ const CardRule = (props: MaterialHelpProps) => {
 const DwarfRules = (props: MaterialHelpProps) => {
   const { item, itemIndex, closeDialog } = props
   const { t } = useTranslation()
-  const rules = useRules<NidavellirRules>()!
-  const play = usePlay()
-
-  const { previous, next } = getCardNavigation(rules, item, itemIndex!)
 
   // TODO: can be multiple type
   const type = item.id.front ? getTypes(Cards[item.id.front])?.[0] : undefined
@@ -91,12 +87,8 @@ const DwarfRules = (props: MaterialHelpProps) => {
   return (
     <>
       <h2 css={[title, norse]}>
-        {!!previous.length &&
-            <div css={[navigation, previousNav]} onClick={() => play(displayMaterialHelp(MaterialType.Card, previous.getItem(), previous.getIndex()), { local: true })}><span>&lt;</span></div>}
         <span css={css`flex: 1`}>{t(`dwarf-card.class.${dwarfClass}`)}</span>
-        {!!next.length &&
-            <div css={[navigation, nextNav]} onClick={() => play(displayMaterialHelp(MaterialType.Card, next.getItem(), next.getIndex()), { local: true })}><span>&gt;</span></div>}
-      </h2>
+       </h2>
       <CardLocationRule {...props} />
       {dwarfClass && <p><Trans defaults={`rule.dwarf-card.class.${dwarfClass}`}><strong/></Trans></p>}
       <ScoreRules {...props} />
@@ -109,20 +101,13 @@ const DwarfRules = (props: MaterialHelpProps) => {
 const RoyalOfferingRules = (props: MaterialHelpProps) => {
   const { item, itemIndex, closeDialog } = props
   const { t } = useTranslation()
-  const rules = useRules<NidavellirRules>()!
-  const play = usePlay()
 
-  const { previous, next } = getCardNavigation(rules, item, itemIndex!)
   const legalMoves = useLegalMoves()
   const discard = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Discard)
   return (
     <>
       <h2 css={[title, norse]}>
-        {!!previous.length &&
-            <div css={[navigation, previousNav]} onClick={() => play(displayMaterialHelp(MaterialType.Card, previous.getItem(), previous.getIndex()), { local: true })}><span>&lt;</span></div>}
         <span css={css`flex: 1`}>{t('royal-offering.name')}</span>
-        {!!next.length &&
-            <div css={[navigation, nextNav]} onClick={() => play(displayMaterialHelp(MaterialType.Card, next.getItem(), next.getIndex()), { local: true })}><span>&gt;</span></div>}
       </h2>
       <CardLocationRule {...props} />
       <p><Trans defaults="rule.royal-offering" values={{ additionalValue: Cards[item.id.front].bonus }}><strong/></Trans></p>
@@ -133,20 +118,12 @@ const RoyalOfferingRules = (props: MaterialHelpProps) => {
 
 const HeroRules = (props: MaterialHelpProps) => {
   const { t } = useTranslation()
-  const { item, itemIndex } = props
-  const rules = useRules<NidavellirRules>()!
-  const play = usePlay()
-  const { previous, next } = getCardNavigation(rules, item, itemIndex!)
+  const { item } = props
   const visible = item.id.front !== undefined
   return (
     <>
       <h2 css={[title, norse, normal]}>
-        {!!previous.length &&
-            <div css={[navigation, previousNav, normal]} onClick={() => play(displayMaterialHelp(MaterialType.Card, previous.getItem(), previous.getIndex()), { local: true })}>
-                <span>&lt;</span></div>}
         <span css={css`flex: 1`}><Trans defaults={visible ? `hero.name.${item.id.front}` : 'hero.name'}><strong css={rightMargin}/></Trans></span>
-        {!!next.length &&
-            <div css={[navigation, nextNav]} onClick={() => play(displayMaterialHelp(MaterialType.Card, next.getItem(), next.getIndex()), { local: true })}><span>&gt;</span></div>}
       </h2>
       <CardLocationRule {...props} />
       <p>{t('rule.recruitment')}</p>
@@ -262,18 +239,6 @@ const ScoreRules = (props: MaterialHelpProps) => {
   return null
 }
 
-
-const getCardNavigation = (rules: NidavellirRules, item: Partial<MaterialItem>, itemIndex: number) => {
-  const cards = rules.material(MaterialType.Card)
-    .sort((item) => item.location.x!)
-    .filter((other) => isSameLocation(item, other))
-
-  const indexes = cards.getIndexes()
-  const previous = cards.index(indexes[indexes.indexOf(itemIndex!) - 1])
-  const next = cards.index(indexes[indexes.indexOf(itemIndex!) + 1])
-  return { previous, next }
-}
-
 const getRoundPerAge = (rule: NidavellirRules) => {
   const playerCount = rule.game.players.length
   if (playerCount <= 3) {
@@ -312,27 +277,6 @@ const buttonContainer = css`
 
 const normal = css`
   font-weight: normal;
-`
-
-const previousNav = css`
-`
-
-const nextNav = css`
-`
-
-const navigation = css`
-  padding-left: 0.4em;
-  padding-right: 0.4em;
-  border-radius: 0.2em;
-  border: 0.05em solid black;
-  box-sizing: border-box;
-  cursor: pointer;
-
-  ${normal}
-  &:hover,
-  &:active {
-    background-color: white;
-  }
 `
 
 const norse = css`

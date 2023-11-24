@@ -12,6 +12,7 @@ import { GradeLocator } from './GradeLocator'
 import { HeroDeckLocator } from './HeroDeckLocator'
 import { PlayerBoardSpaceLocator } from './PlayerBoardSpaceLocator'
 import { PlayerHandLocator } from './PlayerHandLocator'
+import { PlayerReminderLocator } from './PlayerReminderLocator'
 import { tableLocator } from './TableLocator'
 import { TavernLocator } from './TavernLocator'
 import { TreasureLocator } from './TreasureLocator'
@@ -30,6 +31,7 @@ export const Locators: Record<LocationType, ItemLocator<PlayerId, MaterialType, 
   [LocationType.CommandZone]: new CommandZoneLocator(),
   [LocationType.Table]: tableLocator,
   [LocationType.Coin]: new CoinLocator(),
-  [LocationType.Grade]: new GradeLocator()
+  [LocationType.Grade]: new GradeLocator(),
+  [LocationType.PlayerReminder]: new PlayerReminderLocator()
 
 }

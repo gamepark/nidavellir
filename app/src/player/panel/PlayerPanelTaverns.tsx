@@ -17,7 +17,9 @@ type PlayerPanelTavernsProps = {
 const PlayerPanelTaverns: FC<PlayerPanelTavernsProps> = (props) => {
   const {player} = props
   const rules = useRules<NidavellirRules>()!
-  const coins = useMemo(() => rules.material(MaterialType.Coin).location((location) => location.type === LocationType.PlayerBoard && location.player === player.id &&  location.id < PlayerBoardSpace.Pouch1), [rules.game])
+  const coins = useMemo(() =>
+    rules.material(MaterialType.Coin).location((location) => location.type === LocationType.PlayerBoard && location.player === player.id &&  location.id < PlayerBoardSpace.Pouch1),
+    [rules.game, player.id])
   const getTavernCoin = (tavern: Tavern) => coins.filter((item) => item.location.id === tavern)
 
   return (

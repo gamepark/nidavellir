@@ -12,5 +12,6 @@ export enum LocationType {
   CommandZone,
   Table,
   Coin,
-  Grade
+  Grade,
+  PlayerReminder
 }
