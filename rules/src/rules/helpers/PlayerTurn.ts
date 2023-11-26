@@ -118,6 +118,7 @@ export default class PlayerTurn extends MaterialRulesPart {
     const thrudMoves = this.mayMoveThrud(move)
     this.mayRecruitNewHeroes(move)
 
+    console.log(thrudMoves)
     if (thrudMoves.length) {
       return thrudMoves
     }
@@ -163,6 +164,7 @@ export default class PlayerTurn extends MaterialRulesPart {
   computeRecruitHeroCount(move: MaterialMove): number {
     const army = new Army(this.game, this.player)
     if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.Army) return 0
+
     const card = army.getItem(move.itemIndex)!
     const gradesByTypes = {
       [DwarfType.Blacksmith]: army.countGradesOfType(DwarfType.Blacksmith, true),

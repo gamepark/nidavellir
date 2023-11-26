@@ -23,7 +23,7 @@ export default class Army extends MaterialRulesPart {
   }
 
   getCardGradesCount(card: MaterialItem, type: DwarfType, includeThrud?: boolean) {
-    if (card.location.id !== type || (includeThrud && card.id.front === Card.Thrud)) return 0
+    if (card.location.id !== type || (!includeThrud && card.id.front === Card.Thrud)) return 0
 
     const cardId = card.id.front
     const description = Cards[cardId]
