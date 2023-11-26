@@ -13,20 +13,16 @@ export class PlayerHandLocator extends HandLocator<PlayerId, MaterialType, Locat
   locationDescription = new PlayerHandDescription()
 
   getCoordinates(location: Location<PlayerId, LocationType>, context: ItemContext<PlayerId, MaterialType, LocationType>) {
-    const { rules, type } = context
+    const { type, player } = context
     const playerBoard = playerBoardDescription.getStaticItems(context).find((i) => i.location.player === location.player)!
     const playerBoardPosition = tableLocator.getPosition(playerBoard, {
       ...context, type: MaterialType.PlayerBoard, index: 0, displayIndex: 0
     })
     const playerX = playerBoardPosition.x!
     const playerY = playerBoardPosition.y!
-    const alsoCoinInHand = type === MaterialType.Card && !!rules.material(MaterialType.Coin).location(LocationType.Hand).player(location.player).length
+    const isCard = type === MaterialType.Card && player === location.player
     const additionalY = type === MaterialType.Coin ? 12 : 15
-    return { x: playerX + 20, y: playerY - additionalY, z: alsoCoinInHand ? 2 : 0 }
-  }
-
-  getDeltaZ(_item: MaterialItem<PlayerId, LocationType>, _context: ItemContext<PlayerId, MaterialType, LocationType>): number {
-    return super.getDeltaZ(_item, _context)
+    return { x: playerX + 20, y: playerY - additionalY, z: isCard ? 5 : 0 }
   }
 
   getGapMaxAngle(): number {

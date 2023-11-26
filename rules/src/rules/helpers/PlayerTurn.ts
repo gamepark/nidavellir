@@ -118,7 +118,6 @@ export default class PlayerTurn extends MaterialRulesPart {
     const thrudMoves = this.mayMoveThrud(move)
     this.mayRecruitNewHeroes(move)
 
-    console.log(thrudMoves)
     if (thrudMoves.length) {
       return thrudMoves
     }
