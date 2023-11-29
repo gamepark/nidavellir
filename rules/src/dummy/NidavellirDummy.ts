@@ -22,7 +22,7 @@ export class NidavellirDummy extends Dummy<MaterialGame<PlayerId, MaterialType, 
       if (move.location?.type === LocationType.Hand) return false
       const itemOnTarget = rules
         .material(MaterialType.Coin)
-        .location(move.location.type)
+        .location(move.location.type!)
         .locationId(move.location.id)
         .player(move.location.player)
 
