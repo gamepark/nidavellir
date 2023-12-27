@@ -35,7 +35,7 @@ export class PlayerBoardSpaceLocator extends ItemLocator<PlayerId, MaterialType,
   }
 
   isHidden(item: MaterialItem<PlayerId, LocationType>, { type, rules, player }: ItemContext): boolean {
-    const isTransform = player && rules.game.rule?.id === RuleId.TransformCoin && rules.game.rule.player === player && player === item.location.player
+    const isTransform = player && (rules.game.rule?.id === RuleId.TransformCoin || rules.game.rule?.id === RuleId.Grid) && rules.game.rule.player === player && player === item.location.player
     return MaterialType.Coin === type && !item.location.rotation && !isTransform
   }
 
