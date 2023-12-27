@@ -32,7 +32,8 @@ export class TransformCoinRules extends EffectRule {
       const coin = this.material(MaterialType.Coin).getItem(move.itemIndex)!
       this.memorize(Memory.TransformedCoinItemLocation, coin.location)
 
-      if (!this.previousRule && this.tavern === coin.location.id) {
+      // persist only if the coin is visible & for the current location
+      if (coin.location.rotation && this.tavern === coin.location.id) {
         this.memorize(Memory.DiscardedCoin, { tavern: coin.location.id, id: coin.id }, this.player)
       }
     }
@@ -50,10 +51,6 @@ export class TransformCoinRules extends EffectRule {
 
   get tavern() {
     return this.remind(Memory.Tavern)
-  }
-
-  get previousRule() {
-    return this.remind(Memory.PreviousRule)
   }
 
   afterItemMove(move: ItemMove) {
