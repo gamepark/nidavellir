@@ -1,14 +1,14 @@
 import { NidavellirOptionsSpec } from '@gamepark/nidavellir/NidavellirOptions'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
+import { NidavellirSetup } from '@gamepark/nidavellir/NidavellirSetup'
 import { GameProvider, setupTranslation } from '@gamepark/react-game'
 import { StrictMode } from 'react'
 import ReactDOM from 'react-dom'
+import { nidavellirAnimations } from './animation/NidavellirAnimation'
 import App from './App'
-import translations from './translations.json'
-import { NidavellirSetup } from '@gamepark/nidavellir/NidavellirSetup'
-import { material } from './material/Material'
 import { Locators } from './locator/Locators'
-import { NidavellirAnimations } from './animation/NidavellirAnimation'
+import { material } from './material/Material'
+import translations from './translations.json'
 import { Tutorial } from './tutorial/Tutorial'
 import { ai } from './tutorial/TutorialAi'
 
@@ -23,7 +23,7 @@ ReactDOM.render(
                   material={material}
                   locators={Locators}
                   tutorial={new Tutorial()}
-                  animations={new NidavellirAnimations()}
+                  animations={nidavellirAnimations}
                   ai={ai}
     >
       <App/>

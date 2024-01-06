@@ -1,17 +1,18 @@
-import { isMoveItemType, MaterialMove } from "@gamepark/rules-api"
-import { AnimationStep } from "@gamepark/react-client"
-import { MaterialAnimationContext, MaterialGameAnimations } from "@gamepark/react-game";
-import { LocationType } from "@gamepark/nidavellir/material/LocationType";
-import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
+import { LocationType } from '@gamepark/nidavellir/material/LocationType'
+import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
+import { RuleId } from '@gamepark/nidavellir/rules/RuleId'
+import { MaterialGameAnimations } from '@gamepark/react-game'
+import { isMoveItemType } from '@gamepark/rules-api'
 
-export class NidavellirAnimations extends MaterialGameAnimations {
+export const nidavellirAnimations = new MaterialGameAnimations()
 
-  override getDuration(move: MaterialMove, context: MaterialAnimationContext): number {
-    if (isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Tavern && context.step === AnimationStep.BEFORE_MOVE) return 0.3
-    if (isMoveItemType(MaterialType.Coin)(move)
-      && move.location.type === LocationType.Hand
-      && context.game.items[move.itemType]![move.itemIndex].location.type === LocationType.PlayerBoard
-      && context.step === AnimationStep.BEFORE_MOVE) return 0.3
-    return super.getDuration(move, context);
-  }
-}
+nidavellirAnimations.when()
+  .move(move =>
+    isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Tavern
+  ).duration(0.3)
+
+nidavellirAnimations.when()
+  .rule(RuleId.EnterDwarves)
+  .move(move =>
+    isMoveItemType(MaterialType.Coin)(move) && move.location.type === LocationType.Hand
+  ).duration(0.3)
