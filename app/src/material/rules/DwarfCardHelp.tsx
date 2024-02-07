@@ -53,7 +53,7 @@ const AgeDeckRule = (props: MaterialHelpProps) => {
       </Trans></p>
       <p>
         { !started && (<Trans defaults="rule.age-deck.not-started" values={{ age }} />)}
-        { started && (<Trans defaults="rule.age-deck.round" values={{ round: getRemainingRound(rules), totalRound: getRoundPerAge(rules) }} />)}
+        { started && (<Trans defaults="rule.age-deck.round" values={{ round: getRemainingRound(rules) }} />)}
         { isAgeEnded && (<Trans defaults="rule.age-deck.ended" />)}
       </p>
     </>
