@@ -8,14 +8,11 @@ import { RuleId } from './RuleId'
 
 class BidsRules extends SimultaneousRule<PlayerId, MaterialType, LocationType> {
 
-  getLegalMoves(player: PlayerId): MaterialMove[] {
-    if (!this.isTurnToPlay(player)) return []
-
+  getActivePlayerLegalMoves(player: PlayerId): MaterialMove[] {
     const moves = new Bid(this.game, player).combinations
     moves.push(
       ...this.material(MaterialType.Coin).location(LocationType.PlayerBoard).player(player).moveItems({ type: LocationType.Hand, player })
     )
-
     return moves
   }
 

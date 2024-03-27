@@ -45,41 +45,49 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        position: { x: 0, y: 30 },
+        position: { x: 40, y: 10 },
         text: () => <Trans defaults="tuto.tavern"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.location(LocationType.Tavern),
-        this.material(game, MaterialType.Card).location(LocationType.Tavern)
-      ]
+      focus: game => ({
+        locations: [{ type: LocationType.Tavern }],
+        materials: [this.material(game, MaterialType.Card).location(LocationType.Tavern)],
+        margin: { right: 30 }
+      })
     },
     {
       popup: {
         position: { x: 0, y: 30 },
         text: () => <Trans defaults="tuto.tresor"><strong/><em/></Trans>
       },
-      focus: (game) => this.material(game, MaterialType.Coin).location(LocationType.Hand).player(me)
+      focus: game => ({
+        materials: [this.material(game, MaterialType.Coin).location(LocationType.Hand).player(me)],
+        scale: 0.4
+      })
     },
     {
       popup: {
-        position: { x: 20, y: 0 },
+        position: { x: 0, y: 30 },
         text: () => <Trans defaults="tuto.bid"><strong/><em/></Trans>
       },
-      focus: () => [
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.LaughingGoblin),
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.DancingDragon),
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.ShiningHorse)
-      ]
+      focus: () => ({
+        locations: [
+          { type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.LaughingGoblin },
+          { type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.DancingDragon },
+          { type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.ShiningHorse }
+        ],
+        scale: 0.4
+      })
     },
     {
       popup: {
-        position: { x: 10, y: 10 },
+        position: { x: 0, y: 30 },
         text: () => <Trans defaults="tuto.coin" values={{ coin: 4 }}><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.LaughingGoblin),
-        this.material(game, MaterialType.Coin).location(LocationType.Hand).id(Coin.Coin4).player(me)
-      ],
+      focus: game => ({
+        locations: [{ type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.LaughingGoblin }],
+        materials: [this.material(game, MaterialType.Coin).location(LocationType.Hand).id(Coin.Coin4).player(me)],
+        scale: 0.4
+      }),
       move: {
         filter: (move, game) =>
           isMoveItemType(MaterialType.Coin)(move)
@@ -89,13 +97,14 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        position: { x: 5, y: 20 },
+        position: { x: 0, y: 30 },
         text: () => <Trans defaults="tuto.coin" values={{ coin: 0 }}><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.DancingDragon),
-        this.material(game, MaterialType.Coin).id(Coin.Coin0).player(me)
-      ],
+      focus: game => ({
+        locations: [{ type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.DancingDragon }],
+        materials: [this.material(game, MaterialType.Coin).id(Coin.Coin0).player(me)],
+        scale: 0.4
+      }),
       move: {
         filter: (move, game) =>
           isMoveItemType(MaterialType.Coin)(move)
@@ -105,13 +114,16 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
+        position: { x: -30, y: 0 },
         text: () => <Trans defaults="tuto.coin.other"><strong/><em/></Trans>
       },
-      focus: (game) =>
-        [
-          { type: MaterialType.PlayerBoard, item: { id: opponent, location: { id: opponent, type: LocationType.Table, player: opponent } } },
-          this.material(game, MaterialType.Coin).player(opponent)
-        ]
+      focus: game => ({
+        staticItems: [
+          { type: MaterialType.PlayerBoard, item: { id: opponent, location: { id: opponent, type: LocationType.Table, player: opponent } } }
+        ],
+        materials: [this.material(game, MaterialType.Coin).player(opponent)],
+        scale: 0.4
+      })
     },
     {
       move: {
@@ -120,11 +132,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           && move.location.id === PlayerBoardSpace.LaughingGoblin
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin5).player(opponent).getIndex()
       },
-      focus: (game) =>
-        [
-          { type: MaterialType.PlayerBoard, item: { id: opponent, location: { id: opponent, type: LocationType.Table, player: opponent } } },
-          this.material(game, MaterialType.Coin).player(opponent)
-        ]
+      focus: game => this.steps[game.tutorialStep! - 1].focus!(game)
     },
     {
       move: {
@@ -134,11 +142,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           && move.location.id === PlayerBoardSpace.DancingDragon
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin2).player(opponent).getIndex()
       },
-      focus: (game) =>
-        [
-          { type: MaterialType.PlayerBoard, item: { id: opponent, location: { id: opponent, type: LocationType.Table, player: opponent } } },
-          this.material(game, MaterialType.Coin).player(opponent)
-        ]
+      focus: game => this.steps[game.tutorialStep! - 2].focus!(game)
     },
     {
       move: {
@@ -147,11 +151,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin0).player(opponent).getIndex()
           && move.location.id === PlayerBoardSpace.ShiningHorse
       },
-      focus: (game) =>
-        [
-          { type: MaterialType.PlayerBoard, item: { id: opponent, location: { id: opponent, type: LocationType.Table, player: opponent } } },
-          this.material(game, MaterialType.Coin).player(opponent)
-        ]
+      focus: game => this.steps[game.tutorialStep! - 3].focus!(game)
     },
     {
       move: {
@@ -160,11 +160,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin3).player(opponent).getIndex()
           && move.location.id === PlayerBoardSpace.Pouch1
       },
-      focus: (game) =>
-        [
-          { type: MaterialType.PlayerBoard, item: { id: opponent, location: { id: opponent, type: LocationType.Table, player: opponent } } },
-          this.material(game, MaterialType.Coin).player(opponent)
-        ]
+      focus: game => this.steps[game.tutorialStep! - 4].focus!(game)
     },
     {
       move: {
@@ -173,21 +169,18 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin4).player(opponent).getIndex()
           && move.location.id === PlayerBoardSpace.Pouch2
       },
-      focus: (game) =>
-        [
-          { type: MaterialType.PlayerBoard, item: { id: opponent, location: { id: opponent, type: LocationType.Table, player: opponent } } },
-          this.material(game, MaterialType.Coin).player(opponent)
-        ]
+      focus: game => this.steps[game.tutorialStep! - 5].focus!(game)
     },
     {
       popup: {
-        position: { x: 5, y: 0 },
+        position: { x: 0, y: 30 },
         text: () => <Trans defaults="tuto.coin" values={{ coin: 2 }}><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.ShiningHorse),
-        this.material(game, MaterialType.Coin).id(Coin.Coin2).player(me)
-      ],
+      focus: game => ({
+        locations: [{ type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.ShiningHorse }],
+        materials: [this.material(game, MaterialType.Coin).id(Coin.Coin2).player(me)],
+        scale: 0.4
+      }),
       move: {
         filter: (move, game) =>
           isMoveItemType(MaterialType.Coin)(move)
@@ -197,14 +190,17 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        position: { x: 5, y: 0 },
+        position: { x: 0, y: 30 },
         text: () => <Trans defaults="tuto.pouch"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Coin).location(LocationType.Hand).player(me),
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.Pouch1),
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.Pouch2)
-      ],
+      focus: game => ({
+        locations: [
+          { type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.Pouch1 },
+          { type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.Pouch2 }
+        ],
+        materials: [this.material(game, MaterialType.Coin).location(LocationType.Hand).player(me)],
+        scale: 0.4
+      }),
       move: {
         filter: (move, game) =>
           isMoveItemType(MaterialType.Coin)(move)
@@ -214,14 +210,10 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        position: { x: 5, y: 0 },
+        position: { x: 0, y: 30 },
         text: () => <Trans defaults="tuto.pouch"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Coin).location(LocationType.Hand).player(me),
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.Pouch1),
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.Pouch2)
-      ],
+      focus: game => this.steps[game.tutorialStep! - 1].focus!(game),
       move: {
         filter: (move, game) =>
           isMoveItemType(MaterialType.Coin)(move)
@@ -233,17 +225,22 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => <Trans defaults="tuto.resolution.1"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.LaughingGoblin)
-      ]
+      focus: game => ({
+        materials: [this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.LaughingGoblin)],
+        margin: { left: 5, right: 5 }
+      })
     },
     {
       popup: {
         text: () => <Trans defaults="tuto.revealed"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.LaughingGoblin),
-        this.material(game, MaterialType.Card).location(LocationType.Tavern).locationId(Tavern.LaughingGoblin)]
+      focus: game => ({
+        locations: [],
+        materials: [
+          this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.LaughingGoblin),
+          this.material(game, MaterialType.Card).location(LocationType.Tavern).locationId(Tavern.LaughingGoblin)
+        ]
+      })
     },
     {
       move: {
@@ -259,26 +256,20 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => <Trans defaults="tuto.warrior"><strong/><em/></Trans>
       },
-      focus: (game) => this
-        .material(game, MaterialType.Card)
-        .player(opponent)
-        .location(LocationType.Army)
-        .id<CardId>(id => id.front === Card.WarriorGrade3_1)
+      focus: game => ({
+        materials: [this.material(game, MaterialType.Card).player(opponent).location(LocationType.Army).id<CardId>(id => id.front === Card.WarriorGrade3_1)],
+        scale: 0.4
+      })
     },
     {
       popup: {
         position: { x: 0, y: 10 },
         text: () => <Trans defaults="tuto.hunter.me"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Card)
-          .location(LocationType.Tavern)
-          .id<CardId>(id => id.front === Card.Hunter1),
-        this.location(LocationType.Army)
-          .player(me)
-          .id(DwarfType.Hunter)
-
-      ],
+      focus: game => ({
+        locations: [{ type: LocationType.Army, player: me, id: DwarfType.Hunter }],
+        materials: [this.material(game, MaterialType.Card).location(LocationType.Tavern).id<CardId>(id => id.front === Card.Hunter1)]
+      }),
       move: {
         player: me,
         filter: (move, game) =>
@@ -290,9 +281,13 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => <Trans defaults="tuto.resolution.2"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.DancingDragon),
-        this.material(game, MaterialType.Card).location(LocationType.Tavern).locationId(Tavern.DancingDragon)]
+      focus: game => ({
+        materials: [
+          this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.DancingDragon),
+          this.material(game, MaterialType.Card).location(LocationType.Tavern).locationId(Tavern.DancingDragon)
+        ],
+        margin: { left: 5, bottom: 5, right: 5 }
+      })
     },
     {
       move: {
@@ -304,66 +299,72 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
+        position: { x: 10, y: 0 },
+        text: () => <Trans defaults="tuto.miner.me"><strong/><em/></Trans>
+      },
+      focus: game => ({
+        locations: [{ type: LocationType.Army, player: me, id: DwarfType.Miner }],
+        materials: [this.material(game, MaterialType.Card).location(LocationType.Tavern).id<CardId>(id => id.front === Card.MinerGrade0_1)],
+        margin: { top: 3 }
+      }),
+      move: {
+        player: me,
+        filter: (move, game) =>
+          isMoveItemType(MaterialType.Card)(move)
+          && move.itemIndex === this.material(game, MaterialType.Card).location(LocationType.Tavern).id<CardId>(id => id.front === Card.MinerGrade0_1).getIndex(),
+        interrupt: isMoveItemType(MaterialType.Coin)
+      }
+    },
+    {
+      popup: {
         position: { x: 20, y: 0 },
         text: () => <Trans defaults="tuto.exchange-coin"><strong/><em/></Trans>
       },
-      focus: (game) => this
-        .material(game, MaterialType.Coin)
-        .location(LocationType.PlayerBoard)
-        .player(me)
-        .locationId((id) => id! > PlayerBoardSpace.ShiningHorse || id === PlayerBoardSpace.DancingDragon)
+      focus: game => ({
+        materials: [
+          this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).player(me)
+            .locationId((id) => id! > PlayerBoardSpace.ShiningHorse || id === PlayerBoardSpace.DancingDragon)
+        ],
+        scale: 0.5
+      })
     },
     {
       popup: {
         position: { x: 20, y: 0 },
         text: () => <Trans defaults="tuto.exchange"><strong/><em/></Trans>
       },
-      focus: (game) => this
-        .material(game, MaterialType.Coin)
-        .location(LocationType.PlayerBoard)
-        .player(me)
-        .locationId((id) => id! > PlayerBoardSpace.ShiningHorse || id === PlayerBoardSpace.DancingDragon)
-    },
-    {
-      popup: {
-        position: { x: 0, y: 30 },
-        text: () => <Trans defaults="tuto.miner.me"><strong/><em/></Trans>
-      },
-      focus: (game) => [
-        this.material(game, MaterialType.Card)
-          .location(LocationType.Tavern)
-          .id<CardId>(id => id.front === Card.MinerGrade0_1),
-        this.location(LocationType.Army)
-          .player(me)
-          .id(DwarfType.Miner)
-      ],
-      move: {
-        player: me,
-        filter: (move, game) =>
-          isMoveItemType(MaterialType.Card)(move)
-          && move.itemIndex === this.material(game, MaterialType.Card).location(LocationType.Tavern).id<CardId>(id => id.front === Card.MinerGrade0_1).getIndex()
-      }
+      focus: game => ({
+        materials: [
+          this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).player(me)
+            .locationId((id) => id! > PlayerBoardSpace.ShiningHorse || id === PlayerBoardSpace.DancingDragon),
+          this.material(game, MaterialType.Coin).id(Coin.GoldCoin8)
+        ],
+        margin: { top: 3 }
+      }),
+      move: {}
     },
     {
       popup: {
         text: () => <Trans defaults="tuto.resolution.3"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.ShiningHorse),
-        this.material(game, MaterialType.Card).location(LocationType.Tavern).locationId(Tavern.ShiningHorse)]
+      focus: game => ({
+        materials: [
+          this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.ShiningHorse),
+          this.material(game, MaterialType.Card).location(LocationType.Tavern).locationId(Tavern.ShiningHorse)
+        ],
+        margin: { left: 3, right: 3, bottom: 3, top: 3 }
+      })
     },
     {
       popup: {
-        position: { x: 0, y: 30 },
+        position: { x: 20, y: 10 },
         text: () => <Trans defaults="tuto.royal-offering.me"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Card)
-          .location(LocationType.Tavern)
-          .id<CardId>(id => id.front === Card.RoyalOffering3),
-        this.location(LocationType.Discard)
-          .id(MaterialType.Card)
-      ],
+      focus: game => ({
+        locations: [{ type: LocationType.Discard, id: MaterialType.Card }],
+        materials: [this.material(game, MaterialType.Card).location(LocationType.Tavern).id<CardId>(id => id.front === Card.RoyalOffering3)],
+        scale: 0.5
+      }),
       move: {
         player: me,
         filter: (move, game) =>
@@ -373,13 +374,16 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        position: { x: 20, y: 0 },
         text: () => <Trans defaults="tuto.transform"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).player(me).id(Coin.Coin2),
-        this.material(game, MaterialType.Card).location(LocationType.Discard).id<CardId>(id => id.front === Card.RoyalOffering3)
-      ],
+      focus: game => ({
+        materials: [
+          this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).player(me).id(Coin.Coin2),
+          this.material(game, MaterialType.Card).location(LocationType.Discard).id<CardId>(id => id.front === Card.RoyalOffering3),
+          this.material(game, MaterialType.Coin).id(Coin.GoldCoin5)
+        ],
+        margin: { top: 2, left: 2, bottom: 2, right: 2 }
+      }),
       move: {
         player: me,
         filter: (move, game) =>
@@ -396,19 +400,24 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       }
     }, {
       popup: {
+        position: { x: 35, y: 10 },
         text: () => <Trans defaults="tuto.endturn.1"><strong/><em/></Trans>
       },
-      focus: (game) => this.material(game, MaterialType.Card).location(LocationType.Tavern)
+      focus: game => ({
+        materials: [this.material(game, MaterialType.Card).location(LocationType.Tavern)],
+        margin: { top: 1, bottom: 1, right: 25 }
+      })
     },
     {
       popup: {
         position: { x: 5, y: 20 },
         text: () => <Trans defaults="tuto.coin" values={{ coin: 8 }}><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.LaughingGoblin),
-        this.material(game, MaterialType.Coin).location(LocationType.Hand).id(Coin.GoldCoin8).player(me)
-      ],
+      focus: game => ({
+        locations: [{ type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.LaughingGoblin }],
+        materials: [this.material(game, MaterialType.Coin).location(LocationType.Hand).id(Coin.GoldCoin8).player(me)],
+        scale: 0.4
+      }),
       move: {
         filter: (move, game) =>
           isMoveItemType(MaterialType.Coin)(move)
@@ -421,10 +430,11 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         position: { x: 5, y: 20 },
         text: () => <Trans defaults="tuto.coin" values={{ coin: 5 }}><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.DancingDragon),
-        this.material(game, MaterialType.Coin).location(LocationType.Hand).id(Coin.GoldCoin5).player(me)
-      ],
+      focus: game => ({
+        locations: [{ type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.DancingDragon }],
+        materials: [this.material(game, MaterialType.Coin).location(LocationType.Hand).id(Coin.GoldCoin5).player(me)],
+        scale: 0.4
+      }),
       move: {
         filter: (move, game) =>
           isMoveItemType(MaterialType.Coin)(move)
@@ -437,10 +447,11 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         position: { x: 5, y: 20 },
         text: () => <Trans defaults="tuto.coin" values={{ coin: 3 }}><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.ShiningHorse),
-        this.material(game, MaterialType.Coin).location(LocationType.Hand).id(Coin.Coin3).player(me)
-      ],
+      focus: game => ({
+        locations: [{ type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.ShiningHorse }],
+        materials: [this.material(game, MaterialType.Coin).location(LocationType.Hand).id(Coin.Coin3).player(me)],
+        scale: 0.4
+      }),
       move: {
         filter: (move, game) =>
           isMoveItemType(MaterialType.Coin)(move)
@@ -450,14 +461,17 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        position: { x: 5, y: 0 },
+        position: { x: 5, y: 20 },
         text: () => <Trans defaults="tuto.pouch"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Coin).location(LocationType.Hand).player(me),
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.Pouch1),
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.Pouch2)
-      ],
+      focus: game => ({
+        locations: [
+          { type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.Pouch1 },
+          { type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.Pouch2 }
+        ],
+        materials: [this.material(game, MaterialType.Coin).location(LocationType.Hand).player(me)],
+        scale: 0.4
+      }),
       move: {
         filter: (move, game) =>
           isMoveItemType(MaterialType.Coin)(move)
@@ -467,14 +481,10 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        position: { x: 5, y: 0 },
+        position: { x: 5, y: 20 },
         text: () => <Trans defaults="tuto.pouch"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Coin).location(LocationType.Hand).player(me),
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.Pouch1),
-        this.location(LocationType.PlayerBoard).player(me).id(PlayerBoardSpace.Pouch2)
-      ],
+      focus: game => this.steps[game.tutorialStep! - 1].focus!(game),
       move: {
         filter: (move, game) =>
           isMoveItemType(MaterialType.Coin)(move)
@@ -533,12 +543,10 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         position: { x: 0, y: 20 },
         text: () => <Trans defaults="tuto.blacksmith.me"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Card).location(LocationType.Tavern).id<CardId>(id => id.front === Card.Blacksmith1),
-        this.location(LocationType.Army)
-          .player(me)
-          .id(DwarfType.Blacksmith)
-      ],
+      focus: game => ({
+        locations: [{ type: LocationType.Army, player: me, id: DwarfType.Blacksmith }],
+        materials: [this.material(game, MaterialType.Card).location(LocationType.Tavern).id<CardId>(id => id.front === Card.Blacksmith1)]
+      }),
       move: {
         player: me,
         filter: (move, game) =>
@@ -559,32 +567,34 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         position: { x: 0, y: 20 },
         text: () => <Trans defaults="tuto.tie"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.DancingDragon),
-        this.material(game, MaterialType.Gem).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.Gem)
-      ]
+      focus: game => ({
+        materials: [
+          this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.DancingDragon)
+        ],
+        margin: { left: 2, right: 2 }
+      })
     },
     {
       popup: {
         position: { x: 0, y: 20 },
         text: () => <Trans defaults="tuto.gem"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.DancingDragon),
-        this.material(game, MaterialType.Gem).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.Gem)
-      ]
+      focus: game => ({
+        materials: [
+          this.material(game, MaterialType.Gem).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.Gem)
+        ],
+        margin: { left: 2, right: 2 }
+      })
     },
     {
       popup: {
-        position: { x: 0, y: 30 },
+        position: { x: 20, y: -10 },
         text: () => <Trans defaults="tuto.warrior.me"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Card).location(LocationType.Tavern).id<CardId>(id => id.front === Card.WarriorGrade4_1),
-        this.location(LocationType.Army)
-          .player(me)
-          .id(DwarfType.Warrior)
-      ],
+      focus: game => ({
+        locations: [{ type: LocationType.Army, player: me, id: DwarfType.Warrior }],
+        materials: [this.material(game, MaterialType.Card).location(LocationType.Tavern).id<CardId>(id => id.front === Card.WarriorGrade4_1)]
+      }),
       move: {
         player: me,
         filter: (move, game) =>
@@ -610,15 +620,13 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        position: { x: 0, y: 30 },
+        position: { x: 20, y: -10 },
         text: () => <Trans defaults="tuto.explorer.me"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Card).location(LocationType.Tavern).id<CardId>(id => id.front === Card.ExplorerGrade11_1),
-        this.location(LocationType.Army)
-          .player(me)
-          .id(DwarfType.Explorer)
-      ],
+      focus: game => ({
+        locations: [{ type: LocationType.Army, player: me, id: DwarfType.Explorer }],
+        materials: [this.material(game, MaterialType.Card).location(LocationType.Tavern).id<CardId>(id => id.front === Card.ExplorerGrade11_1)]
+      }),
       move: {
         player: me,
         filter: (move, game) =>
@@ -631,37 +639,38 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         position: { x: 0, y: 30 },
         text: () => <Trans defaults="tuto.rank"><strong/><em/></Trans>
       },
-      focus: (game) => this.material(game, MaterialType.Card).location(LocationType.Army).player(me).getIndexes().map(card =>
-        this.location(LocationType.Grade).parent(card)
-      )
+      focus: game => ({
+        locations: this.material(game, MaterialType.Card).location(LocationType.Army).player(me).getIndexes().map(card => (
+          { type: LocationType.Grade, parent: card }
+        ))
+      })
     },
     {
       popup: {
         position: { x: 0, y: 30 },
         text: () => <Trans defaults="tuto.recruitment"><strong/><em/></Trans>
       },
-      focus: (game) => this.material(game, MaterialType.Card).location(LocationType.Army).player(me).getIndexes().map(card =>
-        this.location(LocationType.Grade).parent(card)
-      )
+      focus: game => this.steps[game.tutorialStep! - 1].focus!(game)
     },
     {
       popup: {
-        position: { x: 0, y: 30 },
+        position: { x: 0, y: 35 },
         text: () => <Trans defaults="tuto.heroes"><strong/><em/></Trans>
       },
-      focus: (game) => this.material(game, MaterialType.Card).location(LocationType.HeroesDeck)
+      focus: game => ({
+        materials: [this.material(game, MaterialType.Card).location(LocationType.HeroesDeck)],
+        scale: 0.45
+      })
     },
     {
       popup: {
         position: { x: 0, y: 15 },
         text: () => <Trans defaults="tuto.aral"><strong/><em/></Trans>
       },
-      focus: (game) => [
-        this.material(game, MaterialType.Card).location(LocationType.HeroesDeck).id<CardId>(id => id.front === Card.Aral),
-        this.location(LocationType.Army)
-          .player(me)
-          .id(DwarfType.Hunter)
-      ],
+      focus: game => ({
+        locations: [this.location(LocationType.Army).player(me).id(DwarfType.Hunter).location],
+        materials: [this.material(game, MaterialType.Card).location(LocationType.HeroesDeck).id<CardId>(id => id.front === Card.Aral)]
+      }),
       move: {
         player: me,
         filter: (move, game) =>
@@ -673,19 +682,29 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
       popup: {
         text: () => <Trans defaults="tuto.endturn.2"><strong/><em/></Trans>
       },
-      focus: (game) => this.material(game, MaterialType.Card).location(LocationType.Age1Deck)
+      focus: game => ({
+        materials: [this.material(game, MaterialType.Card).location(LocationType.Age1Deck)],
+        scale: 0.6
+      })
     },
     {
       popup: {
-        position: { x: -40, y: 0 },
+        position: { x: -30, y: 0 },
         text: () => <Trans defaults="tuto.distinctions"><strong/><em/></Trans>
       },
-      focus: (game) => this.material(game, MaterialType.Distinction).location(LocationType.DistinctionsDeck)
+      focus: game => ({
+        materials: [this.material(game, MaterialType.Distinction).location(LocationType.DistinctionsDeck)],
+        margin: { left: 20 }
+      })
     },
     {
       popup: {
         text: () => <Trans defaults="tuto.endage.1"><strong/><em/></Trans>
-      }
+      },
+      focus: game => ({
+        materials: [this.material(game, MaterialType.Card).location(LocationType.Age2Deck).sort(item => -item.location.x!).limit(10)],
+        scale: 0.6
+      })
     },
     {
       popup: {

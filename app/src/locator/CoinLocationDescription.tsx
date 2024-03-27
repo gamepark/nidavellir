@@ -14,7 +14,7 @@ export class CoinLocationDescription extends LocationDescription {
     border-radius: inherit;
   `
 
-  protected isMoveToLocation(move: MaterialMove, location: Location, context: MaterialContext) {
+  isMoveToLocation(move: MaterialMove, location: Location, context: MaterialContext) {
     if (isCustomMoveType(CustomMoveType.TradeCoins)(move)) {
       return move.data && move.data.includes(location.parent)
     }
