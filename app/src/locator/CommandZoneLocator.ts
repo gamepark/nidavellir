@@ -2,13 +2,17 @@
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { PlayerId } from '@gamepark/nidavellir/player/Player'
-import { ItemContext, LineLocator } from '@gamepark/react-game'
-import { Coordinates, MaterialItem } from '@gamepark/rules-api'
+import { ItemContext, LineLocator, MaterialContext } from '@gamepark/react-game'
+import { Coordinates, Location, MaterialItem } from '@gamepark/rules-api'
 import { cardDescription } from '../material/DwarfCardDescription'
 import { CommandZoneLocatorDescription } from './CommandZoneLocatorDescription'
 
 export class CommandZoneLocator extends LineLocator<PlayerId, MaterialType, LocationType> {
   locationDescription = new CommandZoneLocatorDescription()
+
+  getLocations({ rules: { players } }: MaterialContext): Location[] {
+    return players.map((player) => ({ type: LocationType.CommandZone, player }))
+  }
 
   getCoordinates(item: MaterialItem<PlayerId, LocationType>, context: ItemContext<PlayerId, MaterialType, LocationType>): Coordinates {
     const { type } = context

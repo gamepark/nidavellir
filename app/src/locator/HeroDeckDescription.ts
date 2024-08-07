@@ -1,14 +1,12 @@
 /** @jsxImportSource @emotion/react */
-import { LocationDescription, MaterialContext } from "@gamepark/react-game";
-import { LocationType } from "@gamepark/nidavellir/material/LocationType";
-import { css } from "@emotion/react";
-import { Location } from "@gamepark/rules-api";
+import { css } from '@emotion/react'
+import { LocationDescription, MaterialContext } from '@gamepark/react-game'
+import { Location } from '@gamepark/rules-api'
 
 export class HeroDeckDescription extends LocationDescription {
   height = 28.5
   width = 46.5
   alwaysVisible = true
-  location = { type: LocationType.HeroesDeck }
   extraCss = css`background: #FAEBD780; border-radius: 0.5em; pointer-events: none`
 
   getCoordinates(_location: Location, { rules }: MaterialContext) {

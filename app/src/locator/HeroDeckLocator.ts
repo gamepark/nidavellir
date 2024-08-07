@@ -10,6 +10,7 @@ import { HeroDeckDescription } from './HeroDeckDescription'
 
 export class HeroDeckLocator extends GridLocator {
   locationDescription = new HeroDeckDescription()
+  location = { type: LocationType.HeroesDeck }
   delta = { x: 1, y: 1 }
   columns = 7
   itemWidth = cardDescription.width

@@ -2,7 +2,7 @@ import { Coins } from '@gamepark/nidavellir/coins/Coins'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { PlayerId } from '@gamepark/nidavellir/player/Player'
-import { HandLocator, ItemContext } from '@gamepark/react-game'
+import { HandLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
 import orderBy from 'lodash/orderBy'
 import { playerBoardDescription } from '../material/PlayerBoardDescription'
@@ -11,6 +11,11 @@ import { tableLocator } from './TableLocator'
 
 export class PlayerHandLocator extends HandLocator<PlayerId, MaterialType, LocationType> {
   locationDescription = new PlayerHandDescription()
+
+  getLocations({ player }: MaterialContext) {
+    if (!player) return []
+    return [{ type: LocationType.Hand, player }]
+  }
 
   getCoordinates(location: Location<PlayerId, LocationType>, context: ItemContext<PlayerId, MaterialType, LocationType>) {
     const { type, player } = context
