@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
-import { LocationDescription, MaterialContext } from '@gamepark/react-game'
-import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { css } from '@emotion/react'
-import { Location } from '@gamepark/rules-api'
+import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { Tavern } from '@gamepark/nidavellir/material/Tavern'
+import { LocationDescription, MaterialContext } from '@gamepark/react-game'
+import { Location } from '@gamepark/rules-api'
 import Images from '../images/Images'
 import { PlayerBoardSpaceRules } from './rules/PlayerBoardSpaceRules'
 
@@ -21,9 +21,9 @@ export class TavernLocatorDescription extends LocationDescription {
     return this.getEmblemCoordinates(location, context)
   }
 
-  getSize(location: Location, context: MaterialContext) {
+  getLocationSize(location: Location, context: MaterialContext) {
     if (!location.id) return this.getPlaceholderSize(context)
-    return this.getEmblemSize(location)
+    return { height: 4, width: 4 }
   }
 
   getPlaceholderCoordinates({ rules }: MaterialContext) {
@@ -77,18 +77,6 @@ export class TavernLocatorDescription extends LocationDescription {
       case 5:
       default:
         return { height: 28.5, width: 43 }
-    }
-  }
-
-  getEmblemSize(location: Location) {
-    switch (location.id) {
-      case Tavern.LaughingGoblin:
-        return { height: 4, width: 4 };
-      case Tavern.DancingDragon:
-        return { height: 4, width: 4 };
-      case Tavern.ShiningHorse:
-      default:
-        return { height: 4, width: 4 };
     }
   }
 
