@@ -1,9 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { Gem } from '@gamepark/nidavellir/material/Gem'
-import { LocationType } from '@gamepark/nidavellir/material/LocationType'
-import { PlayerId } from '@gamepark/nidavellir/player/Player'
 import { TokenDescription } from '@gamepark/react-game'
-import { MaterialItem } from '@gamepark/rules-api'
 import Images from '../images/Images'
 import { GemHelp } from './rules/GemHelp'
 
@@ -17,10 +14,6 @@ export class GemDescription extends TokenDescription  {
     [Gem.Gem4]: Images.Gem4,
     [Gem.Gem5]: Images.Gem5,
     [Gem.Gem6]: Images.Gem6,
-  }
-
-  getRotateZ(_item: MaterialItem<PlayerId, LocationType>): number {
-    return 180
   }
 
   help = GemHelp
