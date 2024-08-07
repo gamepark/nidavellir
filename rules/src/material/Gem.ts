@@ -1,4 +1,4 @@
-import {isEnumValue} from "@gamepark/rules-api";
+import { getEnumValues } from '@gamepark/rules-api'
 
 export enum Gem {
     Gem1 = 1,
@@ -9,6 +9,6 @@ export enum Gem {
     Gem6
 }
 
-export const gems = Object.values(Gem).filter<Gem>(isEnumValue)
+export const gems = getEnumValues(Gem)
 
 export const baseGems = gems.filter((gem) => gem < Gem.Gem6)
