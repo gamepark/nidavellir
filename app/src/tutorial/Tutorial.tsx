@@ -132,7 +132,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           && move.location.id === PlayerBoardSpace.LaughingGoblin
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin5).player(opponent).getIndex()
       },
-      focus: game => this.steps[game.tutorialStep! - 1].focus!(game)
+      focus: game => this.steps[game.tutorial!.step - 1].focus!(game)
     },
     {
       move: {
@@ -142,7 +142,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           && move.location.id === PlayerBoardSpace.DancingDragon
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin2).player(opponent).getIndex()
       },
-      focus: game => this.steps[game.tutorialStep! - 2].focus!(game)
+      focus: game => this.steps[game.tutorial!.step - 2].focus!(game)
     },
     {
       move: {
@@ -151,7 +151,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin0).player(opponent).getIndex()
           && move.location.id === PlayerBoardSpace.ShiningHorse
       },
-      focus: game => this.steps[game.tutorialStep! - 3].focus!(game)
+      focus: game => this.steps[game.tutorial!.step - 3].focus!(game)
     },
     {
       move: {
@@ -160,7 +160,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin3).player(opponent).getIndex()
           && move.location.id === PlayerBoardSpace.Pouch1
       },
-      focus: game => this.steps[game.tutorialStep! - 4].focus!(game)
+      focus: game => this.steps[game.tutorial!.step - 4].focus!(game)
     },
     {
       move: {
@@ -169,7 +169,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin4).player(opponent).getIndex()
           && move.location.id === PlayerBoardSpace.Pouch2
       },
-      focus: game => this.steps[game.tutorialStep! - 5].focus!(game)
+      focus: game => this.steps[game.tutorial!.step - 5].focus!(game)
     },
     {
       popup: {
@@ -213,7 +213,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         position: { x: 0, y: 30 },
         text: () => <Trans defaults="tuto.pouch"><strong/><em/></Trans>
       },
-      focus: game => this.steps[game.tutorialStep! - 1].focus!(game),
+      focus: game => this.steps[game.tutorial!.step - 1].focus!(game),
       move: {
         filter: (move, game) =>
           isMoveItemType(MaterialType.Coin)(move)
@@ -484,7 +484,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         position: { x: 5, y: 20 },
         text: () => <Trans defaults="tuto.pouch"><strong/><em/></Trans>
       },
-      focus: game => this.steps[game.tutorialStep! - 1].focus!(game),
+      focus: game => this.steps[game.tutorial!.step - 1].focus!(game),
       move: {
         filter: (move, game) =>
           isMoveItemType(MaterialType.Coin)(move)
@@ -650,7 +650,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
         position: { x: 0, y: 30 },
         text: () => <Trans defaults="tuto.recruitment"><strong/><em/></Trans>
       },
-      focus: game => this.steps[game.tutorialStep! - 1].focus!(game)
+      focus: game => this.steps[game.tutorial!.step - 1].focus!(game)
     },
     {
       popup: {
