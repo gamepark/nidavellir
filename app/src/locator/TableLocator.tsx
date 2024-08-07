@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
-import { ItemContext, ItemLocator } from '@gamepark/react-game'
+import { ItemContext, Locator } from '@gamepark/react-game'
 import { MaterialItem } from "@gamepark/rules-api";
 import { playerBoardDescription } from "../material/PlayerBoardDescription";
 import { cardDescription } from "../material/DwarfCardDescription";
 
-export class TableLocator extends ItemLocator {
+export class TableLocator extends Locator {
 
   getPosition(item: MaterialItem, context: ItemContext) {
     const { rules } = context
