@@ -40,7 +40,7 @@ export class PlayerBoardSpaceLocator extends Locator<PlayerId, MaterialType, Loc
   }
 
   getRotations(item: MaterialItem, context: ItemContext): string[] {
-    if (context.type === MaterialType.Gem) return super.getRotations(item, context)
+    if (context.type === MaterialType.Gem) return ['rotateZ(180deg)']
     const rotations: string[] = []
     if (this.isHidden(item, context)) rotations.push('rotateY(180deg)')
     return rotations
