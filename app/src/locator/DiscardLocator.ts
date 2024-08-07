@@ -9,6 +9,7 @@ import { DiscardLocatorDescription } from './DiscardLocatorDescription'
 
 export class DiscardLocator extends PileLocator<PlayerId, MaterialType, LocationType> {
   locationDescription = new DiscardLocatorDescription()
+  locations = [{ type: LocationType.Discard, id: MaterialType.Coin }, { type: LocationType.Discard, id: MaterialType.Card }]
   limit = 10
 
   getCoordinates(item: MaterialItem, context: ItemContext): Coordinates {

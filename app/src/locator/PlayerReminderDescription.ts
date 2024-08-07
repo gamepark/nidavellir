@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { PlayerBoardSpace } from '@gamepark/nidavellir/material/PlayerBoardSpace'
-import { ItemContext, LocationDescription, MaterialContext } from '@gamepark/react-game'
+import { ItemContext, LocationDescription } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import Images from '../images/Images'
 import { cardDescription } from '../material/DwarfCardDescription'
@@ -13,13 +12,6 @@ export class PlayerReminderDescription extends LocationDescription {
   height = 4.6
   borderRadius = 1
   alwaysVisible = true
-
-  getLocations(context: MaterialContext): Location[] {
-    return context.rules.players.map((player) => ({
-      type: LocationType.PlayerReminder,
-      player
-    }))
-  }
 
   getCoordinates(location: Location, context: ItemContext) {
     const { rules } = context

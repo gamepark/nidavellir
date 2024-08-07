@@ -1,6 +1,5 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { Tavern } from '@gamepark/nidavellir/material/Tavern'
 import { LocationDescription, MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
@@ -9,12 +8,6 @@ import { PlayerBoardSpaceRules } from './rules/PlayerBoardSpaceRules'
 
 export class TavernLocatorDescription extends LocationDescription {
   alwaysVisible = true
-  locations = [
-    { type: LocationType.Tavern },
-    { type: LocationType.Tavern, id: Tavern.LaughingGoblin },
-    { type: LocationType.Tavern, id: Tavern.DancingDragon },
-    { type: LocationType.Tavern, id: Tavern.ShiningHorse },
-  ]
 
   getCoordinates(location: Location, context: MaterialContext) {
     if (!location.id) return this.getPlaceholderCoordinates(context)
