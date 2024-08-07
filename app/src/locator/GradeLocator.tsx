@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import { ItemLocator, LocationDescription } from '@gamepark/react-game'
+import { Locator, LocationDescription } from '@gamepark/react-game'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 
-export class GradeLocator extends ItemLocator {
+export class GradeLocator extends Locator {
   locationDescription = new GradeLocationDescription()
   parentItemType = MaterialType.Card
   positionOnParent = { x: 16, y: 10 }

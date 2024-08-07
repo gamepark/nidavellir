@@ -4,11 +4,11 @@ import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { PlayerBoardSpace } from '@gamepark/nidavellir/material/PlayerBoardSpace'
 import { PlayerId } from '@gamepark/nidavellir/player/Player'
 import { RuleId } from '@gamepark/nidavellir/rules/RuleId'
-import { ItemContext, ItemLocator, MaterialContext } from '@gamepark/react-game'
+import { ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem, XYCoordinates } from '@gamepark/rules-api'
 import { PlayerBoardSpaceLocatorDescription } from './PlayerBoardSpaceLocatorDescription'
 
-export class PlayerBoardSpaceLocator extends ItemLocator<PlayerId, MaterialType, LocationType> {
+export class PlayerBoardSpaceLocator extends Locator<PlayerId, MaterialType, LocationType> {
   parentItemType = MaterialType.PlayerBoard
   locationDescription = new PlayerBoardSpaceLocatorDescription()
 
