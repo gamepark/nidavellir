@@ -1,4 +1,5 @@
-import { isEnumValue } from "@gamepark/rules-api"
+import { getEnumValues } from '@gamepark/rules-api'
+
 export enum DwarfType {
   Blacksmith = 1,
   Hunter,
@@ -8,4 +9,4 @@ export enum DwarfType {
   Neutral
 }
 
-export const dwarfTypes = Object.values(DwarfType).filter<DwarfType>(isEnumValue).filter((type) => type !== DwarfType.Neutral)
+export const dwarfTypes = getEnumValues(DwarfType).filter((type) => type !== DwarfType.Neutral)

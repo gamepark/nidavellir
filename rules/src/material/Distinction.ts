@@ -1,4 +1,4 @@
-import {isEnumValue} from "@gamepark/rules-api";
+import { getEnumValues } from '@gamepark/rules-api'
 
 export enum Distinction {
     KingsHand = 1,
@@ -8,4 +8,4 @@ export enum Distinction {
     PioneerOfTheKingdom
 }
 
-export const distinctions = Object.values(Distinction).filter<Distinction>(isEnumValue)
+export const distinctions = getEnumValues(Distinction)
