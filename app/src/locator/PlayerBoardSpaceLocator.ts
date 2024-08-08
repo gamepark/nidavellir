@@ -5,6 +5,7 @@ import { PlayerBoardSpace } from '@gamepark/nidavellir/material/PlayerBoardSpace
 import { PlayerId } from '@gamepark/nidavellir/player/Player'
 import { ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem, XYCoordinates } from '@gamepark/rules-api'
+import { playerBoardDescription } from '../material/PlayerBoardDescription'
 import { PlayerBoardSpaceLocatorDescription } from './PlayerBoardSpaceLocatorDescription'
 
 export class PlayerBoardSpaceLocator extends Locator<PlayerId, MaterialType, LocationType> {
@@ -37,7 +38,7 @@ export class PlayerBoardSpaceLocator extends Locator<PlayerId, MaterialType, Loc
     return type === MaterialType.Gem ? 180 : 0
   }
 
-  getParentItemId(location: Location<PlayerId, LocationType>): number | undefined {
-    return location.player
+  getParentItem(location: Location<PlayerId, LocationType>) {
+    return playerBoardDescription.getPlayerBoard(location.player!)
   }
 }
