@@ -3,12 +3,12 @@ import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { PlayerBoardSpace } from '@gamepark/nidavellir/material/PlayerBoardSpace'
 import { PlayerId } from '@gamepark/nidavellir/player/Player'
-import { RuleId } from '@gamepark/nidavellir/rules/RuleId'
-import { ItemContext, ItemLocator, MaterialContext } from '@gamepark/react-game'
+import { ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
 import { Location, MaterialItem, XYCoordinates } from '@gamepark/rules-api'
+import { playerBoardDescription } from '../material/PlayerBoardDescription'
 import { PlayerBoardSpaceLocatorDescription } from './PlayerBoardSpaceLocatorDescription'
 
-export class PlayerBoardSpaceLocator extends ItemLocator<PlayerId, MaterialType, LocationType> {
+export class PlayerBoardSpaceLocator extends Locator<PlayerId, MaterialType, LocationType> {
   parentItemType = MaterialType.PlayerBoard
   locationDescription = new PlayerBoardSpaceLocatorDescription()
 
@@ -34,19 +34,11 @@ export class PlayerBoardSpaceLocator extends ItemLocator<PlayerId, MaterialType,
     }
   }
 
-  isHidden(item: MaterialItem<PlayerId, LocationType>, { type, rules, player }: ItemContext): boolean {
-    const isTransform = player && (rules.game.rule?.id === RuleId.TransformCoin || rules.game.rule?.id === RuleId.Grid) && rules.game.rule.player === player && player === item.location.player
-    return MaterialType.Coin === type && !item.location.rotation && !isTransform
+  getRotateZ(_item: MaterialItem, { type }: ItemContext): number {
+    return type === MaterialType.Gem ? 180 : 0
   }
 
-  getRotations(item: MaterialItem, context: ItemContext): string[] {
-    if (context.type === MaterialType.Gem) return super.getRotations(item, context)
-    const rotations: string[] = []
-    if (this.isHidden(item, context)) rotations.push('rotateY(180deg)')
-    return rotations
-  }
-
-  getParentItemId(location: Location<PlayerId, LocationType>): number | undefined {
-    return location.player
+  getParentItem(location: Location<PlayerId, LocationType>) {
+    return playerBoardDescription.getPlayerBoard(location.player!)
   }
 }

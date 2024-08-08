@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
+import { Tavern } from '@gamepark/nidavellir/material/Tavern'
 import { PlayerId } from '@gamepark/nidavellir/player/Player'
 import { ItemContext } from '@gamepark/react-game'
 import { Coordinates, MaterialItem } from '@gamepark/rules-api'
@@ -10,6 +11,12 @@ import { TavernLocatorDescription } from './TavernLocatorDescription'
 
 export class TavernLocator extends GridLocator {
   locationDescription = new TavernLocatorDescription()
+  locations = [
+    { type: LocationType.Tavern },
+    { type: LocationType.Tavern, id: Tavern.LaughingGoblin },
+    { type: LocationType.Tavern, id: Tavern.DancingDragon },
+    { type: LocationType.Tavern, id: Tavern.ShiningHorse }
+  ]
   delta = { x: 1, y: 1 }
   itemWidth = cardDescription.width
   itemHeight = cardDescription.height
@@ -20,10 +27,10 @@ export class TavernLocator extends GridLocator {
 
   getCoordinates(item: MaterialItem<PlayerId, LocationType>, { rules }: ItemContext<PlayerId, MaterialType, LocationType>): Coordinates {
     const players = rules.players.length
-    const baseY = players > 3? -23: -29
+    const baseY = players > 3 ? -23 : -29
     const x = this.getX(players)
     const tavernIndex = (item.location.id - 1)
-    return {  x, y: baseY + (cardDescription.height + this.delta.y) * tavernIndex, z: 0.1 }
+    return { x, y: baseY + (cardDescription.height + this.delta.y) * tavernIndex, z: 0.1 }
   }
 
   getX(players: number) {

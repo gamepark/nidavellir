@@ -1,4 +1,4 @@
-import {isEnumValue} from "@gamepark/rules-api";
+import { getEnumValues } from '@gamepark/rules-api'
 
 export enum Coin {
     Coin0 = 1,
@@ -38,7 +38,7 @@ export enum Coin {
 export const isGold = (coin: Coin) => coin >= Coin.GoldCoin5 && coin < Coin.HuntingMasterCoin
 export const isBronze = (coin: Coin) => coin >= Coin.Coin0 && coin < Coin.GoldCoin5
 
-export const coins = Object.values(Coin).filter<Coin>(isEnumValue)
+export const coins = getEnumValues(Coin)
 export const goldCoins = coins.filter(isGold)
 export const bronzeCoins = coins.filter(isBronze)
 

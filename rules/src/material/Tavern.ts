@@ -1,4 +1,4 @@
-import { isEnumValue } from "@gamepark/rules-api"
+import { getEnumValues } from '@gamepark/rules-api'
 
 export enum Tavern {
   LaughingGoblin = 1,
@@ -6,4 +6,4 @@ export enum Tavern {
   ShiningHorse,
 }
 
-export const taverns = Object.values(Tavern).filter<Tavern>(isEnumValue)
+export const taverns = getEnumValues(Tavern)

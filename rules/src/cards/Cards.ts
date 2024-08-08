@@ -1,7 +1,8 @@
-import { DwarfDescription } from './DwarfDescription';
-import { DwarfType } from './DwarfType';
-import { HeroDescription } from "./HeroDescription";
-import { RoyalOfferingDescription } from "./RoyalOfferingDescription";
+import { getEnumValues } from '@gamepark/rules-api'
+import { RuleId } from '../rules/RuleId'
+import { DwarfDescription } from './DwarfDescription'
+import { DwarfType } from './DwarfType'
+import { HeroDescription } from './HeroDescription'
 import {
   Aegur,
   Aral,
@@ -24,9 +25,8 @@ import {
   Uline,
   Ylud,
   Zoral
-} from "./Heroes";
-import { isEnumValue } from "@gamepark/rules-api"
-import { RuleId } from "../rules/RuleId";
+} from './Heroes'
+import { RoyalOfferingDescription } from './RoyalOfferingDescription'
 
 export const WarriorGrade3: DwarfDescription = {
   types: DwarfType.Warrior,
@@ -368,7 +368,7 @@ export const isHero = (card: Card) => card >= Card.Bonfur
 export const isSimpleDwarf = (card: Card) => card < Card.RoyalOffering3 || card === Card.BlacksmithKingsGreatArmorer
 export const isRoyalOffering = (card: Card) => card > Card.ExplorerGrade12_2 && card < Card.BlacksmithKingsGreatArmorer
 
-export const cards = Object.values(Card).filter<Card>(isEnumValue)
+export const cards = getEnumValues(Card)
 
 export const dwarfCards = cards.filter((c) => (isSimpleDwarf(c) && c !== Card.BlacksmithKingsGreatArmorer) || isRoyalOffering(c))
 export const heroCards = cards.filter(isHero)

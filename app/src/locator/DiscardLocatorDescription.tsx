@@ -1,14 +1,11 @@
 /** @jsxImportSource @emotion/react */
-import { LocationType } from '@gamepark/nidavellir/material/LocationType'
-import { ComponentSize, LocationDescription, MaterialContext } from '@gamepark/react-game'
-import { cardDescription } from '../material/DwarfCardDescription'
-import { Location } from '@gamepark/rules-api'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
+import { ComponentSize, LocationDescription, MaterialContext } from '@gamepark/react-game'
+import { Location } from '@gamepark/rules-api'
+import { cardDescription } from '../material/DwarfCardDescription'
 
 export class DiscardLocatorDescription extends LocationDescription {
   alwaysVisible = false
-
-  locations = [{ type: LocationType.Discard, id: MaterialType.Coin }, { type: LocationType.Discard, id: MaterialType.Card }]
 
   getSize(location: Location): ComponentSize {
     if (location.id === MaterialType.Coin) {

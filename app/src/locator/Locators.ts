@@ -1,7 +1,7 @@
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { PlayerId } from '@gamepark/nidavellir/player/Player'
-import { ItemLocator } from '@gamepark/react-game'
+import { Locator } from '@gamepark/react-game'
 import { AgeDeckLocator } from './AgeDeckLocator'
 import { ArmyLocator } from './ArmyLocator'
 import { CoinLocator } from './CoinLocator'
@@ -17,7 +17,7 @@ import { tableLocator } from './TableLocator'
 import { TavernLocator } from './TavernLocator'
 import { TreasureLocator } from './TreasureLocator'
 
-export const Locators: Record<LocationType, ItemLocator<PlayerId, MaterialType, LocationType>> = {
+export const Locators: Record<LocationType, Locator<PlayerId, MaterialType, LocationType>> = {
   [LocationType.Age1Deck]: new AgeDeckLocator(),
   [LocationType.Age2Deck]: new AgeDeckLocator(),
   [LocationType.DistinctionsDeck]: new DistinctionDeckLocator(),
