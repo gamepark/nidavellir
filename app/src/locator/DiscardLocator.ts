@@ -1,32 +1,31 @@
 /** @jsxImportSource @emotion/react */
-import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
-import { PlayerId } from '@gamepark/nidavellir/player/Player'
-import { ItemContext, PileLocator } from '@gamepark/react-game'
-import { Coordinates, MaterialItem } from '@gamepark/rules-api'
-import { cardDescription } from '../material/DwarfCardDescription'
-import { DiscardLocatorDescription } from './DiscardLocatorDescription'
+import { ItemContext, LocationContext, PileLocator } from '@gamepark/react-game'
+import { Location } from '@gamepark/rules-api'
+import { DiscardLocationDescription } from './DiscardLocationDescription'
 
-export class DiscardLocator extends PileLocator<PlayerId, MaterialType, LocationType> {
-  locationDescription = new DiscardLocatorDescription()
-  locations = [{ type: LocationType.Discard, id: MaterialType.Coin }, { type: LocationType.Discard, id: MaterialType.Card }]
+export class DiscardLocator extends PileLocator {
+  locationDescription = new DiscardLocationDescription()
   limit = 10
 
-  getCoordinates(item: MaterialItem, context: ItemContext): Coordinates {
-    const { type } = context
-    const coordinates = this.locationDescription.getCoordinatesOfType(type, context)
-    return { ...coordinates, z: cardDescription.thickness * (item.location.x! + 1) }
+  getCoordinates(location: Location, { rules }: ItemContext) {
+    if (location.id === MaterialType.Coin) {
+      return { x: -74, y: rules.players.length > 3 ? 4 : 0 }
+    }
+    return { x: -74, y: rules.players.length > 3 ? -5 : -11 }
   }
 
-  getRadius(_item: MaterialItem<PlayerId, LocationType>, { type }: ItemContext<PlayerId, MaterialType, LocationType>): number {
+  placeLocation(location: Location, context: LocationContext) {
+    const transform = super.placeLocation(location, context)
+    if (!context.canDrop) transform.push('translateZ(10em)')
+    return transform
+  }
+
+  getRadius(_location: Location, { type }: ItemContext) {
     return type === MaterialType.Coin ? 1.7 : 0
   }
 
-  getMaxAngle(_item: MaterialItem, { type }: ItemContext): number {
+  getMaxAngle(_location: Location, { type }: ItemContext) {
     return type === MaterialType.Card ? 15 : 0
-  }
-
-  getItemIndex(item: MaterialItem<PlayerId, LocationType>): number {
-    return -item.location.x!
   }
 }

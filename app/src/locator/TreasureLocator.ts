@@ -1,21 +1,20 @@
 /** @jsxImportSource @emotion/react */
-import { LocationType } from '@gamepark/nidavellir/material/LocationType'
-import { PlayerId } from '@gamepark/nidavellir/player/Player'
-import { ItemContext } from '@gamepark/react-game'
-import { Coordinates, MaterialItem } from '@gamepark/rules-api'
+import { FlexLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
+import { Location } from '@gamepark/rules-api'
 import { coinDescription } from '../material/CoinDescription'
-import { GridLocator } from './GridLocator'
 
-export class TreasureLocator extends GridLocator {
-  delta = { x: 1, y: 0.5, z: 0.5 }
-  columns = 3
-  itemWidth = coinDescription.diameter
-  itemHeight = coinDescription.diameter
+export class TreasureLocator extends FlexLocator {
+  gap = { x: coinDescription.diameter + 1 }
+  lineGap = { y: coinDescription.diameter + 0.5 }
+  lineSize = 3
 
-  getCoordinates(_item: MaterialItem<PlayerId, LocationType>, { rules }: ItemContext): Coordinates {
+  getCoordinates(_location: Location, { rules }: ItemContext) {
     const players = rules.players.length
-    const y = players > 3 ? -28 : -31
-    const x = players > 3 ? 35 : 14
-    return { x, y, z: 0 }
+    return { x: players > 3 ? 35 : 14, y: players > 3 ? -28 : -31 }
+  }
+
+  getLocationCoordinates(location: Location, context: MaterialContext, index?: number | undefined) {
+    const { x = 0, y = 0 } = super.getLocationCoordinates(location, context, index)
+    return { x: x + location.z! * 0.5, y, z: location.z! * 0.1 }
   }
 }
