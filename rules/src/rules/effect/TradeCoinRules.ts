@@ -19,7 +19,7 @@ export class TradeCoinRules extends EffectRule {
       const coins = this.handCoins
       if (coins.length === 2) {
         return [
-          this.rules().customMove(CustomMoveType.TradeCoins, coins.getIndexes())
+          this.customMove(CustomMoveType.TradeCoins, coins.getIndexes())
         ]
       }
 
@@ -28,14 +28,14 @@ export class TradeCoinRules extends EffectRule {
 
     const pouch = this.pouch
     return [
-      this.rules().customMove(CustomMoveType.TradeCoins, pouch.getIndexes())
+      this.customMove(CustomMoveType.TradeCoins, pouch.getIndexes())
     ]
   }
 
   getPlayerMoves() {
     if (this.hasUline) {
       const combinations = getCombinations(this.handCoins.getIndexes(), 2)
-      return combinations.map((indexes) => this.rules().customMove(CustomMoveType.TradeCoins, indexes))
+      return combinations.map((indexes) => this.customMove(CustomMoveType.TradeCoins, indexes))
     }
 
     return []

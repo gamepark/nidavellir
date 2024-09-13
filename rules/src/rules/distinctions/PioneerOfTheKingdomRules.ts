@@ -23,7 +23,7 @@ class PioneerOfTheKingdomRules extends DistinctionRules {
     if (player) {
       this.memorizeRule(player)
       this.memorize<DrawCard>(Memory.DrawCard, { draw: 3, keep: 1, age: 2 })
-      moves.push(this.rules().startPlayerTurn(RuleId.DrawCard, player))
+      moves.push(this.startPlayerTurn(RuleId.DrawCard, player))
       return moves
     }
 

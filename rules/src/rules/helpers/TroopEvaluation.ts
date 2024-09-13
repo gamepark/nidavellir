@@ -13,14 +13,14 @@ export class TroopEvaluation extends MaterialRulesPart {
   get endDistinction(): MaterialMove[] {
     const remainingDistinctions = distinctions.slice(distinctions.indexOf(this.distinction) + 1)
     for (const d of remainingDistinctions) {
-      if (d === Distinction.PioneerOfTheKingdom) return [this.rules().startRule(DistinctionRuleId[d])]
+      if (d === Distinction.PioneerOfTheKingdom) return [this.startRule(DistinctionRuleId[d])]
       const description = Distinctions[d]
       const playerWithMajority = this.getPlayerWithMajority(description.majorityOf)
-      if (playerWithMajority) return [this.rules().startPlayerTurn(DistinctionRuleId[d], playerWithMajority)]
+      if (playerWithMajority) return [this.startPlayerTurn(DistinctionRuleId[d], playerWithMajority)]
     }
 
     this.forget(Memory.YludPlayed)
-    return [this.rules().startRule(RuleId.EnterDwarves)]
+    return [this.startRule(RuleId.EnterDwarves)]
   }
 
   get startEvaluation() {

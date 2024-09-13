@@ -20,7 +20,7 @@ class UlineBidRules extends PlayerTurnRule {
 
   afterItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Coin)(move)) return []
-    return [this.rules().startRule(RuleId.BidRevelation)]
+    return [this.startRule(RuleId.BidRevelation)]
   }
 
   get tavern() {

@@ -43,7 +43,7 @@ export class Trade extends MaterialRulesPart {
   }
 
   get goToGemExchangeMoves() {
-    return [this.rules().startRule(RuleId.GemTrade)]
+    return [this.startRule(RuleId.GemTrade)]
   }
 
   getCoinValue(coin: MaterialItem) {

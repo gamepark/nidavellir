@@ -16,7 +16,7 @@ class KingsHandRules extends DistinctionRules {
     if (!isStartPlayerTurn(move)) return moves
     this.memorizeRule(move.player!)
     this.memorize(Memory.TransformBonus, 5)
-    moves.push(this.rules().startPlayerTurn(RuleId.TransformCoin, move.player!))
+    moves.push(this.startPlayerTurn(RuleId.TransformCoin, move.player!))
     return moves
   }
 }

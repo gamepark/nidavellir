@@ -32,7 +32,7 @@ class BidRevelationRules extends MaterialRulesPart {
           .location((location) => location.type === LocationType.PlayerBoard && location.id === this.tavern)
           .player(playerWithUline.location.player)
 
-        if (!tavernCoin.length) return [this.rules().startPlayerTurn(RuleId.UlineBid, playerWithUline.location.player!)]
+        if (!tavernCoin.length) return [this.startPlayerTurn(RuleId.UlineBid, playerWithUline.location.player!)]
       }
 
       return this.moveToElvalandTurn
@@ -57,7 +57,7 @@ class BidRevelationRules extends MaterialRulesPart {
 
   get moveToElvalandTurn(): MaterialMove[] {
     return [
-      this.rules().startPlayerTurn(RuleId.ElvalandTurn, new TurnOrder(this.game).nextPlayer)
+      this.startPlayerTurn(RuleId.ElvalandTurn, new TurnOrder(this.game).nextPlayer)
     ]
   }
 

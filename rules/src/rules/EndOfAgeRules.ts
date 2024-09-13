@@ -31,7 +31,7 @@ export class EndOfAgeRules extends MaterialRulesPart {
           .location(location => (location.type === LocationType.Hand || location.type === LocationType.PlayerBoard) && !location.rotation)
           .rotateItems(true)
       )
-      moves.push(this.rules().endGame())
+      moves.push(this.endGame())
       return moves
     }
 
@@ -52,7 +52,7 @@ export class EndOfAgeRules extends MaterialRulesPart {
       .getItem()
 
     if (!ylud) return []
-    return [this.rules().startPlayerTurn(RuleId.Ylud, ylud.location.player!)]
+    return [this.startPlayerTurn(RuleId.Ylud, ylud.location.player!)]
   }
 
   get moveThrudInCommandZone() {

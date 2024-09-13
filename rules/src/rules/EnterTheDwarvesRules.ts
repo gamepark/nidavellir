@@ -22,7 +22,7 @@ class EnterTheDwarvesRules extends MaterialRulesPart {
       )
     }
 
-    moves.push(this.rules().startSimultaneousRule(RuleId.Bids, this.playersThatMustBid))
+    moves.push(this.startSimultaneousRule(RuleId.Bids, this.playersThatMustBid))
     return moves
   }
 

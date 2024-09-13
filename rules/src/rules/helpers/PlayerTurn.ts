@@ -53,7 +53,7 @@ export default class PlayerTurn extends MaterialRulesPart {
 
   get goToEffect() {
     if (!this.effect) return []
-    return [this.rules().startRule(this.effect)]
+    return [this.startRule(this.effect)]
   }
 
   get hasRecruitment() {
@@ -62,7 +62,7 @@ export default class PlayerTurn extends MaterialRulesPart {
 
   get goToRecruitment() {
     if (!this.hasRecruitment) return []
-    return [this.rules().startRule(RuleId.RecruitHero)]
+    return [this.startRule(RuleId.RecruitHero)]
   }
 
   get tavern() {
@@ -92,14 +92,14 @@ export default class PlayerTurn extends MaterialRulesPart {
   }
 
   get goToEndOfTurn() {
-    return [this.rules().startRule(RuleId.EndOfTurn)]
+    return [this.startRule(RuleId.EndOfTurn)]
   }
 
   get moveToPreviousRule() {
     if (!this.previousRule) return []
     const previousRule = this.previousRule
     if (previousRule.id === this.ruleId || !previousRule?.player) return []
-    return [this.rules().startRule(previousRule.id)]
+    return [this.startRule(previousRule.id)]
   }
 
   get ruleId() {
@@ -156,7 +156,7 @@ export default class PlayerTurn extends MaterialRulesPart {
       || thrud.getItem()?.location?.id !== move.location.id) return []
 
     return [
-      this.rules().startRule(RuleId.Thrud)
+      this.startRule(RuleId.Thrud)
     ]
   }
 
