@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { FlexLocator, ItemContext } from '@gamepark/react-game'
-import { Location } from '@gamepark/rules-api'
+import { Location, MaterialItem } from '@gamepark/rules-api'
 import { cardDescription } from '../material/DwarfCardDescription'
 import { HeroDeckDescription } from './HeroDeckDescription'
 
@@ -18,5 +18,17 @@ export class HeroDeckLocator extends FlexLocator {
     const y = players > 3 ? -23 : -29
     const x = players > 3 ? -15 : -33
     return { x, y }
+  }
+
+  getHoverTransform(item: MaterialItem, _context: ItemContext) {
+    const transforms = [
+      'translateZ(10em)',
+      'scale(2)'
+    ]
+    if (item.location.x! < 7) {
+      transforms.push('translateY(25%)')
+    }
+
+    return transforms
   }
 }

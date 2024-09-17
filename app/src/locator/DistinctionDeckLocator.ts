@@ -45,4 +45,16 @@ export class DistinctionDeckLocator extends ListLocator {
 
     return super.getItemIndex(item, context)
   }
+
+  getHoverTransform(item: MaterialItem, _context: ItemContext) {
+    const transforms = [
+      'translateZ(10em)',
+      'scale(2)'
+    ]
+    if (item.location.x! === 0) {
+      transforms.push('translateY(25%)')
+    }
+
+    return transforms
+  }
 }

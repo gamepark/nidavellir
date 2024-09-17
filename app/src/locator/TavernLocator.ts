@@ -3,7 +3,7 @@ import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { Tavern } from '@gamepark/nidavellir/material/Tavern'
 import { PlayerId } from '@gamepark/nidavellir/player/Player'
 import { FlexLocator, ItemContext, MaterialContext } from '@gamepark/react-game'
-import { Location } from '@gamepark/rules-api'
+import { Location, MaterialItem } from '@gamepark/rules-api'
 import { cardDescription } from '../material/DwarfCardDescription'
 import { TavernLocatorDescription } from './TavernLocatorDescription'
 
@@ -86,5 +86,17 @@ export class TavernLocator extends FlexLocator {
       default:
         return -53
     }
+  }
+
+  getHoverTransform(item: MaterialItem, _context: ItemContext) {
+    const transforms = [
+      'translateZ(10em)',
+      'scale(2)'
+    ]
+    if (item.location.id! === Tavern.LaughingGoblin) {
+      transforms.push('translateY(25%)')
+    }
+
+    return transforms
   }
 }
