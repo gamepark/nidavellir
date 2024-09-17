@@ -13,10 +13,6 @@ class ElavalandTurnRules extends PlayerTurnRule {
       return new PlayerTurn(this.game, this.player).goToEndOfTurn
     }
 
-    return []
-  }
-
-  getAutomaticMoves() {
     const moves = this.chooseCardMoves
     if (moves.length === 1) {
       return moves
