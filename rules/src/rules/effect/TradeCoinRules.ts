@@ -48,7 +48,7 @@ export class TradeCoinRules extends EffectRule {
     // Here is the reveal of token
     const hiddenCoins = this
       .material(MaterialType.Coin)
-      .indexes(move.data)
+      .index(move.data)
       .rotation(rotation => !rotation)
 
     if (hiddenCoins.length) {
@@ -58,7 +58,7 @@ export class TradeCoinRules extends EffectRule {
       ]
     }
     const tradedCoinsIndexes: number[] = move.data
-    const tradedCoins = this.material(MaterialType.Coin).indexes(tradedCoinsIndexes)
+    const tradedCoins = this.material(MaterialType.Coin).index(tradedCoinsIndexes)
     const maximumCoin = maxBy(tradedCoinsIndexes, (c) => Coins[tradedCoins.getItem(c).id].value)!
     const maximumCoinItem = tradedCoins.getItem(maximumCoin)
     const coin = Coins[maximumCoinItem.id]
@@ -76,7 +76,7 @@ export class TradeCoinRules extends EffectRule {
 
     const notTradedCoinIndex = tradedCoinsIndexes.find((index) => index !== maximumCoin)!
     const notTradedCoin = this.material(MaterialType.Coin).index(notTradedCoinIndex)
-    const newCoins = this.material(MaterialType.Coin).indexes([notTradedCoinIndex, treasureCoin.getIndex()])
+    const newCoins = this.material(MaterialType.Coin).index([notTradedCoinIndex, treasureCoin.getIndex()])
 
     moves.push(treasureCoin.moveItem(maximumCoinItem.location))
     moves.push(treasureCoin.moveItem({ ...maximumCoinItem.location, rotation: false }))
