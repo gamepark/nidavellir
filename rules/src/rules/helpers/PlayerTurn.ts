@@ -112,7 +112,7 @@ export default class PlayerTurn extends MaterialRulesPart {
 
 
   onChooseCard(move: MoveItem) {
-    const movedItem = this.material(MaterialType.Card).getItem(move.itemIndex)!
+    const movedItem = this.material(MaterialType.Card).getItem(move.itemIndex)
     this.applyEffect(movedItem)
 
     const thrudMoves = this.mayMoveThrud(move)
@@ -164,7 +164,7 @@ export default class PlayerTurn extends MaterialRulesPart {
     const army = new Army(this.game, this.player)
     if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.Army) return 0
 
-    const card = army.getItem(move.itemIndex)!
+    const card = army.getItem(move.itemIndex)
     const gradesByTypes = {
       [DwarfType.Blacksmith]: army.countGradesOfType(DwarfType.Blacksmith, true),
       [DwarfType.Hunter]: army.countGradesOfType(DwarfType.Hunter, true),

@@ -25,7 +25,7 @@ class RecruitHeroRules extends EffectRule {
 
     const moves = []
     for (const hero of heroes.getIndexes()) {
-      const locations = playerTurn.getCardLocations(heroes.getItem(hero)!.id.front)
+      const locations = playerTurn.getCardLocations(heroes.getItem(hero).id.front)
       moves.push(
         ...locations.map((location) => heroes.index(hero).moveItem(location))
       )
@@ -37,7 +37,7 @@ class RecruitHeroRules extends EffectRule {
   beforeItemMove(move: ItemMove) {
     if (!isMoveItemType(MaterialType.Card)(move)) return []
 
-    const movedItem = this.material(MaterialType.Card).getItem(move.itemIndex)!
+    const movedItem = this.material(MaterialType.Card).getItem(move.itemIndex)
     if (isHero(movedItem.id.front) && movedItem.location.type !== LocationType.Army) {
       const recruitements = this.remind(Memory.Recruitments)
       if (recruitements === 1) {

@@ -59,8 +59,8 @@ export class TradeCoinRules extends EffectRule {
     }
     const tradedCoinsIndexes: number[] = move.data
     const tradedCoins = this.material(MaterialType.Coin).indexes(tradedCoinsIndexes)
-    const maximumCoin = maxBy(tradedCoinsIndexes, (c) => Coins[tradedCoins.getItem(c)!.id].value)!
-    const maximumCoinItem = tradedCoins.getItem(maximumCoin)!
+    const maximumCoin = maxBy(tradedCoinsIndexes, (c) => Coins[tradedCoins.getItem(c).id].value)!
+    const maximumCoinItem = tradedCoins.getItem(maximumCoin)
     const coin = Coins[maximumCoinItem.id]
 
     const moves = []

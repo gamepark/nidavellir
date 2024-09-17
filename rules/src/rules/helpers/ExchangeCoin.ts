@@ -20,17 +20,17 @@ export class ExchangeCoin extends MaterialRulesPart {
     const orderedCoins = orderBy(
       treasure.getIndexes(),
       [(index) => {
-        const item = treasure.getItem(index)!
+        const item = treasure.getItem(index)
         return Coins[item.id].value;
       }, (index) => {
-        const item = treasure.getItem(index)!
+        const item = treasure.getItem(index)
         return item.location.z;
       }],
       ['asc', 'desc']
     )
 
     const [lowerCoins, higherCoins] = partition(orderedCoins, (index) => {
-      const item = treasure.getItem(index)!
+      const item = treasure.getItem(index)
       return Coins[item.id].value < value;
     })
 

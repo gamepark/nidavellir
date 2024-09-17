@@ -22,8 +22,8 @@ export const  TradeCoinButton = (props: TradeCoinButtonProps) => {
       <Trans
         defaults="coin.moves.trade-coins"
         components={[
-          <MaterialComponent css={mini} type={MaterialType.Coin} itemId={coins.getItem(move.data[0])!.id} />,
-          <MaterialComponent css={mini} type={MaterialType.Coin} itemId={coins.getItem(move.data[1])!.id} />,
+          <MaterialComponent css={mini} type={MaterialType.Coin} itemId={coins.getItem(move.data[0]).id} />,
+          <MaterialComponent css={mini} type={MaterialType.Coin} itemId={coins.getItem(move.data[1]).id} />,
           <MaterialComponent css={mini} type={MaterialType.Coin} itemId={treasureCoin.getItem()!.id} />,
         ]}
       />
