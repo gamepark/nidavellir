@@ -6,7 +6,7 @@ import { DistinctionHelp } from "./rules/DistinctionHelp";
 
 export class DistinctionCardDescription extends CardDescription {
   width = 5.4
-  ratio = 54 / 80
+  height = 8
   borderRadius = 0.3
 
   images = {

@@ -34,7 +34,7 @@ export class Trade extends MaterialRulesPart {
 
     // Group coins by values (to see tie)
     const coinsByValue = groupBy(tavernCoins, (index) => {
-      const item = this.material(MaterialType.Coin).getItem(index)!
+      const item = this.material(MaterialType.Coin).getItem(index)
       return this.getCoinValue(item)
     })
 
@@ -43,7 +43,7 @@ export class Trade extends MaterialRulesPart {
   }
 
   get goToGemExchangeMoves() {
-    return [this.rules().startRule(RuleId.GemTrade)]
+    return [this.startRule(RuleId.GemTrade)]
   }
 
   getCoinValue(coin: MaterialItem) {

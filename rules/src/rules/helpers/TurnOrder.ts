@@ -45,7 +45,7 @@ export class TurnOrder extends MaterialRulesPart {
   }
 
   get goToNextPlayerMoves() {
-    return [this.rules().startPlayerTurn(RuleId.ElvalandTurn, this.nextPlayer)]
+    return [this.startPlayerTurn(RuleId.ElvalandTurn, this.nextPlayer)]
   }
 
   getCoinValue(coin: MaterialItem) {

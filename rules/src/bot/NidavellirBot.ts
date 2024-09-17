@@ -18,7 +18,7 @@ export class NidavellirBot extends RandomBot<MaterialGame<PlayerId, MaterialType
 
     return legalMoves.filter((move: MaterialMove) => {
       if (!isMoveItemType(MaterialType.Coin)(move) || !move.location) return true
-      const item = rules.material(MaterialType.Coin).getItem(move.itemIndex)!
+      const item = rules.material(MaterialType.Coin).getItem(move.itemIndex)
       if (move.location.type === LocationType.Hand) return false
       const itemOnTarget = rules
         .material(MaterialType.Coin)

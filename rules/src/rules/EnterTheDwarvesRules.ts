@@ -22,7 +22,7 @@ class EnterTheDwarvesRules extends MaterialRulesPart {
       )
     }
 
-    moves.push(this.rules().startSimultaneousRule(RuleId.Bids, this.playersThatMustBid))
+    moves.push(this.startSimultaneousRule(RuleId.Bids, this.playersThatMustBid))
     return moves
   }
 
@@ -46,7 +46,7 @@ class EnterTheDwarvesRules extends MaterialRulesPart {
       .getIndexes()
 
     return taverns.flatMap((tavern) => this.material(MaterialType.Card)
-      .indexes(drawnCards.splice(0, cardsByTavern))
+      .index(drawnCards.splice(0, cardsByTavern))
       .moveItems({ type: LocationType.Tavern, id: tavern })
     )
   }

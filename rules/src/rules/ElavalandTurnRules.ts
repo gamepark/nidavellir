@@ -13,10 +13,6 @@ class ElavalandTurnRules extends PlayerTurnRule {
       return new PlayerTurn(this.game, this.player).goToEndOfTurn
     }
 
-    return []
-  }
-
-  getAutomaticMoves() {
     const moves = this.chooseCardMoves
     if (moves.length === 1) {
       return moves
@@ -39,7 +35,7 @@ class ElavalandTurnRules extends PlayerTurnRule {
 
     const moves = []
     for (const card of cards.getIndexes()) {
-      const locations = playerTurn.getCardLocations(cards.getItem(card)!.id.front)
+      const locations = playerTurn.getCardLocations(cards.getItem(card).id.front)
       moves.push(
         ...locations.map((location) => cards.index(card).moveItem(location))
       )

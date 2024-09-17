@@ -29,7 +29,7 @@ export class TransformCoinRules extends EffectRule {
 
   beforeItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.Coin)(move) && move.location.type !== LocationType.Hand && move.location.type !== LocationType.PlayerBoard) {
-      const coin = this.material(MaterialType.Coin).getItem(move.itemIndex)!
+      const coin = this.material(MaterialType.Coin).getItem(move.itemIndex)
       this.memorize(Memory.TransformedCoinItemLocation, coin.location)
 
       // persist only if the coin is visible & for the current location

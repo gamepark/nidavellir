@@ -19,7 +19,7 @@ export class TradeCoinRules extends EffectRule {
       const coins = this.handCoins
       if (coins.length === 2) {
         return [
-          this.rules().customMove(CustomMoveType.TradeCoins, coins.getIndexes())
+          this.customMove(CustomMoveType.TradeCoins, coins.getIndexes())
         ]
       }
 
@@ -28,14 +28,14 @@ export class TradeCoinRules extends EffectRule {
 
     const pouch = this.pouch
     return [
-      this.rules().customMove(CustomMoveType.TradeCoins, pouch.getIndexes())
+      this.customMove(CustomMoveType.TradeCoins, pouch.getIndexes())
     ]
   }
 
   getPlayerMoves() {
     if (this.hasUline) {
       const combinations = getCombinations(this.handCoins.getIndexes(), 2)
-      return combinations.map((indexes) => this.rules().customMove(CustomMoveType.TradeCoins, indexes))
+      return combinations.map((indexes) => this.customMove(CustomMoveType.TradeCoins, indexes))
     }
 
     return []
@@ -48,7 +48,7 @@ export class TradeCoinRules extends EffectRule {
     // Here is the reveal of token
     const hiddenCoins = this
       .material(MaterialType.Coin)
-      .indexes(move.data)
+      .index(move.data)
       .rotation(rotation => !rotation)
 
     if (hiddenCoins.length) {
@@ -58,9 +58,9 @@ export class TradeCoinRules extends EffectRule {
       ]
     }
     const tradedCoinsIndexes: number[] = move.data
-    const tradedCoins = this.material(MaterialType.Coin).indexes(tradedCoinsIndexes)
-    const maximumCoin = maxBy(tradedCoinsIndexes, (c) => Coins[tradedCoins.getItem(c)!.id].value)!
-    const maximumCoinItem = tradedCoins.getItem(maximumCoin)!
+    const tradedCoins = this.material(MaterialType.Coin).index(tradedCoinsIndexes)
+    const maximumCoin = maxBy(tradedCoinsIndexes, (c) => Coins[tradedCoins.getItem(c).id].value)!
+    const maximumCoinItem = tradedCoins.getItem(maximumCoin)
     const coin = Coins[maximumCoinItem.id]
 
     const moves = []
@@ -76,7 +76,7 @@ export class TradeCoinRules extends EffectRule {
 
     const notTradedCoinIndex = tradedCoinsIndexes.find((index) => index !== maximumCoin)!
     const notTradedCoin = this.material(MaterialType.Coin).index(notTradedCoinIndex)
-    const newCoins = this.material(MaterialType.Coin).indexes([notTradedCoinIndex, treasureCoin.getIndex()])
+    const newCoins = this.material(MaterialType.Coin).index([notTradedCoinIndex, treasureCoin.getIndex()])
 
     moves.push(treasureCoin.moveItem(maximumCoinItem.location))
     moves.push(treasureCoin.moveItem({ ...maximumCoinItem.location, rotation: false }))

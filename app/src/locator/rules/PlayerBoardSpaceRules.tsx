@@ -33,7 +33,7 @@ const PlaceCoinMoves: FC<LocationHelpProps> = (props) => {
       <hr />
       <div css={buttonContainer}>
         {placeCoins.map((move) => {
-          const item = rules.material(move.itemType).getItem(move.itemIndex)!
+          const item = rules.material(move.itemType).getItem(move.itemIndex)
           return <PlaceCoinHereButton key={JSON.stringify(move)} move={move} itemType={move.itemType} itemIndex={move.itemIndex} item={item} {...props} />
         })}
       </div>

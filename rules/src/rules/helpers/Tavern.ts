@@ -11,13 +11,13 @@ export class Tavern extends MaterialRulesPart {
   get end(): MaterialMove[] {
     this.game.players.forEach((p) => this.forget(Memory.DiscardedCoin, p))
     if (this.isEndOfAge) {
-      return [this.rules().startRule(RuleId.EndOfAge)]
+      return [this.startRule(RuleId.EndOfAge)]
     }
 
     if (this.tavern < PlayerBoardSpace.ShiningHorse) {
-      return [this.rules().startRule(RuleId.BidRevelation)]
+      return [this.startRule(RuleId.BidRevelation)]
     }
-    return [this.rules().startRule(RuleId.EnterDwarves)]
+    return [this.startRule(RuleId.EnterDwarves)]
   }
 
   get isEndOfAge() {

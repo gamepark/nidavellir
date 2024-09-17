@@ -1,6 +1,6 @@
-import { Grades } from './Grades';
-import { isEnumValue } from "@gamepark/rules-api";
-import { DwarfType } from "./DwarfType";
+import { getEnumValues } from '@gamepark/rules-api'
+import { DwarfType } from './DwarfType'
+import { Grades } from './Grades'
 import { HeroDescription } from './HeroDescription'
 
 
@@ -15,4 +15,4 @@ export const getTypes = (description: DwarfDescription | HeroDescription): Dwarf
 }
 
 
-export const dwarfTypes = Object.values(DwarfType).filter<DwarfType>(isEnumValue).filter((type) => DwarfType.Neutral !== type)
+export const dwarfTypes = getEnumValues(DwarfType).filter((type) => DwarfType.Neutral !== type)

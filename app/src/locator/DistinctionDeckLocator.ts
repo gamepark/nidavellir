@@ -1,25 +1,23 @@
 /** @jsxImportSource @emotion/react */
 import { Distinction } from '@gamepark/nidavellir/material/Distinction'
-import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
-import { PlayerId } from '@gamepark/nidavellir/player/Player'
-import { ItemContext, LineLocator } from '@gamepark/react-game'
-import { Coordinates, MaterialItem } from '@gamepark/rules-api'
+import { ItemContext, ListLocator } from '@gamepark/react-game'
+import { Location, MaterialItem } from '@gamepark/rules-api'
 import { cardDescription } from '../material/DwarfCardDescription'
 
-export class DistinctionDeckLocator extends LineLocator<PlayerId, MaterialType, LocationType> {
+export class DistinctionDeckLocator extends ListLocator {
 
-  getDelta(_item: MaterialItem, { rules }: ItemContext): Partial<Coordinates> {
+  getGap(_location: Location, { rules }: ItemContext) {
     const players = rules.players.length
     const y = cardDescription.height - (players > 3 ? 3 : 2)
     return { y }
   }
 
-  getCoordinates(_item: MaterialItem<PlayerId, LocationType>, { rules }: ItemContext<PlayerId, MaterialType, LocationType>): Coordinates {
+  getCoordinates(_location: Location, { rules }: ItemContext) {
     const players = rules.players.length
     const y = players > 3 ? -24 : -29
     const x = players > 3 ? 57 : 33
-    return { x, y, z: 0 }
+    return { x, y }
   }
 
   getItemIndex(item: MaterialItem, context: ItemContext): number {

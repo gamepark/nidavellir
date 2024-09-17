@@ -23,7 +23,7 @@ class PioneerOfTheKingdomRules extends DistinctionRules {
     if (player) {
       this.memorizeRule(player)
       this.memorize<DrawCard>(Memory.DrawCard, { draw: 3, keep: 1, age: 2 })
-      moves.push(this.rules().startPlayerTurn(RuleId.DrawCard, player))
+      moves.push(this.startPlayerTurn(RuleId.DrawCard, player))
       return moves
     }
 
@@ -55,7 +55,7 @@ class PioneerOfTheKingdomRules extends DistinctionRules {
 
     const moves = []
     for (const card of cards.getIndexes()) {
-      const locations = playerTurn.getCardLocations(cards.getItem(card)!.id.front)
+      const locations = playerTurn.getCardLocations(cards.getItem(card).id.front)
       moves.push(
         ...locations.map((location) => cards.index(card).moveItem(location))
       )

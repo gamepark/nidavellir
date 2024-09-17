@@ -16,14 +16,14 @@ export const  TradeCoinButton = (props: TradeCoinButtonProps) => {
   const { move, closeDialog } = props;
   const rules = useRules<NidavellirRules>()!
   const coins = rules.material(MaterialType.Coin)
-  const treasureCoin = new ExchangeCoin(rules.game, coins.indexes(move.data)).treasureCoin
+  const treasureCoin = new ExchangeCoin(rules.game, coins.index(move.data)).treasureCoin
   return (
     <PlayMoveButton move={move} css={moveAction} onPlay={closeDialog}>
       <Trans
         defaults="coin.moves.trade-coins"
         components={[
-          <MaterialComponent css={mini} type={MaterialType.Coin} itemId={coins.getItem(move.data[0])!.id} />,
-          <MaterialComponent css={mini} type={MaterialType.Coin} itemId={coins.getItem(move.data[1])!.id} />,
+          <MaterialComponent css={mini} type={MaterialType.Coin} itemId={coins.getItem(move.data[0]).id} />,
+          <MaterialComponent css={mini} type={MaterialType.Coin} itemId={coins.getItem(move.data[1]).id} />,
           <MaterialComponent css={mini} type={MaterialType.Coin} itemId={treasureCoin.getItem()!.id} />,
         ]}
       />

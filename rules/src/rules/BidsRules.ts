@@ -45,11 +45,11 @@ class BidsRules extends SimultaneousRule<PlayerId, MaterialType, LocationType> {
       .location(LocationType.PlayerBoard)
       .locationId(move.location.id)
     if (coinsInHand.length || coinsOnSpace.length === 2) return []
-    return [this.rules().endPlayerTurn(player)]
+    return [this.endPlayerTurn(player)]
   }
 
   getMovesAfterPlayersDone() {
-    return [this.rules().startRule(RuleId.BidRevelation)]
+    return [this.startRule(RuleId.BidRevelation)]
   }
 
   get tavern() {

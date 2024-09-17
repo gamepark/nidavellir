@@ -25,7 +25,7 @@ export class DrawCardsRules extends EffectRule {
 
     const moves = []
     for (const card of cards.getIndexes()) {
-      const locations = playerTurn.getCardLocations(cards.getItem(card)!.id.front)
+      const locations = playerTurn.getCardLocations(cards.getItem(card).id.front)
       moves.push(
         ...locations.map(location => cards.index(card).moveItem(location))
       )

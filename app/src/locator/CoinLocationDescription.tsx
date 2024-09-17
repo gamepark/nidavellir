@@ -1,18 +1,13 @@
 /** @jsxImportSource @emotion/react */
-import { LocationDescription, MaterialContext } from '@gamepark/react-game'
-import { css } from '@emotion/react'
+import { CustomMoveType } from '@gamepark/nidavellir/moves/CustomMoveType'
+import { DropAreaDescription, MaterialContext } from '@gamepark/react-game'
 import { isCustomMoveType, Location, MaterialMove } from '@gamepark/rules-api'
 import { coinDescription } from '../material/CoinDescription'
-import { CustomMoveType } from '@gamepark/nidavellir/moves/CustomMoveType'
 
-export class CoinLocationDescription extends LocationDescription {
+export class CoinLocationDescription extends DropAreaDescription {
   width = coinDescription.diameter
   ratio = 1
-  alwaysVisible = false
-
-  getExtraCss = () => css`
-    border-radius: inherit;
-  `
+  borderRadius = this.width / 2
 
   isMoveToLocation(move: MaterialMove, location: Location, context: MaterialContext) {
     if (isCustomMoveType(CustomMoveType.TradeCoins)(move)) {

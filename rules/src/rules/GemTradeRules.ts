@@ -35,7 +35,7 @@ class GemTradeRules extends MaterialRulesPart {
     return trades.every(
       (trade) =>
         // There is only one player with the coin value
-        trade.every((c) => this.remind(Memory.Trade, this.material(MaterialType.Coin).getItem(c)!.location.player))
+        trade.every((c) => this.remind(Memory.Trade, this.material(MaterialType.Coin).getItem(c).location.player))
     )
   }
 
@@ -43,11 +43,11 @@ class GemTradeRules extends MaterialRulesPart {
     // Create a reverses array (to prepare move computing)
     const reversed = coins.slice().reverse()
     // Get all players ordered by coin value (before reverse)
-    const players = coins.map((c) => this.material(MaterialType.Coin).getItem(c)!.location.player!)
+    const players = coins.map((c) => this.material(MaterialType.Coin).getItem(c).location.player!)
 
     // For each item in reversed item we get the same index in the non-reversed array to switch gems
     return reversed.flatMap((coin, index) => {
-      const item = this.material(MaterialType.Coin).getItem(coin)!
+      const item = this.material(MaterialType.Coin).getItem(coin)
       const newPlayer = item.location.player!
       return this.material(MaterialType.Gem).id(gemByPlayer[players[index]].id)
         .moveItems({ type: LocationType.PlayerBoard, id: PlayerBoardSpace.Gem, player: newPlayer })
