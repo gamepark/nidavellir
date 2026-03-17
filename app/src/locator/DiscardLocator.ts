@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { ItemContext, LocationContext, PileLocator } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'

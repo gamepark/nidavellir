@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { PlayerBoardSpace } from '@gamepark/nidavellir/material/PlayerBoardSpace'
 import { DropAreaDescription } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'

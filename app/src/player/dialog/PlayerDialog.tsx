@@ -1,6 +1,6 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { faStar } from '@fortawesome/free-solid-svg-icons/faStar'
+import { Coin } from '@gamepark/nidavellir/material/Coin'
 import { DwarfType } from '@gamepark/nidavellir/cards/DwarfType'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
 import { PlayerId } from '@gamepark/nidavellir/player/Player'
@@ -74,7 +74,7 @@ export const PlayerDialog: FC<PlayerDialogProps> = ({ close, player }) => {
           />
           {!!maxCoin && !!army.getCardOfType(DwarfType.Warrior).length && <PlayerDialogIndicator
               width={2.1}
-              image={coinDescription.images[maxCoin]} // Get the max coin image
+              image={coinDescription.images[maxCoin as Coin]} // Get the max coin image
               value={t('player.dialog.score.max-coin.value', { player: name, score: score.warriorMajority })}
               description={t('player.dialog.score.max-coin.reason')}
           />}

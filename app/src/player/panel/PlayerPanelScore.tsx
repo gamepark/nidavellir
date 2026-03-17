@@ -1,4 +1,3 @@
-// /** @jsxImportSource @emotion/react */
 // import { css } from '@emotion/react';
 // import { FC } from 'react';
 // import GameView from '@gamepark/nidavellir/state/view/GameView';

@@ -2,7 +2,8 @@ import { Material, MaterialGame, MaterialItem, MaterialRulesPart } from "@gamepa
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
 import { Card, Cards, isRoyalOffering } from "../../cards/Cards";
-import sum from "lodash/sum";
+import { DwarfDescription } from "../../cards/DwarfDescription";
+import { sum } from 'es-toolkit/compat'
 import { PlayerId } from "../../player/Player";
 import { DwarfType } from "../../cards/DwarfType";
 
@@ -23,13 +24,14 @@ export default class Army extends MaterialRulesPart {
   }
 
   getCardGradesCount(card: MaterialItem, type: DwarfType, includeThrud?: boolean) {
-    if (card.location.id !== type || (!includeThrud && card.id.front === Card.Thrud)) return 0
+    const cardFront = (card.id as Record<string, any>)?.front
+    if (card.location.id !== type || (!includeThrud && cardFront === Card.Thrud)) return 0
 
-    const cardId = card.id.front
+    const cardId = cardFront as Card
     const description = Cards[cardId]
     if (isRoyalOffering(cardId)) return 0
 
-    return description.grades?.[type]?.length ?? 0
+    return (description as DwarfDescription).grades?.[type]?.length ?? 0
   }
 
   getCardOfType(type: DwarfType) {
@@ -54,18 +56,18 @@ export default class Army extends MaterialRulesPart {
   countGradesOfType(type: DwarfType, includeThrud?: boolean) {
     return sum(
       this.army
-        .filter((item) => item.location.id === type && (includeThrud || item.id.front !== Card.Thrud))
+        .filter((item) => item.location.id === type && (includeThrud || (item.id as Record<string, any>)?.front !== Card.Thrud))
         .getItems()
-        .map((item) => Cards[item.id.front].grades?.[type]?.length ?? 0)
+        .map((item) => (Cards[(item.id as Record<string, any>).front as Card] as DwarfDescription).grades?.[type]?.length ?? 0)
     )
   }
 
   sumGradesOfType(type: DwarfType, includeThrud?: boolean) {
     return sum(
       this.army
-        .filter((item) => item.location.id === type && (includeThrud || item.id.front !== Card.Thrud))
+        .filter((item) => item.location.id === type && (includeThrud || (item.id as Record<string, any>)?.front !== Card.Thrud))
         .getItems()
-        .flatMap((item) => Cards[item.id.front].grades?.[type] ?? [])
+        .flatMap((item) => (Cards[(item.id as Record<string, any>).front as Card] as DwarfDescription).grades?.[type] ?? [])
     )
   }
 

@@ -35,7 +35,7 @@ export default function App() {
   return (
     <>
       <GameDisplay/>
-      <LoadingScreen display={loading} author="Serge Laget" artist="Jean Marie Minguez" publisher="Grrre Games" developer="Game Park"/>
+      <LoadingScreen display={loading}/>
       <MaterialHeader rulesStepsHeaders={RulesHeaders} loading={loading}/>
       <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)}/>
       <Menu/>

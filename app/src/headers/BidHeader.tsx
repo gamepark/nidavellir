@@ -17,7 +17,7 @@ export const BidHeader = () => {
   const lastMoves = getLastMoves(rules, player)
 
   if (lastMoves.length) {
-    return <Trans defaults="header.bid.pass" values={{ coins: lastMoves.length }}>
+    return <Trans i18nKey="header.bid.pass" defaults="You must <0>place your last {coins, plural, one{coin} other{coins}}</0>" values={{ coins: lastMoves.length }}>
       <PlayMoveButton move={lastMoves[0]} onPlay={() => lastMoves.length > 1 && play(lastMoves[1])}/>
     </Trans>
   }

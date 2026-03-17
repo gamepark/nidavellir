@@ -1,8 +1,9 @@
 import { CustomMove, isCustomMoveType, Location, MaterialItem } from '@gamepark/rules-api'
-import maxBy from 'lodash/maxBy'
+import { maxBy } from 'es-toolkit/compat'
 import { Card } from '../../cards/Cards'
 import { CoinColor } from '../../coins/CoinDescription'
 import { Coins } from '../../coins/Coins'
+import { Coin } from '../../material/Coin'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { PlayerBoardSpace } from '../../material/PlayerBoardSpace'
@@ -43,7 +44,7 @@ export class TradeCoinRules extends EffectRule {
 
   onCustomMove(move: CustomMove) {
     if (!isCustomMoveType(CustomMoveType.TradeCoins)(move)) return []
-    delete this.game.droppedItem
+    delete this.game.droppedItems
 
     // Here is the reveal of token
     const hiddenCoins = this
@@ -59,9 +60,9 @@ export class TradeCoinRules extends EffectRule {
     }
     const tradedCoinsIndexes: number[] = move.data
     const tradedCoins = this.material(MaterialType.Coin).index(tradedCoinsIndexes)
-    const maximumCoin = maxBy(tradedCoinsIndexes, (c) => Coins[tradedCoins.getItem(c).id].value)!
+    const maximumCoin = maxBy(tradedCoinsIndexes, (c) => Coins[tradedCoins.getItem(c).id as Coin].value)!
     const maximumCoinItem = tradedCoins.getItem(maximumCoin)
-    const coin = Coins[maximumCoinItem.id]
+    const coin = Coins[maximumCoinItem.id as Coin]
 
     const moves = []
     const location: Location = coin.color === CoinColor.Bronze ? {
@@ -88,9 +89,9 @@ export class TradeCoinRules extends EffectRule {
   }
 
   saveCoins(treasureCoin: MaterialItem, exchangedCoin: MaterialItem) {
-    const treasureCoinValue = Coins[treasureCoin.id].value
-    const exchangedCoinValue = Coins[exchangedCoin.id].value
-    this.memorize(Memory.MaxCoinId, (maximumCoin) => treasureCoinValue > Coins[maximumCoin].value? treasureCoin.id: maximumCoin, this.player)
+    const treasureCoinValue = Coins[treasureCoin.id as Coin].value
+    const exchangedCoinValue = Coins[exchangedCoin.id as Coin].value
+    this.memorize(Memory.MaxCoinId, (maximumCoin: Coin) => treasureCoinValue > Coins[maximumCoin].value? treasureCoin.id: maximumCoin, this.player)
     this.memorize(Memory.TotalCoinValue, (total = 0) => total - exchangedCoinValue + treasureCoinValue, this.player)
   }
 

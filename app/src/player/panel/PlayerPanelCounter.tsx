@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { FC } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,7 +20,7 @@ export const PlayerPanelCounter: FC<PlayerPanelCounterProps> = (props) => {
   return (
     <div css={indicator}>
       <div
-        css={[iconStyle(ratio, width), !!image && iconImageStyle(image, borderRadius), !!image && shadow && shadowCss(image)]}>
+        css={[iconStyle(ratio, width), !!image && iconImageStyle(image, borderRadius), !!image && shadow && shadowCss]}>
         {!!icon && <FontAwesomeIcon icon={icon} css={fontIcon} fill="#28B8CE"/>}
       </div>
       <div css={counter}>

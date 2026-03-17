@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
@@ -49,7 +48,7 @@ export const PlaceCoinHereButton = (props: PlaceCoinHereButtonProps) => {
   const { move, item, closeDialog } = props;
   return (
     <PlayMoveButton move={move} css={moveAction} onPlay={closeDialog}>
-      <Trans defaults="rule.coin.move.here">
+      <Trans i18nKey="rule.coin.move.here" defaults="Place coin <0/> here">
         <MaterialComponent css={mini} type={MaterialType.Coin} itemId={item.id} />
       </Trans>
     </PlayMoveButton>

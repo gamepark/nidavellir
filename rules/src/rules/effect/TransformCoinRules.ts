@@ -1,6 +1,7 @@
 import { isMoveItemType, ItemMove, Location, MaterialItem, MaterialMove } from '@gamepark/rules-api'
 import { CoinColor } from '../../coins/CoinDescription'
 import { Coins } from '../../coins/Coins'
+import { Coin } from '../../material/Coin'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { isExchangeCoin } from '../../utils/coin.utils'
@@ -21,7 +22,7 @@ export class TransformCoinRules extends EffectRule {
       .player(this.player)
       .filter((item) => !isExchangeCoin(item))
       .moveItems((item: MaterialItem) => {
-        const coin = Coins[item.id]
+        const coin = Coins[item.id as Coin]
         if (coin.color === CoinColor.Bronze) return { type: LocationType.Discard, id: MaterialType.Coin }
         return { type: LocationType.Treasure }
       })
@@ -43,9 +44,9 @@ export class TransformCoinRules extends EffectRule {
 
 
   saveCoins(oldCoin: MaterialItem, newCoin: MaterialItem) {
-    const oldCoinValue = Coins[oldCoin.id].value
-    const newCoinValue = Coins[newCoin.id].value
-    this.memorize(Memory.MaxCoinId, (maximumCoin) => newCoinValue > Coins[maximumCoin].value? newCoin.id: maximumCoin, this.player)
+    const oldCoinValue = Coins[oldCoin.id as Coin].value
+    const newCoinValue = Coins[newCoin.id as Coin].value
+    this.memorize(Memory.MaxCoinId, (maximumCoin: Coin) => newCoinValue > Coins[maximumCoin].value? newCoin.id: maximumCoin, this.player)
     this.memorize(Memory.TotalCoinValue, (total = 0) => total - oldCoinValue + newCoinValue, this.player)
   }
 

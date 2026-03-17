@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { ClotheType, EyebrowType, FacialHairType, TopType } from '@gamepark/avataaars'
 import { Card, CardId } from '@gamepark/nidavellir/cards/Cards'
 import { DwarfType } from '@gamepark/nidavellir/cards/DwarfType'
@@ -35,18 +34,18 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
   steps: TutorialStep[] = [
     {
       popup: {
-        text: () => <Trans defaults="tuto.start"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.start" defaults="Welcome to <0>Nidavellir</0>'s tutorial!"><strong/><em/></Trans>
       }
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.intro"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.intro" defaults="In this game, you play a <0>Elvaland</0> commissioned by the <0>King of the Dwarves</0> to form an army capable of defeating the infamous <0>Fafnir</0>!"><strong/><em/></Trans>
       }
     },
     {
       popup: {
         position: { x: 40, y: 10 },
-        text: () => <Trans defaults="tuto.tavern"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.tavern" defaults="Here are some dwarves to recruit! They can be found in the <0>3 taverns</0> of the kingdom."><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [{ type: LocationType.Tavern }],
@@ -57,7 +56,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 0, y: 30 },
-        text: () => <Trans defaults="tuto.tresor"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.tresor" defaults="And there's your treasure. Thanks to these coins, you'll be able to convince the best dwarves to join you!"><strong/><em/></Trans>
       },
       focus: game => ({
         materials: [this.material(game, MaterialType.Coin).location(LocationType.Hand).player(me)],
@@ -67,7 +66,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 0, y: 30 },
-        text: () => <Trans defaults="tuto.bid"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.bid" defaults="Each round begins with the <0>Bids</0>: you must place 3 coins on the 3 taverns."><strong/><em/></Trans>
       },
       focus: () => ({
         locations: [
@@ -81,7 +80,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 0, y: 30 },
-        text: () => <Trans defaults="tuto.coin" values={{ coin: 4 }}><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.coin" defaults="Place your coin of value {coin} here." values={{ coin: 4 }}><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [{ type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.LaughingGoblin }],
@@ -98,7 +97,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 0, y: 30 },
-        text: () => <Trans defaults="tuto.coin" values={{ coin: 0 }}><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.coin" defaults="Place your coin of value {coin} here." values={{ coin: 0 }}><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [{ type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.DancingDragon }],
@@ -115,7 +114,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: -30, y: 0 },
-        text: () => <Trans defaults="tuto.coin.other"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.coin.other" defaults="Your opponent places his pieces at the same time as you."><strong/><em/></Trans>
       },
       focus: game => ({
         staticItems: [
@@ -132,7 +131,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           && move.location.id === PlayerBoardSpace.LaughingGoblin
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin5).player(opponent).getIndex()
       },
-      focus: game => this.steps[game.tutorial!.step - 1].focus!(game)
+      focus: (game, context) => this.steps[game.tutorial!.step - 1].focus!(game, context)
     },
     {
       move: {
@@ -142,7 +141,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           && move.location.id === PlayerBoardSpace.DancingDragon
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin2).player(opponent).getIndex()
       },
-      focus: game => this.steps[game.tutorial!.step - 2].focus!(game)
+      focus: (game, context) => this.steps[game.tutorial!.step - 2].focus!(game, context)
     },
     {
       move: {
@@ -151,7 +150,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin0).player(opponent).getIndex()
           && move.location.id === PlayerBoardSpace.ShiningHorse
       },
-      focus: game => this.steps[game.tutorial!.step - 3].focus!(game)
+      focus: (game, context) => this.steps[game.tutorial!.step - 3].focus!(game, context)
     },
     {
       move: {
@@ -160,7 +159,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin3).player(opponent).getIndex()
           && move.location.id === PlayerBoardSpace.Pouch1
       },
-      focus: game => this.steps[game.tutorial!.step - 4].focus!(game)
+      focus: (game, context) => this.steps[game.tutorial!.step - 4].focus!(game, context)
     },
     {
       move: {
@@ -169,12 +168,12 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
           && move.itemIndex === this.material(game, MaterialType.Coin).id(Coin.Coin4).player(opponent).getIndex()
           && move.location.id === PlayerBoardSpace.Pouch2
       },
-      focus: game => this.steps[game.tutorial!.step - 5].focus!(game)
+      focus: (game, context) => this.steps[game.tutorial!.step - 5].focus!(game, context)
     },
     {
       popup: {
         position: { x: 0, y: 30 },
-        text: () => <Trans defaults="tuto.coin" values={{ coin: 2 }}><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.coin" defaults="Place your coin of value {coin} here." values={{ coin: 2 }}><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [{ type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.ShiningHorse }],
@@ -191,7 +190,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 0, y: 30 },
-        text: () => <Trans defaults="tuto.pouch"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.pouch" defaults="Place the last two coins in your pouch."><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [
@@ -211,9 +210,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 0, y: 30 },
-        text: () => <Trans defaults="tuto.pouch"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.pouch" defaults="Place the last two coins in your pouch."><strong/><em/></Trans>
       },
-      focus: game => this.steps[game.tutorial!.step - 1].focus!(game),
+      focus: (game, context) => this.steps[game.tutorial!.step - 1].focus!(game, context),
       move: {
         filter: (move, game) =>
           isMoveItemType(MaterialType.Coin)(move)
@@ -223,7 +222,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.resolution.1"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.resolution.1" defaults="Once all players have placed their bets, the taverns are resolved, starting with the <0>Laughing Goblin</0> tavern."><strong/><em/></Trans>
       },
       focus: game => ({
         materials: [this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).locationId(PlayerBoardSpace.LaughingGoblin)],
@@ -232,7 +231,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.revealed"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.revealed" defaults="The coins bet on this tavern are revealed, and the player who bet the highest-value coin recruits first!"><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [],
@@ -254,7 +253,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.warrior"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.warrior" defaults="Your opponent has recruited this warrior."><strong/><em/></Trans>
       },
       focus: game => ({
         materials: [this.material(game, MaterialType.Card).player(opponent).location(LocationType.Army).id<CardId>(id => id.front === Card.WarriorGrade3_1)],
@@ -264,7 +263,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 0, y: 10 },
-        text: () => <Trans defaults="tuto.hunter.me"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.hunter.me" defaults="Recruit this Huntress."><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [{ type: LocationType.Army, player: me, id: DwarfType.Hunter }],
@@ -279,7 +278,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.resolution.2"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.resolution.2" defaults="After each player has recruited a dwarf, we solve the following tavern."><strong/><em/></Trans>
       },
       focus: game => ({
         materials: [
@@ -300,7 +299,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 10, y: 0 },
-        text: () => <Trans defaults="tuto.miner.me"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.miner.me" defaults="Recruit this Miner."><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [{ type: LocationType.Army, player: me, id: DwarfType.Miner }],
@@ -318,12 +317,12 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 20, y: 0 },
-        text: () => <Trans defaults="tuto.exchange-coin"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.exchange-coin" defaults="You've played your 0-value coin: in addition to recruiting a dwarf, this coin allows you to exchange a coin from your purse for a higher-value coin!"><strong/><em/></Trans>
       },
       focus: game => ({
         materials: [
           this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).player(me)
-            .locationId((id) => id! > PlayerBoardSpace.ShiningHorse || id === PlayerBoardSpace.DancingDragon)
+            .locationId((id) => (id as number) > PlayerBoardSpace.ShiningHorse || id === PlayerBoardSpace.DancingDragon)
         ],
         scale: 0.5
       })
@@ -331,12 +330,12 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 20, y: 0 },
-        text: () => <Trans defaults="tuto.exchange"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.exchange" defaults="In your pouch, face down, are coins worth 5 and 3. You must exchange <0>the highest of the 2</0> for a coin worth <0>the sum of the 2</0>. So you're going to exchange the 5-value coin for an 8-value coin from the treasure."><strong/><em/></Trans>
       },
       focus: game => ({
         materials: [
           this.material(game, MaterialType.Coin).location(LocationType.PlayerBoard).player(me)
-            .locationId((id) => id! > PlayerBoardSpace.ShiningHorse || id === PlayerBoardSpace.DancingDragon),
+            .locationId((id) => (id as number) > PlayerBoardSpace.ShiningHorse || id === PlayerBoardSpace.DancingDragon),
           this.material(game, MaterialType.Coin).id(Coin.GoldCoin8)
         ],
         margin: { top: 3 }
@@ -345,7 +344,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.resolution.3"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.resolution.3" defaults="Now it's time to resolve the last tavern. This time, you have the highest coin."><strong/><em/></Trans>
       },
       focus: game => ({
         materials: [
@@ -358,7 +357,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 20, y: 10 },
-        text: () => <Trans defaults="tuto.royal-offering.me"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.royal-offering.me" defaults="This card is a <0>royal offer</0>. It allows you to immediately exchange a coin for a coin of value +3.\nChoose this card by clicking on it for 1 second."><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [{ type: LocationType.Discard, id: MaterialType.Card }],
@@ -374,7 +373,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.transform"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.transform" defaults="Now click on your coin of value 2 to trade it for a coin of value 5."><strong/><em/></Trans>
       },
       focus: game => ({
         materials: [
@@ -401,7 +400,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     }, {
       popup: {
         position: { x: 35, y: 10 },
-        text: () => <Trans defaults="tuto.endturn.1"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.endturn.1" defaults="The first round is over!\nAt the start of each round, the taverns fill up, and it's a new betting phase."><strong/><em/></Trans>
       },
       focus: game => ({
         materials: [this.material(game, MaterialType.Card).location(LocationType.Tavern)],
@@ -411,7 +410,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 5, y: 20 },
-        text: () => <Trans defaults="tuto.coin" values={{ coin: 8 }}><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.coin" defaults="Place your coin of value {coin} here." values={{ coin: 8 }}><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [{ type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.LaughingGoblin }],
@@ -428,7 +427,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 5, y: 20 },
-        text: () => <Trans defaults="tuto.coin" values={{ coin: 5 }}><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.coin" defaults="Place your coin of value {coin} here." values={{ coin: 5 }}><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [{ type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.DancingDragon }],
@@ -445,7 +444,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 5, y: 20 },
-        text: () => <Trans defaults="tuto.coin" values={{ coin: 3 }}><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.coin" defaults="Place your coin of value {coin} here." values={{ coin: 3 }}><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [{ type: LocationType.PlayerBoard, player: me, id: PlayerBoardSpace.ShiningHorse }],
@@ -462,7 +461,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 5, y: 20 },
-        text: () => <Trans defaults="tuto.pouch"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.pouch" defaults="Place the last two coins in your pouch."><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [
@@ -482,9 +481,9 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 5, y: 20 },
-        text: () => <Trans defaults="tuto.pouch"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.pouch" defaults="Place the last two coins in your pouch."><strong/><em/></Trans>
       },
-      focus: game => this.steps[game.tutorial!.step - 1].focus!(game),
+      focus: (game, context) => this.steps[game.tutorial!.step - 1].focus!(game, context),
       move: {
         filter: (move, game) =>
           isMoveItemType(MaterialType.Coin)(move)
@@ -541,7 +540,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 0, y: 20 },
-        text: () => <Trans defaults="tuto.blacksmith.me"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.blacksmith.me" defaults="Recruit this Blacksmith."><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [{ type: LocationType.Army, player: me, id: DwarfType.Blacksmith }],
@@ -565,7 +564,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 0, y: 20 },
-        text: () => <Trans defaults="tuto.tie"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.tie" defaults="You played a coin of the same value as your opponent in the Dancing Dragon Tavern!"><strong/><em/></Trans>
       },
       focus: game => ({
         materials: [
@@ -577,7 +576,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 0, y: 20 },
-        text: () => <Trans defaults="tuto.gem"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.gem" defaults="In the event of a tie, these <0>gems</0> determine who wins. You have the most valuable gem, so you can recruit first!\nBut beware: <0>after recruiting, you'll exchange your gems</0>."><strong/><em/></Trans>
       },
       focus: game => ({
         materials: [
@@ -589,7 +588,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 20, y: -10 },
-        text: () => <Trans defaults="tuto.warrior.me"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.warrior.me" defaults="Recruit this Warrior."><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [{ type: LocationType.Army, player: me, id: DwarfType.Warrior }],
@@ -621,7 +620,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 20, y: -10 },
-        text: () => <Trans defaults="tuto.explorer.me"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.explorer.me" defaults="Recruit this Explorer."><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [{ type: LocationType.Army, player: me, id: DwarfType.Explorer }],
@@ -637,7 +636,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 0, y: 30 },
-        text: () => <Trans defaults="tuto.rank"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.rank" defaults="Each dwarf has a rank here."><strong/><em/></Trans>
       },
       focus: game => ({
         locations: this.material(game, MaterialType.Card).location(LocationType.Army).player(me).getIndexes().map(card => (
@@ -648,14 +647,14 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 0, y: 30 },
-        text: () => <Trans defaults="tuto.recruitment"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.recruitment" defaults="You have the right to <0>recruit a hero</0> as soon as you complete a line with <0>one rank of each Dwarf class</0>."><strong/><em/></Trans>
       },
-      focus: game => this.steps[game.tutorial!.step - 1].focus!(game)
+      focus: (game, context) => this.steps[game.tutorial!.step - 1].focus!(game, context)
     },
     {
       popup: {
         position: { x: 0, y: 35 },
-        text: () => <Trans defaults="tuto.heroes"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.heroes" defaults="Meet the heroes. Every hero is unique."><strong/><em/></Trans>
       },
       focus: game => ({
         materials: [this.material(game, MaterialType.Card).location(LocationType.HeroesDeck)],
@@ -665,7 +664,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: 0, y: 15 },
-        text: () => <Trans defaults="tuto.aral"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.aral" defaults="Recruit <0>Aral Eagle Claws</0>. This hunter-class hero has <0>2 ranks</0>."><strong/><em/></Trans>
       },
       focus: game => ({
         locations: [this.location(LocationType.Army).player(me).id(DwarfType.Hunter).location],
@@ -680,7 +679,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.endturn.2"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.endturn.2" defaults="The second round is over!\nThis is the <0>Age I</0> deck, which is used to fill taverns. At the end of the turn when it's empty, <0>the King evaluates the troops and distributes distinctions.</0>"><strong/><em/></Trans>
       },
       focus: game => ({
         materials: [this.material(game, MaterialType.Card).location(LocationType.Age1Deck)],
@@ -690,7 +689,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     {
       popup: {
         position: { x: -30, y: 0 },
-        text: () => <Trans defaults="tuto.distinctions"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.distinctions" defaults="Here are the awards. For each class, the player with the most ranks wins the corresponding distinction."><strong/><em/></Trans>
       },
       focus: game => ({
         materials: [this.material(game, MaterialType.Distinction).location(LocationType.DistinctionsDeck)],
@@ -699,7 +698,7 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.endage.1"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.endage.1" defaults="Once Age I has been completed, the tavern is filled with <0>the Age II deck</0>."><strong/><em/></Trans>
       },
       focus: game => ({
         materials: [this.material(game, MaterialType.Card).location(LocationType.Age2Deck).sort(item => -item.location.x!).limit(10)],
@@ -708,17 +707,17 @@ export class Tutorial extends MaterialTutorial<PlayerId, MaterialType, LocationT
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.endgame"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.endgame" defaults="The game ends at the end of Age II."><strong/><em/></Trans>
       }
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.score"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.score" defaults="The player with the most bravery points wins.\nEvery dwarf brings you bravery points, and your coins count too."><strong/><em/></Trans>
       }
     },
     {
       popup: {
-        text: () => <Trans defaults="tuto.go"><strong/><em/></Trans>
+        text: () => <Trans i18nKey="tuto.go" defaults="Now it's your turn to play!\nTo find out what the dwarves, heroes and distinctions are doing, <0>just click on them</0>.\nGood luck, and be brave!"><strong/><em/></Trans>
       }
     }
   ]

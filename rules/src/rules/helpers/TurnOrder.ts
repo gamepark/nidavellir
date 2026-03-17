@@ -1,8 +1,9 @@
 import { Material, MaterialGame, MaterialItem, MaterialRulesPart } from '@gamepark/rules-api'
-import orderBy from 'lodash/orderBy'
+import { orderBy } from 'es-toolkit'
 import { MaterialType } from '../../material/MaterialType'
 import { DiscardedCoin, Memory } from '../Memory'
 import { Coins } from '../../coins/Coins'
+import { Coin } from '../../material/Coin'
 import { LocationType } from '../../material/LocationType'
 import { PlayerId } from '../../player/Player'
 import { RuleId } from '../RuleId'
@@ -50,8 +51,8 @@ export class TurnOrder extends MaterialRulesPart {
 
   getCoinValue(coin: MaterialItem) {
     const discardedCoin = this.remind<DiscardedCoin>(Memory.DiscardedCoin, coin.location.player)
-    if (!discardedCoin || discardedCoin.tavern !== this.tavern) return Coins[coin.id].value
-    return Coins[discardedCoin.id].value
+    if (!discardedCoin || discardedCoin.tavern !== this.tavern) return Coins[coin.id as Coin].value
+    return Coins[discardedCoin.id as Coin].value
   }
 
   get tavernCoins(): Material {

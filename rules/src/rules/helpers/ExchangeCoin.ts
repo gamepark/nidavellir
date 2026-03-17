@@ -1,10 +1,10 @@
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
-import orderBy from "lodash/orderBy";
+import { partition } from 'es-toolkit'
+import { orderBy, sumBy } from 'es-toolkit/compat'
 import { Coins } from "../../coins/Coins";
-import partition from "lodash/partition";
+import { Coin } from "../../material/Coin";
 import { Material, MaterialGame, MaterialRulesPart } from "@gamepark/rules-api"
-import sumBy from "lodash/sumBy";
 
 export class ExchangeCoin extends MaterialRulesPart {
 
@@ -19,10 +19,10 @@ export class ExchangeCoin extends MaterialRulesPart {
 
     const orderedCoins = orderBy(
       treasure.getIndexes(),
-      [(index) => {
+      [(index: number) => {
         const item = treasure.getItem(index)
-        return Coins[item.id].value;
-      }, (index) => {
+        return Coins[item.id as Coin].value;
+      }, (index: number) => {
         const item = treasure.getItem(index)
         return item.location.z;
       }],
@@ -31,7 +31,7 @@ export class ExchangeCoin extends MaterialRulesPart {
 
     const [lowerCoins, higherCoins] = partition(orderedCoins, (index) => {
       const item = treasure.getItem(index)
-      return Coins[item.id].value < value;
+      return Coins[item.id as Coin].value < value;
     })
 
     if (higherCoins.length) {
@@ -42,6 +42,6 @@ export class ExchangeCoin extends MaterialRulesPart {
   }
 
   get value() {
-    return sumBy(this.coins.getItems(), (c) => Coins[c.id].value) + (this.bonus ?? 0)
+    return sumBy(this.coins.getItems(), (c) => Coins[c.id as Coin].value) + (this.bonus ?? 0)
   }
 }

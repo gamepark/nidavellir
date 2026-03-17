@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { Card, CardDeck } from '@gamepark/nidavellir/cards/Cards'
 import { CardDescription } from '@gamepark/react-game'
 import { DwarfCardHelp  } from './rules/DwarfCardHelp'

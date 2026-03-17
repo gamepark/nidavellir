@@ -1,6 +1,5 @@
 import { isMoveItemType, ItemMove, MaterialItem, MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
-import keyBy from 'lodash/keyBy'
-import values from 'lodash/values'
+import { keyBy } from 'es-toolkit/compat'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { PlayerBoardSpace } from '../material/PlayerBoardSpace'
@@ -21,8 +20,8 @@ class GemTradeRules extends MaterialRulesPart {
     const keys = Object.keys(trading)
     for (const key of keys) {
       // If there is a tie (more than one player with same coin value
-      if (trading[key].length > 1) {
-        moves.push(...this.getGemExchangesMoves(trading[key], gems))
+      if (trading[key as any].length > 1) {
+        moves.push(...this.getGemExchangesMoves(trading[key as any], gems))
       }
     }
 
@@ -31,7 +30,7 @@ class GemTradeRules extends MaterialRulesPart {
 
   get allTraded() {
     const trading = new Trade(this.game).trades
-    const trades = values(trading)
+    const trades = Object.values(trading)
     return trades.every(
       (trade) =>
         // There is only one player with the coin value

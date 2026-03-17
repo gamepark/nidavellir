@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { Tavern } from '@gamepark/nidavellir/material/Tavern'
 import { PlayerId } from '@gamepark/nidavellir/player/Player'

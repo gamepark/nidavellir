@@ -1,5 +1,5 @@
 import { isMoveItemType, ItemMove, MaterialItem, RuleMove } from '@gamepark/rules-api'
-import { Cards, isHero } from '../cards/Cards'
+import { Card, Cards, isHero } from '../cards/Cards'
 import { getTypes } from '../cards/DwarfDescription'
 import { HeroDescription } from '../cards/HeroDescription'
 import { LocationType } from '../material/LocationType'
@@ -25,7 +25,7 @@ class RecruitHeroRules extends EffectRule {
 
     const moves = []
     for (const hero of heroes.getIndexes()) {
-      const locations = playerTurn.getCardLocations(heroes.getItem(hero).id.front)
+      const locations = playerTurn.getCardLocations((heroes.getItem(hero).id as Record<string, any>).front as Card)
       moves.push(
         ...locations.map((location) => heroes.index(hero).moveItem(location))
       )
@@ -38,7 +38,7 @@ class RecruitHeroRules extends EffectRule {
     if (!isMoveItemType(MaterialType.Card)(move)) return []
 
     const movedItem = this.material(MaterialType.Card).getItem(move.itemIndex)
-    if (isHero(movedItem.id.front) && movedItem.location.type !== LocationType.Army) {
+    if (isHero((movedItem.id as Record<string, any>).front) && movedItem.location.type !== LocationType.Army) {
       const recruitements = this.remind(Memory.Recruitments)
       if (recruitements === 1) {
         this.forget(Memory.Recruitments)
@@ -51,7 +51,7 @@ class RecruitHeroRules extends EffectRule {
   }
 
   canBeRecruited(item: MaterialItem): boolean {
-    const id = item.id.front
+    const id = (item.id as Record<string, any>).front as Card
     const description = Cards[id] as HeroDescription
     if (!description.minGrades) return true
 

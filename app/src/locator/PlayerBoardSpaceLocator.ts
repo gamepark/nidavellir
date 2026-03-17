@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { PlayerBoardSpace } from '@gamepark/nidavellir/material/PlayerBoardSpace'
@@ -22,7 +21,7 @@ export class PlayerBoardSpaceLocator extends Locator<PlayerId, MaterialType, Loc
   }
 
   getPositionOnParent(location: Location) {
-    return this.spacePosition[location.id]
+    return this.spacePosition[location.id as PlayerBoardSpace]
   }
 
   getRotateZ(_location: Location, { type }: ItemContext) {

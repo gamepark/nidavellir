@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { faStar } from '@fortawesome/free-solid-svg-icons'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'

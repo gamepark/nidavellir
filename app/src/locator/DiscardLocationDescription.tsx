@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { ComponentSize, DropAreaDescription } from '@gamepark/react-game'
 import { cardDescription } from '../material/DwarfCardDescription'

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { MaterialHelpProps, useLegalMoves, usePlayerId, usePlayerName, useRules } from '@gamepark/react-game'
 import { Trans, useTranslation } from "react-i18next";
 import { MaterialType } from "@gamepark/nidavellir/material/MaterialType";
@@ -26,7 +25,7 @@ export const CoinHelp: FC<MaterialHelpProps> = (props) => {
     <>
       <h2 css={norse}>{t(`rule.coin`)}</h2>
       <CoinLocationRule {...props} />
-      {visible && <p><Trans defaults="rule.coin.description" values={{ value: Coins[item.id].value, color: t(`rule.coin.color.${Coins[item.id].color}`)}}><strong/></Trans></p>}
+      {visible && <p><Trans i18nKey="rule.coin.description" defaults="It's a {color} coin with a value of {value}." values={{ value: Coins[item.id as Coin].value, color: t(`rule.coin.color.${Coins[item.id as Coin].color}`)}}><strong/></Trans></p>}
       {exchange && <><hr /><p>{t('rule.coin.exchange-coin')}</p></>}
       {huntingMaster && <p>{t('rule.coin.hunting-master')}</p>}
       <PlaceCoinMoves {...props} />

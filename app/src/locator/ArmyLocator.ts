@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { dwarfTypes } from '@gamepark/nidavellir/cards/DwarfType'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import Army from '@gamepark/nidavellir/rules/helpers/Army'

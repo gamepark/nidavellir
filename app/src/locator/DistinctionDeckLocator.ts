@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { Distinction } from '@gamepark/nidavellir/material/Distinction'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { ItemContext, ListLocator } from '@gamepark/react-game'

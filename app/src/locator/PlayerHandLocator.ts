@@ -1,9 +1,10 @@
+import { Coin } from '@gamepark/nidavellir/material/Coin'
 import { Coins } from '@gamepark/nidavellir/coins/Coins'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { DropAreaDescription, HandLocator, ItemContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'
-import orderBy from 'lodash/orderBy'
+import { orderBy } from 'es-toolkit/compat'
 import { coinDescription } from '../material/CoinDescription'
 import { tableLocator } from './TableLocator'
 
@@ -24,7 +25,7 @@ export class PlayerHandLocator extends HandLocator {
     if (type === MaterialType.Card) return item.location.x!
     if (item.location.player === player) {
       const coins = rules.material(MaterialType.Coin).location(LocationType.Hand).player(player)
-      const sorted = orderBy(coins.getIndexes(), [(c) => Coins[coins.getItem(c)!.id].value, (c) => coins.getItem(c)!.location.x])
+      const sorted = orderBy(coins.getIndexes(), [(c: number) => Coins[coins.getItem(c)!.id as Coin].value, (c: number) => coins.getItem(c)!.location.x])
       return sorted.indexOf(index)
     } else {
       return item.location.x!

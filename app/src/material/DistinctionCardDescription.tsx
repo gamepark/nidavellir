@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import Images from "../images/Images";
 import { CardDescription } from "@gamepark/react-game";
 import { Distinction } from "@gamepark/nidavellir/material/Distinction";

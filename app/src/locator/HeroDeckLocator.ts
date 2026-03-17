@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { FlexLocator, ItemContext } from '@gamepark/react-game'
 import { Location, MaterialItem } from '@gamepark/rules-api'

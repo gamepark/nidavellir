@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { Locator, MaterialContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'
 import { cardDescription } from '../material/DwarfCardDescription'

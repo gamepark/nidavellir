@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { DwarfType } from '@gamepark/nidavellir/cards/DwarfType'
 import { DropAreaDescription } from '@gamepark/react-game'

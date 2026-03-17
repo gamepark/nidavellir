@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { FC, HTMLAttributes } from 'react'
 import Images from '../../images/Images'

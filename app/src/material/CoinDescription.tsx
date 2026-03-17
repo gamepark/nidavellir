@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { Coin } from '@gamepark/nidavellir/material/Coin'
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { CustomMoveType } from '@gamepark/nidavellir/moves/CustomMoveType'

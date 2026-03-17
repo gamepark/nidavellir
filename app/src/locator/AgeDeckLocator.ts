@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { DeckLocator, ItemContext } from '@gamepark/react-game'
 import { Location } from '@gamepark/rules-api'

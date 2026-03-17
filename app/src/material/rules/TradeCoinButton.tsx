@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Trans } from 'react-i18next'
 import { CustomMove } from '@gamepark/rules-api'

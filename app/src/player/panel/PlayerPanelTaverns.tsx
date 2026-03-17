@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { useRules, MaterialComponent } from '@gamepark/react-game'
 import { css } from '@emotion/react'
 import { FC, Fragment, useMemo } from 'react'

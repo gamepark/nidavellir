@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { CustomMoveType } from '@gamepark/nidavellir/moves/CustomMoveType'
 import { DropAreaDescription, MaterialContext } from '@gamepark/react-game'
 import { isCustomMoveType, Location, MaterialMove } from '@gamepark/rules-api'

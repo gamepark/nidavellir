@@ -1,5 +1,5 @@
 import { listingToList, MaterialGameSetup, MaterialMove } from '@gamepark/rules-api'
-import shuffle from 'lodash/shuffle'
+import { shuffle } from 'es-toolkit'
 import { Card, CardDeck, heroCards } from './cards/Cards'
 import { age1For5Players, age1ForMinus5Players, age2For5Players, age2ForMinus5Players } from './configuration/CardsMinPlayers'
 import { lessThan4PlayersTreasure, moreThan3PlayersTreasure } from './configuration/CoinPerPlayers'

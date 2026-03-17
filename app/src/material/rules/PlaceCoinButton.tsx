@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from "@emotion/react";
 import { useTranslation } from "react-i18next";
 import Images from "../../images/Images";

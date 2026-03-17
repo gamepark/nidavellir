@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { tokenSpaces } from '@gamepark/nidavellir/material/PlayerBoardSpace'
 import { BoardDescription, MaterialContext } from '@gamepark/react-game'

@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Distinction } from '@gamepark/nidavellir/material/Distinction'
 import { MaterialHelpProps } from '@gamepark/react-game'
@@ -13,7 +12,7 @@ export const DistinctionHelp: FC<MaterialHelpProps> = (props) => {
   return (
     <>
       <h2 css={[title, norse, normal]}>
-        <Trans defaults={`distinction.name.${item.id}`}>
+        <Trans i18nKey={`distinction.name.${item.id}`}>
           <strong/>
           <div css={iconStyle(getIcon(item.id))} />
         </Trans>

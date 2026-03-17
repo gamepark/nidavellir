@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
 import { Tavern } from '@gamepark/nidavellir/material/Tavern'
 import { LocationDescription, MaterialContext } from '@gamepark/react-game'

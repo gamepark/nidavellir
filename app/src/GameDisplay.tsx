@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { GameTable, usePlayers } from '@gamepark/react-game'
 import { PlayerPanels } from "./player/PlayerPanels";
 import { css, Global } from "@emotion/react";

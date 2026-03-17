@@ -1,11 +1,11 @@
 import { MaterialItem, MaterialRulesPart } from '@gamepark/rules-api'
 import { MaterialType } from "../../material/MaterialType";
-import groupBy from "lodash/groupBy";
-import pickBy from "lodash/pickBy";
+import { groupBy } from 'es-toolkit'
+import { isEmpty, pickBy } from 'es-toolkit/compat'
 import { LocationType } from "../../material/LocationType";
 import { DiscardedCoin, Memory } from "../Memory";
 import { Coins } from "../../coins/Coins";
-import isEmpty from "lodash/isEmpty";
+import { Coin } from "../../material/Coin";
 import { Gem } from "../../material/Gem";
 import { RuleId } from '../RuleId'
 
@@ -48,7 +48,7 @@ export class Trade extends MaterialRulesPart {
 
   getCoinValue(coin: MaterialItem) {
     const discardedCoin = this.remind<DiscardedCoin>(Memory.DiscardedCoin, coin.location.player)
-    if (!discardedCoin || discardedCoin.tavern !== this.tavern) return Coins[coin.id].value
-    return Coins[discardedCoin.id].value
+    if (!discardedCoin || discardedCoin.tavern !== this.tavern) return Coins[coin.id as Coin].value
+    return Coins[discardedCoin.id as Coin].value
   }
 }

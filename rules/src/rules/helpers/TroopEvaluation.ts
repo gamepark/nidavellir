@@ -11,7 +11,7 @@ import Army from './Army'
 export class TroopEvaluation extends MaterialRulesPart {
 
   get endDistinction(): MaterialMove[] {
-    const remainingDistinctions = distinctions.slice(distinctions.indexOf(this.distinction) + 1)
+    const remainingDistinctions = distinctions.slice(distinctions.indexOf(this.distinction as Distinction) + 1)
     for (const d of remainingDistinctions) {
       if (d === Distinction.PioneerOfTheKingdom) return [this.startRule(DistinctionRuleId[d])]
       const description = Distinctions[d]

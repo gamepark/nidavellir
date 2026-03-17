@@ -1,4 +1,3 @@
-/** @jsxImportSource @emotion/react */
 import { Gem } from '@gamepark/nidavellir/material/Gem'
 import { TokenDescription } from '@gamepark/react-game'
 import Images from '../images/Images'
