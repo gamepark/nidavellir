@@ -1,6 +1,6 @@
 import { CustomMove, isCustomMoveType, Location, MaterialItem } from '@gamepark/rules-api'
 import { maxBy } from 'es-toolkit/compat'
-import { Card } from '../../cards/Cards'
+import { Card, CardId } from '../../cards/Cards'
 import { CoinColor } from '../../coins/CoinDescription'
 import { Coins } from '../../coins/Coins'
 import { Coin } from '../../material/Coin'
@@ -45,6 +45,7 @@ export class TradeCoinRules extends EffectRule {
   onCustomMove(move: CustomMove) {
     if (!isCustomMoveType(CustomMoveType.TradeCoins)(move)) return []
     delete this.game.droppedItems
+    delete (this.game as any).droppedItem
 
     // Here is the reveal of token
     const hiddenCoins = this
@@ -60,9 +61,9 @@ export class TradeCoinRules extends EffectRule {
     }
     const tradedCoinsIndexes: number[] = move.data
     const tradedCoins = this.material(MaterialType.Coin).index(tradedCoinsIndexes)
-    const maximumCoin = maxBy(tradedCoinsIndexes, (c) => Coins[tradedCoins.getItem(c).id as Coin].value)!
-    const maximumCoinItem = tradedCoins.getItem(maximumCoin)
-    const coin = Coins[maximumCoinItem.id as Coin]
+    const maximumCoin = maxBy(tradedCoinsIndexes, (c) => Coins[tradedCoins.getItem<Coin>(c).id].value)!
+    const maximumCoinItem = tradedCoins.getItem<Coin>(maximumCoin)
+    const coin = Coins[maximumCoinItem.id]
 
     const moves = []
     const location: Location = coin.color === CoinColor.Bronze ? {
@@ -110,7 +111,7 @@ export class TradeCoinRules extends EffectRule {
     return !!this
       .material(MaterialType.Card)
       .player(this.player)
-      .id(({ front }: Record<string, any>) => front === Card.Uline)
+      .id(({ front }: CardId) => front === Card.Uline)
       .length
   }
 

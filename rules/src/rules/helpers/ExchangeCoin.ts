@@ -20,8 +20,8 @@ export class ExchangeCoin extends MaterialRulesPart {
     const orderedCoins = orderBy(
       treasure.getIndexes(),
       [(index: number) => {
-        const item = treasure.getItem(index)
-        return Coins[item.id as Coin].value;
+        const item = treasure.getItem<Coin>(index)
+        return Coins[item.id].value;
       }, (index: number) => {
         const item = treasure.getItem(index)
         return item.location.z;
@@ -30,8 +30,8 @@ export class ExchangeCoin extends MaterialRulesPart {
     )
 
     const [lowerCoins, higherCoins] = partition(orderedCoins, (index) => {
-      const item = treasure.getItem(index)
-      return Coins[item.id as Coin].value < value;
+      const item = treasure.getItem<Coin>(index)
+      return Coins[item.id].value < value;
     })
 
     if (higherCoins.length) {
@@ -42,6 +42,6 @@ export class ExchangeCoin extends MaterialRulesPart {
   }
 
   get value() {
-    return sumBy(this.coins.getItems(), (c) => Coins[c.id as Coin].value) + (this.bonus ?? 0)
+    return sumBy(this.coins.getItems<Coin>(), (c) => Coins[c.id].value) + (this.bonus ?? 0)
   }
 }

@@ -6,7 +6,6 @@ import { LocationType } from './material/LocationType'
 import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './player/Player'
 import { Score } from './rules/helpers/Score'
-import { RuleId } from './rules/RuleId'
 
 export class NidavellirRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
   implements CompetitiveScore<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>,

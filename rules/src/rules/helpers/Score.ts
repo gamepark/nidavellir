@@ -1,6 +1,6 @@
 import { Material, MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
 import { sum } from 'es-toolkit/compat'
-import { Card, Cards } from '../../cards/Cards'
+import { Card, CardId, Cards } from '../../cards/Cards'
 import { DwarfDescription } from '../../cards/DwarfDescription'
 import { DwarfType } from '../../cards/DwarfType'
 import { Coins } from '../../coins/Coins'
@@ -94,19 +94,19 @@ export class Score extends MaterialRulesPart {
   }
 
   get neutral() {
-    const gradeScore = sum(this.commandZone.getItems().flatMap((item) => (Cards[(item.id as Record<string, any>).front as Card] as DwarfDescription).grades?.[DwarfType.Neutral] ?? 0))
+    const gradeScore = sum(this.commandZone.getItems<CardId>().flatMap((item) => (Cards[item.id.front!] as DwarfDescription).grades?.[DwarfType.Neutral] ?? 0))
 
     return gradeScore + this.dwergBrothers + this.astrid
   }
 
   get astrid() {
-    if (!this.commandZone.id((id: Record<string, any>) => id.front === Card.Astrid).length) return 0
+    if (!this.commandZone.id((id: CardId) => id.front === Card.Astrid).length) return 0
     return this.maximumCoinValue
   }
 
   get dwergBrothers() {
-    const dwergBrothers = this.commandZone.filter((item) =>
-      [Card.DwergAesir, Card.DwergSigmir, Card.DwergJungir, Card.DwergYmir, Card.DwergBergelmir].includes((item.id as Record<string, any>).front)
+    const dwergBrothers = this.commandZone.filter<CardId>((item) =>
+      [Card.DwergAesir, Card.DwergSigmir, Card.DwergJungir, Card.DwergYmir, Card.DwergBergelmir].includes(item.id.front!)
     )
 
     if (!dwergBrothers.length) return 0

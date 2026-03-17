@@ -1,7 +1,7 @@
 import { Material, MaterialGame, MaterialItem, MaterialRulesPart } from "@gamepark/rules-api";
 import { MaterialType } from "../../material/MaterialType";
 import { LocationType } from "../../material/LocationType";
-import { Card, Cards, isRoyalOffering } from "../../cards/Cards";
+import { Card, CardId, Cards, isRoyalOffering } from "../../cards/Cards";
 import { DwarfDescription } from "../../cards/DwarfDescription";
 import { sum } from 'es-toolkit/compat'
 import { PlayerId } from "../../player/Player";
@@ -16,7 +16,7 @@ export default class Army extends MaterialRulesPart {
   }
 
   getCard(card: Card) {
-    return this.army.id(({ front }: Record<string, any>) => front === card)
+    return this.army.id(({ front }: CardId) => front === card)
   }
 
   getItem(index: number) {
@@ -24,10 +24,10 @@ export default class Army extends MaterialRulesPart {
   }
 
   getCardGradesCount(card: MaterialItem, type: DwarfType, includeThrud?: boolean) {
-    const cardFront = (card.id as Record<string, any>)?.front
+    const cardFront = (card.id as CardId)?.front
     if (card.location.id !== type || (!includeThrud && cardFront === Card.Thrud)) return 0
 
-    const cardId = cardFront as Card
+    const cardId = cardFront!
     const description = Cards[cardId]
     if (isRoyalOffering(cardId)) return 0
 
@@ -56,18 +56,18 @@ export default class Army extends MaterialRulesPart {
   countGradesOfType(type: DwarfType, includeThrud?: boolean) {
     return sum(
       this.army
-        .filter((item) => item.location.id === type && (includeThrud || (item.id as Record<string, any>)?.front !== Card.Thrud))
-        .getItems()
-        .map((item) => (Cards[(item.id as Record<string, any>).front as Card] as DwarfDescription).grades?.[type]?.length ?? 0)
+        .filter<CardId>((item) => item.location.id === type && (includeThrud || item.id?.front !== Card.Thrud))
+        .getItems<CardId>()
+        .map((item) => (Cards[item.id.front!] as DwarfDescription).grades?.[type]?.length ?? 0)
     )
   }
 
   sumGradesOfType(type: DwarfType, includeThrud?: boolean) {
     return sum(
       this.army
-        .filter((item) => item.location.id === type && (includeThrud || (item.id as Record<string, any>)?.front !== Card.Thrud))
-        .getItems()
-        .flatMap((item) => (Cards[(item.id as Record<string, any>).front as Card] as DwarfDescription).grades?.[type] ?? [])
+        .filter<CardId>((item) => item.location.id === type && (includeThrud || item.id?.front !== Card.Thrud))
+        .getItems<CardId>()
+        .flatMap((item) => (Cards[item.id.front!] as DwarfDescription).grades?.[type] ?? [])
     )
   }
 

@@ -1,6 +1,6 @@
 import { isMoveItemType, Location, MaterialGame, MaterialItem, MaterialMove, MaterialRulesPart, MoveItem } from '@gamepark/rules-api'
 import { Card, Cards, HeroesEffects, isDwarfDescription, isHero, isHeroDescription, isRoyalOfferingDescription } from '../../cards/Cards'
-type CardId = Record<string, any>
+import { CardId } from '../../cards/Cards'
 import { getTypes } from '../../cards/DwarfDescription'
 import { DwarfType, dwarfTypes } from '../../cards/DwarfType'
 import { LocationType } from '../../material/LocationType'
@@ -19,7 +19,7 @@ export default class PlayerTurn extends MaterialRulesPart {
 
   constructor(game: MaterialGame, readonly player: PlayerId) {
     super(game)
-    this.heroCount = this.material(MaterialType.Card).player(player).filter((item) => isHero((item.id as CardId).front)).length
+    this.heroCount = this.material(MaterialType.Card).player(player).filter<CardId>((item) => isHero(item.id.front!)).length
 
   }
 
@@ -127,7 +127,7 @@ export default class PlayerTurn extends MaterialRulesPart {
   }
 
   applyEffect(item: MaterialItem) {
-    const cardId = (item.id as CardId).front as Card
+    const cardId = (item.id as CardId).front!
     const description = Cards[cardId]
 
     if (isRoyalOfferingDescription(cardId, description)) {
@@ -136,7 +136,7 @@ export default class PlayerTurn extends MaterialRulesPart {
     }
 
     if (isHeroDescription(cardId, description)) {
-      const effect = HeroesEffects[cardId as Card]
+      const effect = HeroesEffects[cardId]
       if (effect) this.memorize<Effect>(Memory.Effect, effect)
     }
   }
