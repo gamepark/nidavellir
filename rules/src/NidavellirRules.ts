@@ -21,6 +21,6 @@ export class NidavellirRules extends SecretMaterialRules<PlayerId, MaterialType,
   }
 
   giveTime(): number {
-    return this.game.rule?.id === RuleId.Bids ? 45 : 20
+    return 60
   }
 }
