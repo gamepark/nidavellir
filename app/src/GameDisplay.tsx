@@ -20,12 +20,12 @@ export const GameDisplay = () => {
 const style = css`
   @font-face {
     font-family: Norse;
-    src: url(${process.env.PUBLIC_URL + '/norse/Norse.otf'}) format('opentype');
+    src: url('/norse/Norse.otf') format('opentype');
   }
 
   @font-face {
     font-family: Norse;
     font-weight: bold;
-    src: url(${process.env.PUBLIC_URL + '/norse/NorseBold.otf'}) format('opentype');
+    src: url('/norse/NorseBold.otf') format('opentype');
   }
 `
