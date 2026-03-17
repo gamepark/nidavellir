@@ -1,7 +1,7 @@
 {
   "name": "@gamepark/nidavellir-app",
   "private": true,
-  "version": "1.2.0",
+  "version": "1.2.1",
   "type": "module",
   "description": "Nidavellir game for Game Park",
   "author": "Romain Fromi <romain@game-park.com> (https://game-park.com/)",
