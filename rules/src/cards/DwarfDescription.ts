@@ -1,7 +1,6 @@
 import { getEnumValues } from '@gamepark/rules-api'
 import { DwarfType } from './DwarfType'
 import { Grades } from './Grades'
-import { HeroDescription } from './HeroDescription'
 
 
 export type DwarfDescription = {
@@ -9,7 +8,7 @@ export type DwarfDescription = {
   grades?: Grades;
 };
 
-export const getTypes = (description: DwarfDescription | HeroDescription): DwarfType[] => {
+export const getTypes = (description: DwarfDescription): DwarfType[] => {
   if (typeof description.types === 'number') return [description.types]
   return description.types
 }
