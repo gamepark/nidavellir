@@ -9,7 +9,7 @@
 //   getBlacksmithScore,
 //   getExplorerScore,
 //   getHunterScore,
-export class PlayerPanelScore{}//   getMinerScore,
+export class PlayerPanelScore {} //   getMinerScore,
 //   getWarriorScore,
 // } from '@gamepark/nidavellir/utils/score.utils';
 //

@@ -1,11 +1,11 @@
 export enum CoinColor {
   Bronze = 1,
   Gold,
-  Green,
+  Green
 }
 
 export type CoinDescription = {
-  color: CoinColor;
-  value: number;
-  copies?: number;
-};
+  color: CoinColor
+  value: number
+  copies?: number
+}

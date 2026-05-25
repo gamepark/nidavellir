@@ -17,15 +17,13 @@ export const NidavellirPlayerPanel: FC<NidavellirPlayerPanelProps> = (props) => 
   const timer = usePlayerTime(player.id)
   const leftScore = (!timer || rules.isOver()) && player?.gamePointsDelta === undefined
   return (
-
     <PlayerPanel key={player.id} playerId={player.id} {...rest}>
       <div css={indicators(leftScore)}>
-        <PlayerPanelCounter value={rules?.getScore(player.id)!} icon={faStar} />
+        <PlayerPanelCounter value={rules.getScore(player.id)!} icon={faStar} />
       </div>
       <PlayerPanelTaverns player={player} />
     </PlayerPanel>
   )
-
 }
 
 const indicators = (left: boolean) => css`
@@ -35,7 +33,9 @@ const indicators = (left: boolean) => css`
   justify-content: center;
   position: absolute;
   top: 3.6em;
-  transition: 0.2s left, 0.2s right;
-  ${left? `left: 6.5em;`: `right: 1em`};
+  transition:
+    0.2s left,
+    0.2s right;
+  ${left ? `left: 6.5em;` : `right: 1em`};
   flex-wrap: wrap;
 `

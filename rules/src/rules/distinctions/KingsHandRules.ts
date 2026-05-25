@@ -1,10 +1,9 @@
-import { isStartPlayerTurn, RuleMove, RuleStep } from "@gamepark/rules-api";
-import { RuleId } from "../RuleId";
-import { Memory } from "../Memory";
-import { DistinctionRules } from "./DistinctionRules";
+import { isStartPlayerTurn, RuleMove, RuleStep } from '@gamepark/rules-api'
+import { RuleId } from '../RuleId'
+import { Memory } from '../Memory'
+import { DistinctionRules } from './DistinctionRules'
 
 class KingsHandRules extends DistinctionRules {
-
   onRuleStart(move: RuleMove, previousRules?: RuleStep) {
     const consequences = super.onRuleStart(move)
     if (previousRules?.id === RuleId.TransformCoin) {

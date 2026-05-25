@@ -6,13 +6,13 @@ import { isMoveItemType } from '@gamepark/rules-api'
 
 export const nidavellirAnimations = new MaterialGameAnimations()
 
-nidavellirAnimations.when()
-  .move(move =>
-    isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Tavern
-  ).duration(0.3)
+nidavellirAnimations
+  .when()
+  .move((move) => isMoveItemType(MaterialType.Card)(move) && move.location.type === LocationType.Tavern)
+  .duration(0.3)
 
-nidavellirAnimations.when()
+nidavellirAnimations
+  .when()
   .rule(RuleId.EnterDwarves)
-  .move(move =>
-    isMoveItemType(MaterialType.Coin)(move) && move.location.type === LocationType.Hand
-  ).duration(0.3)
+  .move((move) => isMoveItemType(MaterialType.Coin)(move) && move.location.type === LocationType.Hand)
+  .duration(0.3)

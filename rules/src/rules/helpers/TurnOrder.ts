@@ -9,8 +9,10 @@ import { PlayerId } from '../../player/Player'
 import { RuleId } from '../RuleId'
 
 export class TurnOrder extends MaterialRulesPart {
-
-  constructor(game: MaterialGame, readonly player?: PlayerId) {
+  constructor(
+    game: MaterialGame,
+    readonly player?: PlayerId
+  ) {
     super(game)
   }
 
@@ -35,11 +37,8 @@ export class TurnOrder extends MaterialRulesPart {
 
     const orderedCoins = orderBy(
       coins.getItems(),
-      [
-        (c) => this.getCoinValue(c),
-        (c) => this.material(MaterialType.Gem).player(c.location.player).getItem()!.id,
-      ],
-      ['desc', 'desc'],
+      [(c) => this.getCoinValue(c), (c) => this.material(MaterialType.Gem).player(c.location.player).getItem()!.id],
+      ['desc', 'desc']
     )
 
     return orderedCoins.map((c) => c.location.player!)
@@ -57,9 +56,7 @@ export class TurnOrder extends MaterialRulesPart {
 
   get tavernCoins(): Material {
     const tavern = this.tavern
-    return this
-      .material(MaterialType.Coin)
-      .location((location) => location.type === LocationType.PlayerBoard && location.id === tavern)
+    return this.material(MaterialType.Coin).location((location) => location.type === LocationType.PlayerBoard && location.id === tavern)
   }
 
   get tavern() {

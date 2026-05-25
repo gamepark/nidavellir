@@ -31,93 +31,91 @@ import { RoyalOfferingDescription } from './RoyalOfferingDescription'
 export const WarriorGrade3: DwarfDescription = {
   types: DwarfType.Warrior,
   grades: {
-    [DwarfType.Warrior]: [3],
-  },
-};
+    [DwarfType.Warrior]: [3]
+  }
+}
 export const WarriorGrade4: DwarfDescription = {
   types: DwarfType.Warrior,
   grades: {
-    [DwarfType.Warrior]: [4],
-  },
-};
+    [DwarfType.Warrior]: [4]
+  }
+}
 
 export const WarriorGrade5: DwarfDescription = {
   types: DwarfType.Warrior,
   grades: {
-    [DwarfType.Warrior]: [5],
-  },
-};
+    [DwarfType.Warrior]: [5]
+  }
+}
 
 export const WarriorGrade6: DwarfDescription = {
   types: DwarfType.Warrior,
   grades: {
-    [DwarfType.Warrior]: [6],
-  },
-};
+    [DwarfType.Warrior]: [6]
+  }
+}
 
 export const WarriorGrade7: DwarfDescription = {
   types: DwarfType.Warrior,
   grades: {
-    [DwarfType.Warrior]: [7],
-  },
-};
+    [DwarfType.Warrior]: [7]
+  }
+}
 
 export const WarriorGrade8: DwarfDescription = {
   types: DwarfType.Warrior,
   grades: {
-    [DwarfType.Warrior]: [8],
-  },
-};
+    [DwarfType.Warrior]: [8]
+  }
+}
 
 export const WarriorGrade9: DwarfDescription = {
   types: DwarfType.Warrior,
   grades: {
-    [DwarfType.Warrior]: [9],
-  },
-};
+    [DwarfType.Warrior]: [9]
+  }
+}
 
 export const WarriorGrade10: DwarfDescription = {
   types: DwarfType.Warrior,
   grades: {
-    [DwarfType.Warrior]: [10],
-  },
-};
-
+    [DwarfType.Warrior]: [10]
+  }
+}
 
 export const Hunter: DwarfDescription = {
   types: DwarfType.Hunter,
   grades: {
-    [DwarfType.Hunter]: [0],
-  },
-};
+    [DwarfType.Hunter]: [0]
+  }
+}
 
 export const MinerGrade0: DwarfDescription = {
   types: DwarfType.Miner,
   grades: {
-    [DwarfType.Miner]: [0],
-  },
-};
+    [DwarfType.Miner]: [0]
+  }
+}
 export const MinerGrade1: DwarfDescription = {
   types: DwarfType.Miner,
   grades: {
-    [DwarfType.Miner]: [1],
-  },
-};
+    [DwarfType.Miner]: [1]
+  }
+}
 
 export const MinerGrade2: DwarfDescription = {
   types: DwarfType.Miner,
   grades: {
-    [DwarfType.Miner]: [2],
-  },
-};
-
+    [DwarfType.Miner]: [2]
+  }
+}
 
 export const Blacksmith: DwarfDescription = {
   types: DwarfType.Blacksmith,
   grades: {
-    [DwarfType.Blacksmith]: [0],
-  },
-};
+    [DwarfType.Blacksmith]: [0]
+  }
+}
 
 /**
  * Explorer1, // Explorer 5
@@ -141,74 +139,73 @@ export const Blacksmith: DwarfDescription = {
 export const ExplorerGrade5: DwarfDescription = {
   types: DwarfType.Explorer,
   grades: {
-    [DwarfType.Explorer]: [5],
-  },
-};
+    [DwarfType.Explorer]: [5]
+  }
+}
 
 export const ExplorerGrade6: DwarfDescription = {
   types: DwarfType.Explorer,
   grades: {
-    [DwarfType.Explorer]: [6],
-  },
-};
+    [DwarfType.Explorer]: [6]
+  }
+}
 
 export const ExplorerGrade7: DwarfDescription = {
   types: DwarfType.Explorer,
   grades: {
-    [DwarfType.Explorer]: [7],
-  },
-};
+    [DwarfType.Explorer]: [7]
+  }
+}
 
 export const ExplorerGrade8: DwarfDescription = {
   types: DwarfType.Explorer,
   grades: {
-    [DwarfType.Explorer]: [8],
-  },
-};
+    [DwarfType.Explorer]: [8]
+  }
+}
 
 export const ExplorerGrade9: DwarfDescription = {
   types: DwarfType.Explorer,
   grades: {
-    [DwarfType.Explorer]: [9],
-  },
-};
+    [DwarfType.Explorer]: [9]
+  }
+}
 
 export const ExplorerGrade10: DwarfDescription = {
   types: DwarfType.Explorer,
   grades: {
-    [DwarfType.Explorer]: [10],
-  },
-};
+    [DwarfType.Explorer]: [10]
+  }
+}
 
 export const ExplorerGrade11: DwarfDescription = {
   types: DwarfType.Explorer,
   grades: {
-    [DwarfType.Explorer]: [11],
-  },
-};
+    [DwarfType.Explorer]: [11]
+  }
+}
 
 export const ExplorerGrade12: DwarfDescription = {
   types: DwarfType.Explorer,
   grades: {
-    [DwarfType.Explorer]: [12],
-  },
-};
+    [DwarfType.Explorer]: [12]
+  }
+}
 
 export const RoyalOffering3: RoyalOfferingDescription = {
   bonus: 3
-};
+}
 
 export const RoyalOffering5: RoyalOfferingDescription = {
   bonus: 5
-};
+}
 
 export const BlacksmithDwarfKingsGreatArmorer: DwarfDescription = {
   types: DwarfType.Blacksmith,
   grades: {
-    [DwarfType.Blacksmith]: [0, 0],
-  },
-};
-
+    [DwarfType.Blacksmith]: [0, 0]
+  }
+}
 
 export enum CardDeck {
   Age1 = 1,
@@ -292,7 +289,7 @@ export enum Card {
   Ylud,
   Skaa,
   Uline,
-  Grid,
+  Grid
 }
 
 export const Cards: Record<Card, CardDescription> = {
@@ -361,8 +358,8 @@ export const Cards: Record<Card, CardDescription> = {
   [Card.Ylud]: Ylud,
   [Card.Skaa]: Skaa,
   [Card.Uline]: Uline,
-  [Card.Grid]: Grid,
-};
+  [Card.Grid]: Grid
+}
 
 export const isHero = (card: Card) => card >= Card.Bonfur
 export const isSimpleDwarf = (card: Card) => card < Card.RoyalOffering3 || card === Card.BlacksmithKingsGreatArmorer
@@ -379,7 +376,6 @@ export const isRoyalOfferingDescription = (card: Card, _description: CardDescrip
 export const isDwarfDescription = (card: Card, _description: CardDescription): _description is DwarfDescription => isSimpleDwarf(card)
 export const isHeroDescription = (card: Card, _description: CardDescription): _description is HeroDescription => isHero(card)
 
-
 export const HeroesEffects: Partial<Record<Card, RuleId>> = {
   [Card.Grid]: RuleId.Grid,
   [Card.Uline]: RuleId.Uline,
@@ -388,6 +384,6 @@ export const HeroesEffects: Partial<Record<Card, RuleId>> = {
 }
 
 export type CardId = {
-  back: CardDeck,
+  back: CardDeck
   front?: Card
 }

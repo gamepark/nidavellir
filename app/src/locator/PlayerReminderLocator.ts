@@ -5,11 +5,10 @@ import { PlayerReminderDescription } from './PlayerReminderDescription'
 import { tableLocator } from './TableLocator'
 
 export class PlayerReminderLocator extends Locator {
-
   locationDescription = new PlayerReminderDescription()
 
   getLocations(context: MaterialContext) {
-    return context.rules.players.map(player => ({ type: LocationType.PlayerReminder, player }))
+    return context.rules.players.map((player) => ({ type: LocationType.PlayerReminder, player }))
   }
 
   getCoordinates(location: Location, context: ItemContext) {

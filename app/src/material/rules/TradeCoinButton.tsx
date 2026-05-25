@@ -6,13 +6,12 @@ import { MaterialType } from '@gamepark/nidavellir/material/MaterialType'
 import { ExchangeCoin } from '@gamepark/nidavellir/rules/helpers/ExchangeCoin'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
 
-
 type TradeCoinButtonProps = {
   move: CustomMove
 } & MaterialHelpProps
 
-export const  TradeCoinButton = (props: TradeCoinButtonProps) => {
-  const { move, closeDialog } = props;
+export const TradeCoinButton = (props: TradeCoinButtonProps) => {
+  const { move, closeDialog } = props
   const rules = useRules<NidavellirRules>()!
   const coins = rules.material(MaterialType.Coin)
   const treasureCoin = new ExchangeCoin(rules.game, coins.index(move.data)).treasureCoin
@@ -23,7 +22,7 @@ export const  TradeCoinButton = (props: TradeCoinButtonProps) => {
         components={[
           <MaterialComponent css={mini} type={MaterialType.Coin} itemId={coins.getItem(move.data[0]).id} />,
           <MaterialComponent css={mini} type={MaterialType.Coin} itemId={coins.getItem(move.data[1]).id} />,
-          <MaterialComponent css={mini} type={MaterialType.Coin} itemId={treasureCoin.getItem()!.id} />,
+          <MaterialComponent css={mini} type={MaterialType.Coin} itemId={treasureCoin.getItem()!.id} />
         ]}
       />
     </PlayMoveButton>
@@ -47,8 +46,7 @@ export const moveAction = css`
   display: flex;
   align-items: center;
   justify-content: left;
-  
-    
+
   &:hover,
   &:active {
     background-color: white;

@@ -5,7 +5,6 @@ import { Location, MaterialItem } from '@gamepark/rules-api'
 import { cardDescription } from '../material/DwarfCardDescription'
 
 export class DistinctionDeckLocator extends ListLocator {
-
   getGap(_location: Location, { rules }: ItemContext) {
     const players = rules.players.length
     const y = cardDescription.height - (players > 3 ? 3 : 2)
@@ -22,34 +21,28 @@ export class DistinctionDeckLocator extends ListLocator {
   getItemIndex(item: MaterialItem, context: ItemContext): number {
     const { type, rules } = context
     if (type === MaterialType.Gem) {
-      return this.getItemIndex(
-        rules.material(MaterialType.Distinction).id(Distinction.CrownJeweler).getItem()!,
-        { ...context, type: MaterialType.Distinction }
-      )
+      return this.getItemIndex(rules.material(MaterialType.Distinction).id(Distinction.CrownJeweler).getItem()!, { ...context, type: MaterialType.Distinction })
     }
 
     if (type === MaterialType.Card) {
-      return this.getItemIndex(
-        rules.material(MaterialType.Distinction).id(Distinction.KingsGreatArmorer).getItem()!,
-        { ...context, type: MaterialType.Distinction }
-      )
+      return this.getItemIndex(rules.material(MaterialType.Distinction).id(Distinction.KingsGreatArmorer).getItem()!, {
+        ...context,
+        type: MaterialType.Distinction
+      })
     }
 
     if (type === MaterialType.Coin) {
-      return this.getItemIndex(
-        rules.material(MaterialType.Distinction).id(Distinction.HuntingMaster).getItem()!,
-        { ...context, type: MaterialType.Distinction }
-      )
+      return this.getItemIndex(rules.material(MaterialType.Distinction).id(Distinction.HuntingMaster).getItem()!, {
+        ...context,
+        type: MaterialType.Distinction
+      })
     }
 
     return super.getItemIndex(item, context)
   }
 
   getHoverTransform(item: MaterialItem, _context: ItemContext) {
-    const transforms = [
-      'translateZ(10em)',
-      'scale(2)'
-    ]
+    const transforms = ['translateZ(10em)', 'scale(2)']
     if (item.location.x! === 0) {
       transforms.push('translateY(25%)')
     }

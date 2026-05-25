@@ -36,5 +36,4 @@ export const Locators: Record<LocationType, Locator<PlayerId, MaterialType, Loca
     positionOnParent: { x: 16, y: 10 }
   }),
   [LocationType.PlayerReminder]: new PlayerReminderLocator()
-
 }

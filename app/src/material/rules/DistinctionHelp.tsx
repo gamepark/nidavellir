@@ -13,7 +13,7 @@ export const DistinctionHelp: FC<MaterialHelpProps> = (props) => {
     <>
       <h2 css={[title, norse, normal]}>
         <Trans i18nKey={`distinction.name.${item.id}`}>
-          <strong/>
+          <strong />
           <div css={iconStyle(getIcon(item.id))} />
         </Trans>
       </h2>
@@ -51,7 +51,7 @@ const normal = css`
   font-weight: normal;
 `
 
-const iconStyle = (icon: any) => css`
+const iconStyle = (icon: string) => css`
   width: 1.3em;
   height: 1.3em;
   //margin-right: 2em;
@@ -61,5 +61,5 @@ const iconStyle = (icon: any) => css`
 `
 
 const norse = css`
-  font-family: Norse, Arial, Serif
+  font-family: Norse, Arial, Serif;
 `

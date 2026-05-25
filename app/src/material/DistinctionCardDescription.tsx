@@ -1,7 +1,7 @@
-import Images from "../images/Images";
-import { CardDescription } from "@gamepark/react-game";
-import { Distinction } from "@gamepark/nidavellir/material/Distinction";
-import { DistinctionHelp } from "./rules/DistinctionHelp";
+import Images from '../images/Images'
+import { CardDescription } from '@gamepark/react-game'
+import { Distinction } from '@gamepark/nidavellir/material/Distinction'
+import { DistinctionHelp } from './rules/DistinctionHelp'
 
 export class DistinctionCardDescription extends CardDescription {
   width = 5.4

@@ -11,7 +11,7 @@ class PlayerBoardDescription extends BoardDescription {
   ratio = 514 / 968
 
   getStaticItems({ rules: { players } }: MaterialContext) {
-    return players.map(player => this.getPlayerBoard(player))
+    return players.map((player) => this.getPlayerBoard(player))
   }
 
   getPlayerBoard(player: number) {

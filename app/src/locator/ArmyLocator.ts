@@ -12,12 +12,12 @@ export class ArmyLocator extends ListLocator {
   locationDescription = new ArmyLocatorDescription()
 
   getLocations({ rules: { players } }: MaterialContext): Location[] {
-    return players.flatMap(player => dwarfTypes.map(type => ({ type: LocationType.Army, id: type, player })))
+    return players.flatMap((player) => dwarfTypes.map((type) => ({ type: LocationType.Army, id: type, player })))
   }
 
   getAreaCoordinates(location: Location, context: MaterialContext) {
     const { x, y } = tableLocator.getCoordinates(location, context)
-    const boardLeft = (playerBoardDescription.width / 2) + (this.locationDescription.width / 2)
+    const boardLeft = playerBoardDescription.width / 2 + this.locationDescription.width / 2
     const locationLeft = boardLeft + (location.id! - 1) * this.locationDescription.width
     return { x: x + locationLeft, y: y + 1.77 }
   }

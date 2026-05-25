@@ -5,15 +5,12 @@ import { MaterialType } from '../../material/MaterialType'
 import PlayerTurn from '../helpers/PlayerTurn'
 import { DistinctionRules } from './DistinctionRules'
 
-
 class KingsGreatArmorerRules extends DistinctionRules {
-
   onRuleStart(move: RuleMove): MaterialMove[] {
     const moves = super.onRuleStart(move)
     const playerTurn = new PlayerTurn(this.game, this.player!)
 
-    const card = this
-      .material(MaterialType.Card)
+    const card = this.material(MaterialType.Card)
       .location(LocationType.DistinctionsDeck)
       .id((id: CardId) => id.front === Card.BlacksmithKingsGreatArmorer)
 
@@ -27,7 +24,7 @@ class KingsGreatArmorerRules extends DistinctionRules {
     return moves
   }
 
-  afterItemMove(move: ItemMove): any[] {
+  afterItemMove(move: ItemMove): MaterialMove[] {
     if (!isMoveItemType(MaterialType.Card)(move)) return []
 
     const moves = new PlayerTurn(this.game, this.player!).onChooseCard(move)

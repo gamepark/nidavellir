@@ -35,24 +35,23 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
   setupCard(options: NidavellirOptions) {
     this.createAge1Deck(options)
     this.createAge2Deck(options)
-    this.material(MaterialType.Card)
-      .createItem({ id: { back: CardDeck.Distinction, front: Card.BlacksmithKingsGreatArmorer }, location: { type: LocationType.DistinctionsDeck } })
-
+    this.material(MaterialType.Card).createItem({
+      id: { back: CardDeck.Distinction, front: Card.BlacksmithKingsGreatArmorer },
+      location: { type: LocationType.DistinctionsDeck }
+    })
   }
 
   createAge1Deck(options: NidavellirOptions) {
     const age1 = this.getAge1Cards(options)
     // Age 1 Deck
-    this.material(MaterialType.Card)
-      .createItems(age1.map((front) => ({ id: { back: CardDeck.Age1, front }, location: { type: LocationType.Age1Deck } })))
+    this.material(MaterialType.Card).createItems(age1.map((front) => ({ id: { back: CardDeck.Age1, front }, location: { type: LocationType.Age1Deck } })))
     this.material(MaterialType.Card).location(LocationType.Age1Deck).shuffle()
   }
 
   createAge2Deck(options: NidavellirOptions) {
     const age2 = this.getAge2Cards(options)
 
-    this.material(MaterialType.Card)
-      .createItems(age2.map((front) => ({ id: { back: CardDeck.Age2, front }, location: { type: LocationType.Age2Deck } })))
+    this.material(MaterialType.Card).createItems(age2.map((front) => ({ id: { back: CardDeck.Age2, front }, location: { type: LocationType.Age2Deck } })))
     this.material(MaterialType.Card).location(LocationType.Age2Deck).shuffle()
   }
 
@@ -74,12 +73,9 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
 
   setupTreasure(options: NidavellirOptions) {
     const goldCoinQuantities = options.players <= 3 ? lessThan4PlayersTreasure : moreThan3PlayersTreasure
-    this.material(MaterialType.Coin)
-      .createItems(
-        goldCoins.flatMap((id) =>
-          Array.from(Array(goldCoinQuantities[id] ?? 1)).map(() => ({ id, location: { type: LocationType.Treasure } }))
-        )
-      )
+    this.material(MaterialType.Coin).createItems(
+      goldCoins.flatMap((id) => Array.from(Array(goldCoinQuantities[id] ?? 1)).map(() => ({ id, location: { type: LocationType.Treasure } })))
+    )
 
     this.material(MaterialType.Coin).createItem({ id: Coin.HuntingMasterCoin, location: { type: LocationType.DistinctionsDeck } })
   }
@@ -89,9 +85,7 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
   }
 
   setupDistinctions() {
-    this.material(MaterialType.Distinction).createItems(
-      distinctions.map((id) => ({ id, location: { type: LocationType.DistinctionsDeck } }))
-    )
+    this.material(MaterialType.Distinction).createItems(distinctions.map((id) => ({ id, location: { type: LocationType.DistinctionsDeck } })))
   }
 
   getGems(options: NidavellirOptions) {
@@ -118,13 +112,12 @@ export class NidavellirSetup extends MaterialGameSetup<PlayerId, MaterialType, L
     const cardsByTavern = Math.max(MIN_DWARVES_PER_TAVERN, options.players)
     const drawnCards = this.material(MaterialType.Card)
       .location((location) => LocationType.Age1Deck === location.type)
-      .sort(card => -card.location.x!)
+      .sort((card) => -card.location.x!)
       .limit(cardsByTavern * 3)
       .getIndexes()
 
-    return taverns.flatMap((tavern) => this.material(MaterialType.Card)
-      .index(drawnCards.splice(0, cardsByTavern))
-      .moveItems({ type: LocationType.Tavern, id: tavern })
+    return taverns.flatMap((tavern) =>
+      this.material(MaterialType.Card).index(drawnCards.splice(0, cardsByTavern)).moveItems({ type: LocationType.Tavern, id: tavern })
     )
   }
 

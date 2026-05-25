@@ -1,6 +1,6 @@
 import { DistinctionDescription } from './DistinctionDescription'
 import { DwarfType } from './DwarfType'
-import { Distinction } from "../material/Distinction";
+import { Distinction } from '../material/Distinction'
 
 export const KingsHand: DistinctionDescription = {
   majorityOf: DwarfType.Warrior
@@ -29,4 +29,3 @@ export const Distinctions: Record<Distinction, DistinctionDescription> = {
   [Distinction.KingsGreatArmorer]: KingsGreatArmorer,
   [Distinction.PioneerOfTheKingdom]: PioneerOfTheKingdom
 }
-

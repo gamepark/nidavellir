@@ -4,7 +4,6 @@ import { cardDescription } from '../material/DwarfCardDescription'
 import { playerBoardDescription } from '../material/PlayerBoardDescription'
 
 export class TableLocator extends Locator {
-
   getCoordinates(location: Location, context: MaterialContext) {
     return this.getPositionForIndex(this.getScreenIndex(location, context))
   }
@@ -36,7 +35,7 @@ export class TableLocator extends Locator {
     const rightMargin = 1
     const playerIndex = index
     const cardWidth = cardDescription.width + 0.4
-    const playerX = (playerBoardDescription.width + (cardWidth * 6) + rightMargin) * (playerIndex > 2 ? (playerIndex - 3) : playerIndex)
+    const playerX = (playerBoardDescription.width + cardWidth * 6 + rightMargin) * (playerIndex > 2 ? playerIndex - 3 : playerIndex)
     return { x: baseX + playerX, y: index < 3 ? 21 : -49, z: 0.1 }
   }
 }

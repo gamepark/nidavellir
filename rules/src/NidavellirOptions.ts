@@ -5,8 +5,8 @@ import { OptionsSpec } from '@gamepark/rules-api'
  * The first generic parameter, "{}", can be changed to include game options like variants or expansions.
  */
 export type NidavellirOptions = {
-  players: number;
-};
+  players: number
+}
 
 /**
  * This object describes all the options a game can have, and will be used by GamePark website to create automatically forms for you game

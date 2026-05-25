@@ -21,9 +21,11 @@ export const DwarfCardHelp = (props: MaterialHelpProps) => {
     return <AgeDeckRule {...props} />
   }
 
-  return <>
-    <CardRule {...props}/>
-  </>
+  return (
+    <>
+      <CardRule {...props} />
+    </>
+  )
 }
 
 const AgeDeckRule = (props: MaterialHelpProps) => {
@@ -38,23 +40,43 @@ const AgeDeckRule = (props: MaterialHelpProps) => {
   return (
     <>
       <h2 css={norse}>{t('rule.age-deck', { age })}</h2>
-      <p><Trans i18nKey="rule.age-deck.purpose" defaults="A game is divided into 2 Ages.\nAt {players} players, each Age consists of {round} rounds\n\nAt the start of each round of the Age {age}, {tavernCards} cards are drawn from here and placed in each tavern." values={{
-        players,
-        age,
-        drawnCards: (players === 2 ? 3 : players) * 3,
-        tavernCards: (players === 2 ? 3 : players),
-        round: players < 4 ? 4 : 3,
-      }}><strong/></Trans></p>
-      <hr/>
-      <p><Trans i18nKey="rule.age-deck.remaining" defaults="There are currently {remaining, plural, one{# card} other{# cards}} in this deck." values={{
-        remaining: rules.material(MaterialType.Card).location(item.location!.type).length,
-      }}>
-        <strong/>
-      </Trans></p>
       <p>
-        { !started && (<Trans i18nKey="rule.age-deck.not-started" defaults="Age {age} is not started yet." values={{ age }} />)}
-        { started && (<Trans i18nKey="rule.age-deck.round" defaults="It remains {round, plural, one{1 round} other{# rounds}}" values={{ round: getRemainingRound(rules) }} />)}
-        { isAgeEnded && (<Trans i18nKey="rule.age-deck.ended" defaults="This age is ended" />)}
+        <Trans
+          i18nKey="rule.age-deck.purpose"
+          defaults="A game is divided into 2 Ages.\nAt {players} players, each Age consists of {round} rounds\n\nAt the start of each round of the Age {age}, {tavernCards} cards are drawn from here and placed in each tavern."
+          values={{
+            players,
+            age,
+            drawnCards: (players === 2 ? 3 : players) * 3,
+            tavernCards: players === 2 ? 3 : players,
+            round: players < 4 ? 4 : 3
+          }}
+        >
+          <strong />
+        </Trans>
+      </p>
+      <hr />
+      <p>
+        <Trans
+          i18nKey="rule.age-deck.remaining"
+          defaults="There are currently {remaining, plural, one{# card} other{# cards}} in this deck."
+          values={{
+            remaining: rules.material(MaterialType.Card).location(item.location!.type).length
+          }}
+        >
+          <strong />
+        </Trans>
+      </p>
+      <p>
+        {!started && <Trans i18nKey="rule.age-deck.not-started" defaults="Age {age} is not started yet." values={{ age }} />}
+        {started && (
+          <Trans
+            i18nKey="rule.age-deck.round"
+            defaults="It remains {round, plural, one{1 round} other{# rounds}}"
+            values={{ round: getRemainingRound(rules) }}
+          />
+        )}
+        {isAgeEnded && <Trans i18nKey="rule.age-deck.ended" defaults="This age is ended" />}
       </p>
     </>
   )
@@ -83,19 +105,39 @@ const DwarfRules = (props: MaterialHelpProps) => {
   const type = cardId.front ? getTypes(Cards[cardId.front] as DwarfDescription)?.[0] : undefined
   const dwarfClass = type ?? item.location?.id
   const legalMoves = useLegalMoves()
-  const chooseDwarfCard = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Army)
-  const discard = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Discard)
+  const chooseDwarfCard = legalMoves.find(
+    (move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Army
+  )
+  const discard = legalMoves.find(
+    (move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Discard
+  )
 
   return (
     <>
       <h2 css={[title, norse]}>
-        <span css={css`flex: 1`}>{t(`dwarf-card.class.${dwarfClass}`)}</span>
-       </h2>
+        <span
+          css={css`
+            flex: 1;
+          `}
+        >
+          {t(`dwarf-card.class.${dwarfClass}`)}
+        </span>
+      </h2>
       <CardLocationRule {...props} />
-      {dwarfClass && <p><Trans i18nKey={`rule.dwarf-card.class.${dwarfClass}`}><strong/></Trans></p>}
+      {dwarfClass && (
+        <p>
+          <Trans i18nKey={`rule.dwarf-card.class.${dwarfClass}`}>
+            <strong />
+          </Trans>
+        </p>
+      )}
       <ScoreRules {...props} />
       {chooseDwarfCard && <ColumnButton move={chooseDwarfCard} {...props} />}
-      {discard && <PlayMoveButton move={discard} onPlay={closeDialog} css={moveAction()}>{t('rule.card.moves.discard')}</PlayMoveButton>}
+      {discard && (
+        <PlayMoveButton move={discard} onPlay={closeDialog} css={moveAction()}>
+          {t('rule.card.moves.discard')}
+        </PlayMoveButton>
+      )}
     </>
   )
 }
@@ -105,15 +147,35 @@ const RoyalOfferingRules = (props: MaterialHelpProps) => {
   const { t } = useTranslation()
 
   const legalMoves = useLegalMoves()
-  const discard = legalMoves.find((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Discard)
+  const discard = legalMoves.find(
+    (move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && move.location.type === LocationType.Discard
+  )
   return (
     <>
       <h2 css={[title, norse]}>
-        <span css={css`flex: 1`}>{t('royal-offering.name')}</span>
+        <span
+          css={css`
+            flex: 1;
+          `}
+        >
+          {t('royal-offering.name')}
+        </span>
       </h2>
       <CardLocationRule {...props} />
-      <p><Trans i18nKey="rule.royal-offering" defaults="When choosing the Royal Offering card, you will gain a Transform a Coin effect.\n\nTransform a Coin: Select a coin on your board to discard, then you will gain a new coin with a new value equals to the discarded coin value +{additionalValue} (obtained by this card) from the Royal Treasure.\n\nThis card is placed in discard once chosen." values={{ additionalValue: (Cards[(item.id as CardId).front!] as RoyalOfferingDescription).bonus }}><strong/></Trans></p>
-      {discard && <PlayMoveButton move={discard} onPlay={closeDialog} css={moveAction()}>{t('rule.card.moves.royal-offering')}</PlayMoveButton>}
+      <p>
+        <Trans
+          i18nKey="rule.royal-offering"
+          defaults="When choosing the Royal Offering card, you will gain a Transform a Coin effect.\n\nTransform a Coin: Select a coin on your board to discard, then you will gain a new coin with a new value equals to the discarded coin value +{additionalValue} (obtained by this card) from the Royal Treasure.\n\nThis card is placed in discard once chosen."
+          values={{ additionalValue: (Cards[(item.id as CardId).front!] as RoyalOfferingDescription).bonus }}
+        >
+          <strong />
+        </Trans>
+      </p>
+      {discard && (
+        <PlayMoveButton move={discard} onPlay={closeDialog} css={moveAction()}>
+          {t('rule.card.moves.royal-offering')}
+        </PlayMoveButton>
+      )}
     </>
   )
 }
@@ -126,12 +188,26 @@ const HeroRules = (props: MaterialHelpProps) => {
   return (
     <>
       <h2 css={[title, norse, normal]}>
-        <span css={css`flex: 1`}><Trans i18nKey={visible ? `hero.name.${cardId.front}` : 'hero.name'}><strong css={rightMargin}/></Trans></span>
+        <span
+          css={css`
+            flex: 1;
+          `}
+        >
+          <Trans i18nKey={visible ? `hero.name.${cardId.front}` : 'hero.name'}>
+            <strong css={rightMargin} />
+          </Trans>
+        </span>
       </h2>
       <CardLocationRule {...props} />
       <p>{t('rule.recruitment')}</p>
-      <hr/>
-      {visible && <p><Trans i18nKey={`rule.hero.${cardId.front}`} values={getValues(cardId.front!)}><strong/></Trans></p>}
+      <hr />
+      {visible && (
+        <p>
+          <Trans i18nKey={`rule.hero.${cardId.front}`} values={getValues(cardId.front!)}>
+            <strong />
+          </Trans>
+        </p>
+      )}
       {visible && <ScoreRules {...props} />}
       <ChooseHeroMoves {...props} />
     </>
@@ -148,14 +224,21 @@ const getValues = (card: Card) => {
 
 const ChooseHeroMoves: FC<MaterialHelpProps> = (props) => {
   const { itemIndex } = props
-  const chooseHeroMoves = useLegalMoves((move) => isMoveItemType(MaterialType.Card)(move) && move.itemIndex === itemIndex && (move.location.type === LocationType.Army || move.location.type === LocationType.CommandZone))
+  const chooseHeroMoves = useLegalMoves(
+    (move) =>
+      isMoveItemType(MaterialType.Card)(move) &&
+      move.itemIndex === itemIndex &&
+      (move.location.type === LocationType.Army || move.location.type === LocationType.CommandZone)
+  )
   if (!chooseHeroMoves.length) return null
 
   return (
     <>
-      <hr/>
+      <hr />
       <div css={buttonContainer}>
-        {chooseHeroMoves.map((move) => <ColumnButton key={JSON.stringify(move)} move={move} {...props} />)}
+        {chooseHeroMoves.map((move) => (
+          <ColumnButton key={JSON.stringify(move)} move={move} {...props} />
+        ))}
       </div>
     </>
   )
@@ -169,30 +252,40 @@ const CardLocationRule = (props: MaterialHelpProps) => {
   const player = usePlayerName(item.location?.player)
   switch (location?.type) {
     case LocationType.Army:
-      return <>
-        <p>{item.location?.player === playerId ? t('rule.card.army.mine') : t('rule.card.army', { player })}</p>
-        <hr/>
-      </>
+      return (
+        <>
+          <p>{item.location?.player === playerId ? t('rule.card.army.mine') : t('rule.card.army', { player })}</p>
+          <hr />
+        </>
+      )
     case LocationType.CommandZone:
-      return <>
-        <p>{item.location?.player === playerId ? t('rule.card.command-zone.mine') : t('rule.card.command-zone', { player })}</p>
-        <hr/>
-      </>
+      return (
+        <>
+          <p>{item.location?.player === playerId ? t('rule.card.command-zone.mine') : t('rule.card.command-zone', { player })}</p>
+          <hr />
+        </>
+      )
     case LocationType.Hand:
-      return <>
-        <p>{item.location?.player === playerId ? t('rule.card.hand.mine') : t('rule.card.hand', { player })}</p>
-        <hr/>
-      </>
+      return (
+        <>
+          <p>{item.location?.player === playerId ? t('rule.card.hand.mine') : t('rule.card.hand', { player })}</p>
+          <hr />
+        </>
+      )
     case LocationType.Discard:
-      return <>
-        <p>{t('rule.card.discard')}</p>
-        <hr/>
-      </>
+      return (
+        <>
+          <p>{t('rule.card.discard')}</p>
+          <hr />
+        </>
+      )
     case LocationType.Tavern:
-      return <>
-        <p>{t('rule.card.tavern', { tavern: t(`tavern.${item.location?.id}`) })}</p>
-        <hr/>
-      </>
+      return (
+        <>
+          <p>{t('rule.card.tavern', { tavern: t(`tavern.${item.location?.id}`) })}</p>
+          <hr />
+        </>
+      )
   }
 
   return null
@@ -207,35 +300,40 @@ const ScoreRules = (props: MaterialHelpProps) => {
   const player = usePlayerName(item.location?.player)
   switch (item.location?.type) {
     case LocationType.Army: {
-      const score = new Score(game, item.location?.player!).get(item.location?.id)
+      const score = new Score(game, item.location.player!).get(item.location.id)
       const itsMe = item.location?.player === me
       if ((item.id as CardId).front === Card.Thrud) return null
       return (
         <>
-          <hr/>
-          <p>{t(itsMe ? `rule.army.score.mine.${item.location.id}` : `rule.army.score.${item.location.id}`, {
-            score,
-            player,
-            number: rules.material(MaterialType.Card)
-              .location(LocationType.Army)
-              .locationId(item.location.id)
-              .player(item.location?.player)
-              .filter((item) => !getTypes(Cards[(item.id as CardId).front!] as DwarfDescription).includes(DwarfType.Neutral)).length
+          <hr />
+          <p>
+            {t(itsMe ? `rule.army.score.mine.${item.location.id}` : `rule.army.score.${item.location.id}`, {
+              score,
+              player,
+              number: rules
+                .material(MaterialType.Card)
+                .location(LocationType.Army)
+                .locationId(item.location.id)
+                .player(item.location?.player)
+                .filter((item) => !getTypes(Cards[(item.id as CardId).front!] as DwarfDescription).includes(DwarfType.Neutral)).length
             })}
           </p>
         </>
       )
     }
     case LocationType.CommandZone: {
-      const score = new Score(game, item.location?.player!).get(item.location?.id)
+      const score = new Score(game, item.location.player!).get(item.location.id)
       const itsMe = item.location?.player === me
       return (
         <>
-          <hr/>
-          <p><Trans i18nKey={itsMe ? 'rule.command-zone.score.mine' : 'rule.command-zone.score'} values={{ score, player }}><strong/></Trans></p>
+          <hr />
+          <p>
+            <Trans i18nKey={itsMe ? 'rule.command-zone.score.mine' : 'rule.command-zone.score'} values={{ score, player }}>
+              <strong />
+            </Trans>
+          </p>
         </>
       )
-
     }
   }
 
@@ -277,13 +375,12 @@ const buttonContainer = css`
   }
 `
 
-
 const normal = css`
   font-weight: normal;
 `
 
 const norse = css`
-  font-family: Norse, Arial, serif
+  font-family: Norse, Arial, serif;
 `
 
 const title = css`
@@ -294,5 +391,5 @@ const title = css`
 `
 
 const rightMargin = css`
-  margin-right: 0.1em
+  margin-right: 0.1em;
 `

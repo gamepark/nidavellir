@@ -31,14 +31,11 @@ export const PlayerDialog: FC<PlayerDialogProps> = ({ close, player }) => {
     <RulesDialog open close={close}>
       <div css={container}>
         <div css={header}>
-          <Avatar playerId={player} css={avatar}/>
+          <Avatar playerId={player} css={avatar} />
           <h2>{name}</h2>
         </div>
         <div css={content}>
-          <PlayerDialogIndicator
-            width={2.1}
-            icon={faStar}
-            value={t('player.dialog.score.value', { player: name, score: score.score })}/>
+          <PlayerDialogIndicator width={2.1} icon={faStar} value={t('player.dialog.score.value', { player: name, score: score.score })} />
           <PlayerDialogIndicator
             width={2.1}
             image={Images.BlacksmithIcon}
@@ -72,12 +69,14 @@ export const PlayerDialog: FC<PlayerDialogProps> = ({ close, player }) => {
             value={t('player.dialog.score.warrior.value', { player: name, score: score.warrior - score.warriorMajority })}
             description={t('player.dialog.score.sum-ranks-value')}
           />
-          {!!maxCoin && !!army.getCardOfType(DwarfType.Warrior).length && <PlayerDialogIndicator
+          {!!maxCoin && !!army.getCardOfType(DwarfType.Warrior).length && (
+            <PlayerDialogIndicator
               width={2.1}
               image={coinDescription.images[maxCoin as Coin]} // Get the max coin image
               value={t('player.dialog.score.max-coin.value', { player: name, score: score.warriorMajority })}
               description={t('player.dialog.score.max-coin.reason')}
-          />}
+            />
+          )}
           <PlayerDialogIndicator
             width={2.1}
             image={Images.CommandIcon}
@@ -85,9 +84,9 @@ export const PlayerDialog: FC<PlayerDialogProps> = ({ close, player }) => {
           />
           <PlayerDialogIndicator
             width={2.1}
-              image={Images.ClearCoin} // Get the max coin image
-              value={t('player.dialog.score.additional.value', { player: name, score: score.coinsTotal })}
-              description={t('player.dialog.score.sum-coin.reason')}
+            image={Images.ClearCoin} // Get the max coin image
+            value={t('player.dialog.score.additional.value', { player: name, score: score.coinsTotal })}
+            description={t('player.dialog.score.sum-coin.reason')}
           />
         </div>
       </div>

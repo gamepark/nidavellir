@@ -16,7 +16,7 @@ export class CommandZoneLocator extends ListLocator {
 
   getAreaCoordinates(location: Location, context: MaterialContext) {
     const { x, y } = tableLocator.getCoordinates(location, context)
-    const boardLeft = (playerBoardDescription.width / 2) + (this.locationDescription.width / 2)
+    const boardLeft = playerBoardDescription.width / 2 + this.locationDescription.width / 2
     return { x: x - boardLeft, y: y + 1.45 }
   }
 

@@ -13,7 +13,7 @@ export const ElvalandTurnHeader = () => {
   const me = playerId === player
 
   if (me) {
-    return <>{t('header.choose-card.me', { tavern: t(`tavern.${tavern}`)})}</>
+    return <>{t('header.choose-card.me', { tavern: t(`tavern.${tavern}`) })}</>
   }
   return <>{t('header.choose-card', { tavern: t(`tavern.${tavern}`), player: name })}</>
 }

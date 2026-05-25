@@ -7,10 +7,12 @@ import { MaterialType } from './material/MaterialType'
 import { PlayerId } from './player/Player'
 import { Score } from './rules/helpers/Score'
 
-export class NidavellirRules extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
-  implements CompetitiveScore<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>,
-    TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId> {
-
+export class NidavellirRules
+  extends SecretMaterialRules<PlayerId, MaterialType, LocationType>
+  implements
+    CompetitiveScore<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>,
+    TimeLimit<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId>
+{
   rules = rules
   locationsStrategies = locationsStrategies
   hidingStrategies = hidingStrategies

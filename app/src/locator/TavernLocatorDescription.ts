@@ -35,7 +35,7 @@ export class TavernLocatorDescription extends LocationDescription {
   getExtraCss(location: Location) {
     if (location.id) return
     return css`
-      background: #FAEBD780;
+      background: #faebd780;
       pointer-events: none;
     `
   }

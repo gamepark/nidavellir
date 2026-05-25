@@ -6,8 +6,11 @@ import { tokenSpaces } from '../../material/PlayerBoardSpace'
 import { PlayerId } from '../../player/Player'
 
 export default class Bid extends MaterialRulesPart {
-
-  constructor(game: MaterialGame, readonly player: PlayerId, readonly disableBoardCoins?: boolean) {
+  constructor(
+    game: MaterialGame,
+    readonly player: PlayerId,
+    readonly disableBoardCoins?: boolean
+  ) {
     super(game)
   }
 
@@ -17,9 +20,7 @@ export default class Bid extends MaterialRulesPart {
 
     return tokenSpaces.flatMap((id) => {
       const location = { type: LocationType.PlayerBoard, id, player: this.player }
-      return placableCoins
-        .filter((item) => !equal(item.location, location))
-        .moveItems(location)
+      return placableCoins.filter((item) => !equal(item.location, location)).moveItems(location)
     })
   }
 }

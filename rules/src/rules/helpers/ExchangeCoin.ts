@@ -1,37 +1,43 @@
-import { MaterialType } from "../../material/MaterialType";
-import { LocationType } from "../../material/LocationType";
+import { MaterialType } from '../../material/MaterialType'
+import { LocationType } from '../../material/LocationType'
 import { partition } from 'es-toolkit'
 import { orderBy, sumBy } from 'es-toolkit/compat'
-import { Coins } from "../../coins/Coins";
-import { Coin } from "../../material/Coin";
-import { Material, MaterialGame, MaterialRulesPart } from "@gamepark/rules-api"
+import { Coins } from '../../coins/Coins'
+import { Coin } from '../../material/Coin'
+import { Material, MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
 
 export class ExchangeCoin extends MaterialRulesPart {
-
-    constructor(game: MaterialGame, readonly coins: Material, readonly bonus?: number) {
-    super(game);
+  constructor(
+    game: MaterialGame,
+    readonly coins: Material,
+    readonly bonus?: number
+  ) {
+    super(game)
   }
 
   // TODO: work to simplify it
-  get treasureCoin()  {
+  get treasureCoin() {
     const value = this.value
     const treasure = this.material(MaterialType.Coin).location(LocationType.Treasure)
 
     const orderedCoins = orderBy(
       treasure.getIndexes(),
-      [(index: number) => {
-        const item = treasure.getItem<Coin>(index)
-        return Coins[item.id].value;
-      }, (index: number) => {
-        const item = treasure.getItem(index)
-        return item.location.z;
-      }],
+      [
+        (index: number) => {
+          const item = treasure.getItem<Coin>(index)
+          return Coins[item.id].value
+        },
+        (index: number) => {
+          const item = treasure.getItem(index)
+          return item.location.z
+        }
+      ],
       ['asc', 'desc']
     )
 
     const [lowerCoins, higherCoins] = partition(orderedCoins, (index) => {
       const item = treasure.getItem<Coin>(index)
-      return Coins[item.id].value < value;
+      return Coins[item.id].value < value
     })
 
     if (higherCoins.length) {

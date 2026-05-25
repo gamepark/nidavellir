@@ -1,11 +1,10 @@
-import { MaterialMove, PlayerTurnRule } from "@gamepark/rules-api"
-import PlayerTurn from "../helpers/PlayerTurn";
-import { Effect, Memory } from "../Memory";
+import { MaterialMove, PlayerTurnRule } from '@gamepark/rules-api'
+import PlayerTurn from '../helpers/PlayerTurn'
+import { Effect, Memory } from '../Memory'
 
 export abstract class EffectRule extends PlayerTurnRule {
-
   getPlayerMoves(): MaterialMove[] {
-    return [];
+    return []
   }
 
   get end(): MaterialMove[] {

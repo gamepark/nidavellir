@@ -9,19 +9,15 @@ import { Memory } from './Memory'
 
 class GemTradeRules extends MaterialRulesPart {
   onRuleStart() {
-    const gems: Record<string, MaterialItem> = keyBy(
-      this.material(MaterialType.Gem).location(LocationType.PlayerBoard).getItems(),
-      (g) => g.location.player!
-    )
+    const gems: Record<string, MaterialItem> = keyBy(this.material(MaterialType.Gem).location(LocationType.PlayerBoard).getItems(), (g) => g.location.player!)
 
     const trading = new Trade(this.game).trades
 
     const moves = []
-    const keys = Object.keys(trading)
-    for (const key of keys) {
+    for (const coins of Object.values(trading)) {
       // If there is a tie (more than one player with same coin value
-      if (trading[key as any].length > 1) {
-        moves.push(...this.getGemExchangesMoves(trading[key as any], gems))
+      if (coins.length > 1) {
+        moves.push(...this.getGemExchangesMoves(coins, gems))
       }
     }
 
@@ -31,10 +27,9 @@ class GemTradeRules extends MaterialRulesPart {
   get allTraded() {
     const trading = new Trade(this.game).trades
     const trades = Object.values(trading)
-    return trades.every(
-      (trade) =>
-        // There is only one player with the coin value
-        trade.every((c) => this.remind(Memory.Trade, this.material(MaterialType.Coin).getItem(c).location.player))
+    return trades.every((trade) =>
+      // There is only one player with the coin value
+      trade.every((c) => this.remind(Memory.Trade, this.material(MaterialType.Coin).getItem(c).location.player))
     )
   }
 
@@ -48,7 +43,8 @@ class GemTradeRules extends MaterialRulesPart {
     return reversed.flatMap((coin, index) => {
       const item = this.material(MaterialType.Coin).getItem(coin)
       const newPlayer = item.location.player!
-      return this.material(MaterialType.Gem).id(gemByPlayer[players[index]].id)
+      return this.material(MaterialType.Gem)
+        .id(gemByPlayer[players[index]].id)
         .moveItems({ type: LocationType.PlayerBoard, id: PlayerBoardSpace.Gem, player: newPlayer })
     })
   }

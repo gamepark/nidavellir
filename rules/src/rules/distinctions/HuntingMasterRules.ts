@@ -8,8 +8,7 @@ import { DistinctionRules } from './DistinctionRules'
 class HuntingMasterRules extends DistinctionRules {
   onRuleStart(move: RuleMove) {
     const moves = super.onRuleStart(move)
-    const existingExchangeCoin = this
-      .material(MaterialType.Coin)
+    const existingExchangeCoin = this.material(MaterialType.Coin)
       .player(this.player)
       .id((id) => id === Coin.Coin0)
 
@@ -17,7 +16,9 @@ class HuntingMasterRules extends DistinctionRules {
       const coin = existingExchangeCoin.getItem()!
       moves.push(
         existingExchangeCoin.moveItem({ type: LocationType.Discard, id: MaterialType.Coin }),
-        this.material(MaterialType.Coin).id((id) => id === Coin.HuntingMasterCoin).moveItem(coin.location),
+        this.material(MaterialType.Coin)
+          .id((id) => id === Coin.HuntingMasterCoin)
+          .moveItem(coin.location),
         ...this.endDistinction
       )
     }

@@ -4,7 +4,6 @@ import { Memory, PreviousRule } from '../Memory'
 import { PlayerId } from '../../player/Player'
 
 export class DistinctionRules extends TroopEvaluation {
-
   constructor(game: MaterialGame) {
     super(game)
   }

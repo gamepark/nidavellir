@@ -13,7 +13,7 @@ export const UlineBidHeader = () => {
   const me = playerId === player
 
   if (me) {
-    return <>{t('header.uline-bid.me', { tavern: t(`tavern.${tavern}`)})}</>
+    return <>{t('header.uline-bid.me', { tavern: t(`tavern.${tavern}`) })}</>
   }
   return <>{t('header.uline-bid', { tavern: t(`tavern.${tavern}`), player: name })}</>
 }

@@ -10,15 +10,13 @@ import { Memory } from '../Memory'
 import { EffectRule } from './EffectRule'
 
 export class TransformCoinRules extends EffectRule {
-
   onRuleEnd() {
     this.forget(Memory.TransformBonus)
     return []
   }
 
   getPlayerMoves() {
-    return this
-      .material(MaterialType.Coin)
+    return this.material(MaterialType.Coin)
       .player(this.player)
       .filter((item) => !isExchangeCoin(item))
       .moveItems((item: MaterialItem) => {
@@ -42,11 +40,10 @@ export class TransformCoinRules extends EffectRule {
     return []
   }
 
-
   saveCoins(oldCoin: MaterialItem, newCoin: MaterialItem) {
     const oldCoinValue = Coins[oldCoin.id as Coin].value
     const newCoinValue = Coins[newCoin.id as Coin].value
-    this.memorize(Memory.MaxCoinId, (maximumCoin: Coin) => newCoinValue > Coins[maximumCoin].value? newCoin.id: maximumCoin, this.player)
+    this.memorize(Memory.MaxCoinId, (maximumCoin: Coin) => (newCoinValue > Coins[maximumCoin].value ? newCoin.id : maximumCoin), this.player)
     this.memorize(Memory.TotalCoinValue, (total = 0) => total - oldCoinValue + newCoinValue, this.player)
   }
 
@@ -56,11 +53,10 @@ export class TransformCoinRules extends EffectRule {
 
   afterItemMove(move: ItemMove) {
     if (isMoveItemType(MaterialType.Coin)(move)) {
-
       if (move.location.type !== LocationType.Hand && move.location.type !== LocationType.PlayerBoard) {
         const location = this.transformedCoinLocation
         this.forget(Memory.TransformedCoinItemLocation)
-        const oldCoin =  this.material(MaterialType.Coin).index(move.itemIndex)
+        const oldCoin = this.material(MaterialType.Coin).index(move.itemIndex)
         const newCoin = new ExchangeCoin(this.game, oldCoin, this.additionalValue).treasureCoin
         const moves: MaterialMove[] = newCoin.moveItems(location)
         this.saveCoins(oldCoin.getItem()!, newCoin.getItem()!)

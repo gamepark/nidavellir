@@ -20,10 +20,7 @@ export class HeroDeckLocator extends FlexLocator {
   }
 
   getHoverTransform(item: MaterialItem, _context: ItemContext) {
-    const transforms = [
-      'translateZ(10em)',
-      'scale(2)'
-    ]
+    const transforms = ['translateZ(10em)', 'scale(2)']
     if (item.location.x! < 7) {
       transforms.push('translateY(25%)')
     }

@@ -12,11 +12,14 @@ import { Memory } from '../Memory'
 import Army from './Army'
 
 export class Score extends MaterialRulesPart {
-  private army: Army;
-  private commandZone: Material;
+  private army: Army
+  private commandZone: Material
 
-  constructor(game: MaterialGame, readonly player: PlayerId) {
-    super(game);
+  constructor(
+    game: MaterialGame,
+    readonly player: PlayerId
+  ) {
+    super(game)
     this.army = new Army(game, player)
     this.commandZone = this.material(MaterialType.Card).player(this.player).location(LocationType.CommandZone)
   }
@@ -24,7 +27,7 @@ export class Score extends MaterialRulesPart {
   get(type?: DwarfType) {
     switch (type) {
       case DwarfType.Warrior:
-        return this.warrior;
+        return this.warrior
       case DwarfType.Hunter:
         return this.hunter
       case DwarfType.Miner:
@@ -37,7 +40,6 @@ export class Score extends MaterialRulesPart {
         return this.neutral
     }
   }
-
 
   get blacksmith() {
     const numberOfRanks = this.army.countGradesOfType(DwarfType.Blacksmith)
@@ -112,7 +114,6 @@ export class Score extends MaterialRulesPart {
     if (!dwergBrothers.length) return 0
     return [13, 40, 81, 108, 135][dwergBrothers.length - 1]
   }
-
 
   get score() {
     return this.warrior + this.hunter + this.miner + this.blacksmith + this.explorer + this.coinsTotal + this.neutral

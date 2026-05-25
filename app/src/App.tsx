@@ -34,13 +34,13 @@ export default function App() {
   const loading = !game || isJustDisplayed || isImagesLoading
   return (
     <>
-      <GameDisplay/>
-      <LoadingScreen display={loading}/>
-      <MaterialHeader rulesStepsHeaders={RulesHeaders} loading={loading}/>
-      <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)}/>
-      <Menu/>
-      <FailuresDialog/>
-      <FullscreenDialog/>
+      <GameDisplay />
+      <LoadingScreen display={loading} />
+      <MaterialHeader rulesStepsHeaders={RulesHeaders} loading={loading} />
+      <MaterialImageLoader onImagesLoad={() => setImagesLoading(false)} />
+      <Menu />
+      <FailuresDialog />
+      <FullscreenDialog />
     </>
   )
 }

@@ -70,7 +70,7 @@ export class TavernLocator extends FlexLocator {
     const players = rules.players.length
     const baseY = players > 3 ? -23 : -29
     const x = this.getX(players)
-    const tavernIndex = (location.id - 1)
+    const tavernIndex = location.id - 1
     return { x, y: baseY + (cardDescription.height + 1) * tavernIndex }
   }
 
@@ -88,10 +88,7 @@ export class TavernLocator extends FlexLocator {
   }
 
   getHoverTransform(item: MaterialItem, _context: ItemContext) {
-    const transforms = [
-      'translateZ(10em)',
-      'scale(2)'
-    ]
+    const transforms = ['translateZ(10em)', 'scale(2)']
     if (item.location.id! === Tavern.LaughingGoblin) {
       transforms.push('translateY(25%)')
     }

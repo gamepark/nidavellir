@@ -1,5 +1,5 @@
 import { isMoveItemType, ItemMove, MaterialMove, RuleMove, RuleStep } from '@gamepark/rules-api'
-import { Card } from '../../cards/Cards'
+import { Card, CardId } from '../../cards/Cards'
 import { dwarfTypes } from '../../cards/DwarfDescription'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -8,7 +8,6 @@ import PlayerTurn from '../helpers/PlayerTurn'
 import { Memory, PreviousRule } from '../Memory'
 
 export class YludRules extends EffectRule {
-
   onRuleStart(_move: RuleMove, previousRule?: RuleStep) {
     this.memorize<PreviousRule>(Memory.PreviousRule, previousRule!)
     return []
@@ -28,9 +27,8 @@ export class YludRules extends EffectRule {
   }
 
   get ylud() {
-    return this
-      .material(MaterialType.Card)
+    return this.material(MaterialType.Card)
       .player(this.player)
-      .id((id: Record<string, any>) => id.front === Card.Ylud)
+      .id((id: CardId) => id.front === Card.Ylud)
   }
 }

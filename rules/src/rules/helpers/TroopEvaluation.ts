@@ -9,7 +9,6 @@ import { RuleId } from '../RuleId'
 import Army from './Army'
 
 export class TroopEvaluation extends MaterialRulesPart {
-
   get endDistinction(): MaterialMove[] {
     const remainingDistinctions = distinctions.slice(distinctions.indexOf(this.distinction as Distinction) + 1)
     for (const d of remainingDistinctions) {

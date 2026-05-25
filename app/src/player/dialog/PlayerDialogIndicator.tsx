@@ -14,16 +14,14 @@ type PlayerDialogIndicatorProps = {
   description?: string | null
   radius?: number
   shadow?: boolean
-
 }
 
 const PlayerDialogIndicator: FC<PlayerDialogIndicatorProps> = (props) => {
   const { icon, image, ratio = 1, width = iconWidth, description, value, radius, shadow } = props
   return (
     <div css={indicator}>
-      <div
-        css={[iconStyle(ratio, width), !!image && iconImageStyle(image, radius), !!image && shadow && shadowCss]}>
-        {!!icon && <FontAwesomeIcon icon={faStar} css={fontIcon} fill="#28B8CE"/>}
+      <div css={[iconStyle(ratio, width), !!image && iconImageStyle(image, radius), !!image && shadow && shadowCss]}>
+        {!!icon && <FontAwesomeIcon icon={faStar} css={fontIcon} fill="#28B8CE" />}
       </div>
       <div css={detail}>
         <div css={valueStyle}>{value}</div>
@@ -42,7 +40,7 @@ const indicator = css`
 
 const fontIcon = css`
   font-size: 2em;
-  color: #28B8CE
+  color: #28b8ce;
 `
 
 const detail = css`
@@ -53,11 +51,11 @@ const detail = css`
 `
 
 const valueStyle = css`
-  font-size: .9em
+  font-size: 0.9em;
 `
 
 const descriptionStyle = css`
-  font-size: .7em;
+  font-size: 0.7em;
   font-style: italic;
 `
 
@@ -71,13 +69,11 @@ const iconStyle = (ratio: number = 1, width: number = iconWidth) => css`
   justify-content: center;
 `
 
-const iconImageStyle = (image: any, borderRadius: number = 0) => css`
+const iconImageStyle = (image: string, borderRadius: number = 0) => css`
   background-position: center center;
   border-radius: ${borderRadius}em;
   background-image: url(${image});
   background-size: cover;
 `
 
-export {
-  PlayerDialogIndicator
-}
+export { PlayerDialogIndicator }

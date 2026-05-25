@@ -19,7 +19,6 @@ export class GemDescription extends TokenDescription {
   transparency = true
   help = GemHelp
 
-
   getFrontExtraCss() {
     return gemShadowCss
   }

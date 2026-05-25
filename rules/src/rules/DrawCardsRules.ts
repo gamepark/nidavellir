@@ -17,31 +17,22 @@ export class DrawCardsRules extends EffectRule {
   getPlayerMoves(): MaterialMove<number, number, number>[] {
     const playerTurn = new PlayerTurn(this.game, this.player)
 
-    const cards = this
-      .material(MaterialType.Card)
-      .location(LocationType.Hand)
-      .player(this.player)
-
+    const cards = this.material(MaterialType.Card).location(LocationType.Hand).player(this.player)
 
     const moves = []
     for (const card of cards.getIndexes()) {
       const locations = playerTurn.getCardLocations(cards.getItem(card).id.front)
-      moves.push(
-        ...locations.map(location => cards.index(card).moveItem(location))
-      )
+      moves.push(...locations.map((location) => cards.index(card).moveItem(location)))
     }
 
     return moves
   }
 
-
   afterItemMove(move: ItemMove) {
-    if (!isMoveItemType(MaterialType.Card)(move)
-      || move.location.type === LocationType.Hand
-      || move.location.type === this.deck) return []
+    if (!isMoveItemType(MaterialType.Card)(move) || move.location.type === LocationType.Hand || move.location.type === this.deck) return []
 
     const moves = []
-    if (this.cardsInHand?.length === (this.drawCard.draw - this.drawCard.keep)) {
+    if (this.cardsInHand?.length === this.drawCard.draw - this.drawCard.keep) {
       moves.push(...this.cardsInHand.moveItems({ type: this.deck }))
     }
 
@@ -53,7 +44,6 @@ export class DrawCardsRules extends EffectRule {
     return moves
   }
 
-
   get cardsInHand() {
     const player = this.player
     if (!player) return
@@ -61,9 +51,7 @@ export class DrawCardsRules extends EffectRule {
   }
 
   get ageDeck() {
-    return this
-      .material(MaterialType.Card)
-      .location(this.deck)
+    return this.material(MaterialType.Card).location(this.deck)
   }
 
   onRuleEnd() {

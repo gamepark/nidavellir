@@ -11,15 +11,15 @@ export const PlayerPanels: FC = () => {
   const isSpectator = usePlayerId() === undefined
   return (
     <>
-      {players.map((player, index) =>
+      {players.map((player, index) => (
         <NidavellirPlayerPanel
           key={player.id}
           player={player}
           onClick={() => setPlayerDialog(player.id)}
           css={panelPosition(index, players.length, isSpectator)}
         />
-      )}
-      {!!playerDialog && <PlayerDialog open={!!playerDialog} player={playerDialog!} close={() => setPlayerDialog(undefined)}/>}
+      ))}
+      {!!playerDialog && <PlayerDialog open={!!playerDialog} player={playerDialog!} close={() => setPlayerDialog(undefined)} />}
     </>
   )
 }

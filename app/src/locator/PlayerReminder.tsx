@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 import { Avatar, usePlayerName } from '@gamepark/react-game'
 import { FC } from 'react'
-import { Location } from "@gamepark/rules-api"
+import { Location } from '@gamepark/rules-api'
 
 type PlayerReminder = {
   location: Location
@@ -46,6 +46,6 @@ const playerNameStyle = css`
   max-width: 20em;
   align-self: center;
   flex: 1;
-  background: rgb(0,0,0);
-  background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.1) 100%);
+  background: rgb(0, 0, 0);
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.1) 100%);
 `

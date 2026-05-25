@@ -4,13 +4,11 @@ import Images from '../../images/Images'
 import { Tavern } from '@gamepark/nidavellir/material/Tavern'
 
 type TavernProps = {
-  tavern: number;
-  scale?: number;
-  playerCount?: number;
-} & HTMLAttributes<HTMLDivElement>;
+  tavern: number
+} & HTMLAttributes<HTMLDivElement>
 
 const PlayerPanelTavernIcon: FC<TavernProps> = (props) => {
-  const { tavern, playerCount, scale, ...rest } = props
+  const { tavern, ...rest } = props
 
   return <div css={tavernStyle(tavern)} {...rest} />
 }
@@ -28,7 +26,7 @@ const tavernStyle = (tavern: Tavern) => css`
 const tavernImages = {
   [Tavern.LaughingGoblin]: Images.LaughingGoblin,
   [Tavern.DancingDragon]: Images.DancingDragon,
-  [Tavern.ShiningHorse]: Images.ShiningHorse,
+  [Tavern.ShiningHorse]: Images.ShiningHorse
 }
 
 export { PlayerPanelTavernIcon }

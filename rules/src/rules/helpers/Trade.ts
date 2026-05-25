@@ -1,12 +1,12 @@
 import { MaterialItem, MaterialRulesPart } from '@gamepark/rules-api'
-import { MaterialType } from "../../material/MaterialType";
+import { MaterialType } from '../../material/MaterialType'
 import { groupBy } from 'es-toolkit'
 import { isEmpty, pickBy } from 'es-toolkit/compat'
-import { LocationType } from "../../material/LocationType";
-import { DiscardedCoin, Memory } from "../Memory";
-import { Coins } from "../../coins/Coins";
-import { Coin } from "../../material/Coin";
-import { Gem } from "../../material/Gem";
+import { LocationType } from '../../material/LocationType'
+import { DiscardedCoin, Memory } from '../Memory'
+import { Coins } from '../../coins/Coins'
+import { Coin } from '../../material/Coin'
+import { Gem } from '../../material/Gem'
 import { RuleId } from '../RuleId'
 
 export class Trade extends MaterialRulesPart {
@@ -17,8 +17,7 @@ export class Trade extends MaterialRulesPart {
   get tavernCoins(): number[] {
     const tavern = this.tavern
 
-    return this
-      .material(MaterialType.Coin)
+    return this.material(MaterialType.Coin)
       .location((location) => location.type === LocationType.PlayerBoard && location.id === tavern)
       .filter((item) => !this.material(MaterialType.Gem).player(item.location.player).id(Gem.Gem6).length)
       .getIndexes()
@@ -28,7 +27,7 @@ export class Trade extends MaterialRulesPart {
     return !isEmpty(this.trades)
   }
 
-  get trades(): Record<number, number[]>{
+  get trades(): Record<number, number[]> {
     // Here, the tavern for the gem trade must be the previous one (to get right coins)
     const tavernCoins = this.tavernCoins
 

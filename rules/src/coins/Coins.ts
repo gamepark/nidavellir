@@ -1,140 +1,140 @@
-import { CoinDescription, CoinColor } from './CoinDescription';
-import { Coin } from "../material/Coin";
+import { CoinDescription, CoinColor } from './CoinDescription'
+import { Coin } from '../material/Coin'
 
 export const Coin0: CoinDescription = {
   color: CoinColor.Bronze,
-  value: 0,
-};
+  value: 0
+}
 
 export const Coin2: CoinDescription = {
   color: CoinColor.Bronze,
-  value: 2,
-};
+  value: 2
+}
 
 export const Coin3: CoinDescription = {
   color: CoinColor.Bronze,
-  value: 3,
-};
+  value: 3
+}
 
 export const Coin4: CoinDescription = {
   color: CoinColor.Bronze,
-  value: 4,
-};
+  value: 4
+}
 
 export const Coin5: CoinDescription = {
   color: CoinColor.Bronze,
-  value: 5,
-};
+  value: 5
+}
 
 export const GoldCoin5: CoinDescription = {
   color: CoinColor.Gold,
-  value: 5,
-};
+  value: 5
+}
 
 export const GoldCoin6: CoinDescription = {
   color: CoinColor.Gold,
-  value: 6,
-};
+  value: 6
+}
 
 export const GoldCoin7: CoinDescription = {
   color: CoinColor.Gold,
-  value: 7,
-};
+  value: 7
+}
 
 export const GoldCoin8: CoinDescription = {
   color: CoinColor.Gold,
-  value: 8,
-};
+  value: 8
+}
 
 export const GoldCoin9: CoinDescription = {
   color: CoinColor.Gold,
-  value: 9,
-};
+  value: 9
+}
 
 export const GoldCoin10: CoinDescription = {
   color: CoinColor.Gold,
-  value: 10,
-};
+  value: 10
+}
 
 export const GoldCoin11: CoinDescription = {
   color: CoinColor.Gold,
-  value: 11,
-};
+  value: 11
+}
 
 export const GoldCoin12: CoinDescription = {
   color: CoinColor.Gold,
-  value: 12,
-};
+  value: 12
+}
 
 export const GoldCoin13: CoinDescription = {
   color: CoinColor.Gold,
-  value: 13,
-};
+  value: 13
+}
 
 export const GoldCoin14: CoinDescription = {
   color: CoinColor.Gold,
-  value: 14,
-};
+  value: 14
+}
 
 export const GoldCoin15: CoinDescription = {
   color: CoinColor.Gold,
-  value: 15,
-};
+  value: 15
+}
 
 export const GoldCoin16: CoinDescription = {
   color: CoinColor.Gold,
-  value: 16,
-};
+  value: 16
+}
 
 export const GoldCoin17: CoinDescription = {
   color: CoinColor.Gold,
-  value: 17,
-};
+  value: 17
+}
 
 export const GoldCoin18: CoinDescription = {
   color: CoinColor.Gold,
-  value: 18,
-};
+  value: 18
+}
 
 export const GoldCoin19: CoinDescription = {
   color: CoinColor.Gold,
-  value: 19,
-};
+  value: 19
+}
 
 export const GoldCoin20: CoinDescription = {
   color: CoinColor.Gold,
-  value: 20,
-};
+  value: 20
+}
 
 export const GoldCoin21: CoinDescription = {
   color: CoinColor.Gold,
-  value: 21,
-};
+  value: 21
+}
 
 export const GoldCoin22: CoinDescription = {
   color: CoinColor.Gold,
-  value: 22,
-};
+  value: 22
+}
 
 export const GoldCoin23: CoinDescription = {
   color: CoinColor.Gold,
-  value: 23,
-};
+  value: 23
+}
 
 export const GoldCoin24: CoinDescription = {
   color: CoinColor.Gold,
-  value: 24,
-};
+  value: 24
+}
 
 export const GoldCoin25: CoinDescription = {
   color: CoinColor.Gold,
-  value: 25,
-};
+  value: 25
+}
 
 export const HuntingMasterCoin: CoinDescription = {
   color: CoinColor.Green,
-  value: 3,
-};
+  value: 3
+}
 
 export const Coins: Record<Coin, CoinDescription> = {
   [Coin.Coin0]: Coin0,
@@ -163,5 +163,5 @@ export const Coins: Record<Coin, CoinDescription> = {
   [Coin.GoldCoin23]: GoldCoin23,
   [Coin.GoldCoin24]: GoldCoin24,
   [Coin.GoldCoin25]: GoldCoin25,
-  [Coin.HuntingMasterCoin]: HuntingMasterCoin,
-};
+  [Coin.HuntingMasterCoin]: HuntingMasterCoin
+}

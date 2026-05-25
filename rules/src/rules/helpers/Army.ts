@@ -1,16 +1,19 @@
-import { Material, MaterialGame, MaterialItem, MaterialRulesPart } from "@gamepark/rules-api";
-import { MaterialType } from "../../material/MaterialType";
-import { LocationType } from "../../material/LocationType";
-import { Card, CardId, Cards, isRoyalOffering } from "../../cards/Cards";
-import { DwarfDescription } from "../../cards/DwarfDescription";
+import { Material, MaterialGame, MaterialItem, MaterialRulesPart } from '@gamepark/rules-api'
+import { MaterialType } from '../../material/MaterialType'
+import { LocationType } from '../../material/LocationType'
+import { Card, CardId, Cards, isRoyalOffering } from '../../cards/Cards'
+import { DwarfDescription } from '../../cards/DwarfDescription'
 import { sum } from 'es-toolkit/compat'
-import { PlayerId } from "../../player/Player";
-import { DwarfType } from "../../cards/DwarfType";
+import { PlayerId } from '../../player/Player'
+import { DwarfType } from '../../cards/DwarfType'
 
 export default class Army extends MaterialRulesPart {
   private army: Material
 
-  constructor(game: MaterialGame, readonly player: PlayerId) {
+  constructor(
+    game: MaterialGame,
+    readonly player: PlayerId
+  ) {
     super(game)
     this.army = this.material(MaterialType.Card).location(LocationType.Army).player(player)
   }

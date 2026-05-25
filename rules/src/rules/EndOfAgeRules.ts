@@ -1,5 +1,5 @@
 import { MaterialMove, MaterialRulesPart } from '@gamepark/rules-api'
-import { Card } from '../cards/Cards'
+import { Card, CardId } from '../cards/Cards'
 import { LocationType } from '../material/LocationType'
 import { MaterialType } from '../material/MaterialType'
 import { TroopEvaluation } from './helpers/TroopEvaluation'
@@ -7,7 +7,6 @@ import { Memory, PreviousRule } from './Memory'
 import { RuleId } from './RuleId'
 
 export class EndOfAgeRules extends MaterialRulesPart {
-
   onRuleStart(): MaterialMove[] {
     if (this.previousRule?.id === this.game.rule!.id) {
       this.forget(Memory.PreviousRule)
@@ -26,15 +25,13 @@ export class EndOfAgeRules extends MaterialRulesPart {
       }
 
       moves.push(
-        ...this
-          .material(MaterialType.Coin)
-          .location(location => (location.type === LocationType.Hand || location.type === LocationType.PlayerBoard) && !location.rotation)
+        ...this.material(MaterialType.Coin)
+          .location((location) => (location.type === LocationType.Hand || location.type === LocationType.PlayerBoard) && !location.rotation)
           .rotateItems(true)
       )
       moves.push(this.endGame())
       return moves
     }
-
 
     return new TroopEvaluation(this.game).startEvaluation
   }
@@ -45,9 +42,8 @@ export class EndOfAgeRules extends MaterialRulesPart {
 
   get startYlud() {
     if (this.remind(Memory.YludPlayed)) return []
-    const ylud = this
-      .material(MaterialType.Card)
-      .id((id: Record<string, any>) => id.front === Card.Ylud)
+    const ylud = this.material(MaterialType.Card)
+      .id((id: CardId) => id.front === Card.Ylud)
       .player((player) => player !== undefined)
       .getItem()
 
@@ -56,13 +52,12 @@ export class EndOfAgeRules extends MaterialRulesPart {
   }
 
   get moveThrudInCommandZone() {
-    const thrud = this
-      .material(MaterialType.Card)
-      .id((id: Record<string, any>) => id.front === Card.Thrud)
+    const thrud = this.material(MaterialType.Card)
+      .id((id: CardId) => id.front === Card.Thrud)
       .player((player) => player !== undefined)
 
     if (!thrud.length || thrud.location(LocationType.CommandZone).length) return []
-    return thrud.moveItems(item => ({ type: LocationType.CommandZone, player: item.location.player }))
+    return thrud.moveItems((item) => ({ type: LocationType.CommandZone, player: item.location.player }))
   }
 
   get previousRule() {

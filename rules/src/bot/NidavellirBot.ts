@@ -6,7 +6,6 @@ import { PlayerId } from '../player/Player'
 import { RuleId } from '../rules/RuleId'
 
 export class NidavellirBot extends RandomBot<MaterialGame<PlayerId, MaterialType, LocationType>, MaterialMove<PlayerId, MaterialType, LocationType>, PlayerId> {
-
   constructor(playerId: PlayerId) {
     super(NidavellirRules, playerId)
   }
@@ -20,11 +19,7 @@ export class NidavellirBot extends RandomBot<MaterialGame<PlayerId, MaterialType
       if (!isMoveItemType(MaterialType.Coin)(move) || !move.location) return true
       const item = rules.material(MaterialType.Coin).getItem(move.itemIndex)
       if (move.location.type === LocationType.Hand) return false
-      const itemOnTarget = rules
-        .material(MaterialType.Coin)
-        .location(move.location.type!)
-        .locationId(move.location.id)
-        .player(move.location.player)
+      const itemOnTarget = rules.material(MaterialType.Coin).location(move.location.type!).locationId(move.location.id).player(move.location.player)
 
       if (itemOnTarget.length) return false
 

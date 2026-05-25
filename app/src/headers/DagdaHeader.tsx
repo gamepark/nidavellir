@@ -10,7 +10,7 @@ export const DagdaHeader = () => {
   const playerId = usePlayerId()
   const me = playerId === activePlayer
   const { t } = useTranslation()
-  const cards = rules.remind<Dagda>(Memory.Dagda)? 1: 2
+  const cards = rules.remind<Dagda>(Memory.Dagda) ? 1 : 2
   if (me) {
     return <>{t('header.dagda.me', { cards })}</>
   }

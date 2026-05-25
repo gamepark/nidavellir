@@ -16,11 +16,14 @@ import { TurnOrder } from './TurnOrder'
 export default class PlayerTurn extends MaterialRulesPart {
   private heroCount: number
 
-
-  constructor(game: MaterialGame, readonly player: PlayerId) {
+  constructor(
+    game: MaterialGame,
+    readonly player: PlayerId
+  ) {
     super(game)
-    this.heroCount = this.material(MaterialType.Card).player(player).filter<CardId>((item) => isHero(item.id.front!)).length
-
+    this.heroCount = this.material(MaterialType.Card)
+      .player(player)
+      .filter<CardId>((item) => isHero(item.id.front!)).length
   }
 
   get endOfTurnMoves(): MaterialMove[] {
@@ -39,10 +42,7 @@ export default class PlayerTurn extends MaterialRulesPart {
   }
 
   get discardTavernMoves() {
-    const cards = this
-      .material(MaterialType.Card)
-      .location(LocationType.Tavern)
-      .locationId(this.tavern)
+    const cards = this.material(MaterialType.Card).location(LocationType.Tavern).locationId(this.tavern)
     if (!cards.length) return []
 
     return cards.moveItems({ type: LocationType.Discard, id: MaterialType.Card })
@@ -111,7 +111,6 @@ export default class PlayerTurn extends MaterialRulesPart {
     return this.remind<PreviousRule>(Memory.PreviousRule)
   }
 
-
   onChooseCard(move: MoveItem) {
     const movedItem = this.material(MaterialType.Card).getItem(move.itemIndex)
     this.applyEffect(movedItem)
@@ -152,13 +151,9 @@ export default class PlayerTurn extends MaterialRulesPart {
     if (!isMoveItemType(MaterialType.Card)(move) || move.location.type !== LocationType.Army) return []
 
     const thrud = new Army(this.game, this.player).getCard(Card.Thrud)
-    if (!thrud.length
-      || thrud.getIndex() === move.itemIndex
-      || thrud.getItem()?.location?.id !== move.location.id) return []
+    if (!thrud.length || thrud.getIndex() === move.itemIndex || thrud.getItem()?.location?.id !== move.location.id) return []
 
-    return [
-      this.startRule(RuleId.Thrud)
-    ]
+    return [this.startRule(RuleId.Thrud)]
   }
 
   computeRecruitHeroCount(move: MaterialMove): number {
@@ -216,5 +211,4 @@ export default class PlayerTurn extends MaterialRulesPart {
 
     return [{ type: LocationType.Discard, id: MaterialType.Card }]
   }
-
 }

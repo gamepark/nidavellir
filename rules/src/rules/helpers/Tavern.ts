@@ -5,9 +5,8 @@ import { MaterialType } from '../../material/MaterialType'
 import { LocationType } from '../../material/LocationType'
 import { PlayerBoardSpace } from '../../material/PlayerBoardSpace'
 
-export const MIN_DWARVES_PER_TAVERN = 3;
+export const MIN_DWARVES_PER_TAVERN = 3
 export class Tavern extends MaterialRulesPart {
-
   get end(): MaterialMove[] {
     this.game.players.forEach((p) => this.forget(Memory.DiscardedCoin, p))
     if (this.isEndOfAge) {
@@ -25,7 +24,6 @@ export class Tavern extends MaterialRulesPart {
     const cardInTaverns = this.material(MaterialType.Card).location(LocationType.Tavern)
     const round = this.round
     if (playerCount <= 3) {
-
       if (playerCount === 3) {
         return cardInTaverns.length === 0 && (this.age === 1 ? round === 4 : round === 8)
       } else {
@@ -36,7 +34,7 @@ export class Tavern extends MaterialRulesPart {
     return cardInTaverns.length === 0 && (this.age === 1 ? round === 3 : round === 6)
   }
 
-  get age () {
+  get age() {
     return this.remind(Memory.Age)
   }
 

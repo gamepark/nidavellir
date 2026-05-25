@@ -17,15 +17,16 @@ export const BidHeader = () => {
   const lastMoves = getLastMoves(rules, player)
 
   if (lastMoves.length) {
-    return <Trans i18nKey="header.bid.pass" defaults="You must <0>place your last {coins, plural, one{coin} other{coins}}</0>" values={{ coins: lastMoves.length }}>
-      <PlayMoveButton move={lastMoves[0]} onPlay={() => lastMoves.length > 1 && play(lastMoves[1])}/>
-    </Trans>
+    return (
+      <Trans i18nKey="header.bid.pass" defaults="You must <0>place your last {coins, plural, one{coin} other{coins}}</0>" values={{ coins: lastMoves.length }}>
+        <PlayMoveButton move={lastMoves[0]} onPlay={() => lastMoves.length > 1 && play(lastMoves[1])} />
+      </Trans>
+    )
   }
 
   if (players.length === 1) {
-    return <LastBidPlayer player={players[0]}/>
+    return <LastBidPlayer player={players[0]} />
   }
-
 
   return <>{t('header.bid.players')}</>
 }
@@ -47,9 +48,7 @@ const getLastMoves = (rules: NidavellirRules, player?: PlayerId) => {
     for (let i = 0; i < indexes.length; i++) {
       const index = indexes[i]
 
-      moves.push(
-        coinsInHand.index(index).moveItem({ type: LocationType.PlayerBoard, player, id: availableBidSpaces[i] })
-      )
+      moves.push(coinsInHand.index(index).moveItem({ type: LocationType.PlayerBoard, player, id: availableBidSpaces[i] }))
     }
   }
 

@@ -7,9 +7,7 @@ import PlayerTurn from '../helpers/PlayerTurn'
 import { DrawCard, Memory } from '../Memory'
 import { RuleId } from '../RuleId'
 
-
 class PioneerOfTheKingdomRules extends DistinctionRules {
-
   onRuleStart(move: RuleMove): MaterialMove[] {
     if (this.previousRule && this.previousRule.id === this.ruleId) {
       const moves = super.onRuleStart(move)
@@ -27,11 +25,7 @@ class PioneerOfTheKingdomRules extends DistinctionRules {
       return moves
     }
 
-    moves.push(
-      this.ageDeck
-        .sort(card => -card.location.x!)
-        .moveItem({ type: LocationType.Discard, id: MaterialType.Card }),
-    )
+    moves.push(this.ageDeck.sort((card) => -card.location.x!).moveItem({ type: LocationType.Discard, id: MaterialType.Card }))
     moves.push(...this.endDistinction)
 
     return moves
@@ -47,18 +41,12 @@ class PioneerOfTheKingdomRules extends DistinctionRules {
 
     const playerTurn = new PlayerTurn(this.game, player)
 
-    const cards = this
-      .material(MaterialType.Card)
-      .location(LocationType.Hand)
-      .player(player)
-
+    const cards = this.material(MaterialType.Card).location(LocationType.Hand).player(player)
 
     const moves = []
     for (const card of cards.getIndexes()) {
       const locations = playerTurn.getCardLocations(cards.getItem(card).id.front)
-      moves.push(
-        ...locations.map((location) => cards.index(card).moveItem(location))
-      )
+      moves.push(...locations.map((location) => cards.index(card).moveItem(location)))
     }
 
     return moves
@@ -71,9 +59,7 @@ class PioneerOfTheKingdomRules extends DistinctionRules {
   }
 
   get ageDeck() {
-    return this
-      .material(MaterialType.Card)
-      .location(LocationType.Age2Deck)
+    return this.material(MaterialType.Card).location(LocationType.Age2Deck)
   }
 }
 

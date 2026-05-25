@@ -7,13 +7,11 @@ import { Memory } from './Memory'
 import PlayerTurn from './helpers/PlayerTurn'
 
 export class EndOfTurnRules extends PlayerTurnRule {
-
   getPlayerMoves(): MaterialMove<number, number, number>[] {
     return []
   }
 
   onRuleStart<RuleId extends number>(_move: RuleMove<number, RuleId>, _previousRule?: RuleStep): MaterialMove<number, number, number>[] {
-
     const coin = this.tavernCoin
     if (isExchangeCoin(coin)) {
       return [this.startRule(RuleId.TradeCoin)]
@@ -24,7 +22,7 @@ export class EndOfTurnRules extends PlayerTurnRule {
 
   get tavernCoin() {
     const tavern = this.tavern
-    const coins = this.material(MaterialType.Coin);
+    const coins = this.material(MaterialType.Coin)
     const coin = coins
       .location((location: Location) => location.type === LocationType.PlayerBoard)
       .locationId(tavern)

@@ -10,7 +10,6 @@ import PlayerTurn from './helpers/PlayerTurn'
 import { Memory } from './Memory'
 
 class RecruitHeroRules extends EffectRule {
-
   onRuleStart(_move: RuleMove) {
     return new PlayerTurn(this.game, this.player).goToEffect
   }
@@ -18,17 +17,14 @@ class RecruitHeroRules extends EffectRule {
   getPlayerMoves() {
     const playerTurn = new PlayerTurn(this.game, this.player)
 
-    const heroes = this
-      .material(MaterialType.Card)
+    const heroes = this.material(MaterialType.Card)
       .location(LocationType.HeroesDeck)
       .filter((item) => this.canBeRecruited(item))
 
     const moves = []
     for (const hero of heroes.getIndexes()) {
       const locations = playerTurn.getCardLocations(heroes.getItem<CardId>(hero).id.front!)
-      moves.push(
-        ...locations.map((location) => heroes.index(hero).moveItem(location))
-      )
+      moves.push(...locations.map((location) => heroes.index(hero).moveItem(location)))
     }
 
     return moves

@@ -14,23 +14,18 @@ import { Memory } from '../Memory'
 import { EffectRule } from './EffectRule'
 
 export class TradeCoinRules extends EffectRule {
-
   onRuleStart() {
     if (this.hasUline) {
       const coins = this.handCoins
       if (coins.length === 2) {
-        return [
-          this.customMove(CustomMoveType.TradeCoins, coins.getIndexes())
-        ]
+        return [this.customMove(CustomMoveType.TradeCoins, coins.getIndexes())]
       }
 
       return []
     }
 
     const pouch = this.pouch
-    return [
-      this.customMove(CustomMoveType.TradeCoins, pouch.getIndexes())
-    ]
+    return [this.customMove(CustomMoveType.TradeCoins, pouch.getIndexes())]
   }
 
   getPlayerMoves() {
@@ -45,19 +40,15 @@ export class TradeCoinRules extends EffectRule {
   onCustomMove(move: CustomMove) {
     if (!isCustomMoveType(CustomMoveType.TradeCoins)(move)) return []
     delete this.game.droppedItems
-    delete (this.game as any).droppedItem
+    delete (this.game as { droppedItem?: unknown }).droppedItem
 
     // Here is the reveal of token
-    const hiddenCoins = this
-      .material(MaterialType.Coin)
+    const hiddenCoins = this.material(MaterialType.Coin)
       .index(move.data)
-      .rotation(rotation => !rotation)
+      .rotation((rotation) => !rotation)
 
     if (hiddenCoins.length) {
-      return [
-        ...hiddenCoins.rotateItems(true),
-        move
-      ]
+      return [...hiddenCoins.rotateItems(true), move]
     }
     const tradedCoinsIndexes: number[] = move.data
     const tradedCoins = this.material(MaterialType.Coin).index(tradedCoinsIndexes)
@@ -66,10 +57,13 @@ export class TradeCoinRules extends EffectRule {
     const coin = Coins[maximumCoinItem.id]
 
     const moves = []
-    const location: Location = coin.color === CoinColor.Bronze ? {
-      type: LocationType.Discard,
-      id: MaterialType.Coin
-    } : { type: LocationType.Treasure }
+    const location: Location =
+      coin.color === CoinColor.Bronze
+        ? {
+            type: LocationType.Discard,
+            id: MaterialType.Coin
+          }
+        : { type: LocationType.Treasure }
 
     const exchangedCoin = tradedCoins.index(maximumCoin)
     moves.push(exchangedCoin.moveItem(location))
@@ -92,7 +86,7 @@ export class TradeCoinRules extends EffectRule {
   saveCoins(treasureCoin: MaterialItem, exchangedCoin: MaterialItem) {
     const treasureCoinValue = Coins[treasureCoin.id as Coin].value
     const exchangedCoinValue = Coins[exchangedCoin.id as Coin].value
-    this.memorize(Memory.MaxCoinId, (maximumCoin: Coin) => treasureCoinValue > Coins[maximumCoin].value? treasureCoin.id: maximumCoin, this.player)
+    this.memorize(Memory.MaxCoinId, (maximumCoin: Coin) => (treasureCoinValue > Coins[maximumCoin].value ? treasureCoin.id : maximumCoin), this.player)
     this.memorize(Memory.TotalCoinValue, (total = 0) => total - exchangedCoinValue + treasureCoinValue, this.player)
   }
 
@@ -101,25 +95,19 @@ export class TradeCoinRules extends EffectRule {
   }
 
   get pouch() {
-    return this
-      .material(MaterialType.Coin)
+    return this.material(MaterialType.Coin)
       .player(this.player)
       .location((location) => location.type === LocationType.PlayerBoard && location.id >= PlayerBoardSpace.Pouch1)
   }
 
   get hasUline(): boolean {
-    return !!this
-      .material(MaterialType.Card)
+    return !!this.material(MaterialType.Card)
       .player(this.player)
-      .id(({ front }: CardId) => front === Card.Uline)
-      .length
+      .id(({ front }: CardId) => front === Card.Uline).length
   }
 
   get handCoins() {
-    return this
-      .material(MaterialType.Coin)
-      .location(LocationType.Hand)
-      .player(this.player)
+    return this.material(MaterialType.Coin).location(LocationType.Hand).player(this.player)
   }
 }
 

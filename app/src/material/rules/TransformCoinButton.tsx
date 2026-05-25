@@ -7,22 +7,19 @@ import { ExchangeCoin } from '@gamepark/nidavellir/rules/helpers/ExchangeCoin'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
 import { Memory } from '@gamepark/nidavellir/rules/Memory'
 
-
 type TransformCoinButtonProps = {
   move: MoveItem
 } & MaterialHelpProps
 
 export const TransformCoinButton = (props: TransformCoinButtonProps) => {
-  const { move, closeDialog } = props;
+  const { move, closeDialog } = props
   const rules = useRules<NidavellirRules>()!
   const treasureCoin = new ExchangeCoin(rules.game, rules.material(MaterialType.Coin).index(move.itemIndex), rules.remind(Memory.TransformBonus)).treasureCoin
   return (
     <PlayMoveButton move={move} css={moveAction} onPlay={closeDialog}>
       <Trans
         defaults="coin.moves.transform-coins"
-        components={[
-          <MaterialComponent css={mini} type={MaterialType.Coin} itemId={treasureCoin.getItem()!.id} />,
-        ]}
+        components={[<MaterialComponent css={mini} type={MaterialType.Coin} itemId={treasureCoin.getItem()!.id} />]}
       />
     </PlayMoveButton>
   )
@@ -45,8 +42,7 @@ export const moveAction = css`
   display: flex;
   align-items: center;
   justify-content: left;
-  
-    
+
   &:hover,
   &:active {
     background-color: white;

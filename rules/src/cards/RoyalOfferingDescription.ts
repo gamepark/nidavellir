@@ -1,4 +1,4 @@
 export type RoyalOfferingDescription = {
-  age?: number;
+  age?: number
   bonus?: number
-};
+}

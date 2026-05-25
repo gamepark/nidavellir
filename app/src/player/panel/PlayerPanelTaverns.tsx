@@ -10,15 +10,19 @@ import { Tavern, taverns } from '@gamepark/nidavellir/material/Tavern'
 import { PlayerPanelTavernIcon } from './PlayerPanelTavernIcon'
 
 type PlayerPanelTavernsProps = {
-  player: Player;
-};
+  player: Player
+}
 
 const PlayerPanelTaverns: FC<PlayerPanelTavernsProps> = (props) => {
-  const {player} = props
+  const { player } = props
   const rules = useRules<NidavellirRules>()!
-  const coins = useMemo(() =>
-    rules.material(MaterialType.Coin).location((location) => location.type === LocationType.PlayerBoard && location.player === player.id &&  location.id < PlayerBoardSpace.Pouch1),
-    [rules.game, player.id])
+  const coins = useMemo(
+    () =>
+      rules
+        .material(MaterialType.Coin)
+        .location((location) => location.type === LocationType.PlayerBoard && location.player === player.id && location.id < PlayerBoardSpace.Pouch1),
+    [rules, player.id]
+  )
   const getTavernCoin = (tavern: Tavern) => coins.filter((item) => item.location.id === tavern)
 
   return (
@@ -29,7 +33,7 @@ const PlayerPanelTaverns: FC<PlayerPanelTavernsProps> = (props) => {
             <PlayerPanelTavernIcon tavern={tavern} />
             {!!getTavernCoin(tavern).length && (
               <div css={tokenContainer(index)}>
-                <MaterialComponent css={mini(getTavernCoin(tavern).getItem()?.id)} type={MaterialType.Coin} itemId={getTavernCoin(tavern).getItem()!.id}/>
+                <MaterialComponent css={mini(getTavernCoin(tavern).getItem()?.id)} type={MaterialType.Coin} itemId={getTavernCoin(tavern).getItem()!.id} />
               </div>
             )}
           </Fragment>
@@ -41,7 +45,7 @@ const PlayerPanelTaverns: FC<PlayerPanelTavernsProps> = (props) => {
 
 const mini = (id?: number) => css`
   font-size: 1em;
-  transform: rotateY(${id === undefined? '180deg': '0'});
+  transform: rotateY(${id === undefined ? '180deg' : '0'});
 `
 
 const tokenContainer = (tavern: Tavern) => css`
@@ -50,4 +54,4 @@ const tokenContainer = (tavern: Tavern) => css`
   left: ${(tavern - 1) * 9 + 12}em;
 `
 
-export {PlayerPanelTaverns}
+export { PlayerPanelTaverns }

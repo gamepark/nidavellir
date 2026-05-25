@@ -22,10 +22,12 @@ export const PlayerBoardSpaceRules: FC<LocationHelpProps> = (props) => {
 }
 
 const PlaceCoinMoves: FC<LocationHelpProps> = (props) => {
-  const { location } = props;
+  const { location } = props
   const rules = useRules<NidavellirRules>()!
-  const placeCoins = useLegalMoves<MoveItem>((move) => isMoveItemType(MaterialType.Coin)(move) && move.location.type === LocationType.PlayerBoard && move.location.id === location.id)
-  if (!placeCoins.length) return null;
+  const placeCoins = useLegalMoves<MoveItem>(
+    (move) => isMoveItemType(MaterialType.Coin)(move) && move.location.type === LocationType.PlayerBoard && move.location.id === location.id
+  )
+  if (!placeCoins.length) return null
 
   return (
     <>
@@ -45,7 +47,7 @@ type PlaceCoinHereButtonProps = {
 } & MaterialHelpProps
 
 export const PlaceCoinHereButton = (props: PlaceCoinHereButtonProps) => {
-  const { move, item, closeDialog } = props;
+  const { move, item, closeDialog } = props
   return (
     <PlayMoveButton move={move} css={moveAction} onPlay={closeDialog}>
       <Trans i18nKey="rule.coin.move.here" defaults="Place coin <0/> here">
@@ -105,8 +107,7 @@ export const moveAction = css`
   display: flex;
   align-items: center;
   justify-content: left;
-  
-    
+
   &:hover,
   &:active {
     background-color: white;
@@ -114,5 +115,5 @@ export const moveAction = css`
 `
 
 const norse = css`
-  font-family: Norse, Arial, serif
+  font-family: Norse, Arial, serif;
 `

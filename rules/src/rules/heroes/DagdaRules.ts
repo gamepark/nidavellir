@@ -1,5 +1,5 @@
 import { isMoveItemType, ItemMove, RuleMove } from '@gamepark/rules-api'
-import { Card } from '../../cards/Cards'
+import { Card, CardId } from '../../cards/Cards'
 import { dwarfTypes } from '../../cards/DwarfDescription'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
@@ -7,12 +7,10 @@ import { EffectRule } from '../effect/EffectRule'
 import { Dagda, Memory } from '../Memory'
 
 export class DagdaRules extends EffectRule {
-
   getPlayerMoves() {
     const army = this.army
-    const dagda = this
-      .material(MaterialType.Card)
-      .id((id: Record<string, any>) => id.front === Card.Dagda)
+    const dagda = this.material(MaterialType.Card)
+      .id((id: CardId) => id.front === Card.Dagda)
       .getItem()!
 
     return dwarfTypes
@@ -44,9 +42,7 @@ export class DagdaRules extends EffectRule {
   }
 
   get army() {
-    return this.material(MaterialType.Card)
-      .location(LocationType.Army)
-      .player(this.player)
+    return this.material(MaterialType.Card).location(LocationType.Army).player(this.player)
   }
 
   get lastDiscardColumn() {

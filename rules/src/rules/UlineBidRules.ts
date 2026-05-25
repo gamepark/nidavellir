@@ -6,15 +6,13 @@ import { Memory } from './Memory'
 import { LocationType } from '../material/LocationType'
 
 class UlineBidRules extends PlayerTurnRule {
-
   getPlayerMoves(): MaterialMove[] {
-    return new Bid(this.game, this.player, true).combinations
-      .filter((move) => {
-        if(!isMoveItemType(MaterialType.Coin)(move)) return false
-        if (move.location.id !== this.tavern) return false
-        const item = this.material(MaterialType.Coin).getItem(move.itemIndex)
-        return item.location.type !== LocationType.PlayerBoard
-      })
+    return new Bid(this.game, this.player, true).combinations.filter((move) => {
+      if (!isMoveItemType(MaterialType.Coin)(move)) return false
+      if (move.location.id !== this.tavern) return false
+      const item = this.material(MaterialType.Coin).getItem(move.itemIndex)
+      return item.location.type !== LocationType.PlayerBoard
+    })
   }
 
   afterItemMove(move: ItemMove) {
@@ -27,4 +25,4 @@ class UlineBidRules extends PlayerTurnRule {
   }
 }
 
-export {UlineBidRules}
+export { UlineBidRules }

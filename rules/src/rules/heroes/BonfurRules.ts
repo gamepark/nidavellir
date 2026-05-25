@@ -1,17 +1,15 @@
 import { isMoveItemType, ItemMove } from '@gamepark/rules-api'
-import { Card } from '../../cards/Cards'
+import { Card, CardId } from '../../cards/Cards'
 import { dwarfTypes } from '../../cards/DwarfDescription'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { EffectRule } from '../effect/EffectRule'
 
 export class BonfurRules extends EffectRule {
-
   getPlayerMoves() {
     const army = this.army
-    const bonfur = this
-      .material(MaterialType.Card)
-      .id((id: Record<string, any>) => id.front === Card.Bonfur)
+    const bonfur = this.material(MaterialType.Card)
+      .id((id: CardId) => id.front === Card.Bonfur)
       .getItem()!
 
     return dwarfTypes
@@ -31,8 +29,6 @@ export class BonfurRules extends EffectRule {
   }
 
   get army() {
-    return this.material(MaterialType.Card)
-      .location(LocationType.Army)
-      .player(this.player)
+    return this.material(MaterialType.Card).location(LocationType.Army).player(this.player)
   }
 }

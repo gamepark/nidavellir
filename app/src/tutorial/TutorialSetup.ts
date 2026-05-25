@@ -23,19 +23,21 @@ export class TutorialSetup extends NidavellirSetup {
   setupMaterial(options: NidavellirOptions) {
     super.setupMaterial(options)
 
-    taverns.forEach((_, index) => this.secondRoundTavernCard[index].forEach(c =>
-      this
-        .material(MaterialType.Card)
-        .location(LocationType.Age1Deck)
-        .id<CardId>(id => id.front === c)
-        .moveItem({ type: LocationType.Age1Deck })
-    ))
+    taverns.forEach((_, index) =>
+      this.secondRoundTavernCard[index].forEach((c) =>
+        this.material(MaterialType.Card)
+          .location(LocationType.Age1Deck)
+          .id<CardId>((id) => id.front === c)
+          .moveItem({ type: LocationType.Age1Deck })
+      )
+    )
   }
 
   setupTavern(_options: NidavellirOptions): MaterialMove[] {
-    return taverns.flatMap((tavern, index) => this.tavernCard[index].map(c => {
+    return taverns.flatMap((tavern, index) =>
+      this.tavernCard[index].map((c) => {
         return this.material(MaterialType.Card)
-          .id<CardId>(id => id.front === c)
+          .id<CardId>((id) => id.front === c)
           .moveItem({ type: LocationType.Tavern, id: tavern })
       })
     )
@@ -44,5 +46,4 @@ export class TutorialSetup extends NidavellirSetup {
   getGems(_options: NidavellirOptions) {
     return [Gem.Gem5, Gem.Gem4]
   }
-
 }
