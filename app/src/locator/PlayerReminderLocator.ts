@@ -1,6 +1,6 @@
 import { LocationType } from '@gamepark/nidavellir/material/LocationType'
 import { ItemContext, Locator, MaterialContext } from '@gamepark/react-game'
-import { Location } from '../../../../rules-api/src'
+import { Location } from '@gamepark/rules-api'
 import { PlayerReminderDescription } from './PlayerReminderDescription'
 import { tableLocator } from './TableLocator'
 
