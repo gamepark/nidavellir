@@ -29,9 +29,14 @@ export class DrawCardsRules extends EffectRule {
   }
 
   afterItemMove(move: ItemMove) {
-    if (!isMoveItemType(MaterialType.Card)(move) || move.location.type === LocationType.Hand || move.location.type === this.deck) return []
+    if (!isMoveItemType(MaterialType.Card)(move) || move.location.type === LocationType.Hand) return []
 
-    const moves = []
+    if (move.location.type === this.deck) {
+      // Leftover cards were seen by the player: shuffle the deck once they are all back into it
+      return this.cardsInHand?.length ? [] : [this.ageDeck.shuffle()]
+    }
+
+    const moves: MaterialMove[] = []
     if (this.cardsInHand?.length === this.drawCard.draw - this.drawCard.keep) {
       moves.push(...this.cardsInHand.moveItems({ type: this.deck }))
     }
@@ -55,9 +60,8 @@ export class DrawCardsRules extends EffectRule {
   }
 
   onRuleEnd() {
-    const shuffle = this.ageDeck.shuffle()
     this.forget(Memory.DrawCard)
-    return [shuffle]
+    return []
   }
 
   get drawCard() {
