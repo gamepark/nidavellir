@@ -1,4 +1,4 @@
-import { NidavellirOptionsSpec } from '@gamepark/nidavellir/NidavellirOptions'
+import { NidavellirOptionsSpecV2 } from '@gamepark/nidavellir/NidavellirOptions'
 import { NidavellirRules } from '@gamepark/nidavellir/NidavellirRules'
 import { NidavellirSetup } from '@gamepark/nidavellir/NidavellirSetup'
 import { GameProvider } from '@gamepark/react-game'
@@ -16,7 +16,7 @@ createRoot(document.getElementById('root')!).render(
     <GameProvider
       game="nidavellir"
       Rules={NidavellirRules}
-      optionsSpec={NidavellirOptionsSpec}
+      optionsSpec={NidavellirOptionsSpecV2}
       GameSetup={NidavellirSetup}
       material={material}
       locators={Locators}
