@@ -1,5 +1,5 @@
 import { MaterialGame, MaterialRulesPart } from '@gamepark/rules-api'
-import equal from 'fast-deep-equal'
+import { isEqual } from 'es-toolkit'
 import { LocationType } from '../../material/LocationType'
 import { MaterialType } from '../../material/MaterialType'
 import { tokenSpaces } from '../../material/PlayerBoardSpace'
@@ -20,7 +20,7 @@ export default class Bid extends MaterialRulesPart {
 
     return tokenSpaces.flatMap((id) => {
       const location = { type: LocationType.PlayerBoard, id, player: this.player }
-      return placableCoins.filter((item) => !equal(item.location, location)).moveItems(location)
+      return placableCoins.filter((item) => !isEqual(item.location, location)).moveItems(location)
     })
   }
 }
